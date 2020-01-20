@@ -1,0 +1,6 @@
+org\openmrs\module\nmrscommodityapp\api\NmrscommodityappService.class
+org\openmrs\module\nmrscommodityapp\Item.class
+org\openmrs\module\nmrscommodityapp\NmrscommodityappConfig.class
+org\openmrs\module\nmrscommodityapp\NmrscommodityappActivator.class
+org\openmrs\module\nmrscommodityapp\api\impl\NmrscommodityappServiceImpl.class
+org\openmrs\module\nmrscommodityapp\api\dao\NmrscommodityappDao.class

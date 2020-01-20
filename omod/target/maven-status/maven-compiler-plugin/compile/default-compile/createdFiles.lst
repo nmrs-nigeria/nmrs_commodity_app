@@ -1,0 +1,2 @@
+org\openmrs\module\nmrscommodityapp\extension\html\AdminList.class
+org\openmrs\module\nmrscommodityapp\web\controller\NmrscommodityappController.class
