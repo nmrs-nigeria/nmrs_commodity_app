@@ -64,6 +64,9 @@ public class ConsumptionSearch extends BaseMetadataTemplateSearch<Consumption> {
 		if (consumption.getQuantity() != null) {
 			criteria.add(Restrictions.eq("quantity", consumption.getQuantity()));
 		}
+		if (consumption.getTestType() != null) {
+			criteria.add(Restrictions.eq("testType", consumption.getTestType()));
+		}
 
 	}
 

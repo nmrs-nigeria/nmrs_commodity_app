@@ -30,6 +30,7 @@ public class ConsumptionResource extends BaseRestSimpleCustomizableMetadataResou
 		description.addProperty("department", Representation.REF);
 		description.addProperty("consumptionDate");
 		description.addProperty("quantity");
+		description.addProperty("testType");
 
 		return description;
 	}

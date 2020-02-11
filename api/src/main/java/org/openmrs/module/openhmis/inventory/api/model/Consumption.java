@@ -15,6 +15,7 @@ import org.openmrs.module.openhmis.commons.api.entity.model.ISimpleCustomizable;
  */
 public class Consumption extends BaseSimpleCustomizableMetadata<ConsumptionAttribute>
         implements ISimpleCustomizable<ConsumptionAttribute> {
+
 	public static final long serialVersionUID = 1L;
 
 	private Integer consumption_id;
@@ -22,6 +23,15 @@ public class Consumption extends BaseSimpleCustomizableMetadata<ConsumptionAttri
 	private Item item;
 	private Date consumptionDate;
 	private Integer quantity;
+	private String testType;
+
+	public String getTestType() {
+		return testType;
+	}
+
+	public void setTestType(String testType) {
+		this.testType = testType;
+	}
 
 	public Department getDepartment() {
 		return department;
