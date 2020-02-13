@@ -5,13 +5,17 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
+import org.openmrs.module.openhmis.commons.api.Utility;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseCustomizableMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
@@ -145,6 +149,46 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 			}
 		}, getDefaultSort());
 
+	}
+
+	@Override
+	public List<Consumption> getConsumptionByConsumptionDate(final Date startDate, final Date endDate,
+	        PagingInfo pagingInfo) {
+		return getConsumptionsByDate(startDate, endDate, pagingInfo, null,
+		    Order.asc(HibernateCriteriaConstants.CONSUMPTION_QUANTITY),
+		    Order.asc(HibernateCriteriaConstants.OPERATION_DATE));
+	}
+
+	private List<Consumption> getConsumptionsByDate(final Date startDate, final Date endDate,
+	        PagingInfo paging, final Integer maxResults,
+	        Order... orders) {
+		if (startDate == null || endDate == null) {
+			throw new IllegalArgumentException("The date to search for must be defined.");
+		}
+
+		return executeCriteria(Consumption.class, paging, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.add(createDateRestriction(startDate, endDate));
+				if (maxResults != null && maxResults > 0) {
+					criteria.setMaxResults(maxResults);
+				}
+			}
+		}, orders);
+	}
+
+	private Criterion createDateRestriction(Date startDate, Date endDate) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(startDate);
+		Utility.clearCalendarTime(cal);
+		final Date start = cal.getTime();
+
+		cal.setTime(endDate);
+		//cal.add(Calendar.DAY_OF_MONTH, 1);
+		//cal.add(Calendar.MILLISECOND, -1);
+		final Date end = cal.getTime();
+
+		return Restrictions.between(HibernateCriteriaConstants.CONSUMPTION_DATE, start, end);
 	}
 
 	@Override

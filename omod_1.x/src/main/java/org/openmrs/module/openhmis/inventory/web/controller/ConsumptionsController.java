@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author MORRISON.I
  */
 
-@Controller(value = "invItemsController")
-@RequestMapping(ModuleWebConstants.ITEMS_ROOT)
+@Controller(value = "invConsumptionsController")
+@RequestMapping(ModuleWebConstants.CONSUMPTIONS_ROOT)
 public class ConsumptionsController {
 	@RequestMapping(method = RequestMethod.GET)
 	public void consumptions(ModelMap model) throws IOException {

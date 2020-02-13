@@ -130,6 +130,15 @@
 				"icon": "icon-folder-open",
 				"requiredPrivilege": "Task: Access Create Operation"
 			},
+                        {
+				"id": "openhmis.inventory.createConsumption",
+				"extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
+				"type": "link",
+				"label": "openhmis.inventory.admin.consumption",
+				"url": "openhmis.inventory/consumption/entities.page",
+				"icon": "icon-folder-open",
+				"requiredPrivilege": "Task: Access Create Operation"
+			},
 			{
 				"id": "openhmis.inventory.viewStockOperationLink",
 				"extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",

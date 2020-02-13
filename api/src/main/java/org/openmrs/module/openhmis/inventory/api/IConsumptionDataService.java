@@ -46,4 +46,8 @@ public interface IConsumptionDataService extends IMetadataDataService<Consumptio
 	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
 	List<Consumption> getConsumptionsByConsumptionSearch(ConsumptionSearch consumptionSearch, PagingInfo pagingInfo);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
+	List<Consumption> getConsumptionByConsumptionDate(Date startDate, Date endDate, PagingInfo pagingInfo);
+
 }
