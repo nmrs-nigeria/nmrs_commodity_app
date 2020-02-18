@@ -31,6 +31,13 @@
             </a>
         </li>
     </openmrs:hasPrivilege>
+            <openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.CONSUMPTION_PAGE_PRIVILEGES %>">
+        <li>
+            <a href="${pageContext.request.contextPath}<%= ModuleWebConstants.CONSUMPTIONS_PAGE %>">
+                <openmrs:message code="openhmis.inventory.admin.consumptions"/>
+            </a>
+        </li>
+    </openmrs:hasPrivilege>
     <openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.STOCKROOM_PAGE_PRIVILEGES %>">
         <li>
             <a href="${pageContext.request.contextPath}<%= ModuleWebConstants.STOCKROOMS_PAGE %>">

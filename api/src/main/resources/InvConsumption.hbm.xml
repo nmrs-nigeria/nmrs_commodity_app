@@ -16,7 +16,7 @@
                 
 		<property name="quantity" type="int" column="name" not-null="true" />
 		<property name="consumptionDate" type="java.util.Date" column="consumption_date" not-null="true" length="19" />
-                <property name="testType" type="java.lang.String" column="consumption_date" not-null="true" length="255" />
+                <property name="wastage" type="java.lang.String" column="int" not-null="false" />
 
                 
 		<!-- bi-directional many-to-one association to User -->

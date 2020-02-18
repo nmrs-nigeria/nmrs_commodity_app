@@ -7,30 +7,37 @@ package org.openmrs.module.openhmis.inventory.api.model;
 
 import java.util.Date;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseSimpleCustomizableMetadata;
 import org.openmrs.module.openhmis.commons.api.entity.model.ISimpleCustomizable;
 
 /**
  * @author MORRISON.I
  */
-public class Consumption extends BaseSimpleCustomizableMetadata<ConsumptionAttribute>
-        implements ISimpleCustomizable<ConsumptionAttribute> {
+public class Consumption extends BaseSerializableOpenmrsMetadata {
 
 	public static final long serialVersionUID = 1L;
 
-	private Integer consumption_id;
+	private Integer consumptionId;
 	private Department department;
 	private Item item;
 	private Date consumptionDate;
 	private Integer quantity;
-	private String testType;
+	private Integer wastage;
 
-	public String getTestType() {
-		return testType;
+	public Consumption(Integer consumptionId) {
+		this.consumptionId = consumptionId;
 	}
 
-	public void setTestType(String testType) {
-		this.testType = testType;
+	public Consumption() {}
+
+	//private String testType;
+	public Integer getWastage() {
+		return wastage;
+	}
+
+	public void setWastage(Integer wastage) {
+		this.wastage = wastage;
 	}
 
 	public Department getDepartment() {
@@ -67,12 +74,12 @@ public class Consumption extends BaseSimpleCustomizableMetadata<ConsumptionAttri
 
 	@Override
 	public Integer getId() {
-		return this.consumption_id;
+		return this.consumptionId;
 	}
 
 	@Override
 	public void setId(Integer intgr) {
-		this.consumption_id = intgr;
+		this.consumptionId = intgr;
 	}
 
 	@Override

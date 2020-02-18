@@ -8,7 +8,6 @@ package org.openmrs.module.webservices.rest.resource;
 import org.openmrs.module.ModuleConstants;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Consumption;
-import org.openmrs.module.openhmis.inventory.api.model.ConsumptionAttribute;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
@@ -21,7 +20,7 @@ import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 
 @Resource(name = ModuleRestConstants.CONSUMPTION_RESOURCE, supportedClass = Consumption.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
-public class ConsumptionResource extends BaseRestSimpleCustomizableMetadataResource<Consumption, ConsumptionAttribute> {
+public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
@@ -30,7 +29,7 @@ public class ConsumptionResource extends BaseRestSimpleCustomizableMetadataResou
 		description.addProperty("department", Representation.REF);
 		description.addProperty("consumptionDate");
 		description.addProperty("quantity");
-		description.addProperty("testType");
+		description.addProperty("wastage");
 
 		return description;
 	}

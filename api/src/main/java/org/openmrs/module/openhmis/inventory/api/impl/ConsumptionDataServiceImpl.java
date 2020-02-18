@@ -17,6 +17,7 @@ import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseCustomizableMetadataDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
@@ -31,7 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author MORRISON.I
  */
-public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServiceImpl<Consumption>
+public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Consumption>
         implements IConsumptionDataService, IMetadataAuthorizationPrivileges {
 
 	private static final int MAX_ITEM_CODE_LENGTH = 255;
@@ -47,7 +48,7 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
+	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptionByDepartment(final Department department, final boolean includeRetired,
 	        PagingInfo pagingInfo) {
@@ -66,7 +67,7 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
+	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptionByItem(final Item item, final boolean includeRetired, PagingInfo pagingInfo) {
 		if (item == null) {
@@ -86,14 +87,14 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
+	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptions(Department department, Item item, boolean includeRetired) {
 		return getConsumptions(department, item, includeRetired, null);
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTION })
+	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptions(final Department department, final Item item,
 	        final boolean includeRetired, PagingInfo pagingInfo) {
@@ -156,7 +157,7 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 	        PagingInfo pagingInfo) {
 		return getConsumptionsByDate(startDate, endDate, pagingInfo, null,
 		    Order.asc(HibernateCriteriaConstants.CONSUMPTION_QUANTITY),
-		    Order.asc(HibernateCriteriaConstants.OPERATION_DATE));
+		    Order.asc(HibernateCriteriaConstants.CONSUMPTION_DATE));
 	}
 
 	private List<Consumption> getConsumptionsByDate(final Date startDate, final Date endDate,
@@ -208,7 +209,7 @@ public class ConsumptionDataServiceImpl extends BaseCustomizableMetadataDataServ
 
 	@Override
 	public String getGetPrivilege() {
-		return PrivilegeConstants.VIEW_CONSUMPTION;
+		return PrivilegeConstants.VIEW_CONSUMPTIONS;
 	}
 
 }

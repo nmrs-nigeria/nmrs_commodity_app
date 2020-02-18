@@ -65,7 +65,7 @@
 				<tr>
 					<th>${ui.message('openhmis.inventory.item.name')}</th>
 					<th>${ui.message('openhmis.inventory.department.name')}</th>
-					<th>${ui.message('openhmis.inventory.consumption.testType')}</th>
+					<th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
 					<th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
                                         <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
 				</tr>
@@ -76,7 +76,7 @@
 					<td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
 					<td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
 					<td ng-style="strikeThrough(entity.retired)">
-						{{entity.testType}}
+						{{entity.wastage}}
 					</td>
 					<td ng-style="strikeThrough(entity.retired)">
 						{{entity.quantity}}

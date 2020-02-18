@@ -40,6 +40,9 @@
 			else if(angular.isDefined('department_uuid') && department_uuid !== undefined){
 				requestParams['q'] = q;
 			}
+                        else if(angular.isDefined('item_uuid') && item_uuid !== undefined){
+				requestParams['q'] = q;
+			}
 
 			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
 		}

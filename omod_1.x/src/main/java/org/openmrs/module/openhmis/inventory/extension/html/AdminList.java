@@ -64,6 +64,12 @@ public class AdminList extends AdministrationSectionExt {
 			map.put(ModuleWebConstants.ITEMS_PAGE, "openhmis.inventory.admin.items");
 		}
 
+		Boolean consumptionPrivilege = PrivilegeUtil.hasPrivileges(authenticatedUser,
+		    PrivilegeWebConstants.CONSUMPTION_PAGE_PRIVILEGES);
+		if (consumptionPrivilege) {
+			map.put(ModuleWebConstants.CONSUMPTIONS_PAGE, "openhmis.inventory.admin.consumptions");
+		}
+
 		if (PrivilegeUtil.hasPrivileges(authenticatedUser, PrivilegeWebConstants.ITEM_ATTRIBUTE_TYPE_PAGE_PRIVILEGES)) {
 			map.put(ModuleWebConstants.ITEM_ATTRIBUTE_TYPES_PAGE, "openhmis.inventory.admin.item.attribute.types");
 		}

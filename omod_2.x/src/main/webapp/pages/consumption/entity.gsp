@@ -2,7 +2,10 @@
     var breadcrumbs = [
     { icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
     { label: "${ ui.message("openhmis.inventory.page")}" , link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'},
-    { label: "${ ui.message("openhmis.inventory.manage.module")}", link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/manageModule.page' },
+     {
+            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+        },
     { label: "${ ui.message("openhmis.inventory.admin.consumptions")}", link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/consumption/entities.page##/'},
     { label: "${ui.message("openhmis.inventory.consumption.name")}"}
     ];
@@ -25,7 +28,26 @@
     <input type="hidden" ng-model="entity.uuid" />
 
     <fieldset class="format">
+        
+         <ul class="table-layout">
+            <li class="required">
+                <span> {{messageLabels['openhmis.inventory.consumption.consumptionDate']}}</span>
+            </li>
+            <li>
+                <span class="date">
+              ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "consumptionDate",
+                                    id: "consumptionDate",
+                                    label: "",
+                                    useTime: false,
+                                    startDate: new Date(),
+                            ])}
+             </span>
+                </li>
+           
+        </ul>
 
+        
         <ul class="table-layout">
             <li class="required">
                 <span>{{messageLabels['openhmis.inventory.department.name']}}</span>
@@ -48,12 +70,10 @@
         </ul>
         <ul class="table-layout">
             <li class="not-required">
-                <span>{{messageLabels['openhmis.inventory.consumption.testType']}}</span>
+                <span>{{messageLabels['openhmis.inventory.consumption.wastage']}}</span>
             </li>
             <li>
-                <select ng-model="entity.testType" class="form-control"
-                ng-options="testType for testType in testTypes">
-                </select>
+               <input type="number" ng-model="entity.wastage" class="minimized"/>
             </li>
         </ul>
         <ul class="table-layout">

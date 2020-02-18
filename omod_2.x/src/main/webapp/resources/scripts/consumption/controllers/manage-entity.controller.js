@@ -51,7 +51,7 @@
 //				self.searchItems(currentPage);
 //			}
 
-		self.searchItems = self.searchItems || function(currentPage){
+		self.searchConsumptions = self.searchConsumptions || function(currentPage){
 				CookiesService.set('searchField', $scope.searchField);
 				CookiesService.set('startIndex', $scope.startIndex);
 				CookiesService.set('limit', $scope.limit);
@@ -74,7 +74,7 @@
 
 				var searchField = $scope.searchField || '';
 
-				ConsumptionRestfulService.searchItems(searchField, currentPage, $scope.limit, department_uuid,item_uuid, $scope.includeRetired, self.onLoadConsumptionsSuccessful)
+				ConsumptionRestfulService.searchConsumptions(searchField, currentPage, $scope.limit, department_uuid,item_uuid, $scope.includeRetired, self.onLoadConsumptionsSuccessful)
 			}
 
 		self.onLoadConsumptionsSuccessful = self.onLoadConsumptionsSuccessful || function(data){

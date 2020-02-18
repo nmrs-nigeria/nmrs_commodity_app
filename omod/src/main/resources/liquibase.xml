@@ -1149,5 +1149,16 @@
 
         </changeSet>
         
+        <changeSet id="openhmis.inventory-v1.8.1-0" author="Morrison Idiasirue" >
+            
+                <dropColumn tableName="inv_consumption" columnName="test_type" />
+                
+                   <addColumn tableName="inv_consumption">
+                        <column name="wastage" type="int"><constraints nullable="true"/></column>
+			
+		</addColumn>
+            
+        </changeSet>
+        
       
 </databaseChangeLog>
