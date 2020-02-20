@@ -22,7 +22,7 @@
 
 		return service;
 
-		function searchConsumptions(q, startIndex, limit, department_uuid,item_uuid, includeRetired, onLoadSuccessfulCallback){
+		function searchConsumptions(startIndex, limit, department_uuid,item_uuid, includeRetired, onLoadSuccessfulCallback){
 			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
 			requestParams['rest_entity_name'] = 'consumption';
                         
@@ -34,15 +34,15 @@
 				requestParams['item_uuid'] = item_uuid;
 			}
 
-			if(angular.isDefined(q) && q !== '' && q !== null && q !== undefined){
-				requestParams['q'] = q;
-			}
-			else if(angular.isDefined('department_uuid') && department_uuid !== undefined){
-				requestParams['q'] = q;
-			}
-                        else if(angular.isDefined('item_uuid') && item_uuid !== undefined){
-				requestParams['q'] = q;
-			}
+//			if(angular.isDefined(q) && q !== '' && q !== null && q !== undefined){
+//				requestParams['q'] = q;
+//			}
+//			else if(angular.isDefined('department_uuid') && department_uuid !== undefined){
+//				requestParams['q'] = q;
+//			}
+//                        else if(angular.isDefined('item_uuid') && item_uuid !== undefined){
+//				requestParams['q'] = q;
+//			}
 
 			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
 		}

@@ -37,6 +37,8 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 
 	private static final int MAX_ITEM_CODE_LENGTH = 255;
 
+	// use temp varaiable for privilege
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return this;
@@ -48,7 +50,8 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	// @Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptionByDepartment(final Department department, final boolean includeRetired,
 	        PagingInfo pagingInfo) {
@@ -67,7 +70,8 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptionByItem(final Item item, final boolean includeRetired, PagingInfo pagingInfo) {
 		if (item == null) {
@@ -87,14 +91,16 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptions(Department department, Item item, boolean includeRetired) {
 		return getConsumptions(department, item, includeRetired, null);
 	}
 
 	@Override
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	@Transactional(readOnly = true)
 	public List<Consumption> getConsumptions(final Department department, final Item item,
 	        final boolean includeRetired, PagingInfo pagingInfo) {

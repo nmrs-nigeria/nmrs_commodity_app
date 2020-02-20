@@ -10,21 +10,18 @@
 
 		var extended = angular.extend(GenericMetadataModel, {});
 
-		var defaultFields = extended.getModelFields();
+	//	var defaultFields = extended.getModelFields();
 
 		// @Override
 		extended.getModelFields = function() {
-//			var fields = ["buyingPrice", "codes", "concept",
-//					"defaultExpirationPeriod", "defaultPrice", "department",
-//					"description", "hasExpiration", "hasPhysicalInventory",
-//					"minimumQuantity", "prices", "attributes"];
 
                         var fields = ["consumptionDate",
 					"item", "department",
 					"quantity", "wastage"
 					];
 
-			return fields.concat(defaultFields);
+		//	return fields.concat(defaultFields);
+                return fields;
 		};
 
 		return extended;

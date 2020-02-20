@@ -22,32 +22,41 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public interface IConsumptionDataService extends IMetadataDataService<Consumption> {
 
+	//temp using manage operations priv for all consumption data service
+
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptionByDepartment(Department department, boolean includeRetired, PagingInfo pagingInfo);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptionByItem(Item item, boolean includeRetired, PagingInfo pagingInfo);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptions(Department department, Item item, boolean includeRetired, PagingInfo pagingInfo);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	// @Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptions(Department department, Item item, boolean includeRetired);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	// @Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptionsByConsumptionSearch(ConsumptionSearch consumptionSearch);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptionsByConsumptionSearch(ConsumptionSearch consumptionSearch, PagingInfo pagingInfo);
 
 	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	//	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
 	List<Consumption> getConsumptionByConsumptionDate(Date startDate, Date endDate, PagingInfo pagingInfo);
 
 }

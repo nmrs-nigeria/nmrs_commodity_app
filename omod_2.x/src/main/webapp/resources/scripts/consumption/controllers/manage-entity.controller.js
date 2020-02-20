@@ -27,6 +27,7 @@
 
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function() {
 				self.loadDepartments();
+                                self.loadItems();
 				$scope.searchConsumptions = self.searchConsumptions;
 			//	$scope.searchItemsByName = self.searchItemsByName;
 				$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
@@ -52,7 +53,7 @@
 //			}
 
 		self.searchConsumptions = self.searchConsumptions || function(currentPage){
-				CookiesService.set('searchField', $scope.searchField);
+			//	CookiesService.set('searchField', $scope.searchField);
 				CookiesService.set('startIndex', $scope.startIndex);
 				CookiesService.set('limit', $scope.limit);
 				CookiesService.set('includeRetired', $scope.includeRetired);
@@ -72,9 +73,9 @@
 				}
 
 
-				var searchField = $scope.searchField || '';
+				//var searchField = $scope.searchField || '';
 
-				ConsumptionRestfulService.searchConsumptions(searchField, currentPage, $scope.limit, department_uuid,item_uuid, $scope.includeRetired, self.onLoadConsumptionsSuccessful)
+				ConsumptionRestfulService.searchConsumptions(currentPage, $scope.limit, department_uuid,item_uuid, $scope.includeRetired, self.onLoadConsumptionsSuccessful)
 			}
 
 		self.onLoadConsumptionsSuccessful = self.onLoadConsumptionsSuccessful || function(data){

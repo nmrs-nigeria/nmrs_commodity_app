@@ -13,7 +13,7 @@ import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 /**
  * @author MORRISON.I
  */
-public class ConsumptionSearch extends BaseMetadataTemplateSearch<Consumption> {
+public class ConsumptionSearch extends CustomBaseMetadataTemplateSearch<Consumption> {
 
 	public static final long serialVersionUID = 0L;
 
@@ -23,7 +23,8 @@ public class ConsumptionSearch extends BaseMetadataTemplateSearch<Consumption> {
 
 	public ConsumptionSearch(Consumption consumptionTemplate, StringComparisonType nameComparisonType,
 	    Boolean includeRetired) {
-		super(consumptionTemplate, nameComparisonType, includeRetired);
+		//	super(consumptionTemplate, nameComparisonType, includeRetired);
+		super(consumptionTemplate, includeRetired);
 	}
 
 	public ConsumptionSearch(Consumption consumptionTemplate) {
