@@ -16,12 +16,12 @@
 (function () {
     'use strict';
 
-    var app = angular.module('app.consumptionFunctionsFactory', []);
-    app.service('ConsumptionFunctions', ConsumptionFunctions);
+    var app = angular.module('app.consumptionSummaryFunctionsFactory', []);
+    app.service('ConsumptionSummaryFunctions', ConsumptionSummaryFunctions);
 
-    ConsumptionFunctions.$inject = ['EntityFunctions','$filter'];
+    ConsumptionSummaryFunctions.$inject = ['EntityFunctions','$filter'];
 
-    function ConsumptionFunctions(EntityFunctions,$filter) {
+    function ConsumptionSummaryFunctions(EntityFunctions,$filter) {
         var service;
 
         service = {
@@ -33,8 +33,6 @@
         };
 
         return service;
-
-
 
 
 
@@ -59,7 +57,16 @@
                     .message('openhmis.inventory.consumption.batchNumber');
             messages['openhmis.inventory.item.name'] =
                     emr.message('openhmis.inventory.item.name');
-
+            
+            messages['openhmis.inventory.summary.quantityConsumed'] =
+                    emr.message('openhmis.inventory.summary.quantityConsumed');
+              messages['openhmis.inventory.summary.quantityReceived'] =
+                    emr.message('openhmis.inventory.summary.quantityReceived');
+             messages['openhmis.inventory.summary.startDate'] =
+                    emr.message('openhmis.inventory.summary.startDate');
+                  messages['openhmis.inventory.summary.endDate'] =
+                    emr.message('openhmis.inventory.summary.endDate');
+            
 
 
             messages['openhmis.inventory.stockroom.name'] = emr
@@ -82,7 +89,9 @@
 //        }
 
         function formatDate(date) {
-            return $filter('date')(new Date(date), "dd-MM-yyyy");
+            
+        //    return $filter('date')(new Date(date), "dd-MM-yyyy");
+            return $filter('date')(new Date(date), "yyyy-MM-dd");
         }
 
         function formatTime(time) {

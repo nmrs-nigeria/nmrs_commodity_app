@@ -35,8 +35,10 @@ import org.openmrs.module.openhmis.commons.api.Utility;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseCustomizableMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
+import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationStatus;
@@ -52,6 +54,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataServiceImpl<StockOperation>
         implements IStockOperationDataService {
+
 	private static final int MAX_OPERATION_NUMBER_LENGTH = 255;
 
 	@Override
@@ -275,6 +278,16 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	@Override
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	public List<StockOperation> getOperationsByDateDiff(final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging) {
+		return getOperationsByDateDiff(searchConsumptionSummary,
+		    paging, null, Order.asc(HibernateCriteriaConstants.OPERATION_ORDER),
+		    Order.asc(HibernateCriteriaConstants.OPERATION_DATE));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	public StockOperation getLastOperationByDate(final Date date) {
 		List<StockOperation> results =
 		        getOperationsByDate(date, null, 1, Order.desc(HibernateCriteriaConstants.OPERATION_ORDER),
@@ -291,9 +304,8 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	public StockOperation getFirstOperationByDate(final Date date) {
-		List<StockOperation> results =
-		        getOperationsByDate(date, null, 1, Order.asc("operationOrder"),
-		            Order.asc(HibernateCriteriaConstants.DATE_CREATED));
+		List<StockOperation> results = getOperationsByDate(date, null, 1, Order.asc("operationOrder"),
+		    Order.asc(HibernateCriteriaConstants.DATE_CREATED));
 
 		if (results == null || results.size() == 0) {
 			return null;
@@ -319,6 +331,44 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 		}, orders);
 	}
 
+	private List<StockOperation> getOperationsByDateDiff(final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging, final Integer maxResults,
+	        Order... orders) {
+		if (searchConsumptionSummary.getStartDate() == null || searchConsumptionSummary.getEndDate() == null) {
+			throw new IllegalArgumentException("The date to search for must be defined.");
+		}
+
+		return executeCriteria(StockOperation.class, paging, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+
+				criteria.add(createDateDiffRestriction(searchConsumptionSummary.getStartDate(),
+				    searchConsumptionSummary.getEndDate()));
+
+				if (searchConsumptionSummary.getItem() != null) {
+					criteria.createAlias("items", "items").add(Restrictions.eq("items.item",
+					    searchConsumptionSummary.getItem()));
+				}
+
+				if (searchConsumptionSummary.getOperationType() != null) {
+					criteria.add(Restrictions.eq("instanceType", searchConsumptionSummary.getOperationType()));
+				}
+
+				if (searchConsumptionSummary.getOperationStatus() != null) {
+					criteria.add(Restrictions.eq("status", searchConsumptionSummary.getOperationStatus()));
+				}
+
+				if (searchConsumptionSummary.getDepartment() != null) {
+					criteria.add(Restrictions.eq("department", searchConsumptionSummary.getDepartment()));
+				}
+
+				if (maxResults != null && maxResults > 0) {
+					criteria.setMaxResults(maxResults);
+				}
+			}
+		}, orders);
+	}
+
 	private Criterion createDateRestriction(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -330,6 +380,27 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 		final Date end = cal.getTime();
 
 		return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, start, end);
+	}
+
+	private Criterion createDateDiffRestriction(Date sDate, Date eDate) {
+		//		Calendar cal = Calendar.getInstance();
+		//		cal.setTime(sDate);
+		//		Utility.clearCalendarTime(cal);
+		//		final Date start = cal.getTime();
+		//
+		//		Calendar cal_2 = Calendar.getInstance();
+		//		cal_2.setTime(eDate);
+		//		Utility.clearCalendarTime(cal_2);
+		//
+		//		//	cal.add(Calendar.DAY_OF_MONTH, 1);
+		//		//	cal.add(Calendar.MILLISECOND, -1);
+		//		final Date end = cal_2.getTime();
+
+		System.out.println("Start date for diff " + sDate);
+		System.out.println("End date for diff " + eDate);
+
+		//	return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, start, end);
+		return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, sDate, eDate);
 	}
 
 	@Override

@@ -42,5 +42,5 @@ public enum StockOperationStatus {
 	 */
 	ROLLBACK();
 
-	private StockOperationStatus() {}
+	StockOperationStatus() {}
 }

@@ -24,6 +24,15 @@ public class Consumption extends BaseSerializableOpenmrsMetadata {
 	private Date consumptionDate;
 	private Integer quantity;
 	private Integer wastage;
+	private String batchNumber;
+
+	public String getBatchNumber() {
+		return batchNumber;
+	}
+
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 
 	public Consumption(Integer consumptionId) {
 		this.consumptionId = consumptionId;

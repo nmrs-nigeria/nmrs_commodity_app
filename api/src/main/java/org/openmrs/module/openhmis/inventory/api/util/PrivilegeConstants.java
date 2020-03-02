@@ -33,6 +33,8 @@ public class PrivilegeConstants {
 
 	private static PrivilegeConstantsCompatibility privilegeConstantsCompatibility;
 
+	public static final String VIEW_CONSUMPTIONS_SUMMARY = "View Inventory Consumption Summary";
+
 	public static final String MANAGE_CONSUMPTION = "Manage Inventory Consumption";
 	public static final String VIEW_CONSUMPTIONS = "View Inventory Consumption";
 	public static final String PURGE_CONSUMPTION = "Purge Consumption";
@@ -69,7 +71,8 @@ public class PrivilegeConstants {
 	        PURGE_METADATA, APP_VIEW_INVENTORY_APP, APP_ACCESS_INVENTORY_TASKS_PAGE,
 	        TASK_MANAGE_INVENTORY_MODULE_PAGE, TASK_ACCESS_INVENTORY_TASK_PAGE, TASK_ACCESS_VIEW_STOCK_OPERATIONS_PAGE,
 	        TASK_ACCESS_CREATE_OPERATION_PAGE, TASK_ACCESS_INVENTORY_REPORTS_PAGE, TASK_ACCESS_STOCK_TAKE_PAGE,
-	        ROLLBACK_OPERATIONS, TASK_MANAGE_INVENTORY_METADATA, MANAGE_CONSUMPTION, VIEW_CONSUMPTIONS, PURGE_CONSUMPTION };
+	        ROLLBACK_OPERATIONS, TASK_MANAGE_INVENTORY_METADATA, MANAGE_CONSUMPTION, VIEW_CONSUMPTIONS,
+	        PURGE_CONSUMPTION, VIEW_CONSUMPTIONS_SUMMARY };
 
 	@Autowired
 	protected PrivilegeConstants(PrivilegeConstantsCompatibility privilegeConstantsCompatibility) {

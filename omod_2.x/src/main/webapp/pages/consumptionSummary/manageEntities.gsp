@@ -9,7 +9,7 @@
 			label: "${ ui.message("openhmis.inventory.manage.module")}",
     link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/manageModule.page'
     },
-		{label: "${ ui.message("openhmis.inventory.admin.consumptions")}",}
+		{label: "${ ui.message("openhmis.inventory.admin.consumptionSummarys")}",}
     ];
 
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
@@ -21,14 +21,9 @@
 
     <div id="manage-entities-header">
         <span class="h1-substitue-left" style="float:left;">
-            ${ui.message('openhmis.inventory.admin.consumptions')}
+            ${ui.message('openhmis.inventory.admin.consumptionSummarys')}
         </span>
-        <span style="float:right;">
-            <a class="button confirm" ui-sref="new">
-                <i class="icon-plus"></i>
-                {{newEntityLabel}}
-            </a>
-        </span>
+      
     </div>
     <br/><br/><br/>
 
@@ -40,7 +35,7 @@
                     ${ ui.message('openhmis.inventory.department.name') }:
                     <ul>
                         <li>
-                            <select ng-model="department" ng-change="searchConsumptions(currentPage)" style="height:33px;"
+                            <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
                             ng-options='department.name for department in departments track by department.uuid'>
                         <option value="" selected="selected">Any</option>
                         </select>
@@ -53,10 +48,46 @@
                     ${ ui.message('openhmis.inventory.item.name') }:
                     <ul>
                         <li>
-                            <select ng-model="item" ng-change="searchConsumptions(currentPage)" style="height:33px;"
+                            <select ng-model="item" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
                             ng-options='item.name for item in items track by item.uuid'>
                         <option value="" selected="selected">Any</option>
                         </select>
+                        </li>
+
+
+                    </ul>
+                </td>
+                   <td>
+                    ${ ui.message('openhmis.inventory.summary.startDate') }:
+                    <ul>
+                        <li>
+                            <span class="date">
+              ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "startDate",
+                                    id: "startDate",
+                                    label: "",
+                                    useTime: false
+                                    
+                            ])}
+             </span>
+                        </li>
+
+
+                    </ul>
+                </td>
+                <td>
+                    ${ ui.message('openhmis.inventory.summary.endDate') }:
+                    <ul>
+                        <li>
+                            <span class="date">
+              ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "endDate",
+                                    id: "endDate",
+                                    label: "",
+                                    useTime: false
+                                    
+                            ])}
+             </span>
                         </li>
 
 
@@ -73,9 +104,9 @@
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
                         <th>${ui.message('openhmis.inventory.department.name')}</th>
-                        <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
-                        <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
-                        <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
+                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
+                        <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
+                    
                     </tr>
                 </thead>
                 <tbody>
@@ -84,14 +115,12 @@
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.wastage}}
+                    {{entity.totalQuantityConsumed}}
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.quantity}}
+                    {{entity.totalQuantityReceived}}
                 </td>
-                <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.consumptionDate | date: 'dd-MM-yyyy, h:mma' }}
-                </td>
+               
                 </tr>
                 </tbody>
             </table>
@@ -101,10 +130,10 @@
         <!--	${ui.message('openhmis.commons.general.preSearchMessage')} - <b> {{searchField}} </b> - {{postSearchMessage}} -->
                 <br/><br/>
                 <span><input type="checkbox" ng-checked="includeRetired" ng-model="includeRetired"
-                    ng-change="searchConsumptions(currentPage)"></span>
+                    ng-change="searchConsumptionSummarys(currentPage)"></span>
                 <span>${ui.message('openhmis.commons.general.includeRetired')}</span>
             </div>
-            ${ui.includeFragment("openhmis.commons", "paginationFragment", [onPageChange: "searchConsumptions(currentPage)", onChange: "searchConsumptions(currentPage)"])}
+            ${ui.includeFragment("openhmis.commons", "paginationFragment", [onPageChange: "searchConsumptionSummarys(currentPage)", onChange: "searchConsumptionSummarys(currentPage)"])}
         </div>
     </div>
 </div>

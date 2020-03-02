@@ -22,6 +22,7 @@ import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
  * A search template class for the {@link StockOperation} model.
  */
 public class StockOperationSearch extends BaseObjectTemplateSearch<StockOperationTemplate> {
+
 	public StockOperationSearch() {
 		this(new StockOperationTemplate());
 	}
@@ -36,6 +37,15 @@ public class StockOperationSearch extends BaseObjectTemplateSearch<StockOperatio
 	private ComparisonType patientComparisonType;
 	private ComparisonType institutionComparisonType;
 	private DateComparisonType dateCreatedComparisonType;
+	private ComparisonType departmentComparisonType;
+
+	public ComparisonType getDepartmentComparisonType() {
+		return departmentComparisonType;
+	}
+
+	public void setDepartmentComparisonType(ComparisonType departmentComparisonType) {
+		this.departmentComparisonType = departmentComparisonType;
+	}
 
 	public void setOperationNumberComparisonType(StringComparisonType operationNumberComparisonType) {
 		this.operationNumberComparisonType = operationNumberComparisonType;

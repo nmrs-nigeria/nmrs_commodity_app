@@ -50,7 +50,7 @@
         
         <ul class="table-layout">
             <li class="required">
-                <span>{{messageLabels['openhmis.inventory.department.name']}}</span>
+                <span>Testing Points</span>
             </li>
             <li>
                 <select ng-model="department" required
@@ -68,12 +68,12 @@
                 </select>
             </li>
         </ul>
-        <ul class="table-layout">
-            <li class="not-required">
-                <span>{{messageLabels['openhmis.inventory.consumption.wastage']}}</span>
+         <ul class="table-layout">
+            <li class="required">
+                <span>{{messageLabels['openhmis.inventory.consumption.batchNumber']}}</span>
             </li>
             <li>
-               <input type="number" ng-model="entity.wastage" class="minimized"/>
+                <input type="text" ng-model="entity.batchNumber" class="minimized"/>
             </li>
         </ul>
         <ul class="table-layout">
@@ -84,6 +84,15 @@
                 <input type="number" ng-model="entity.quantity" class="minimized"/>
             </li>
         </ul>
+        <ul class="table-layout">
+            <li class="not-required">
+                <span>{{messageLabels['openhmis.inventory.consumption.wastage']}}</span>
+            </li>
+            <li>
+               <input type="number" ng-model="entity.wastage" class="minimized"/>
+            </li>
+        </ul>
+        
 
 
 

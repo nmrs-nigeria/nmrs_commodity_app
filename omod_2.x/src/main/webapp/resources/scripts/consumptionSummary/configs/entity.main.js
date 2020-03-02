@@ -1,7 +1,7 @@
 
 
 /* initialize and bootstrap application */
-requirejs(['consumption/configs/entity.module'], function() {
+requirejs(['consumptionSummary/configs/entity.module'], function() {
 	angular.bootstrap(document, ['entitiesApp']);
 });
 
@@ -42,6 +42,12 @@ emr.loadMessages([
         "openhmis.inventory.consumption.testingPoint",
         "openhmis.inventory.consumption.wastage",
         "openhmis.inventory.consumption.batchNumber",
+        "openhmis.inventory.admin.consumptionSummarys",
+        "openhmis.inventory.admin.consumptionSummary",
+        "openhmis.inventory.summary.quantityConsumed",
+        "openhmis.inventory.summary.quantityReceived",
+        "openhmis.inventory.summary.startDate",
+        "openhmis.inventory.summary.endDate",
         
         
         "openhmis.commons.general.required.quantity",

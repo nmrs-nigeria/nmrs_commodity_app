@@ -6,7 +6,7 @@
 	var baseModel = angular.module('app.genericMetadataModel');
 
 	/* Define model fields */
-	function ConsumptionModel(GenericMetadataModel) {
+	function ConsumptionSummaryModel(GenericMetadataModel) {
 
 		var extended = angular.extend(GenericMetadataModel, {});
 
@@ -15,9 +15,9 @@
 		// @Override
 		extended.getModelFields = function() {
 
-                        var fields = ["consumptionDate",
-					"item", "department",
-					"quantity", "wastage","batchNumber"
+                        var fields = ["totalQuantityReceived",
+					"totalQuantityConsumed", "department",
+					"item"
 					];
 
 		//	return fields.concat(defaultFields);
@@ -27,8 +27,8 @@
 		return extended;
 	}
 
-	baseModel.factory("ConsumptionModel", ConsumptionModel);
+	baseModel.factory("ConsumptionSummaryModel", ConsumptionSummaryModel);
 
-	ConsumptionModel.$inject = ['GenericMetadataModel'];
+	ConsumptionSummaryModel.$inject = ['GenericMetadataModel'];
 
 })();

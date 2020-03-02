@@ -199,6 +199,22 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	}
 
 	@Override
+	protected Order[] getDefaultSort() {
+		return new Order[] { Order.asc("consumptionDate") };
+		// return super.getDefaultSort(); 
+	}
+
+	@Override
+	public List<Consumption> getByNameFragment(String nameFragment, boolean includeRetired, PagingInfo pagingInfo) {
+		return super.getAll(includeRetired, pagingInfo);
+	}
+
+	@Override
+	public List<Consumption> getByNameFragment(String nameFragment, boolean includeRetired) {
+		return getByNameFragment(nameFragment, includeRetired, null);
+	}
+
+	@Override
 	public String getRetirePrivilege() {
 		return PrivilegeConstants.MANAGE_CONSUMPTION;
 	}

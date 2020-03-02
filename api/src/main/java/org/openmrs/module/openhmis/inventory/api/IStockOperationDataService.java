@@ -15,6 +15,7 @@ package org.openmrs.module.openhmis.inventory.api;
 
 import java.util.Date;
 import java.util.List;
+import org.hibernate.criterion.Order;
 
 import org.openmrs.User;
 import org.openmrs.annotation.Authorized;
@@ -23,11 +24,13 @@ import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.commons.api.entity.model.IInstanceType;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationStatus;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.search.StockOperationSearch;
+import org.openmrs.module.openhmis.inventory.api.util.HibernateCriteriaConstants;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +39,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public interface IStockOperationDataService extends IMetadataDataService<StockOperation> {
+
 	/**
 	 * Returns the {@link StockOperation} with the specified operation number.
 	 * @param operationNumber The operation number.
@@ -225,4 +229,9 @@ public interface IStockOperationDataService extends IMetadataDataService<StockOp
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	StockOperation getFirstOperationByDate(Date date);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	List<StockOperation> getOperationsByDateDiff(final SearchConsumptionSummary searchConsumptionSummary, PagingInfo paging);
+
 }

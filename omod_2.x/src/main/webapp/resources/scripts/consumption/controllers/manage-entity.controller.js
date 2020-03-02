@@ -30,7 +30,7 @@
                                 self.loadItems();
 				$scope.searchConsumptions = self.searchConsumptions;
 			//	$scope.searchItemsByName = self.searchItemsByName;
-				$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
+			//	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
 				$scope.department = CookiesService.get('department') || {};
                                 $scope.item = CookiesService.get('item') || {};
 			}
@@ -60,6 +60,7 @@
 				CookiesService.set('currentPage', currentPage);
 				CookiesService.set('department', $scope.department);
                                 CookiesService.set('item', $scope.item);
+                                
 
 				var department_uuid;
                                 var item_uuid;

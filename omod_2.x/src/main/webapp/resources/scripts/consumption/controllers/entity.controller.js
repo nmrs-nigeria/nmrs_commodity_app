@@ -36,8 +36,10 @@
                     // $scope.testTypes = ["screening Test","confirmatory test","tie breaker"];
                     $scope.quantity = '';
                     $scope.wastage = '';
+                    $scope.batchNumber = '';
 
                     $scope.uuid = uuid;
+                    $scope.currDate = '';
 
 
                     /* bind functions.. */
@@ -106,8 +108,17 @@
             console.log("done with item");
 
             if ($scope.consumptionDate !== undefined) {
-               // $scope.entity.consumptionDate = ConsumptionFunctions.formatDate($scope.consumptionDate);
-               $scope.entity.consumptionDate = formatDate($scope.consumptionDate);
+                // $scope.entity.consumptionDate = ConsumptionFunctions.formatDate($scope.consumptionDate);
+               $scope.currDate = formatDate(new Date());
+               
+               console.log('currDate: '+$scope.currDate);
+               var time = formatTime(new Date());
+               // var time = $scope.currDate.time;
+            console.log('the time is '+time);
+            var tempDate = $scope.consumptionDate + ', ' + time;
+            console.log('tempdate is :'+ tempDate);
+            
+                $scope.entity.consumptionDate = formatDate(tempDate);
             }
 
             console.log("done with consumption date");
@@ -133,14 +144,14 @@
             var department = $scope.department;
             if (angular.isDefined(department)) {
                 $scope.entity.department = department.uuid;
-              //  $scope.entity.department = department.departmentId;
+                //  $scope.entity.department = department.departmentId;
             }
 
             //bind item uuid
             var item = $scope.item;
             if (angular.isDefined(item)) {
                 $scope.entity.item = item.uuid;
-             //  $scope.entity.item = item.itemId;
+                //  $scope.entity.item = item.itemId;
             }
 
             $scope.loading = true;
@@ -148,9 +159,23 @@
 
 
         }
+        
+        function formatTime(time) {
+			var format = 'HH:mm';
+			return ($filter('date')(new Date(time), format));
+		}
 
         function formatDate(date) {
-            return $filter('date')(new Date(date), "yyyy-MM-dd");
+            //  return $filter('date')(new Date(date), "yyyy-MM-dd");
+
+           
+         //   date = new Date(date);
+            var format = 'yyyy-MM-dd';
+
+            format += ' HH:mm';
+            console.log('final date b4 the format: '+date);
+
+            return ($filter('date')(new Date(date), format));
         }
 
         // @Override
