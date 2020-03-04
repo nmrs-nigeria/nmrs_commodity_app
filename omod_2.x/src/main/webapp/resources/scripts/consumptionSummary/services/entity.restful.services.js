@@ -22,7 +22,7 @@
 
 		return service;
 
-		function searchConsumptionSummarys(startIndex, limit, department_uuid,item_uuid,startDate,endDate, includeRetired, onLoadSuccessfulCallback){
+		function searchConsumptionSummarys(startIndex, limit, department_uuid,startDate,endDate, includeRetired, onLoadSuccessfulCallback){
 			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
 			requestParams['rest_entity_name'] = 'consumptionSummary';
                         
@@ -30,9 +30,9 @@
 				requestParams['department_uuid'] = department_uuid;
 			}
                         
-                        if(angular.isDefined(item_uuid)){
-				requestParams['item_uuid'] = item_uuid;
-			}
+//                        if(angular.isDefined(item_uuid)){
+//				requestParams['item_uuid'] = item_uuid;
+//			}
                         
                         if(angular.isDefined(startDate)){
                             requestParams['startDate'] = startDate;

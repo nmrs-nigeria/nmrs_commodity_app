@@ -32,7 +32,7 @@
             //	$scope.searchItemsByName = self.searchItemsByName;
             //	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
             $scope.department = CookiesService.get('department') || {};
-            $scope.item = CookiesService.get('item') || {};
+           // $scope.item = CookiesService.get('item') || {};
             $scope.startDate = CookiesService.get('startDate') || {};
             $scope.endDate = CookiesService.get('endDate') || {};
 
@@ -76,25 +76,27 @@
             CookiesService.set('includeRetired', $scope.includeRetired);
             CookiesService.set('currentPage', currentPage);
             CookiesService.set('department', $scope.department);
-            CookiesService.set('item', $scope.item);
+           // CookiesService.set('item', $scope.item);
             CookiesService.set('startDate', $scope.startDate);
             CookiesService.set('endDate', $scope.endDate);
 
             var department_uuid;
-            var item_uuid;
+          //  var item_uuid;
 
             if ($scope.department !== null) {
                 department_uuid = $scope.department.uuid;
             }
 
-            if ($scope.item !== null) {
-                item_uuid = $scope.item.uuid;
-            }
+//            if ($scope.item !== null) {
+//                item_uuid = $scope.item.uuid;
+//            }
 
 
             //var searchField = $scope.searchField || '';
+            
+         //    ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
 
-            ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
+            ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
         }
 
         self.onLoadConsumptionSummarysSuccessful = self.onLoadConsumptionSummarysSuccessful || function (data) {

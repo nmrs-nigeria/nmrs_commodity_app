@@ -78,6 +78,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		description.addProperty("department", Representation.REF);
 		description.addProperty("totalQuantityReceived");
 		description.addProperty("totalQuantityConsumed");
+		description.addProperty("stockBalance");
 		//	description.addProperty("startDate", Representation.DEFAULT);
 		//	description.addProperty("endDate", Representation.DEFAULT);
 
@@ -96,6 +97,8 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
+
+		distinctItems = itemDataService.getAll();
 
 		Department searchDepartment = getDepartment(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
@@ -146,7 +149,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
         
             System.out.println("stock operations result: "+stockOps.size());
             
-        fromReceived = getSummaryFromStockOperation(stockOps);
+        fromReceived = getSummaryFromStockOperation(stockOps,searchDepartment);
         
             System.out.println("After stock summary: "+fromReceived.size());
 
@@ -162,7 +165,11 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
         
          System.out.println("stock consumptions aggregate result  : "+fromConsumption.size());
 
-        finalConsumptionSummarys = mergeSummary(fromConsumption, fromReceived, searchDepartment);
+         List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
+         
+        tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, searchDepartment);
+        
+        finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
         
             System.out.println("final consumption summary is "+finalConsumptionSummarys.size());
 
@@ -170,6 +177,29 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
                 pagingInfo.getTotalRecordCount());
 
     }
+
+	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
+
+		List<ConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
+
+		for (ConsumptionSummary summary : consumptionSummarys) {
+			ConsumptionSummary each = new ConsumptionSummary();
+			each.setItem(summary.getItem());
+			each.setDepartment(summary.getDepartment());
+			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
+			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
+			if (each.getTotalQuantityReceived() > 0) {
+				each.setStockBalance(each.getTotalQuantityReceived() - each.getTotalQuantityConsumed());
+			} else {
+				each.setStockBalance(0);
+			}
+
+			consumptionSummarysWithBalance.add(each);
+		}
+
+		return consumptionSummarysWithBalance;
+
+	}
 
 	private List<ConsumptionSummary> mergeSummary(List<ConsumptionSummary> fromConsumption, 
             List<ConsumptionSummary> fromReceived, Department department) {
@@ -230,23 +260,23 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
     }
 
-	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations) {
+	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
+	        Department department) {
 
-        List<ConsumptionSummary> rConsumptions = new ArrayList<>();
-        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
+		List<ConsumptionSummary> rConsumptions = new ArrayList<>();
+		List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
 
-        for (StockOperation stockOperation : stockOperations) {
+		for (StockOperation stockOperation : stockOperations) {
 
-            rConsumptions.addAll(fillUpItems(stockOperation.getItems(), stockOperation));
+			rConsumptions.addAll(fillUpItems(stockOperation.getItems(), stockOperation));
 
-        }
+		}
 
-        aggregateConsumption = aggregateItems(rConsumptions, rConsumptions.stream().findFirst()
-                .map(ConsumptionSummary::getDepartment).get());
+		aggregateConsumption = aggregateItems(rConsumptions, department);
 
-        return aggregateConsumption;
+		return aggregateConsumption;
 
-    }
+	}
 
 	private List<ConsumptionSummary> fillUpItems(Set<StockOperationItem> items, StockOperation stockOperation) {
         List<ConsumptionSummary> rConsumptions = new ArrayList<>();
@@ -264,8 +294,8 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 	private List<ConsumptionSummary> aggregateItems(List<ConsumptionSummary> consumptionSummarys, 
             Department department) {
-        distinctItems = consumptionSummarys.stream()
-                .map(ConsumptionSummary::getItem).distinct().collect(Collectors.toList());
+//        distinctItems = consumptionSummarys.stream()
+//                .map(ConsumptionSummary::getItem).distinct().collect(Collectors.toList());
         
             System.out.println("The items count is "+distinctItems.size());
 
@@ -276,7 +306,8 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
             ConsumptionSummary consumptionSummary = new ConsumptionSummary();
             consumptionSummary.setDepartment(department);
             consumptionSummary.setItem(a);
-            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a)).count();
+            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
+                    .map(ConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();
             if (itemCount > 0) {
                 System.out.println("");
                 consumptionSummary.setTotalQuantityReceived((int) itemCount);

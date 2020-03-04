@@ -84,14 +84,14 @@
                 <input type="checkbox" ng-model="entity.hasPhysicalInventory" />
             </li>
         </ul>
-        <ul class="table-layout">
+<!--        <ul class="table-layout">
             <li class="not-required">
                 <span>{{messageLabels['openhmis.inventory.item.minimumQuantity']}}</span>
             </li>
             <li>
                 <input type="number" ng-model="entity.minimumQuantity" class="minimized"/>
             </li>
-        </ul>
+        </ul>-->
              <ul class="table-layout">
             <li class="not-required">
                 <span>{{messageLabels['openhmis.inventory.item.packSize']}}</span>

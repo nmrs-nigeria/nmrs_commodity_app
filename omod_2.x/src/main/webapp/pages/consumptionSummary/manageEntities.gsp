@@ -23,90 +23,88 @@
         <span class="h1-substitue-left" style="float:left;">
             ${ui.message('openhmis.inventory.admin.consumptionSummarys')}
         </span>
-      
+
     </div>
     <br/><br/><br/>
 
     <div>
         <div id="entities">
-
-            <table class="search-area" >
-                <td>
-                    ${ ui.message('openhmis.inventory.department.name') }:
-                    <ul>
-                        <li>
-                            <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
-                            ng-options='department.name for department in departments track by department.uuid'>
-                        <option value="" selected="selected">Any</option>
-                        </select>
-                        </li>
-
-                    </ul>
-                </td>
-
-                <td>
-                    ${ ui.message('openhmis.inventory.item.name') }:
-                    <ul>
-                        <li>
-                            <select ng-model="item" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
-                            ng-options='item.name for item in items track by item.uuid'>
-                        <option value="" selected="selected">Any</option>
-                        </select>
-                        </li>
-
-
-                    </ul>
-                </td>
-                   <td>
-                    ${ ui.message('openhmis.inventory.summary.startDate') }:
-                    <ul>
-                        <li>
-                            <span class="date">
-              ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                                    formFieldName: "startDate",
-                                    id: "startDate",
-                                    label: "",
-                                    useTime: false
+             <form style="" class="search">
+               <fieldset class="search">
+                <table class="search" >
+                     <tr>
+                       <td>
+                        ${ ui.message('openhmis.inventory.summary.startDate') }:
+                        <ul class="table-layout">
+                            <li>
+                                <span class="date">
+                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                      formFieldName: "startDate",
+                      id: "startDate",
+                      label: "",
+                      useTime: false
                                     
-                            ])}
-             </span>
-                        </li>
+])}
+                                </span>
+                            </li>
 
 
-                    </ul>
-                </td>
-                <td>
-                    ${ ui.message('openhmis.inventory.summary.endDate') }:
-                    <ul>
-                        <li>
-                            <span class="date">
-              ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                                    formFieldName: "endDate",
-                                    id: "endDate",
-                                    label: "",
-                                    useTime: false
+                        </ul>
+                    </td>
+                     </tr>
+                  
+                     <tr>
+                      <td>
+                        ${ ui.message('openhmis.inventory.summary.endDate') }:
+                        <ul class="table-layout">
+                            <li>
+                                <span class="date">
+                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                      formFieldName: "endDate",
+                      id: "endDate",
+                      label: "",
+                      useTime: false
                                     
-                            ])}
-             </span>
-                        </li>
+])}
+                                </span>
+                            </li>
 
 
-                    </ul>
-                </td>
-            </table>
+                        </ul>
+                    </td>
+                     </tr>
+                       
+    <tr>
+                      <td>
+                        ${ ui.message('openhmis.inventory.department.name') }:
+                        <ul>
+                            <li>
+                                <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
+                                ng-options='department.name for department in departments track by department.uuid'>
+                            <option value="" selected="selected">Any</option>
+                            </select>
+                            </li>
 
-
-
+                        </ul>
+                    </td>
+                     </tr>
+                  
+                </table>
+            </fieldset>   
+             </form>
+           
 
             <br/><br/>
-            <table style="margin-bottom:5px;margin-bottom:5px;" class="manage-entities-table">
+            <table style="margin-bottom:5px;margin-bottom:5px;" class="manage-entities-table manage-stockOperations-table">
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
                         <th>${ui.message('openhmis.inventory.department.name')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
-                    
+                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
+                        <th>Stock Balance</th>
+
+
                     </tr>
                 </thead>
                 <tbody>
@@ -115,12 +113,15 @@
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">
+                    {{entity.totalQuantityReceived}}
+                </td>
+                <td ng-style="strikeThrough(entity.retired)">
                     {{entity.totalQuantityConsumed}}
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.totalQuantityReceived}}
+                    {{entity.stockBalance}}
                 </td>
-               
+
                 </tr>
                 </tbody>
             </table>

@@ -72,6 +72,7 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
+                         <th>${ui.message('openhmis.inventory.consumption.batchNumber')}</th>
                         <th>${ui.message('openhmis.inventory.department.name')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
@@ -82,6 +83,7 @@
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" ui-sref="edit({uuid: entity.uuid})">
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
+                <td ng-style="strikeThrough(entity.retired)">{{entity.batchNumber}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.wastage}}

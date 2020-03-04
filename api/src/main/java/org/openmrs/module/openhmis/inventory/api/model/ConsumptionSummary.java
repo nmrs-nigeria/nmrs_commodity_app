@@ -20,6 +20,15 @@ public class ConsumptionSummary extends BaseSerializableOpenmrsMetadata {
 	private Department department;
 	private String uuid;
 	private Integer consumptionSummaryId;
+	private Integer stockBalance;
+
+	public Integer getStockBalance() {
+		return stockBalance;
+	}
+
+	public void setStockBalance(Integer stockBalance) {
+		this.stockBalance = stockBalance;
+	}
 
 	public Integer getTotalQuantityReceived() {
 		return totalQuantityReceived;
