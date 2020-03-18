@@ -17,7 +17,7 @@
 
                         var fields = ["consumptionDate",
 					"item", "department",
-					"quantity", "wastage","batchNumber"
+					"quantity", "wastage","batchNumber","testPurpose"
 					];
 
 		//	return fields.concat(defaultFields);

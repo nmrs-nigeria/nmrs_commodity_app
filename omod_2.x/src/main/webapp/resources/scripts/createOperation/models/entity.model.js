@@ -27,7 +27,7 @@
 		extended.getModelFields = function() {
 			var fields = ["operationNumber", "instanceType",
 				"operationDate", "source", "destination", "institution",
-				"department", "items", "status", "patient"];
+				"department", "items", "status", "patient","disposedType","adjustmentType"];
 			return fields;
 		};
 

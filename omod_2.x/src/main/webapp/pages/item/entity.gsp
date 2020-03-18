@@ -92,15 +92,8 @@
                 <input type="number" ng-model="entity.minimumQuantity" class="minimized"/>
             </li>
         </ul>-->
-             <ul class="table-layout">
-            <li class="not-required">
-                <span>{{messageLabels['openhmis.inventory.item.packSize']}}</span>
-            </li>
-            <li>
-                <input type="text" ng-model="entity.packSize" class="minimized"/>               
-            </li>
-        </ul>
-           <ul class="table-layout">
+                
+                 <ul class="table-layout">
             <li class="not-required">
                 <span>{{messageLabels['openhmis.inventory.item.unitOfMeasure']}}</span>
             </li>
@@ -110,6 +103,16 @@
                     </select>
             </li>
         </ul>
+        
+             <ul class="table-layout">
+            <li class="not-required">
+                <span>{{messageLabels['openhmis.inventory.item.packSize']}}</span>
+            </li>
+            <li>
+                <input type="text" ng-model="entity.packSize" class="minimized"/>               
+            </li>
+        </ul>
+          
       
 <!--        <ul class="table-layout">
             <li class="not-required">

@@ -45,7 +45,7 @@
     <h1>${ui.message('openhmis.inventory.admin.create')}</h1>
     <form name="entityForm" class="entity-form create-operation-content" ng-class="{'submitted': submitted}">
         <fieldset class="content createOperation">
-            <div class="action-container" ng-show="(operationType.name === 'Adjustment' ||operationType.name === 'Ajuste') && sourceStockroom.name !== ' - Not Defined - '">
+<!--            <div class="action-container" ng-show="(operationType.name === 'Adjustment' ||operationType.name === 'Ajuste') && sourceStockroom.name !== ' - Not Defined - '">
                 <ul>
                     <h3>${ui.message('openhmis.inventory.operations.itemStockActions')}</h3>
                     <li>
@@ -61,7 +61,7 @@
                         <a ng-click="">${ui.message('openhmis.inventory.operations.adjustNearlyExpiredStocks')}</a>
                     </li>
                 </ul>
-            </div>
+            </div>-->
 
             <ul class="table-layout">
                 <li class="required" ng-show="!isOperationNumberGenerated">
@@ -129,6 +129,26 @@
                 <li>
                     <select ng-model="returnOperationType" class="form-control"
                             ng-options="returnOperationType for returnOperationType in returnOperationTypes">
+                    </select>
+                </li>
+            </ul>
+               <ul class="table-layout" ng-show="operationType.name === 'Adjustment'">
+                <li class="not-required">
+                    <span>${ui.message('openhmis.inventory.operations.adjustmentType')}</span>
+                </li>
+                <li>
+                    <select ng-model="adjustmentType" class="form-control"
+                            ng-options="adjustmentType for adjustmentType in adjustmentTypes">
+                    </select>
+                </li>
+            </ul>
+                  <ul class="table-layout" ng-show="operationType.name === 'Disposed'">
+                <li class="not-required">
+                    <span>${ui.message('openhmis.inventory.operations.disposedType')}</span>
+                </li>
+                <li>
+                    <select ng-model="adjustmentType" class="form-control"
+                            ng-options="disposedType for disposedType in disposedTypes">
                     </select>
                 </li>
             </ul>

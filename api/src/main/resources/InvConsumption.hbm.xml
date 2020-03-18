@@ -18,7 +18,8 @@
 		<property name="consumptionDate" type="java.util.Date" column="consumption_date" not-null="true" length="19" />
                 <property name="wastage" type="int" column="wastage" not-null="false" />
                  <property name="batchNumber" type="java.lang.String" column="batch_number" not-null="false" />
-                
+                <property name="testPurpose" type="java.lang.String" column="test_purpose" not-null="false" />
+                 
 		<!-- bi-directional many-to-one association to User -->
 		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />

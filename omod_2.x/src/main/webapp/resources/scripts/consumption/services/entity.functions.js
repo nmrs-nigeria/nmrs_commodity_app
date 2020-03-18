@@ -59,7 +59,9 @@
                     .message('openhmis.inventory.consumption.batchNumber');
             messages['openhmis.inventory.item.name'] =
                     emr.message('openhmis.inventory.item.name');
-
+            
+             messages['openhmis.inventory.consumption.testPurpose'] =
+                    emr.message('openhmis.inventory.consumption.testPurpose');
 
 
             messages['openhmis.inventory.stockroom.name'] = emr

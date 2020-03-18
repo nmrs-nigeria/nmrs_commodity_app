@@ -37,7 +37,7 @@
                     $scope.quantity = '';
                     $scope.wastage = '';
                     $scope.batchNumber = '';
-
+                      $scope.testPurposeTypes = ["Initial", "Confirmation"];
                     $scope.uuid = uuid;
                     $scope.currDate = '';
 

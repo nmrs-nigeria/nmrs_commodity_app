@@ -72,5 +72,7 @@ emr.loadMessages([
 	"openhmis.commons.general.required.itemAttribute",
 	"openhmis.inventory.operations.error.invalidItem",
 	"openhmis.inventory.operations.error.itemQuantity",
-	"openhmis.inventory.operations.error.itemError"
+	"openhmis.inventory.operations.error.itemError",
+        "openhmis.inventory.operations.disposedType",
+        "openhmis.inventory.operations.adjustmentType"
 ]);

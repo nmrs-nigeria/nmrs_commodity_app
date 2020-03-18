@@ -46,7 +46,7 @@
                 $scope.itemCode = {};
 
                 //added by Morris
-                $scope.unitOfMeasureTypes = ["tabs", "pack","btls","caps","dose","vitals","tubes","satchet"];
+                $scope.unitOfMeasureTypes = ["tabs", "pack","btls","caps","dose","vitals","tubes","satchet","test"];
 
                 $scope.uuid = uuid;
                 $scope.itemStock = '';

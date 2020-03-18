@@ -98,6 +98,9 @@ public class StockOperationResource
 		description.addProperty("operationDate", Representation.DEFAULT);
 		description.addProperty("operationOrder", Representation.DEFAULT);
 		description.addProperty("cancelReason", Representation.DEFAULT);
+                description.addProperty("disposedType", Representation.DEFAULT);
+                description.addProperty("adjustmentType", Representation.DEFAULT);
+                
 
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("source", Representation.REF);

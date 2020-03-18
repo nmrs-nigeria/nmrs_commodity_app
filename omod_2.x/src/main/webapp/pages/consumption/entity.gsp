@@ -93,6 +93,17 @@
             </li>
         </ul>
         
+          <ul class="table-layout">
+            <li class="required">
+                <span>{{messageLabels['openhmis.inventory.item.testPurpose']}}</span>
+            </li>
+            <li>
+                 <select ng-model="entity.testPurpose" class="form-control"
+                            ng-options="testPurpose for testPurpose in testPurposeTypes">
+                    </select>
+            </li>
+        </ul>
+        
 
 
 

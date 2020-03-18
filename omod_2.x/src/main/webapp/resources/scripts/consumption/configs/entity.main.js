@@ -42,6 +42,7 @@ emr.loadMessages([
         "openhmis.inventory.consumption.testingPoint",
         "openhmis.inventory.consumption.wastage",
         "openhmis.inventory.consumption.batchNumber",
+        "openhmis.inventory.consumption.testPurpose",
         
         
         "openhmis.commons.general.required.quantity",

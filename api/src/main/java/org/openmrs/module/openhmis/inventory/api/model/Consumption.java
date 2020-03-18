@@ -16,85 +16,96 @@ import org.openmrs.module.openhmis.commons.api.entity.model.ISimpleCustomizable;
  */
 public class Consumption extends BaseSerializableOpenmrsMetadata {
 
-	public static final long serialVersionUID = 1L;
+    public static final long serialVersionUID = 1L;
 
-	private Integer consumptionId;
-	private Department department;
-	private Item item;
-	private Date consumptionDate;
-	private Integer quantity;
-	private Integer wastage;
-	private String batchNumber;
+    private Integer consumptionId;
+    private Department department;
+    private Item item;
+    private Date consumptionDate;
+    private Integer quantity;
+    private Integer wastage;
+    private String batchNumber;
+    private String testPurpose;
 
-	public String getBatchNumber() {
-		return batchNumber;
-	}
+    
+    public String getTestPurpose() {
+        return testPurpose;
+    }
 
-	public void setBatchNumber(String batchNumber) {
-		this.batchNumber = batchNumber;
-	}
+    public void setTestPurpose(String testPurpose) {
+        this.testPurpose = testPurpose;
+    }
 
-	public Consumption(Integer consumptionId) {
-		this.consumptionId = consumptionId;
-	}
+    public String getBatchNumber() {
+        return batchNumber;
+    }
 
-	public Consumption() {}
+    public void setBatchNumber(String batchNumber) {
+        this.batchNumber = batchNumber;
+    }
 
-	//private String testType;
-	public Integer getWastage() {
-		return wastage;
-	}
+    public Consumption(Integer consumptionId) {
+        this.consumptionId = consumptionId;
+    }
 
-	public void setWastage(Integer wastage) {
-		this.wastage = wastage;
-	}
+    public Consumption() {
+    }
 
-	public Department getDepartment() {
-		return department;
-	}
+    //private String testType;
+    public Integer getWastage() {
+        return wastage;
+    }
 
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+    public void setWastage(Integer wastage) {
+        this.wastage = wastage;
+    }
 
-	public Item getItem() {
-		return item;
-	}
+    public Department getDepartment() {
+        return department;
+    }
 
-	public void setItem(Item item) {
-		this.item = item;
-	}
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
 
-	public Date getConsumptionDate() {
-		return consumptionDate;
-	}
+    public Item getItem() {
+        return item;
+    }
 
-	public void setConsumptionDate(Date consumptionDate) {
-		this.consumptionDate = consumptionDate;
-	}
+    public void setItem(Item item) {
+        this.item = item;
+    }
 
-	public Integer getQuantity() {
-		return quantity;
-	}
+    public Date getConsumptionDate() {
+        return consumptionDate;
+    }
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
+    public void setConsumptionDate(Date consumptionDate) {
+        this.consumptionDate = consumptionDate;
+    }
 
-	@Override
-	public Integer getId() {
-		return this.consumptionId;
-	}
+    public Integer getQuantity() {
+        return quantity;
+    }
 
-	@Override
-	public void setId(Integer intgr) {
-		this.consumptionId = intgr;
-	}
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 
-	@Override
-	@JsonIgnore
-	public Boolean getRetired() {
-		return super.getRetired();
-	}
+    @Override
+    public Integer getId() {
+        return this.consumptionId;
+    }
+
+    @Override
+    public void setId(Integer intgr) {
+        this.consumptionId = intgr;
+    }
+
+    @Override
+    @JsonIgnore
+    public Boolean getRetired() {
+        return super.getRetired();
+    }
 
 }
