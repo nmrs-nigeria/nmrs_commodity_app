@@ -61,7 +61,7 @@ public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 		description.addProperty("quantity");
 		description.addProperty("wastage");
 		description.addProperty("batchNumber");
-                description.addProperty("testPurpose");
+		description.addProperty("testPurpose");
 
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("creator", Representation.DEFAULT);

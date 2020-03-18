@@ -1448,14 +1448,155 @@
             </column>
 			
         </addColumn>
+        
+        <dropNotNullConstraint 
+            columnDataType="int"
+            columnName="department_id"
+            tableName="inv_item"/>
             
     </changeSet>
-        
-        
-        
-        
-        
     
+     <changeSet id="openhmis.inventory-v1.8.4-0" author="Morrison Idiasirue" >
+            
+   <insert tableName="inv_department">
+			<column name="name">VCT</column>
+			<column name="description">Voluntary Counseling and Testing</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">1f2ac9f2-d2db-4933-b04d-0b85455a141b</column>
+		</insert>
+		
+		   <insert tableName="inv_department">
+			<column name="name">Mob</column>
+			<column name="description">Mobile-Facility</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">57c54916-668c-41bf-a089-5257fdb358a3</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">Com</column>
+			<column name="description">Communiy</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">63dfb487-4410-43fa-9ef5-1d98937b0828</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">Emerg</column>
+			<column name="description">Emergency</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">bc5efa90-30f6-4e2c-89c1-d0fdae4cddea</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">OPD</column>
+			<column name="description">Outpatient</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">a5e899da-27c8-47a3-9ea6-5c0df9dee87d</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">In-Pat</column>
+			<column name="description">Inpatient</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">e0add9d4-24c5-447d-b9b5-39c30f3f93f2</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">Mal</column>
+			<column name="description">Malnutrition</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">e2b1f92a-5af3-411a-b114-c9b310cb9f8c</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">Paed</column>
+			<column name="description">Paediatrics Clinic</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">759f4329-6420-4cf6-b65c-ee8ea0cd5e37</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">ANC</column>
+			<column name="description">Antenatal Clinic</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">9a0a3f68-d3cc-4319-8b11-2f0af9a13493</column>
+		</insert>
+		
+				<insert tableName="inv_department">
+			<column name="name">L-and-D</column>
+			<column name="description">Labour and Delivery Ward</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">3816323a-bbfa-4cbf-ae29-1397ad0f6c62</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">PP</column>
+			<column name="description">Post Partum Clinic</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">53dcc49a-89ca-4076-8507-3f43a345cf1e</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">STI</column>
+			<column name="description">Sexually Transmitted Infecion Clinic</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">1952ff56-a3dc-40cb-954a-c05810259b03</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">FP</column>
+			<column name="description">Family Planning</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">bc22078e-c5be-4cdb-ad9f-17376a6fe9f4</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">TB</column>
+			<column name="description">Tuberculosis/DOT Unit</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">7d4b8a26-9cf8-4d7a-8767-aaac21aca521</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">OSS</column>
+			<column name="description">Key Population One Stop Shop</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">34b14c5c-2824-4d70-9637-9d5792dd700e</column>
+		</insert>
+		
+		<insert tableName="inv_department">
+			<column name="name">Lab</column>
+			<column name="description">Laboratory</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">8eb2330d-7970-41b7-8240-b07d4534c923</column>
+		</insert>
+		
+			<insert tableName="inv_department">
+			<column name="name">Oth</column>
+			<column name="description">Others</column>
+			<column name="creator">1</column>
+			<column name="date_created">2020-03-16</column>
+			<column name="uuid">43dd09f9-2773-4f67-b694-0b37d66db406</column>
+		</insert>
+		
+            
+        </changeSet>
+		
         
-      
+           
 </databaseChangeLog>

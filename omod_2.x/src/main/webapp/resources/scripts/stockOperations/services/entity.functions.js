@@ -13,7 +13,7 @@
  *
  */
 
-(function() {
+(function () {
     'use strict';
 
     var app = angular.module('app.stockOperationFunctionsFactory', []);
@@ -31,11 +31,11 @@
 
         return service;
 
-        function showOperationActionsDialog(selectorId){
+        function showOperationActionsDialog(selectorId) {
             var dialog = emr.setupConfirmationDialog({
                 selector: '#' + selectorId,
                 actions: {
-                    cancel: function(){
+                    cancel: function () {
                         dialog.close();
                     }
                 }
@@ -50,7 +50,7 @@
          * All message labels used in the UI are defined here
          * @returns {{}}
          */
-        function addMessageLabels(){
+        function addMessageLabels() {
             var messages = {};
             messages['openhmis.inventory.stockroom.details'] = emr.message('openhmis.inventory.stockroom.details');
             messages['openhmis.inventory.stockroom.transactions'] = emr.message('openhmis.inventory.stockroom.transactions');
@@ -90,6 +90,9 @@
             messages['openhmis.commons.general.close'] = emr.message('openhmis.commons.general.close');
             messages['openhmis.commons.general.auto'] = emr.message('openhmis.commons.general.auto');
             messages['openhmis.commons.general.cancelReason'] = emr.message('openhmis.commons.general.cancelReason');
+            messages['openhmis.inventory.operations.disposedType'] = emr.message('openhmis.inventory.operations.disposedType');
+            messages['openhmis.inventory.operations.adjustmentType'] = emr.message('openhmis.inventory.operations.adjustmentType');
+
 
             return messages;
         }

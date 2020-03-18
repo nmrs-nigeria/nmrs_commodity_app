@@ -95,7 +95,7 @@
         
           <ul class="table-layout">
             <li class="required">
-                <span>{{messageLabels['openhmis.inventory.item.testPurpose']}}</span>
+                <span>{{messageLabels['openhmis.inventory.consumption.testPurpose']}}</span>
             </li>
             <li>
                  <select ng-model="entity.testPurpose" class="form-control"
