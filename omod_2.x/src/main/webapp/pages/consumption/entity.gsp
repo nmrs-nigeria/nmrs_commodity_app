@@ -40,7 +40,7 @@
                                     id: "consumptionDate",
                                     label: "",
                                     useTime: false,
-                                    startDate: new Date(),
+                                   
                             ])}
              </span>
                 </li>

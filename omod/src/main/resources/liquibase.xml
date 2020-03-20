@@ -564,222 +564,222 @@
         </createIndex>
 
         <addForeignKeyConstraint constraintName="inv_item_creator_fk"
-                                         baseTableName="inv_item" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"
-                                         deferrable="false" initiallyDeferred="false" />
+                                 baseTableName="inv_item" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
         <addForeignKeyConstraint constraintName="inv_item_changed_by_fk"
-                                         baseTableName="inv_item" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"
-                                         deferrable="false" initiallyDeferred="false" />
+                                 baseTableName="inv_item" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
         <addForeignKeyConstraint constraintName="inv_item_retired_by_fk"
-                                         baseTableName="inv_item" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"
-                                         deferrable="false" initiallyDeferred="false" />
+                                 baseTableName="inv_item" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"
+                                 deferrable="false" initiallyDeferred="false" />
         <addForeignKeyConstraint constraintName="inv_item_department_fk"
-                                         baseTableName="inv_item" baseColumnNames="department_id"
-                                         referencedTableName="inv_department" referencedColumnNames="department_id"
-                                         deferrable="false" initiallyDeferred="false" />
+                                 baseTableName="inv_item" baseColumnNames="department_id"
+                                 referencedTableName="inv_department" referencedColumnNames="department_id"
+                                 deferrable="false" initiallyDeferred="false" />
         <addForeignKeyConstraint constraintName="inv_item_category_fk"
-                                         baseTableName="inv_item" baseColumnNames="category_id"
-                                         referencedTableName="inv_category" referencedColumnNames="category_id"
-                                         deferrable="false" initiallyDeferred="false" />
+                                 baseTableName="inv_item" baseColumnNames="category_id"
+                                 referencedTableName="inv_category" referencedColumnNames="category_id"
+                                 deferrable="false" initiallyDeferred="false" />
         <addForeignKeyConstraint constraintName="inv_item_concept_id_fk"
-                                         baseTableName="inv_item" baseColumnNames="concept_id"
-                                         referencedTableName="concept" referencedColumnNames="concept_id"/>
+                                 baseTableName="inv_item" baseColumnNames="concept_id"
+                                 referencedTableName="concept" referencedColumnNames="concept_id"/>
         <addForeignKeyConstraint constraintName="inv_item_drug_id_fk"
-                                         baseTableName="inv_item" baseColumnNames="drug_id"
-                                         referencedTableName="drug" referencedColumnNames="drug_id"/>
+                                 baseTableName="inv_item" baseColumnNames="drug_id"
+                                 referencedTableName="drug" referencedColumnNames="drug_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_attribute_type_creator_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_type_changed_by_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_type_retired_by_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_attribute_attribute_type_id_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="item_attribute_type_id"
-                                         referencedTableName="inv_item_attribute_type" referencedColumnNames="item_attribute_type_id" />
+                                 baseTableName="inv_item_attribute" baseColumnNames="item_attribute_type_id"
+                                 referencedTableName="inv_item_attribute_type" referencedColumnNames="item_attribute_type_id" />
         <addForeignKeyConstraint constraintName="inv_item_attribute_item_id_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"
-                                         onDelete="CASCADE" onUpdate="CASCADE"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_creator_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_changed_by_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_voided_by_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="voided_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="voided_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_price_item_id_fk"
-                                         baseTableName="inv_item_price" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"
-                                         onDelete="CASCADE" onUpdate="CASCADE"/>
+                                 baseTableName="inv_item_price" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="inv_item_price_creator_fk"
-                                         baseTableName="inv_item_price" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_price" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_price_changed_by_fk"
-                                         baseTableName="inv_item_price" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_price" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_price_retired_by_fk"
-                                         baseTableName="inv_item_price" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_price" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_code_item_id_fk"
-                                         baseTableName="inv_item_code" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"
-                                         onDelete="CASCADE" onUpdate="CASCADE" />
+                                 baseTableName="inv_item_code" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE" />
         <addForeignKeyConstraint constraintName="inv_item_code_creator_fk"
-                                         baseTableName="inv_item_code" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_code" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_code_changed_by_fk"
-                                         baseTableName="inv_item_code" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_code" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_code_retired_by_fk"
-                                         baseTableName="inv_item_code" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_code" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_department_creator_fk"
-                                         baseTableName="inv_department" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_department" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_department_changed_by_fk"
-                                         baseTableName="inv_department" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_department" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_department_retired_by_fk"
-                                         baseTableName="inv_department" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_department" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_category_creator_fk"
-                                         baseTableName="inv_category" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_category" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_category_changed_by_fk"
-                                         baseTableName="inv_category" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_category" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_category_retired_by_fk"
-                                         baseTableName="inv_category" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_category" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_category_parent_fk"
-                                         baseTableName="inv_category" baseColumnNames="parent_id"
-                                         referencedTableName="inv_category" referencedColumnNames="category_id"
-                                         onDelete="CASCADE" onUpdate="CASCADE"/>
+                                 baseTableName="inv_category" baseColumnNames="parent_id"
+                                 referencedTableName="inv_category" referencedColumnNames="category_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
 
         <addForeignKeyConstraint constraintName="inv_stockroom_location_fk"
-                                         baseTableName="inv_stockroom" baseColumnNames="location_id"
-                                         referencedTableName="location" referencedColumnNames="location_id"/>
+                                 baseTableName="inv_stockroom" baseColumnNames="location_id"
+                                 referencedTableName="location" referencedColumnNames="location_id"/>
         <addForeignKeyConstraint constraintName="inv_stockroom_creator_fk"
-                                         baseTableName="inv_stockroom" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stockroom" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stockroom_changed_by_fk"
-                                         baseTableName="inv_stockroom" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stockroom" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stockroom_retired_by_fk"
-                                         baseTableName="inv_stockroom" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stockroom" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_stockroom_item_stockroom_fk"
-                                         baseTableName="inv_stockroom_item" baseColumnNames="stockroom_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_stockroom_item" baseColumnNames="stockroom_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_stockroom_item_item_fk"
-                                         baseTableName="inv_stockroom_item" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_stockroom_item" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
         <addForeignKeyConstraint constraintName="inv_stockroom_item_batch_operation_fk"
-                                         baseTableName="inv_stockroom_item" baseColumnNames="batch_operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_stockroom_item" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
 
         <addForeignKeyConstraint constraintName="inv_stock_operation_operation_type_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="operation_type_id"
-                                         referencedTableName="inv_stock_operation_type" referencedColumnNames="stock_operation_type_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="operation_type_id"
+                                 referencedTableName="inv_stock_operation_type" referencedColumnNames="stock_operation_type_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_source_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="source_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="source_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_destination_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="destination_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="destination_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_recipient_id_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="recipient_id"
-                                         referencedTableName="inv_recipient" referencedColumnNames="recipient_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="recipient_id"
+                                 referencedTableName="inv_recipient" referencedColumnNames="recipient_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_creator_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_changed_by_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_retired_by_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_reserved_transaction_operation_fk"
-                                         baseTableName="inv_reserved_transaction" baseColumnNames="operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_reserved_transaction" baseColumnNames="operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
         <addForeignKeyConstraint constraintName="inv_reserved_transaction_item_fk"
-                                         baseTableName="inv_reserved_transaction" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_reserved_transaction" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
         <addForeignKeyConstraint constraintName="inv_reserved_transaction_creator_fk"
-                                         baseTableName="inv_reserved_transaction" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_reserved_transaction" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_transaction_operation_fk"
-                                         baseTableName="inv_transaction" baseColumnNames="operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_transaction" baseColumnNames="operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
         <addForeignKeyConstraint constraintName="inv_transaction_item_fk"
-                                         baseTableName="inv_transaction" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_transaction" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
         <addForeignKeyConstraint constraintName="inv_transaction_creator_fk"
-                                         baseTableName="inv_transaction" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_transaction" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_stock_operation_type_creator_fk"
-                                         baseTableName="inv_stock_operation_type" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_type" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_type_changed_by_fk"
-                                         baseTableName="inv_stock_operation_type" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_type" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_type_retired_by_fk"
-                                         baseTableName="inv_stock_operation_type" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_type" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_type_user_id_fk"
-                                         baseTableName="inv_stock_operation_type" baseColumnNames="user_id"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_type" baseColumnNames="user_id"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_type_role_fk"
-                                         baseTableName="inv_stock_operation_type" baseColumnNames="role"
-                                         referencedTableName="role" referencedColumnNames="role"/>
+                                 baseTableName="inv_stock_operation_type" baseColumnNames="role"
+                                 referencedTableName="role" referencedColumnNames="role"/>
 
         <addForeignKeyConstraint constraintName="inv_st_op_attr_type_operation_type_fk"
-                                         baseTableName="inv_stock_operation_attribute_type" baseColumnNames="operation_type_id"
-                                         referencedTableName="inv_stock_operation_type" referencedColumnNames="stock_operation_type_id"/>
+                                 baseTableName="inv_stock_operation_attribute_type" baseColumnNames="operation_type_id"
+                                 referencedTableName="inv_stock_operation_type" referencedColumnNames="stock_operation_type_id"/>
         <addForeignKeyConstraint constraintName="inv_st_op_attr_type_creator_fk"
-                                         baseTableName="inv_stock_operation_attribute_type" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_attribute_type" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_st_op_attr_type_changed_by_fk"
-                                         baseTableName="inv_stock_operation_attribute_type" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_attribute_type" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_st_op_attr_type_retired_by_fk"
-                                         baseTableName="inv_stock_operation_attribute_type" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_stock_operation_attribute_type" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_stock_operation_attribute_operation_fk"
-                                         baseTableName="inv_stock_operation_attribute" baseColumnNames="operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_stock_operation_attribute" baseColumnNames="operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_attribute_attribute_type_fk"
-                                         baseTableName="inv_stock_operation_attribute" baseColumnNames="attribute_type_id"
-                                         referencedTableName="inv_stock_operation_attribute_type" referencedColumnNames="stock_operation_attribute_type_id"/>
+                                 baseTableName="inv_stock_operation_attribute" baseColumnNames="attribute_type_id"
+                                 referencedTableName="inv_stock_operation_attribute_type" referencedColumnNames="stock_operation_attribute_type_id"/>
 
         <addForeignKeyConstraint constraintName="inv_stock_operations_stockroom_fk"
-                                         baseTableName="inv_stockroom_operations" baseColumnNames="stockroom_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_stockroom_operations" baseColumnNames="stockroom_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operations_operation_fk"
-                                         baseTableName="inv_stockroom_operations" baseColumnNames="operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_stockroom_operations" baseColumnNames="operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
 
         <addForeignKeyConstraint constraintName="inv_institution_creator_fk"
-                                         baseTableName="inv_institution" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_institution" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_institution_changed_by_fk"
                                  baseTableName="inv_institution" baseColumnNames="changed_by"
                                  referencedTableName="users" referencedColumnNames="user_id"/>
@@ -931,21 +931,21 @@
         </createIndex>
 
         <addForeignKeyConstraint constraintName="inv_item_stock_stockroom_fk"
-                                         baseTableName="inv_item_stock" baseColumnNames="stockroom_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_item_stock" baseColumnNames="stockroom_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_item_stock_item_fk"
-                                         baseTableName="inv_item_stock" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_item_stock" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_stock_detail_stockroom_fk"
-                                         baseTableName="inv_item_stock" baseColumnNames="stockroom_id"
-                                         referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
+                                 baseTableName="inv_item_stock" baseColumnNames="stockroom_id"
+                                 referencedTableName="inv_stockroom" referencedColumnNames="stockroom_id"/>
         <addForeignKeyConstraint constraintName="inv_item_stock_detail_item_fk"
-                                         baseTableName="inv_item_stock_detail" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_item_stock_detail" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
         <addForeignKeyConstraint constraintName="inv_item_stock_detail_batch_fk"
-                                         baseTableName="inv_item_stock_detail" baseColumnNames="batch_operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_item_stock_detail" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
 
         <dropTable tableName="inv_stockroom_item" />
 
@@ -957,11 +957,11 @@
         </addColumn>
 
         <addForeignKeyConstraint constraintName="inv_transaction_batch_fk"
-                                         baseTableName="inv_transaction" baseColumnNames="batch_operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_transaction" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
         <addForeignKeyConstraint constraintName="inv_reserved_transaction_fk"
-                                         baseTableName="inv_reserved_transaction" baseColumnNames="batch_operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_reserved_transaction" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
     </changeSet>
     <changeSet id="openhmis.inventory-1.0.0-3" author="ibewes">
         <addColumn tableName="inv_transaction">
@@ -995,11 +995,11 @@
         </addColumn>
 
         <renameColumn tableName="inv_item_stock_detail"
-                              oldColumnName="stock_item_id" newColumnName="item_stock_id" columnDataType="int" />
+                      oldColumnName="stock_item_id" newColumnName="item_stock_id" columnDataType="int" />
 
         <addForeignKeyConstraint constraintName="inv_item_stock_detail_item_stock_fk"
-                                         baseTableName="inv_item_stock_detail" baseColumnNames="item_stock_id"
-                                         referencedTableName="inv_item_stock" referencedColumnNames="item_stock_id"/>
+                                 baseTableName="inv_item_stock_detail" baseColumnNames="item_stock_id"
+                                 referencedTableName="inv_item_stock" referencedColumnNames="item_stock_id"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.0.0-5" author="marios">
         <addColumn tableName="inv_item">
@@ -1088,14 +1088,14 @@
         </createTable>
 
         <addForeignKeyConstraint constraintName="inv_stock_operation_item_stock_op_fk"
-                                         baseTableName="inv_stock_operation_item" baseColumnNames="operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_stock_operation_item" baseColumnNames="operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_item_item_fk"
-                                         baseTableName="inv_stock_operation_item" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"/>
+                                 baseTableName="inv_stock_operation_item" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
         <addForeignKeyConstraint constraintName="inv_stock_operation_item_batch_fk"
-                                         baseTableName="inv_stock_operation_item" baseColumnNames="batch_operation_id"
-                                         referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
+                                 baseTableName="inv_stock_operation_item" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_stock_operation" referencedColumnNames="stock_operation_id"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.0.0-11" author="marios">
         <addNotNullConstraint
@@ -1111,8 +1111,8 @@
         </addColumn>
 
         <addForeignKeyConstraint constraintName="inv_stock_operation_department_fk"
-                                         baseTableName="inv_stock_operation" baseColumnNames="department_id"
-                                         referencedTableName="inv_department" referencedColumnNames="department_id"/>
+                                 baseTableName="inv_stock_operation" baseColumnNames="department_id"
+                                 referencedTableName="inv_department" referencedColumnNames="department_id"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.2.0-2" author="ibewes">
         <addColumn tableName="inv_item">
@@ -1246,22 +1246,22 @@
         </createTable>
 
         <addForeignKeyConstraint constraintName="inv_item_attribute_type_creator_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="creator"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="creator"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_type_changed_by_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="changed_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="changed_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
         <addForeignKeyConstraint constraintName="cinv_item_attribute_type_retired_by_fk"
-                                         baseTableName="inv_item_attribute_type" baseColumnNames="retired_by"
-                                         referencedTableName="users" referencedColumnNames="user_id"/>
+                                 baseTableName="inv_item_attribute_type" baseColumnNames="retired_by"
+                                 referencedTableName="users" referencedColumnNames="user_id"/>
 
         <addForeignKeyConstraint constraintName="inv_item_attribute_item_id_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="item_id"
-                                         referencedTableName="inv_item" referencedColumnNames="item_id"
-                                         onDelete="CASCADE" onUpdate="CASCADE"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
         <addForeignKeyConstraint constraintName="inv_item_attribute_inv_item_attribute_type_id_fk"
-                                         baseTableName="inv_item_attribute" baseColumnNames="item_attribute_type_id"
-                                         referencedTableName="inv_item_attribute_type" referencedColumnNames="item_attribute_type_id"/>
+                                 baseTableName="inv_item_attribute" baseColumnNames="item_attribute_type_id"
+                                 referencedTableName="inv_item_attribute_type" referencedColumnNames="item_attribute_type_id"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.5.0-4" author="ibewes">
         <comment>
@@ -1390,13 +1390,13 @@
         </createTable> 
           
         <addForeignKeyConstraint constraintName="inv_consumption_department_fk"
-                                   baseTableName="inv_consumption" baseColumnNames="department_id"
-                                   referencedTableName="inv_department" referencedColumnNames="department_id"/>
+                                 baseTableName="inv_consumption" baseColumnNames="department_id"
+                                 referencedTableName="inv_department" referencedColumnNames="department_id"/>
           
         <addForeignKeyConstraint constraintName="inv_consumption_item_id_fk"
-                                   baseTableName="inv_consumption" baseColumnNames="item_id"
-                                   referencedTableName="inv_item" referencedColumnNames="item_id"
-                                   onDelete="CASCADE" onUpdate="CASCADE"/>
+                                 baseTableName="inv_consumption" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"
+                                 onDelete="CASCADE" onUpdate="CASCADE"/>
           
         <addColumn tableName="inv_item">
             <column name="unit_of_measure" type="varchar(255)"  />
@@ -1456,147 +1456,251 @@
             
     </changeSet>
     
-     <changeSet id="openhmis.inventory-v1.8.4-0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.4-0" author="Morrison Idiasirue" >
             
-   <insert tableName="inv_department">
-			<column name="name">VCT</column>
-			<column name="description">Voluntary Counseling and Testing</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">1f2ac9f2-d2db-4933-b04d-0b85455a141b</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">VCT</column>
+            <column name="description">Voluntary Counseling and Testing</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">1f2ac9f2-d2db-4933-b04d-0b85455a141b</column>
+        </insert>
 		
-		   <insert tableName="inv_department">
-			<column name="name">Mob</column>
-			<column name="description">Mobile-Facility</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">57c54916-668c-41bf-a089-5257fdb358a3</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Mob</column>
+            <column name="description">Mobile-Facility</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">57c54916-668c-41bf-a089-5257fdb358a3</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">Com</column>
-			<column name="description">Communiy</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">63dfb487-4410-43fa-9ef5-1d98937b0828</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Com</column>
+            <column name="description">Communiy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">63dfb487-4410-43fa-9ef5-1d98937b0828</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">Emerg</column>
-			<column name="description">Emergency</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">bc5efa90-30f6-4e2c-89c1-d0fdae4cddea</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Emerg</column>
+            <column name="description">Emergency</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">bc5efa90-30f6-4e2c-89c1-d0fdae4cddea</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">OPD</column>
-			<column name="description">Outpatient</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">a5e899da-27c8-47a3-9ea6-5c0df9dee87d</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">OPD</column>
+            <column name="description">Outpatient</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">a5e899da-27c8-47a3-9ea6-5c0df9dee87d</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">In-Pat</column>
-			<column name="description">Inpatient</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">e0add9d4-24c5-447d-b9b5-39c30f3f93f2</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">In-Pat</column>
+            <column name="description">Inpatient</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">e0add9d4-24c5-447d-b9b5-39c30f3f93f2</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">Mal</column>
-			<column name="description">Malnutrition</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">e2b1f92a-5af3-411a-b114-c9b310cb9f8c</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Mal</column>
+            <column name="description">Malnutrition</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">e2b1f92a-5af3-411a-b114-c9b310cb9f8c</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">Paed</column>
-			<column name="description">Paediatrics Clinic</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">759f4329-6420-4cf6-b65c-ee8ea0cd5e37</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Paed</column>
+            <column name="description">Paediatrics Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">759f4329-6420-4cf6-b65c-ee8ea0cd5e37</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">ANC</column>
-			<column name="description">Antenatal Clinic</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">9a0a3f68-d3cc-4319-8b11-2f0af9a13493</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">ANC</column>
+            <column name="description">Antenatal Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">9a0a3f68-d3cc-4319-8b11-2f0af9a13493</column>
+        </insert>
 		
-				<insert tableName="inv_department">
-			<column name="name">L-and-D</column>
-			<column name="description">Labour and Delivery Ward</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">3816323a-bbfa-4cbf-ae29-1397ad0f6c62</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">L-and-D</column>
+            <column name="description">Labour and Delivery Ward</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">3816323a-bbfa-4cbf-ae29-1397ad0f6c62</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">PP</column>
-			<column name="description">Post Partum Clinic</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">53dcc49a-89ca-4076-8507-3f43a345cf1e</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">PP</column>
+            <column name="description">Post Partum Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">53dcc49a-89ca-4076-8507-3f43a345cf1e</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">STI</column>
-			<column name="description">Sexually Transmitted Infecion Clinic</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">1952ff56-a3dc-40cb-954a-c05810259b03</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">STI</column>
+            <column name="description">Sexually Transmitted Infecion Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">1952ff56-a3dc-40cb-954a-c05810259b03</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">FP</column>
-			<column name="description">Family Planning</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">bc22078e-c5be-4cdb-ad9f-17376a6fe9f4</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">FP</column>
+            <column name="description">Family Planning</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">bc22078e-c5be-4cdb-ad9f-17376a6fe9f4</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">TB</column>
-			<column name="description">Tuberculosis/DOT Unit</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">7d4b8a26-9cf8-4d7a-8767-aaac21aca521</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">TB</column>
+            <column name="description">Tuberculosis/DOT Unit</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">7d4b8a26-9cf8-4d7a-8767-aaac21aca521</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">OSS</column>
-			<column name="description">Key Population One Stop Shop</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">34b14c5c-2824-4d70-9637-9d5792dd700e</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">OSS</column>
+            <column name="description">Key Population One Stop Shop</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">34b14c5c-2824-4d70-9637-9d5792dd700e</column>
+        </insert>
 		
-		<insert tableName="inv_department">
-			<column name="name">Lab</column>
-			<column name="description">Laboratory</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">8eb2330d-7970-41b7-8240-b07d4534c923</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Lab</column>
+            <column name="description">Laboratory</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">8eb2330d-7970-41b7-8240-b07d4534c923</column>
+        </insert>
 		
-			<insert tableName="inv_department">
-			<column name="name">Oth</column>
-			<column name="description">Others</column>
-			<column name="creator">1</column>
-			<column name="date_created">2020-03-16</column>
-			<column name="uuid">43dd09f9-2773-4f67-b694-0b37d66db406</column>
-		</insert>
+        <insert tableName="inv_department">
+            <column name="name">Oth</column>
+            <column name="description">Others</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-16</column>
+            <column name="uuid">43dd09f9-2773-4f67-b694-0b37d66db406</column>
+        </insert>
 		
             
-        </changeSet>
+    </changeSet>
+        
+        
+    <changeSet id="openhmis.inventory-v1.8.5-0" author="Morrison Idiasirue" >
+		 
+        <insert tableName="inv_item">
+            <column name="name">Determine(100)</column>
+            <column name="description">Determine for 100 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">100</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">06d5326c-b994-4d2f-a57a-4fe8755dc1a3</column>
+        </insert>
 		
+        <insert tableName="inv_item">
+            <column name="name">Uni-Gold(20)</column>
+            <column name="description">Uni-Gold for 20 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">20</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">7559842c-0599-429d-90b5-e5935d0cd720</column>
+        </insert>
+		
+        <insert tableName="inv_item">
+            <column name="name">Stat-Pak(20)</column>
+            <column name="description">Stat-Pak for 20 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">20</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">db9484ff-a255-4e19-aee2-1b29fb69153b</column>
+        </insert>
+		
+        <insert tableName="inv_item">
+            <column name="name">Alere HIV Combo(100)</column>
+            <column name="description">Alere HIV Combo for 100 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">100</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">5f261815-f35c-4d34-914b-696a7b7f5eac</column>
+        </insert>
+		
+        <insert tableName="inv_item">
+            <column name="name">Insti HIV 1/2(24)</column>
+            <column name="description">Insti HIV 1/2 for 24 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">24</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">cc97ad9f-efae-4fc3-81d6-a7813a2ec8fa</column>
+        </insert>
+		
+        <insert tableName="inv_item">
+            <column name="name">Oraquick HIV Self Test(50)</column>
+            <column name="description">Oraquick HIV Self Test for 50 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">50</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">ac0226fa-6752-4fe5-8a27-3da7ec78012d</column>
+        </insert>
+		
+        <insert tableName="inv_item">
+            <column name="name">Omega Visitect CD4 RTK(25)</column>
+            <column name="description">Omega Visitect CD4 RTK for 25 test per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">25</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-03-20</column>
+            <column name="uuid">41e9f6dd-5286-4961-8fcc-edf9a78e1467</column>
+        </insert>
+		
+		
+    </changeSet>
+		
+    <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
+        <comment>
+            create a default stock room called main stock room
+        </comment>
+          <sql><![CDATA[
+			select @locationIDVar:=location_id from location limit 0,1;
+		]]></sql>
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
+                    VALUES('Main Stockroom', 'Main Stock room in the Facility', @locationIDVar, 1, NOW(), '2741bae2-c5de-43ef-891f-7ec2fd58f442');
+		]]></sql>
+                
+    </changeSet>
+	
         
            
 </databaseChangeLog>

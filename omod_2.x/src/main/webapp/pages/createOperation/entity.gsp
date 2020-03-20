@@ -13,11 +13,8 @@
             label: "${ ui.message("openhmis.inventory.admin.create")}",
         },
     ];
-
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
-
     jQuery(".tabs").tabs();
-
     jQuery(function() {
         jQuery('body').on('focus', ".date", function(){
             jQuery(this).datetimepicker({
@@ -30,7 +27,6 @@
             });
         });
     });
-
 </script>
 
 <div ng-show="loading" class="loading-msg">
