@@ -80,6 +80,6 @@ emr.loadMessages([
     "openhmis.commons.general.cancelReason",
     "openhmis.commons.general.postSearchMessage",
     "openhmis.commons.general.status",
-    "openhmis.inventory.operations.adjustmentType",
+    "openhmis.inventory.operations.adjustmentKind",
     "openhmis.inventory.operations.disposedType"
 ]);

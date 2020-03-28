@@ -91,7 +91,7 @@
             messages['openhmis.commons.general.auto'] = emr.message('openhmis.commons.general.auto');
             messages['openhmis.commons.general.cancelReason'] = emr.message('openhmis.commons.general.cancelReason');
             messages['openhmis.inventory.operations.disposedType'] = emr.message('openhmis.inventory.operations.disposedType');
-            messages['openhmis.inventory.operations.adjustmentType'] = emr.message('openhmis.inventory.operations.adjustmentType');
+            messages['openhmis.inventory.operations.adjustmentKind'] = emr.message('openhmis.inventory.operations.adjustmentKind');
 
 
             return messages;

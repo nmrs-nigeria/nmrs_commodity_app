@@ -130,11 +130,11 @@
             </ul>
                <ul class="table-layout" ng-show="operationType.name === 'Adjustment'">
                 <li class="not-required">
-                    <span>${ui.message('openhmis.inventory.operations.adjustmentType')}</span>
+                    <span>${ui.message('openhmis.inventory.operations.adjustmentKind')}</span>
                 </li>
                 <li>
-                    <select ng-model="adjustmentType" class="form-control"
-                            ng-options="adjustmentType for adjustmentType in adjustmentTypes">
+                    <select ng-model="adjustmentKind" class="form-control"
+                            ng-options="adjustmentKind for adjustmentKind in adjustmentKinds">
                     </select>
                 </li>
             </ul>
@@ -143,7 +143,7 @@
                     <span>${ui.message('openhmis.inventory.operations.disposedType')}</span>
                 </li>
                 <li>
-                    <select ng-model="adjustmentType" class="form-control"
+                    <select ng-model="disposedType" class="form-control"
                             ng-options="disposedType for disposedType in disposedTypes">
                     </select>
                 </li>
@@ -193,6 +193,30 @@
                     </select>
                 </li>
             </ul>
+            
+             <ul class="table-layout" ng-show="(operationType.name === 'Transfer')">
+                <li class="not-required">
+                    <span>Transfer To</span>
+                </li>
+                <li>
+                    <select ng-model="transferType" class="form-control"
+                            ng-options="transferType for transferType in transferTypes">
+                    </select>
+                </li>
+            </ul>
+            
+              <ul class="table-layout"
+                ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+                <li class="required">
+                    <span>${ui.message('openhmis.inventory.institution.name')}</span>
+                </li>
+                <li>
+                    <select ng-model="institutionStockroom" required class="form-control"
+                            ng-options='institution.name for institution in institutions track by institution.uuid'>
+                    </select>
+                </li>
+            </ul>
+            
             ${ui.includeFragment("openhmis.commons", "patientSearchFragment", [
                     showPatientDetails: "operationType.hasRecipient && selectedPatient !== '' && ((operationType.name === 'Distribution' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))",
                     showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && ((operationType.name === 'Distribution' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))"

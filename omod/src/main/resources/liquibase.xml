@@ -1440,7 +1440,7 @@
         </addColumn>
                 
         <addColumn tableName="inv_stock_operation">
-            <column name="adjustment_type" type="varchar(255)">
+            <column name="adjustment_kind" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
             <column name="disposed_type" type="varchar(255)">
@@ -1697,6 +1697,17 @@
         <sql><![CDATA[			
                     INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
                     VALUES('Main Stockroom', 'Main Stock room in the Facility', @locationIDVar, 1, NOW(), '2741bae2-c5de-43ef-891f-7ec2fd58f442');
+		]]></sql>
+                
+    </changeSet>
+    
+     <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
+        <comment>
+            Update Transfer Operation to perform actual ops type
+        </comment>
+    
+        <sql><![CDATA[			
+                update inv_stock_operation_type set has_destination = 0, has_recipient = 1 where stock_operation_type_id = 6;    
 		]]></sql>
                 
     </changeSet>

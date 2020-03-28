@@ -173,7 +173,10 @@
 				<param name="type">12</param> <!-- Set the type to be varchar -->
 			</type>
 		</property>
-
+                
+                <property name="disposedType" type="java.lang.String" column="disposed_type" not-null="false" />
+                 <property name="adjustmentKind" type="java.lang.String" column="adjustment_kind" not-null="false" />
+                
 		<property name="name" type="java.lang.String" column="name" />
 		<property name="description" type="java.lang.String" column="description" />
 		<property name="operationNumber" type="java.lang.String" column="operation_number" not-null="true"/>

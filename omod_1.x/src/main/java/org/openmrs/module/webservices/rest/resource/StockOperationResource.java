@@ -62,6 +62,7 @@ import org.springframework.web.client.RestClientException;
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class StockOperationResource
         extends BaseRestInstanceCustomizableMetadataResource<StockOperation, IStockOperationType, StockOperationAttribute> {
+
 	private static final Log LOG = LogFactory.getLog(StockOperationResource.class);
 
 	private IStockOperationService operationService;
@@ -98,8 +99,6 @@ public class StockOperationResource
 		description.addProperty("operationDate", Representation.DEFAULT);
 		description.addProperty("operationOrder", Representation.DEFAULT);
 		description.addProperty("cancelReason", Representation.DEFAULT);
-		description.addProperty("disposedType", Representation.DEFAULT);
-		description.addProperty("adjustmentType", Representation.DEFAULT);
 
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("source", Representation.REF);
@@ -111,6 +110,8 @@ public class StockOperationResource
 
 			description.addProperty("canProcess", findMethod("userCanProcess"));
 			description.addProperty("canRollback", findMethod("userCanRollback"));
+			description.addProperty("disposedType");
+			description.addProperty("adjustmentKind");
 		}
 
 		return description;
@@ -158,6 +159,8 @@ public class StockOperationResource
 			submitRequired = false;
 			rollbackRequired = false;
 		}
+		System.out.println("FOR ADJUSTMENT " + result.getAdjustmentKind());
+		System.out.println("FOR DISPOSED " + result.getDisposedType());
 
 		return result;
 	}
@@ -245,7 +248,6 @@ public class StockOperationResource
 		PageableResult result;
 
 		// TODO: Research if there is a better (more standard) way to do this.
-
 		// Check to see if this search is for 'my', which we're hardcoding to return the list for the current user
 		String query = context.getParameter("q");
 		if (query != null && query.equals("my")) {
@@ -284,9 +286,8 @@ public class StockOperationResource
 		if (status == null && stockOperationType == null && item == null && stockroom == null) {
 			results = ((IStockOperationDataService)getService()).getUserOperations(user, pagingInfo);
 		} else {
-			results =
-			        ((IStockOperationDataService)getService()).getUserOperations(user, status, stockOperationType, item,
-			            stockroom, pagingInfo);
+			results = ((IStockOperationDataService)getService()).getUserOperations(user, status, stockOperationType, item,
+			    stockroom, pagingInfo);
 		}
 
 		return new AlreadyPagedWithLength<StockOperation>(context, results, pagingInfo.hasMoreResults(),
@@ -398,7 +399,6 @@ public class StockOperationResource
 
 				// The code that saves the operation sets the appropriate fields based on whether a specific expiration,
 				// Auto, or None was selected
-
 				if (opItem.getExpiration() != null) {
 					// A specific expiration was selected
 					opItem.setCalculatedExpiration(false);

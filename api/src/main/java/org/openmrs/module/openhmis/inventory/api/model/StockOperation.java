@@ -54,7 +54,7 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	protected Institution institution;
 	protected Department department;
 	private String cancelReason;
-	private String adjustmentType;
+	private String adjustmentKind;
 	private String disposedType;
 
 	@Override
@@ -372,12 +372,12 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		return result;
 	}
 
-	public String getAdjustmentType() {
-		return adjustmentType;
+	public String getAdjustmentKind() {
+		return adjustmentKind;
 	}
 
-	public void setAdjustmentType(String adjustmentType) {
-		this.adjustmentType = adjustmentType;
+	public void setAdjustmentKind(String adjustmentKind) {
+		this.adjustmentKind = adjustmentKind;
 	}
 
 	public String getDisposedType() {
