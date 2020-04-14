@@ -109,6 +109,7 @@ define(
 			    this.schema.batchOperation = { type: 'NestedModel', model: openhmis.Operation, objRef: true };
 			    this.schema.calculatedExpiration = {type: 'checkbox'};
 			    this.schema.calculatedBatch = {type: 'checkbox'};
+                            this.schema.itemBatch = {type: 'Text'};
 		    },
 
 		    parse: function(resp) {

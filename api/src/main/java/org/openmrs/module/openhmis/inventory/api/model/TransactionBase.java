@@ -22,6 +22,7 @@ import org.openmrs.User;
  * Base model class used by models that have transaction information.
  */
 public abstract class TransactionBase extends BaseOpenmrsObject implements Comparable<TransactionBase> {
+
 	public static final long serialVersionUID = 0L;
 
 	private Integer id;
@@ -35,6 +36,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 	private Boolean sourceCalculatedExpiration;
 	private Boolean calculatedBatch;
 	private Boolean sourceCalculatedBatch;
+	private String itemBatch;
 
 	private User creator;
 	private Date dateCreated = new Date();
@@ -51,6 +53,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		quantity = tx.quantity;
 		calculatedExpiration = tx.calculatedExpiration;
 		calculatedBatch = tx.calculatedBatch;
+		itemBatch = tx.itemBatch;
 	}
 
 	protected TransactionBase(StockOperationItem item) {
@@ -60,6 +63,8 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		this.quantity = item.getQuantity();
 		this.calculatedBatch = item.isCalculatedBatch();
 		this.calculatedExpiration = item.isCalculatedExpiration();
+		System.out.println("About to set item batch:" + item.getItemBatch());
+		this.itemBatch = item.getItemBatch();
 	}
 
 	public Integer getId() {
@@ -176,4 +181,13 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 
 		return result;
 	}
+
+	public String getItemBatch() {
+		return itemBatch;
+	}
+
+	public void setItemBatch(String itemBatch) {
+		this.itemBatch = itemBatch;
+	}
+
 }

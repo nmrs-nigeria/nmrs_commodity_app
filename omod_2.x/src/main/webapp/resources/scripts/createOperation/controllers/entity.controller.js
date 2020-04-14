@@ -91,7 +91,7 @@
                     $scope.addLineItem = self.addLineItem;
                     $scope.removeLineItem = self.removeLineItem;
                     $scope.warningDialog = self.warningDialog;
-                    $scope.distributionTypes = ["Department", "Institution"];
+                    $scope.distributionTypes = ["Department"];
                     $scope.distributionType = $scope.distributionTypes[0];
                     $scope.transferTypes = ["Institution"];
                     $scope.transferType = $scope.transferTypes[0];
@@ -102,6 +102,7 @@
                     //  $scope.adjustmentType = $scope.adjustmentTypes[0];
                     $scope.showOperationItemsSection = self.showOperationItemsSection;
                     $scope.changeItemQuantity = self.changeItemQuantity;
+                    $scope.changeItemBatch = self.changeItemBatch;
                     $scope.changeExpiration = self.changeExpiration;
                     CreateOperationFunctions.onChangeDatePicker(
                             self.onOperationDateSuccessfulCallback,
@@ -200,6 +201,10 @@
         self.checkDatePickerExpirationSection = self.checkDatePickerExpirationSection || function (lineItem) {
             return CreateOperationFunctions.checkDatePickerExpirationSection(lineItem, $scope);
         }
+        
+         self.checkBatchItemExistSection = self.checkBatchItemExistSection || function (lineItem) {
+            return CreateOperationFunctions.checkBatchItemExistSection(lineItem, $scope);
+        }
 
         self.showOperationItemsSection = self.showOperationItemsSection || function () {
             return CreateOperationFunctions.showOperationItemsSection($scope);
@@ -219,6 +224,11 @@
             }
 
             lineItem.setNewQuantity(newQuantity);
+        }
+        
+          self.changeItemBatch = self.changeItemBatch || function (lineItem) {
+            var itemBatch = lineItem.itemStockBatch;
+            lineItem.setItemStockBatch(itemBatch);
         }
 
         self.loadStockOperations = self.loadStockOperations || function (date) {
@@ -301,12 +311,15 @@
                     lineItem.setNewQuantity('');
                     lineItem.setItemStockQuantity(1);
                     lineItem.setExpirationHasDatePicker(false);
+                    lineItem.setBatchItemExist(false);
                     if (stockOperationItem !== undefined) {
                         lineItem.setItemStock(stockOperationItem);
                         lineItem.setItemStockDepartment(stockOperationItem.department);
                         lineItem.setItemStockHasExpiration(stockOperationItem.hasExpiration);
+                        lineItem.setItemStockHasBatch(true); // with assuption that item batch input field would be made required
                         lineItem.setSelected(true);
                         self.checkDatePickerExpirationSection(lineItem);
+                        self.checkBatchItemExistSection(lineItem);
                         $scope.lineItem = lineItem;
 
                         self.searchItemStock(stockOperationItem);
@@ -319,11 +332,18 @@
                             lineItem.expirationDates = [];
                             CreateOperationFunctions.onChangeDatePicker(self.onLineItemExpDateSuccessfulCallback, undefined, lineItem);
                         }
+                        
+                        if(lineItem.batchItemExist){
+                            lineItem.itemBatchs = [];
+                          $scope.lineItem.itemStockBatch = '';
+                            
+                        }
 
                         // load next line item
                         self.addLineItem();
                     } else {
                         lineItem.setItemStockHasExpiration(false);
+                        lineItem.setItemStockHasBatch(false);
                     }
 
                     EntityFunctions.focusOnElement('quantity-' + index);
@@ -481,6 +501,12 @@
                 var itemStockExpirationDates = CreateOperationFunctions.createExpirationDates(itemStocks);
                 $scope.lineItem.setItemStockExpirationDate(itemStockExpirationDates[0]);
                 $scope.lineItem.setExpirationDates(itemStockExpirationDates);
+            }
+            
+             if (!$scope.lineItem.batchItemExist) {
+                var itemStockBatchs = CreateOperationFunctions.createItemBatches(itemStocks);
+                $scope.lineItem.setItemStockBatch(itemStockBatchs[0]);
+                $scope.lineItem.setItemBatchs(itemStockBatchs);
             }
 
             if (itemStocks[0] !== null) {

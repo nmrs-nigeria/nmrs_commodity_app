@@ -134,6 +134,7 @@ define(
                 this.schema.item = { type: 'NestedModel', model: openhmis.Item, objRef: true };
                 this.schema.quantity = { type: 'BasicNumber' };
                 this.schema.expiration = { type: 'Date', format: openhmis.dateFormatLocale };
+                this.schema.itemBatch = {type: 'Text'};
 
                 this.schema.batchOperation = {
                     type: 'OperationSelect',

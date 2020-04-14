@@ -30,6 +30,7 @@ public abstract class ItemStockDetailBaseResource<T extends ItemStockDetailBase>
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("item", Representation.DEFAULT);
 		description.addProperty("quantity", Representation.DEFAULT);
+		description.addProperty("itemBatch", Representation.DEFAULT);
 		description.addProperty("expiration", Representation.DEFAULT);
 		description.addProperty("batchOperation", Representation.REF);
 		description.addProperty("calculatedExpiration", Representation.DEFAULT);

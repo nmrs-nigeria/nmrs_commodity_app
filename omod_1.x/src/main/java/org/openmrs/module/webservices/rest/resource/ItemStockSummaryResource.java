@@ -56,6 +56,7 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 		description.addProperty("expiration", Representation.DEFAULT);
 		description.addProperty("quantity", Representation.DEFAULT);
 		description.addProperty("actualQuantity", Representation.DEFAULT);
+		description.addProperty("itemBatch", Representation.DEFAULT);
 
 		return description;
 	}

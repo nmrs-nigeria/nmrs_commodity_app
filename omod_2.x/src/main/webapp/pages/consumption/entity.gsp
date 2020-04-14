@@ -92,7 +92,14 @@
                <input type="number" ng-model="entity.wastage" class="minimized"/>
             </li>
         </ul>
-        
+          <ul class="table-layout">
+            <li class="not-required">
+                <span>Total Qty Used.</span>
+            </li>
+            <li>
+               {{entity.wastage + entity.quantity}}
+            </li>
+        </ul>
           <ul class="table-layout">
             <li class="required">
                 <span>{{messageLabels['openhmis.inventory.consumption.testPurpose']}}</span>

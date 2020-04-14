@@ -104,6 +104,7 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 			item.setItem(invitem.getItem());
 			item.setExpiration(invitem.getExpiration());
 			item.setCalculatedExpiration(false);
+			item.setItemBatch(invitem.getItemBatch());
 
 			int quantity = invitem.getActualQuantity() - invitem.getQuantity();
 			item.setQuantity(quantity);

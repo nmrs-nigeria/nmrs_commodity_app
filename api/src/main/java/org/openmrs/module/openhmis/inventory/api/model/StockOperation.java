@@ -174,14 +174,15 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	}
 
 	public StockOperationItem addItem(Item item, int quantity) {
-		return addItem(item, quantity, null, null);
+		return addItem(item, quantity, null, null, null);
 	}
 
-	public StockOperationItem addItem(Item item, int quantity, Date expiration) {
-		return addItem(item, quantity, expiration, null);
+	public StockOperationItem addItem(Item item, int quantity, Date expiration, String itemBatch) {
+		return addItem(item, quantity, expiration, itemBatch, null);
 	}
 
-	public StockOperationItem addItem(Item item, int quantity, Date expiration, StockOperation batchOperation) {
+	public StockOperationItem addItem(Item item, int quantity, Date expiration, String itemBatch,
+	        StockOperation batchOperation) {
 		if (item == null) {
 			throw new IllegalArgumentException("The item must be defined");
 		}
@@ -189,6 +190,7 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		StockOperationItem operationItem = new StockOperationItem();
 		operationItem.setItem(item);
 		operationItem.setQuantity(quantity);
+		operationItem.setItemBatch(itemBatch);
 
 		if (expiration == null) {
 			if (Boolean.TRUE.equals(item.getHasExpiration())) {
@@ -246,7 +248,7 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	}
 
 	public ReservedTransaction addReserved(Item item, int quantity) {
-		return addReserved(item, quantity, null);
+		return addReserved(item, quantity, null, null);
 	}
 
 	/**
@@ -254,9 +256,10 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	 * @param item The item to add.
 	 * @param quantity The item quantity.
 	 * @param expiration The item expiration or {@code null} if none.
+	 * @param itemBatch
 	 * @return The newly created reserved item transaction.
 	 */
-	public ReservedTransaction addReserved(Item item, int quantity, Date expiration) {
+	public ReservedTransaction addReserved(Item item, int quantity, Date expiration, String itemBatch) {
 		if (item == null) {
 			throw new IllegalArgumentException("The item must be defined.");
 		}
@@ -267,6 +270,7 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		tx.setExpiration(expiration);
 		tx.setCreator(Context.getAuthenticatedUser());
 		tx.setDateCreated(new Date());
+		tx.setItemBatch(itemBatch);
 
 		return addReserved(tx);
 	}

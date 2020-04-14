@@ -21,12 +21,14 @@ import org.openmrs.OpenmrsObject;
  * Model class that represents summary information of item stock details for a specific stockroom.
  */
 public class ItemStockSummary implements OpenmrsObject {
+
 	public static final long serialVersionUID = 0L;
 
 	private Item item;
 	private Date expiration;
 	private Integer quantity;
 	private Integer actualQuantity;
+	private String itemBatch;
 
 	// These are aggregate models and thus have no id or uuid.
 	@Override
@@ -80,4 +82,13 @@ public class ItemStockSummary implements OpenmrsObject {
 	public void setActualQuantity(Integer actualQuantity) {
 		this.actualQuantity = actualQuantity;
 	}
+
+	public String getItemBatch() {
+		return itemBatch;
+	}
+
+	public void setItemBatch(String itemBatch) {
+		this.itemBatch = itemBatch;
+	}
+
 }

@@ -53,6 +53,7 @@ public class ItemStockDetail extends ItemStockDetailBase {
 		this.setCalculatedExpiration(tx.isCalculatedExpiration());
 		this.setCalculatedBatch(tx.isCalculatedBatch());
 		this.setQuantity(tx.getQuantity());
+		this.setItemBatch(tx.getItemBatch());
 	}
 
 	/**
@@ -74,6 +75,7 @@ public class ItemStockDetail extends ItemStockDetailBase {
 		setCalculatedBatch(base.isCalculatedBatch());
 		setCalculatedExpiration(base.isCalculatedExpiration());
 		setQuantity(base.getQuantity());
+		this.setItemBatch(base.getItemBatch());
 	}
 
 	/**

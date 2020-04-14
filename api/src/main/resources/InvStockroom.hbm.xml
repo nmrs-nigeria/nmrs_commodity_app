@@ -76,6 +76,7 @@
 		<property name="calculatedBatch" type="boolean" column="calculated_batch" not-null="false" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+                <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
 	</class>
 	<class name="IStockOperationType" table="inv_stock_operation_type">
 		<cache usage="read-write"/>
@@ -257,6 +258,7 @@
 		</property>
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+                 <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
 	</class>
 	<class name="ReservedTransaction" table="inv_reserved_transaction">
 		<cache usage="read-write"/>
@@ -291,6 +293,7 @@
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+                 <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
 	</class>
 	<class name="StockOperationTransaction" table="inv_transaction">
 		<cache usage="read-write"/>
@@ -327,5 +330,6 @@
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+                 <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
 	</class>
 </hibernate-mapping>

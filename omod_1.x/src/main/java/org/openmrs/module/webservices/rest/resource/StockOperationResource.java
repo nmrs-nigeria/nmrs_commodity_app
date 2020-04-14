@@ -145,7 +145,9 @@ public class StockOperationResource
 		// If the status has changed, submit the operation
 		try {
 			if (submitRequired) {
+
 				result = operationService.submitOperation(operation);
+
 			} else if (rollbackRequired) {
 				if (!userCanRollback(operation)) {
 					throw new RestClientException("The current user not authorized to rollback this operation.");

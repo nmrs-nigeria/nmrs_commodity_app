@@ -1723,7 +1723,44 @@
                update inv_stock_operation_type set retired = 1 where uuid = '20f3734f-5b1a-490d-8676-1225a9cdddf7';
 		]]></sql>
                 
-    </changeSet>   
+    </changeSet>  
+    
+        <changeSet id="openhmis.inventory-v1.8.9-0" author="Morrison Idiasirue" >
+                                       
+        <addColumn tableName="inv_stock_operation_item">
+            <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+			
+        </addColumn>
+                
+        <addColumn tableName="inv_item_stock_detail">
+             <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            			
+        </addColumn>
+                  
+    </changeSet>
+    
+     
+      <changeSet id="openhmis.inventory-v1.8.9-1" author="Morrison Idiasirue" >
+                                       
+        <addColumn tableName="inv_transaction">
+            <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+			
+        </addColumn>
+                
+        <addColumn tableName="inv_reserved_transaction">
+             <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            			
+        </addColumn>
+                  
+    </changeSet>  
         
            
 </databaseChangeLog>

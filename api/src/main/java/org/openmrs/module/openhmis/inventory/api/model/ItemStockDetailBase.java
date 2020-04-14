@@ -21,6 +21,7 @@ import org.openmrs.BaseOpenmrsObject;
  * Base model class used by models that have item stock detail information.
  */
 public class ItemStockDetailBase extends BaseOpenmrsObject {
+
 	public static final long serialVersionUID = 0L;
 
 	private Integer id;
@@ -31,6 +32,7 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	private StockOperation batchOperation;
 	private Boolean calculatedExpiration;
 	private Boolean calculatedBatch;
+	private String itemBatch;
 
 	/**
 	 * Gets the unique database record identifier.
@@ -163,4 +165,13 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	public void setCalculatedBatch(Boolean calculatedBatch) {
 		this.calculatedBatch = calculatedBatch;
 	}
+
+	public String getItemBatch() {
+		return itemBatch;
+	}
+
+	public void setItemBatch(String itemBatch) {
+		this.itemBatch = itemBatch;
+	}
+
 }

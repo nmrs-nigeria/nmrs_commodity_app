@@ -22,7 +22,8 @@
 
 		function LineItemModel(itemStockDepartment, itemStock,
 		                       itemStockQuantity, itemStockExpirationDate,
-		                       itemStockHasExpiration, expirationDates, existingQuantity) {
+		                       itemStockHasExpiration, expirationDates, existingQuantity,
+                                       itemStockBatch,itemBatchs,itemStockHasBatch) {
 			this.itemStockDepartment = itemStockDepartment;
 			this.itemStock = itemStock;
 			this.itemStockQuantity = itemStockQuantity;
@@ -32,9 +33,13 @@
 			this.existingQuantity = existingQuantity;
 			this.selected = false;
 			this.expirationHasDatePicker = false;
+                        this.batchItemExist = false;
 			this.newQuantity = '';
 			this.itemStockDetails = [];
 			this.invalidEntry = false;
+                        this.itemStockBatch = itemStockBatch;
+                        this.itemBatchs = itemBatchs;
+                        this.itemStockHasBatch = itemStockHasBatch;
 		}
 
 		LineItemModel.prototype = {
@@ -110,6 +115,13 @@
 			isExpirationHasDatePicker: function() {
 				return this.expirationHasDatePicker;
 			},
+                        setBatchItemExist: function(batchItemExist) {
+				this.batchItemExist = batchItemExist;
+			},
+
+			isBatchItemExist: function() {
+				return this.batchItemExist;
+			},
 
 			setNewQuantity: function(newQuantity) {
 				this.newQuantity = newQuantity;
@@ -133,6 +145,27 @@
 
 			setInvalidEntry: function(invalidEntry) {
 				this.invalidEntry = invalidEntry;
+			},
+                        getItemStockBatch: function() {
+				return this.itemStockBatch;
+			},
+
+			setItemStockBatch: function(itemStockBatch) {
+				this.itemStockBatch = itemStockBatch;
+			},
+                        setItemBatchs: function(itemBatchs) {
+				this.itemBatchs = itemBatchs;
+			},
+
+			getItemBatchs: function() {
+				return this.itemBatchs;
+			},
+                         setItemStockHasBatch: function(itemStockHasBatch) {
+				this.itemStockHasBatch = itemStockHasBatch;
+			},
+
+			getItemStockHasBatch: function() {
+				return this.itemStockHasBatch;
 			},
 		};
 

@@ -30,6 +30,7 @@ public abstract class TransactionBaseResource<T extends TransactionBase> extends
 		description.addProperty("item", Representation.REF);
 		description.addProperty("quantity", Representation.DEFAULT);
 		description.addProperty("expiration", Representation.DEFAULT);
+		description.addProperty("itemBatch", Representation.DEFAULT);
 
 		return description;
 	}
