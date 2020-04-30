@@ -14,7 +14,8 @@
 		service = {
 			searchConsumptions : searchConsumptions,
 			loadDepartments : loadDepartments,
-                        loadItems : loadItems
+                        loadItems : loadItems,
+                        getItemBatch : getItemBatch
 			// searchConcepts : searchConcepts
 			//  loadItemStock : loadItemStock,
 			// loadItemAttributeTypes : loadItemAttributeTypes,
@@ -77,5 +78,26 @@
 		function errorCallback(error) {
 			emr.errorAlert(error);
 		}
+                
+                function getItemBatch(itemUUIDProperty, successCallback) {
+			var requestParams = [];
+			requestParams['resource'] = INVENTORY_MODULE_ITEMS_UTILITY_URL;
+			requestParams['itemUUID'] = itemUUIDProperty;
+
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
+				console.log(error)
+			});
+                        
+                        EntityRestFactory.setBaseUrl(INVENTORY_MODULE_NAME);
+                        
+                        console.log('finished calling item batch');
+                        
+		}
+                
+                function setBaseUrl(module_name) {
+			EntityRestFactory.setBaseUrl(module_name);
+		}
+                
 	}
 })();

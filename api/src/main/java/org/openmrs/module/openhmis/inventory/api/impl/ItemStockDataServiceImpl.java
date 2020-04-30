@@ -59,4 +59,20 @@ public class ItemStockDataServiceImpl extends BaseObjectDataServiceImpl<ItemStoc
 			}
 		}, Order.asc("s.name"));
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ItemStock> getItemStockByItemWithOutPaging(final Item item) {
+		if (item == null) {
+			throw new IllegalArgumentException("The item must be defined.");
+		}
+
+		return executeCriteria(ItemStock.class, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.createAlias("stockroom", "s");
+				criteria.add(Restrictions.eq("item", item));
+			}
+		});
+	}
 }

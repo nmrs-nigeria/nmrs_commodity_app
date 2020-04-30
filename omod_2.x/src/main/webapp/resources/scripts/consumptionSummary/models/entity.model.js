@@ -17,7 +17,7 @@
 
                         var fields = ["totalQuantityReceived",
 					"totalQuantityConsumed", "department",
-					"item","stockBalance"
+					"item","stockBalance","totalQuantityWasted"
 					];
 
 		//	return fields.concat(defaultFields);

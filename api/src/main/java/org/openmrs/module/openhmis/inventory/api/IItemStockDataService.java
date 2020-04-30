@@ -41,4 +41,8 @@ public interface IItemStockDataService extends IObjectDataService<ItemStock> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_METADATA })
 	List<ItemStock> getItemStockByItem(Item item, PagingInfo pagingInfo);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	List<ItemStock> getItemStockByItemWithOutPaging(final Item item);
 }

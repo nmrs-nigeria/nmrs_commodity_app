@@ -78,6 +78,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		description.addProperty("department", Representation.REF);
 		description.addProperty("totalQuantityReceived");
 		description.addProperty("totalQuantityConsumed");
+		description.addProperty("totalQuantityWasted");
 		description.addProperty("stockBalance");
 		//	description.addProperty("startDate", Representation.DEFAULT);
 		//	description.addProperty("endDate", Representation.DEFAULT);
@@ -188,8 +189,10 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 			each.setDepartment(summary.getDepartment());
 			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
 			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
+			each.setTotalQuantityWasted(summary.getTotalQuantityWasted());
 			if (each.getTotalQuantityReceived() > 0) {
-				each.setStockBalance(each.getTotalQuantityReceived() - each.getTotalQuantityConsumed());
+				each.setStockBalance(each.getTotalQuantityReceived()
+				        - (each.getTotalQuantityConsumed() + each.getTotalQuantityWasted()));
 			} else {
 				each.setStockBalance(0);
 			}
@@ -217,6 +220,12 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
                     .map(ConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
             each.setTotalQuantityConsumed(sumConsumed);
             
+            int sumWastage = fromConsumption.stream().filter(b -> b.getItem().equals(a))
+                    .map(ConsumptionSummary::getTotalQuantityWasted).findFirst().get();
+            
+            each.setTotalQuantityWasted(sumWastage);
+            
+            
             each.setItem(a);
             mergedConsumptionSummarys.add(each);
 
@@ -236,6 +245,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
             ConsumptionSummary consumptionSummary = new ConsumptionSummary();
 
             int totalQuantityUsed = 0;
+            int totalQuantityWastated = 0;
 
             List<Consumption> filteredConsumptions = null;
 
@@ -245,13 +255,17 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
             consumptionSummary.setItem(a);
 
             for (Consumption c : filteredConsumptions) {
-                int tempTotalQuantityUsed = c.getQuantity() + c.getWastage();
+                int tempTotalWasted = c.getWastage();
+                int tempTotalQuantityUsed = c.getQuantity();
                 totalQuantityUsed += tempTotalQuantityUsed;
+                totalQuantityWastated += tempTotalWasted;
+                
 
             }
-            System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
+           // System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
 
             consumptionSummary.setTotalQuantityConsumed(totalQuantityUsed);
+            consumptionSummary.setTotalQuantityWasted(totalQuantityWastated);
 
             aggregateConsumption.add(consumptionSummary);
         });

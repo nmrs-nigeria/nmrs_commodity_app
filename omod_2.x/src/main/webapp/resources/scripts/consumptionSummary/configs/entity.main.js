@@ -48,7 +48,8 @@ emr.loadMessages([
         "openhmis.inventory.summary.quantityReceived",
         "openhmis.inventory.summary.startDate",
         "openhmis.inventory.summary.endDate",
-        
+        "openhmis.inventory.summary.stockBalance",
+        "openhmis.inventory.summary.totalWastage",
         
         "openhmis.commons.general.required.quantity",
         

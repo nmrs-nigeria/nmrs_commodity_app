@@ -28,8 +28,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller(value = "invItemsController")
 @RequestMapping(ModuleWebConstants.ITEMS_ROOT)
 public class ItemsController {
+
 	@RequestMapping(method = RequestMethod.GET)
 	public void items(ModelMap model) throws IOException {
 		model.addAttribute("modelBase", "openhmis.inventory.item");
 	}
+
 }

@@ -66,7 +66,10 @@
                     emr.message('openhmis.inventory.summary.startDate');
                   messages['openhmis.inventory.summary.endDate'] =
                     emr.message('openhmis.inventory.summary.endDate');
-            
+              messages['openhmis.inventory.summary.totalWastage'] =
+                    emr.message('openhmis.inventory.summary.totalWastage');
+            messages['openhmis.inventory.summary.stockBalance'] =
+                    emr.message('openhmis.inventory.summary.stockBalance');
 
 
             messages['openhmis.inventory.stockroom.name'] = emr

@@ -40,7 +40,8 @@
                       $scope.testPurposeTypes = ["Initial", "Confirmation"];
                     $scope.uuid = uuid;
                     $scope.currDate = '';
-
+                    $scope.itemBatchs = {};
+                    $scope.changeItemBatch = self.changeItemBatch;
 
                     /* bind functions.. */
 
@@ -199,6 +200,21 @@
                 $scope.items = data.results;
                 $scope.item = $scope.item || $scope.items[0];
             }
+        }
+        
+        self.onLoadItemBatchSuccessful = self.onLoadItemBatchSuccessful || function (data) {
+            console.log(data);
+            console.log('ACTUAL RESULT');
+            console.log(data.results);
+            if(angular.isDefined($scope.entity)){
+                $scope.itemBatchs = data.results;               
+            }
+        }
+        
+        
+         self.changeItemBatch = self.changeItemBatch || function (itemUUID) {
+         ConsumptionRestfulService.getItemBatch(itemUUID,self.onLoadItemBatchSuccessful);
+         ConsumptionRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);
         }
 
 

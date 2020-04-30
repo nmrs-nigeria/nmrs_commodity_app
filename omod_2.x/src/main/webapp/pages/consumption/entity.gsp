@@ -64,7 +64,8 @@
             </li>
             <li>
                 <select ng-model="item" required
-                ng-options='item.name for item in items track by item.uuid'>
+                ng-options='item.name for item in items track by item.uuid'
+                ng-change="changeItemBatch(item.uuid)">
                 </select>
             </li>
         </ul>
@@ -73,7 +74,9 @@
                 <span>{{messageLabels['openhmis.inventory.consumption.batchNumber']}}</span>
             </li>
             <li>
-                <input type="text" ng-model="entity.batchNumber" class="minimized"/>
+                <select ng-model="entity.batchNumber" required
+                ng-options='batchNumber for batchNumber in itemBatchs' >
+                </select>
             </li>
         </ul>
         <ul class="table-layout">

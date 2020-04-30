@@ -16,6 +16,7 @@ public class ConsumptionSummary extends BaseSerializableOpenmrsMetadata {
 
 	private Integer totalQuantityReceived;
 	private Integer totalQuantityConsumed;
+	private Integer totalQuantityWasted;
 	private Item item;
 	private Department department;
 	private String uuid;
@@ -84,6 +85,14 @@ public class ConsumptionSummary extends BaseSerializableOpenmrsMetadata {
 	@JsonIgnore
 	public Boolean getRetired() {
 		return super.getRetired();
+	}
+
+	public Integer getTotalQuantityWasted() {
+		return totalQuantityWasted;
+	}
+
+	public void setTotalQuantityWasted(Integer totalQuantityWasted) {
+		this.totalQuantityWasted = totalQuantityWasted;
 	}
 
 }
