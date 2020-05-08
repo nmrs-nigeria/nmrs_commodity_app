@@ -21,6 +21,14 @@
 
 
 	<!-- Services accessible via Context.getService() -->
+         <bean parent="serviceContext">
+		<property name="moduleService">
+			<list merge="true">
+				<value>org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService</value>
+				<ref bean="invItemExpirationSummaryService" />
+			</list>
+		</property>
+	</bean>
           <bean parent="serviceContext">
 		<property name="moduleService">
 			<list merge="true">
@@ -151,6 +159,16 @@
 	</bean>
 
 	<!-- Service Bean Definitions -->
+           <bean id="invItemExpirationSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+		<property name="target">
+			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemExpirationSummaryServiceImpl">
+				<property name="repository" ref="genericRepository" />
+			</bean>
+		</property>
+		<property name="preInterceptors" ref="serviceInterceptors" />
+		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
+	</bean>
            <bean id="invConsumptionSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="transactionManager" />
 		<property name="target">

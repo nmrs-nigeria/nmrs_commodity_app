@@ -11,5 +11,6 @@ package org.openmrs.module.webservices.rest.helper;
 public class ConstantUtils {
 
 	public static final String DISTRIBUTION_TYPE_UUID = "c264f34b-c795-4576-9928-454d1fa20e09";
+	public static final int EXPIRYDAYSCOUNT = 30;
 
 }
