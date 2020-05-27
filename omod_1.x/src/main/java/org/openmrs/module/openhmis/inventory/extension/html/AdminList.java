@@ -28,6 +28,7 @@ import org.openmrs.module.web.extension.AdministrationSectionExt;
  * Class that defines the inventory module administration links.
  */
 public class AdminList extends AdministrationSectionExt {
+
 	/**
 	 * @see AdministrationSectionExt#getMediaType()
 	 */
@@ -74,6 +75,12 @@ public class AdminList extends AdministrationSectionExt {
 		    PrivilegeWebConstants.CONSUMPTION_SUMMARY_PAGE_PRIVILEGES);
 		if (consumptionSummaryPrivilege) {
 			map.put(ModuleWebConstants.CONSUMPTIONS_SUMMARY_PAGE, "openhmis.inventory.admin.consumptionSummarys");
+		}
+
+		Boolean itemExpirationSummary = PrivilegeUtil.hasPrivileges(authenticatedUser,
+		    PrivilegeWebConstants.ITEM_EXPIRATION_SUMMARY_PRIVILEGES);
+		if (itemExpirationSummary) {
+			map.put(ModuleWebConstants.ITEM_EXPIRATION_SUMMARY_PAGE, "openhmis.inventory.admin.itemExpirationSummarys");
 		}
 
 		if (PrivilegeUtil.hasPrivileges(authenticatedUser, PrivilegeWebConstants.ITEM_ATTRIBUTE_TYPE_PAGE_PRIVILEGES)) {

@@ -37,6 +37,7 @@ public class PrivilegeWebConstants extends PrivilegeConstants {
 	public static final String ITEM_CONCEPT_SUGGESTION_PAGE_PRIVILEGES = MANAGE_ITEMS + ", " + VIEW_ITEMS;
 	public static final String INVENTORY_PAGE_PRIVILEGES = MANAGE_OPERATIONS + ", " + VIEW_OPERATIONS;
 	public static final String SETTINGS_PAGE_PRIVILEGES = MANAGE_METADATA;
+	public static final String ITEM_EXPIRATION_SUMMARY_PRIVILEGES = VIEW_ITEM_EXPIRATION_SUMMARY;
 
 	@Autowired
 	protected PrivilegeWebConstants(PrivilegeConstantsCompatibility privilegeConstantsCompatibility) {

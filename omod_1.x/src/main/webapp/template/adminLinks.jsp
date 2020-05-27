@@ -46,6 +46,15 @@
             </a>
         </li>
     </openmrs:hasPrivilege>
+        
+            <openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.ITEM_EXPIRATION_SUMMARY_PRIVILEGES %>">
+        <li>
+            <a href="${pageContext.request.contextPath}<%= ModuleWebConstants.ITEM_EXPIRATION_SUMMARY_PAGE %>">
+                <openmrs:message code="openhmis.inventory.admin.itemExpirationSummarys"/>
+            </a>
+        </li>
+    </openmrs:hasPrivilege>
+        
     <openmrs:hasPrivilege privilege="<%= PrivilegeWebConstants.STOCKROOM_PAGE_PRIVILEGES %>">
         <li>
             <a href="${pageContext.request.contextPath}<%= ModuleWebConstants.STOCKROOMS_PAGE %>">

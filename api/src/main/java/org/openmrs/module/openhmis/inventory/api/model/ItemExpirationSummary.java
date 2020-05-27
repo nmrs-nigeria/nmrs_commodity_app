@@ -6,17 +6,20 @@
 package org.openmrs.module.openhmis.inventory.api.model;
 
 import java.util.Date;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 
 /**
  * @author MORRISON.I
  */
-public class ItemExpirationSummary extends BaseSerializableOpenmrsMetadata {
+public class ItemExpirationSummary implements OpenmrsObject {
 
 	private Item item;
-	private Department department;
-	private Date expirationDate;
-	private Integer itemExpirationId;
+	//private Department department;
+	private Integer quantity;
+	private Date expiration;
+	//private Integer itemExpirationId;
+	private String itemBatch;
 
 	public Item getItem() {
 		return item;
@@ -26,30 +29,48 @@ public class ItemExpirationSummary extends BaseSerializableOpenmrsMetadata {
 		this.item = item;
 	}
 
-	public Department getDepartment() {
-		return department;
+	public Integer getQuantity() {
+		return quantity;
 	}
 
-	public void setDepartment(Department department) {
-		this.department = department;
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
 	}
 
-	public Date getExpirationDate() {
-		return expirationDate;
+	public Date getExpiration() {
+		return expiration;
 	}
 
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
+	public void setExpiration(Date expiration) {
+		this.expiration = expiration;
+	}
+
+	public String getItemBatch() {
+		return itemBatch;
+	}
+
+	public void setItemBatch(String itemBatch) {
+		this.itemBatch = itemBatch;
 	}
 
 	@Override
 	public Integer getId() {
-		return this.itemExpirationId;
+		return null;
 	}
 
 	@Override
 	public void setId(Integer intgr) {
-		this.itemExpirationId = intgr;
+
+	}
+
+	@Override
+	public String getUuid() {
+		return null;
+	}
+
+	@Override
+	public void setUuid(String string) {
+
 	}
 
 }

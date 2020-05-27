@@ -39,7 +39,10 @@ public class ModuleWebConstants extends WebConstants {
 	public static final String CONSUMPTIONS_PAGE = CONSUMPTIONS_ROOT + ".form";
 
 	public static final String CONSUMPTIONS_SUMMARY_ROOT = MODULE_ROOT + "consumptionSummarys";
-	public static final String CONSUMPTIONS_SUMMARY_PAGE = CONSUMPTIONS_ROOT + ".form";
+	public static final String CONSUMPTIONS_SUMMARY_PAGE = CONSUMPTIONS_SUMMARY_ROOT + ".form";
+
+	public static final String ITEM_EXPIRATION_SUMMARY_ROOT = MODULE_ROOT + "itemExpirationSummary";
+	public static final String ITEM_EXPIRATION_SUMMARY_PAGE = ITEM_EXPIRATION_SUMMARY_ROOT + ".form";
 
 	public static final String ITEM_ATTRIBUTE_TYPES_ROOT = MODULE_ROOT + "itemAttributeTypes";
 	public static final String ITEM_ATTRIBUTE_TYPES_PAGE = ITEM_ATTRIBUTE_TYPES_ROOT + ".form";
@@ -96,6 +99,7 @@ public class ModuleWebConstants extends WebConstants {
 
 	public static final String MODULE_SETTINGS_ROOT = MODULE_ROOT + "moduleSettings";
 	public static final String MODULE_ITEM_UTILITY_ROOT = MODULE_ROOT + "itemUtility";
+        public static final String NDR_EXTRACTION_PAGE = MODULE_ROOT + "ndrextraction";
 
 	protected ModuleWebConstants() {}
 }
