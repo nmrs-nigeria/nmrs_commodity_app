@@ -33,6 +33,7 @@ public class PrivilegeConstants {
 
 	private static PrivilegeConstantsCompatibility privilegeConstantsCompatibility;
 
+	public static final String VIEW_NDR_REPORTING = "View NDR Extraction Reports";
 	public static final String VIEW_ITEM_EXPIRATION_SUMMARY = "View Item Expiration Summary";
 	public static final String VIEW_CONSUMPTIONS_SUMMARY = "View Inventory Consumption Summary";
 

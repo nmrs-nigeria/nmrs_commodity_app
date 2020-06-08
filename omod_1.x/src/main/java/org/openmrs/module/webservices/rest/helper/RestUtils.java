@@ -63,20 +63,18 @@ public class RestUtils {
 
 		return result;
 	}
-        
-        
-        
-        public static String ensureDownloadFolderExist(HttpServletRequest request) {
+
+	public static String ensureDownloadFolderExist(HttpServletRequest request) {
 		String folder = Paths.get(
 		    new File(request.getSession().getServletContext().getRealPath(request.getContextPath())).getParentFile()
 		            .toString(), "CMdownloads").toString(); //request.getRealPath(request.getContextPath()) + "\\reports";
-		
+
 		File dir = new File(folder);
 		Boolean b = dir.mkdir();
 		System.out.println("Creating download folder : " + folder + "was successful : " + b);
 		return folder;
 	}
-	
+
 	public static String ensureReportFolderExist(HttpServletRequest request, String reportType) {
 		String downloadFolder = ensureDownloadFolderExist(request);
 		//old implementation
@@ -85,7 +83,7 @@ public class RestUtils {
 		File dir = new File(reportFolder);
 		dir.mkdir();
 		System.out.println(reportType + " folder exist ? : " + dir.exists());
-		
+
 		//create today's folder
 		boolean b;
 		String dateString = new SimpleDateFormat("dd-MM-yyyy").format(new Date());
@@ -105,43 +103,41 @@ public class RestUtils {
 		}
 		dir.mkdir();
 		System.out.println(todayFolders + " folder exist ? " + dir.exists());
-		
+
 		return todayFolders;
 	}
-        
-        	public static String getFacilityName() {
+
+	public static String getFacilityName() {
 		return Context.getAdministrationService().getGlobalProperty("Facility_Name");
 	}
-	
+
 	public static String getFacilityLocalId() {
 		return Context.getAdministrationService().getGlobalProperty("facility_local_id");
 	}
-        
-        public static String getIPShortName() {
+
+	public static String getIPShortName() {
 		return Context.getAdministrationService().getGlobalProperty("partner_short_name");
 	}
-        
-        	public static Marshaller createMarshaller(JAXBContext jaxbContext) throws JAXBException, SAXException {
+
+	public static Marshaller createMarshaller(JAXBContext jaxbContext) throws JAXBException, SAXException {
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-		
+
 		SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-		
+
 		java.net.URL xsdFilePath = Thread.currentThread().getContextClassLoader().getResource("NDR_CM_1.0.xsd");
-		
+
 		assert xsdFilePath != null;
-		
+
 		Schema schema = sf.newSchema(xsdFilePath);
-		
+
 		jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		jaxbMarshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-		
+
 		jaxbMarshaller.setSchema(schema);
-		
+
 		//Call Validator class to perform the validation
 		jaxbMarshaller.setEventHandler(new Validator());
 		return jaxbMarshaller;
 	}
-	
-        
 
 }

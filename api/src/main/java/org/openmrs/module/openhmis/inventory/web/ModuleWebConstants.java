@@ -20,6 +20,7 @@ import org.openmrs.module.openhmis.inventory.api.util.ModuleConstants;
  * Constants class for the module web resources.
  */
 public class ModuleWebConstants extends WebConstants {
+
 	public static final String MODULE_ROOT = WebConstants.MODULE_BASE + ModuleConstants.MODULE_NAME + "/";
 	public static final String MODULE_RESOURCE_ROOT = WebConstants.MODULE_RESOURCE_BASE + ModuleConstants.MODULE_NAME + "/";
 
@@ -99,7 +100,8 @@ public class ModuleWebConstants extends WebConstants {
 
 	public static final String MODULE_SETTINGS_ROOT = MODULE_ROOT + "moduleSettings";
 	public static final String MODULE_ITEM_UTILITY_ROOT = MODULE_ROOT + "itemUtility";
-        public static final String NDR_EXTRACTION_PAGE = MODULE_ROOT + "ndrextraction";
+	public static final String NDR_EXTRACTION_ROOT = MODULE_ROOT + "ndrExtraction";
+	public static final String NDR_EXTRACTION_PAGE = NDR_EXTRACTION_ROOT + ".form";
 
 	protected ModuleWebConstants() {}
 }

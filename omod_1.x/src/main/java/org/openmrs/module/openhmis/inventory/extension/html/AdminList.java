@@ -114,6 +114,12 @@ public class AdminList extends AdministrationSectionExt {
 			map.put(ModuleWebConstants.SETTINGS_PAGE, "openhmis.inventory.admin.settings");
 		}
 
+		Boolean ndrExtractionPrivilege = PrivilegeUtil.hasPrivileges(authenticatedUser,
+		    PrivilegeWebConstants.NDR_EXTRACTION_PRIVILEGES);
+		if (ndrExtractionPrivilege) {
+			map.put(ModuleWebConstants.NDR_EXTRACTION_PAGE, "openhmis.inventory.admin.ndrextraction");
+		}
+
 		return map;
 	}
 }
