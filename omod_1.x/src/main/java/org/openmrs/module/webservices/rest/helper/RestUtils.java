@@ -10,11 +10,15 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.apache.commons.lang.StringUtils;
@@ -67,7 +71,7 @@ public class RestUtils {
 	public static String ensureDownloadFolderExist(HttpServletRequest request) {
 		String folder = Paths.get(
 		    new File(request.getSession().getServletContext().getRealPath(request.getContextPath())).getParentFile()
-		            .toString(), "CMdownloads").toString(); //request.getRealPath(request.getContextPath()) + "\\reports";
+		            .toString(), "CMdownloads").toString();
 
 		File dir = new File(folder);
 		Boolean b = dir.mkdir();
@@ -138,6 +142,45 @@ public class RestUtils {
 		//Call Validator class to perform the validation
 		jaxbMarshaller.setEventHandler(new Validator());
 		return jaxbMarshaller;
+	}
+
+	public static XMLGregorianCalendar getXmlDate(Date date) throws DatatypeConfigurationException {
+		XMLGregorianCalendar cal = null;
+		if (date != null) {
+			cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(new SimpleDateFormat("yyyy-MM-dd").format(date));
+		}
+		return cal;
+	}
+
+	public static XMLGregorianCalendar getXmlDateTime(Date date) throws DatatypeConfigurationException {
+		XMLGregorianCalendar cal = null;
+		if (date != null) {
+			cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(
+			    new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").format(date));
+		}
+		return cal;
+	}
+
+	public static String zipFolder(HttpServletRequest request, String folderToZip,
+	        String zipFileName, String reportType) {
+
+            
+		File toZIP = new File(folderToZip);
+		if (!toZIP.exists() || toZIP.listFiles() == null || Objects.requireNonNull(toZIP.listFiles()).length == 0) {
+			return "no new commodity record found";
+		}
+
+               
+		ZipUtil appZip = new ZipUtil(folderToZip);
+               
+		
+                
+		appZip.zipIt(Paths.get(toZIP.getParent(), zipFileName).toString());
+               
+
+		//old implementation
+		//  return request.getContextPath() + "/downloads/" + reportType + "/" + zipFileName;
+		return Paths.get(request.getContextPath(), "CMdownloads", reportType, zipFileName).toString();
 	}
 
 }
