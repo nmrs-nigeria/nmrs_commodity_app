@@ -95,7 +95,7 @@ public class NDRExtractionController {
                 String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
 
                 String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
-                System.out.println("Final response \n" + zipresponse);
+               
 
                 result.put("results", zipresponse);
 
