@@ -103,22 +103,30 @@
   </xs:complexType>
     <xs:complexType name="ItemType">
     <xs:sequence>
-    <xs:element type="xs:string" name="ItemCode"/>
+    <xs:element type="ItemCodeType" name="ItemCode"/> 
+	
                                             <xs:element type="xs:short" name="Quantity"/>
-                                            <xs:element type="xs:string" name="ExpirationDate"/>
+                                            <xs:element type="xs:date" name="ExpirationDate"/>
                                             <xs:element type="xs:string" name="Batch"/>
 				</xs:sequence>
   </xs:complexType>
    <xs:complexType name="AdjustmentType">
     <xs:sequence>
 	<xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element  name="AdjustmentTypeCode">
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element name="AdjustmentTypeCode">
 								<xs:simpleType>
           <xs:restriction base="CodeType">
             <xs:enumeration value="P" />           
           </xs:restriction>
         </xs:simpleType>
+								</xs:element>
+								<xs:element  name="SourceStockroomCode">
+								<xs:simpleType>
+          <xs:restriction base="CodeType">
+            <xs:enumeration value="M" />           
+          </xs:restriction>
+        </xs:simpleType> 
 								</xs:element>
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
@@ -127,9 +135,23 @@
    <xs:complexType name="DisposedType">
    <xs:sequence>
    <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element type="xs:string" name="DisposedTypeCode"/>
-                                <xs:element type="xs:string" name="SourceStockroomCode"/>
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element name="DisposedTypeCode">
+								<xs:simpleType>
+		  <xs:restriction base="CodeType">
+		    <xs:enumeration value="E" />
+			<xs:enumeration value="D" />
+			<xs:enumeration value="O" />
+		  </xs:restriction>
+		</xs:simpleType>		
+		                        </xs:element>
+                                <xs:element name="SourceStockroomCode">
+								<xs:simpleType>
+		  <xs:restriction base="CodeType">
+		    <xs:enumeration value="M" />
+		  </xs:restriction>
+		</xs:simpleType>						
+		                        </xs:element>
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
 				</xs:sequence>
@@ -137,10 +159,22 @@
     <xs:complexType name="DistributionType">
    <xs:sequence>
    <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element type="xs:string" name="SourceStockroomCode"/>
-                                <xs:element type="xs:string" name="DistributeTypeCode"/>
-                                <xs:element type="xs:byte" name="DepartmentCode"/>
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element  name="SourceStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	   </xs:restriction>
+	  </xs:simpleType>
+	                            </xs:element>
+                                <xs:element  name="DistributeTypeCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="D" />
+	   </xs:restriction>
+	  </xs:simpleType>
+	                            </xs:element>
+                                <xs:element type="DepartmentType" name="DepartmentCode"/> 
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
 				</xs:sequence>
@@ -148,9 +182,14 @@
     <xs:complexType name="ReceiptType">
    <xs:sequence>
       <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:byte" name="OperationTypeCode"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element type="xs:string" name="DestinationStockroomCode"/>
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element name="DestinationStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+        <xs:enumeration value="M" />
+      </xs:restriction>
+      </xs:simpleType>	
+	                            </xs:element>
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
 				</xs:sequence>
@@ -158,11 +197,22 @@
       <xs:complexType name="TransferType">
    <xs:sequence>
      <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:byte" name="OperationTypeCode"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element type="xs:string" name="SourceStockroomCode"/>
-                                <xs:element type="xs:string" name="TransferCode"/>
-                                <xs:element type="xs:string" name="InstitutionType"/>
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element name="SourceStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>	  
+                                <xs:element  name="TransferCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+		<xs:enumeration value="I" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element type="xs:string" name="InstitutionType"/>	  
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
 				</xs:sequence>
@@ -170,40 +220,61 @@
        <xs:complexType name="ReturnType">
    <xs:sequence>
     <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:string" name="OperationDate"/>
-                                <xs:element type="xs:string" name="ReturnTypeCode"/>
-                                <xs:element type="xs:string" name="DestinationStockroomCode"/>
-                                <xs:element type="xs:byte" name="DepartmentCode"/>
+                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element  name="ReturnTypeCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="D" />
+		<xs:enumeration value="I" />
+		<xs:enumeration value="P" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element name="DestinationStockroomCode">
+											<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element type="DepartmentType" name="DepartmentCode"/>   
       <xs:element name="OperationItem" type="OperationItemType"
 				maxOccurs="unbounded" minOccurs="0" />
 				</xs:sequence>
   </xs:complexType>
                 <xs:complexType name="ConsumptionReportType">
                   <xs:sequence>
-                    <xs:element name="NewConsumption" type="NewConsumptionType" maxOccurs="unbounded" minOccurs="0"
+                    <xs:element name="NewConsumption" type="NewConsumptionType" maxOccurs="unbounded" minOccurs="1"
                     />
-                    <xs:element name="ConsumptionSummary" type="ConsumptionSummaryType" minOccurs="1" maxOccurs="1"
+                    <xs:element name="ConsumptionSummary" type="ConsumptionSummaryType" maxOccurs="unbounded" minOccurs="1"
                     />
                   </xs:sequence>
                 </xs:complexType>
 				      <xs:complexType name="NewConsumptionType">
      <xs:sequence>
-                          <xs:element type="xs:string" name="ConsumptionDate"/>
-                          <xs:element type="xs:string" name="TestingPointCode"/>
-                          <xs:element type="xs:byte" name="ItemCode"/>
+                          <xs:element type="xs:date" name="ConsumptionDate"/>
+                          <xs:element type="DepartmentType" name="TestingPointCode"/>      
+                          <xs:element type="ItemCodeType" name="ItemCode"/>
                           <xs:element type="xs:string" name="ItemBatch"/>
-                          <xs:element type="xs:string" name="TotalUsed"/>
-                          <xs:element type="xs:string" name="TotalWastage-Loses"/>
-                          <xs:element type="xs:string" name="TestPurposeCode"/>
+                          <xs:element type="xs:integer" name="TotalUsed"/>
+                          <xs:element type="xs:integer" name="TotalWastage-Loses"/>
+                          <xs:element  name="TestPurposeCode">
+						  <xs:simpleType>
+	  <xs:restriction base="CodeType">
+		<xs:enumeration value="I" />
+		<xs:enumeration value="C" />	
+	  </xs:restriction>
+      </xs:simpleType>
+	                      </xs:element>
                         </xs:sequence>
   </xs:complexType>
    <xs:complexType name="ConsumptionSummaryType">
      <xs:sequence>
-                            <xs:element type="xs:byte" name="DepartmentCode"/>
-                          <xs:element type="xs:byte" name="ItemCode"/>
-                          <xs:element type="xs:byte" name="TotalQuantityReceived"/>
-                          <xs:element type="xs:byte" name="TotalQuantityConsumed"/>
-                          <xs:element type="xs:byte" name="StockBalance"/>
+                            <xs:element type="DepartmentType" name="DepartmentCode"/>
+                          <xs:element type="ItemCodeType" name="ItemCode"/>
+                          <xs:element type="xs:integer" name="TotalQuantityReceived"/>
+                          <xs:element type="xs:integer" name="TotalQuantityConsumed"/>
+                          <xs:element type="xs:integer" name="StockBalance"/>  
                         </xs:sequence>
   </xs:complexType>
 
@@ -212,6 +283,20 @@
     <xs:restriction base="xs:string">
       <xs:minLength value="0" />
       <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+
+<xs:simpleType name="ItemCodeType">
+   <xs:restriction base="xs:positiveInteger">
+	<xs:minInclusive value="1" />
+        <xs:maxInclusive value="7" />
+    </xs:restriction>
+  </xs:simpleType>
+
+<xs:simpleType name="DepartmentType">
+   <xs:restriction base="xs:positiveInteger">
+	<xs:minInclusive value="1" />
+        <xs:maxInclusive value="17" />
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
