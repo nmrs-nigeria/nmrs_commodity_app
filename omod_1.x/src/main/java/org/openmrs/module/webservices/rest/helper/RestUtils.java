@@ -164,19 +164,14 @@ public class RestUtils {
 	public static String zipFolder(HttpServletRequest request, String folderToZip,
 	        String zipFileName, String reportType) {
 
-            
 		File toZIP = new File(folderToZip);
 		if (!toZIP.exists() || toZIP.listFiles() == null || Objects.requireNonNull(toZIP.listFiles()).length == 0) {
 			return "no new commodity record found";
 		}
 
-               
 		ZipUtil appZip = new ZipUtil(folderToZip);
-               
-		
-                
+
 		appZip.zipIt(Paths.get(toZIP.getParent(), zipFileName).toString());
-               
 
 		//old implementation
 		//  return request.getContextPath() + "/downloads/" + reportType + "/" + zipFileName;
