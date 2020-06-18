@@ -9,6 +9,7 @@ import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -27,6 +28,7 @@ import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
+import org.openmrs.module.openhmis.inventory.api.model.DistributionOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
@@ -35,6 +37,7 @@ import org.openmrs.module.openhmis.inventory.web.ModuleWebConstants;
 import org.openmrs.module.openhmis.ndrmodel.ConsumptionReportType;
 import org.openmrs.module.openhmis.ndrmodel.ConsumptionSummaryType;
 import org.openmrs.module.openhmis.ndrmodel.Container;
+import org.openmrs.module.openhmis.ndrmodel.DistributionType;
 import org.openmrs.module.openhmis.ndrmodel.InventoryReportType;
 import org.openmrs.module.openhmis.ndrmodel.MessageHeaderType;
 import org.openmrs.module.openhmis.ndrmodel.NewConsumptionType;
@@ -56,192 +59,202 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping(value = ModuleWebConstants.NDR_EXTRACTION_ROOT)
 public class NDRExtractionController {
 
-    private static final Log LOG = LogFactory.getLog(NDRExtractionController.class);
-    private IItemDataService itemDataService;
-    private IDepartmentDataService departmentService;
-    private IStockOperationDataService stockOperationDataService;
-    private IStockOperationTransactionDataService stockOperationTransactionDataService;
-    private IStockOperationTypeDataService stockOperationTypeDataService;
-    private Date startDate;
-    private Date endDate;
+	private static final Log LOG = LogFactory.getLog(NDRExtractionController.class);
+	private IItemDataService itemDataService;
+	private IDepartmentDataService departmentService;
+	private IStockOperationDataService stockOperationDataService;
+	private IStockOperationTransactionDataService stockOperationTransactionDataService;
+	private IStockOperationTypeDataService stockOperationTypeDataService;
+	private Date startDate;
+	private Date endDate;
 
-    @ResponseBody
-    @RequestMapping(method = RequestMethod.GET)
-    public SimpleObject get(@RequestParam(value = "startDate", required = true) String startDateString,
-            @RequestParam(value = "endDate", required = true) String endDateString,
-            HttpServletRequest request, HttpServletResponse response) {
+	@ResponseBody
+	@RequestMapping(method = RequestMethod.GET)
+	public SimpleObject get(@RequestParam(value = "startDate", required = true) String startDateString,
+	        @RequestParam(value = "endDate", required = true) String endDateString,
+	        HttpServletRequest request, HttpServletResponse response) {
 
-        this.itemDataService = Context.getService(IItemDataService.class);
-        this.departmentService = Context.getService(IDepartmentDataService.class);
-        this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
-        this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
-        this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
+		this.itemDataService = Context.getService(IItemDataService.class);
+		this.departmentService = Context.getService(IDepartmentDataService.class);
+		this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
+		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
+		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
 
-        SimpleObject result = new SimpleObject();
-        String datimCode = RestUtils.getFacilityLocalId();
-        String facilityName = RestUtils.getFacilityName();
-        String IPShortName = RestUtils.getIPShortName();
-        String reportType = "Commodity";
+		SimpleObject result = new SimpleObject();
+		String datimCode = RestUtils.getFacilityLocalId();
+		String facilityName = RestUtils.getFacilityName();
+		String IPShortName = RestUtils.getIPShortName();
+		String reportType = "Commodity";
 
-        // Provider com.sun.xml.internal.bind.v2.ContextFactory could not be instantiated: javax.xml.bind.JAXBException: 
-        // "org.openmrs.module.openhmis.ndrmodel" doesnt contain ObjectFactory.class or jaxb.index
-        JAXBContext jaxbContext;
-        try {
+		// Provider com.sun.xml.internal.bind.v2.ContextFactory could not be instantiated: javax.xml.bind.JAXBException: 
+		// "org.openmrs.module.openhmis.ndrmodel" doesnt contain ObjectFactory.class or jaxb.index
+		JAXBContext jaxbContext;
+		try {
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            this.startDate = dateFormat.parse(startDateString);
-            this.endDate = dateFormat.parse(endDateString);
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			this.startDate = dateFormat.parse(startDateString);
+			this.endDate = dateFormat.parse(endDateString);
 
-            System.out.println("about to create jaxb context");
-            // jaxbContext = JAXBContext.newInstance("org.openmrs.module.openhmis.ndrmodel");
-            jaxbContext = JAXBContext.newInstance(Container.class);
-            System.out.println("done creating jaxb context");
-            System.out.println("about to create marshaller");
-            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            System.out.println("done creating marshaller");
-            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			System.out.println("about to create jaxb context");
+			// jaxbContext = JAXBContext.newInstance("org.openmrs.module.openhmis.ndrmodel");
+			jaxbContext = JAXBContext.newInstance(Container.class);
+			System.out.println("done creating jaxb context");
+			System.out.println("about to create marshaller");
+			Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+			System.out.println("done creating marshaller");
+			jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
-            String formattedDate = new SimpleDateFormat("ddMMyy").format(new Date());
+			String formattedDate = new SimpleDateFormat("ddMMyy").format(new Date());
 
-            Container reportObject = extractData(this.startDate, this.endDate);
-            if (reportObject != null) {
+			Container reportObject = extractData(this.startDate, this.endDate);
+			if (reportObject != null) {
 
-                System.out.println("starting xml creating process");
-                LOG.info("Testing log4j");
-                String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
+				System.out.println("starting xml creating process");
+				LOG.info("Testing log4j");
+				String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
 
-                String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
+				String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
 
-                String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
+				String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
 
-                File aXMLFile = new File(xmlFile);
-                Boolean b;
+				File aXMLFile = new File(xmlFile);
+				Boolean b;
 
-                b = aXMLFile.createNewFile();
-                System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
-                writeFile(reportObject, aXMLFile, jaxbMarshaller);
+				b = aXMLFile.createNewFile();
+				System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
+				writeFile(reportObject, aXMLFile, jaxbMarshaller);
 
-                String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
+				String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
 
-                String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
+				String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
 
-                result.put("results", zipresponse);
+				result.put("results", zipresponse);
 
-            }
+			}
 
-        } catch (Exception ex) {
-            result.put("error", ex.getMessage());
-            System.err.println(ex.getStackTrace());
+		} catch (Exception ex) {
+			result.put("error", ex.getMessage());
+			System.err.println(ex.getStackTrace());
 
-        }
+		}
 
-        return result;
+		return result;
 
-    }
+	}
 
-    private Container extractData(Date startDate, Date endDate) throws DatatypeConfigurationException {
+	private Container extractData(Date startDate, Date endDate) throws DatatypeConfigurationException {
 
-        //	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
-        //	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
-        Container ndrReportTemplate = new Container();
-        MessageHeaderType messageHeaderType = new MessageHeaderType();
-        //	messageHeaderType.setExportEndDate(convertEndDate);
-        //	messageHeaderType.setExportStartDate(convertStartDate);
-        //	messageHeaderType.setMessageCreationDateTime(RestUtils.getXmlDateTime(new Date()));
-        messageHeaderType.setMessageStatusCode("UPDATED");
-        messageHeaderType.setMessageUniqueID(UUID.randomUUID().toString());
-        messageHeaderType.setMessageVersion(1.0f);
+		//	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
+		//	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
+		Container ndrReportTemplate = new Container();
+		MessageHeaderType messageHeaderType = new MessageHeaderType();
+		//	messageHeaderType.setExportEndDate(convertEndDate);
+		//	messageHeaderType.setExportStartDate(convertStartDate);
+		//	messageHeaderType.setMessageCreationDateTime(RestUtils.getXmlDateTime(new Date()));
+		messageHeaderType.setMessageStatusCode("UPDATED");
+		messageHeaderType.setMessageUniqueID(UUID.randomUUID().toString());
+		messageHeaderType.setMessageVersion(1.0f);
 
-        ndrReportTemplate.setMessageHeader(messageHeaderType);
+		ndrReportTemplate.setMessageHeader(messageHeaderType);
 
-        Byte b = 1;
-        Byte c = 2;
+		Byte b = 1;
+		Byte c = 2;
 
-        InventoryReportType inventoryReportType = new InventoryReportType();
-        ConsumptionReportType consumptionReportType = new ConsumptionReportType();
+		InventoryReportType inventoryReportType = new InventoryReportType();
+		ConsumptionReportType consumptionReportType = new ConsumptionReportType();
 
-        ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
-        consumptionSummaryType.setDepartmentCode(b);
-        consumptionSummaryType.setItemCode(c);
-        consumptionSummaryType.setStockBalance(getRandomValue());
-        consumptionSummaryType.setTotalQuantityConsumed(getRandomValue());
-        consumptionSummaryType.setTotalQuantityReceived(getRandomValue());
+		ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
+		consumptionSummaryType.setDepartmentCode(b);
+		consumptionSummaryType.setItemCode(c);
+		consumptionSummaryType.setStockBalance(getRandomValue());
+		consumptionSummaryType.setTotalQuantityConsumed(getRandomValue());
+		consumptionSummaryType.setTotalQuantityReceived(getRandomValue());
 
-        consumptionReportType.getConsumptionSummary().add(consumptionSummaryType);
+		consumptionReportType.getConsumptionSummary().add(consumptionSummaryType);
 
-        NewConsumptionType newConsumptionType = new NewConsumptionType();
-        newConsumptionType.setConsumptionDate(RestUtils.getXmlDate(new Date()));
-        newConsumptionType.setItemBatch("HY78383");
-        newConsumptionType.setItemCode(getRandomValue().intValue());
-        newConsumptionType.setTestPurposeCode("testing");
-        newConsumptionType.setTestingPointCode(getRandomValue().intValue());
-        newConsumptionType.setTotalUsed(getRandomValue());
-        newConsumptionType.setTotalWastageLoses(getRandomValue());
+		NewConsumptionType newConsumptionType = new NewConsumptionType();
+		newConsumptionType.setConsumptionDate(RestUtils.getXmlDate(new Date()));
+		newConsumptionType.setItemBatch("HY78383");
+		newConsumptionType.setItemCode(getRandomValue().intValue());
+		newConsumptionType.setTestPurposeCode("testing");
+		newConsumptionType.setTestingPointCode(getRandomValue().intValue());
+		newConsumptionType.setTotalUsed(getRandomValue());
+		newConsumptionType.setTotalWastageLoses(getRandomValue());
 
-        consumptionReportType.getNewConsumption().add(newConsumptionType);
+		consumptionReportType.getNewConsumption().add(newConsumptionType);
 
-        inventoryReportType.setConsumptionReport(consumptionReportType);
-        ndrReportTemplate.setInventoryReport(inventoryReportType);
+		inventoryReportType.setConsumptionReport(consumptionReportType);
+		ndrReportTemplate.setInventoryReport(inventoryReportType);
 
-        return ndrReportTemplate;
-    }
+		return ndrReportTemplate;
+	}
 
-    private TaskOperationType extractTaskOperation() {
+	private TaskOperationType extractTaskOperation() {
 
-        SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
-         List<StockOperation> stockOps = null;
-         
-          PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-        
-        //  searchConsumptionSummary.setDepartment();
-        // searchConsumptionSummary.setItem(searchItem);
-        searchConsumptionSummary.setStartDate(this.startDate);
-        searchConsumptionSummary.setEndDate(this.endDate);
-        searchConsumptionSummary.setOperationStatus(StockOperationStatus.COMPLETED);
-        
-        
-        //Distribution
-         IStockOperationType stockOperationType = getStockOperationType(ConstantUtils.DISTRIBUTION_TYPE_UUID);
-        searchConsumptionSummary.setOperationType(stockOperationType);
-        
-        
-        
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<StockOperation> stockOps = null;
 
-        stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, pagingInfo);
+		//  searchConsumptionSummary.setDepartment();
+		// searchConsumptionSummary.setItem(searchItem);
+		searchConsumptionSummary.setStartDate(this.startDate);
+		searchConsumptionSummary.setEndDate(this.endDate);
+		searchConsumptionSummary.setOperationStatus(StockOperationStatus.COMPLETED);
 
-    }
+		//Distribution
+		IStockOperationType stockOperationType = getStockOperationType(ConstantUtils.DISTRIBUTION_TYPE_UUID);
+		searchConsumptionSummary.setOperationType(stockOperationType);
 
-    private IStockOperationType getStockOperationType(String stockOperationTypeUuid) {
-        IStockOperationType stockOperationType = null;
-     //   String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
-        if (StringUtils.isNotEmpty(stockOperationTypeUuid)) {
-            stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
-            if (stockOperationType == null) {
-                LOG.warn("Could not parse Stock Operation Type '" + stockOperationTypeUuid + "'");
-                throw new IllegalArgumentException("The type '" + stockOperationTypeUuid
-                        + "' is not a valid operation type.");
-            }
-        }
+		stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
 
-        return stockOperationType;
-    }
+		return null;
 
-    private void writeFile(Container ndrReportTemplate, File file, Marshaller jaxbMarshaller) {
+	}
 
-        try {
-            //	javax.xml.validation.Validator validator = jaxbMarshaller.getSchema().newValidator();
-            jaxbMarshaller.marshal(ndrReportTemplate, file);
+	private void mapAndExtractDistribution(List<StockOperation> stockOperations) {
 
-        } catch (Exception ex) {
-            System.out.println("File " + file.getName() + " throw an exception \n" + ex.getMessage());
-            //	throw ex;
-        }
+		List<DistributionType> distributions = new ArrayList<>();
 
-    }
+		for (StockOperation st : stockOperations) {
 
-    private BigInteger getRandomValue() {
-        final int a = 10;
-        return BigInteger.valueOf(Math.round(Math.random() * a));
-    }
+			DistributionType distributionType = new DistributionType();
+
+			//    distributionType.setDepartmentCode();
+
+		}
+
+	}
+
+	private IStockOperationType getStockOperationType(String stockOperationTypeUuid) {
+		IStockOperationType stockOperationType = null;
+		//   String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		if (StringUtils.isNotEmpty(stockOperationTypeUuid)) {
+			stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
+			if (stockOperationType == null) {
+				LOG.warn("Could not parse Stock Operation Type '" + stockOperationTypeUuid + "'");
+				throw new IllegalArgumentException("The type '" + stockOperationTypeUuid
+				        + "' is not a valid operation type.");
+			}
+		}
+
+		return stockOperationType;
+	}
+
+	private void writeFile(Container ndrReportTemplate, File file, Marshaller jaxbMarshaller) {
+
+		try {
+			//	javax.xml.validation.Validator validator = jaxbMarshaller.getSchema().newValidator();
+			jaxbMarshaller.marshal(ndrReportTemplate, file);
+
+		} catch (Exception ex) {
+			System.out.println("File " + file.getName() + " throw an exception \n" + ex.getMessage());
+			//	throw ex;
+		}
+
+	}
+
+	private BigInteger getRandomValue() {
+		final int a = 10;
+		return BigInteger.valueOf(Math.round(Math.random() * a));
+	}
 
 }
