@@ -200,6 +200,11 @@ public class NDRExtractionController {
 		inventoryReportType.setConsumptionReport(consumptionReportType);
 		ndrReportTemplate.setInventoryReport(inventoryReportType);
 
+		TaskOperationType taskOperationType = extractTaskOperation();
+		if (taskOperationType != null) {
+			inventoryReportType.setTaskOperation(taskOperationType);
+		}
+
 		return ndrReportTemplate;
 	}
 
