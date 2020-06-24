@@ -18,18 +18,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
-import org.openmrs.module.openhmis.inventory.api.model.DistributionOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
@@ -58,7 +56,6 @@ import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.helper.ConstantUtils;
 import org.openmrs.module.webservices.rest.helper.DictionaryMaps;
 import org.openmrs.module.webservices.rest.helper.RestUtils;
-import org.openmrs.module.webservices.rest.resource.PagingUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -105,9 +102,9 @@ public class NDRExtractionController {
 		JAXBContext jaxbContext;
 		try {
 
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			this.startDate = dateFormat.parse(startDateString);
-			this.endDate = dateFormat.parse(endDateString);
+			//	SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			this.startDate = RestUtils.parseCustomOpenhmisDateString(startDateString);
+			this.endDate = RestUtils.parseCustomOpenhmisDateString(endDateString);
 
 			System.out.println("about to create jaxb context");
 			// jaxbContext = JAXBContext.newInstance("org.openmrs.module.openhmis.ndrmodel");
@@ -120,7 +117,7 @@ public class NDRExtractionController {
 
 			String formattedDate = new SimpleDateFormat("ddMMyy").format(new Date());
 
-			Container reportObject = extractData(this.startDate, this.endDate);
+			Container reportObject = extractData();
 			if (reportObject != null) {
 
 				System.out.println("starting xml creating process");
@@ -148,7 +145,7 @@ public class NDRExtractionController {
 
 		} catch (Exception ex) {
 			result.put("error", ex.getMessage());
-			System.err.println(ex.getStackTrace());
+			System.err.println(ex.getMessage());
 
 		}
 
@@ -156,7 +153,7 @@ public class NDRExtractionController {
 
 	}
 
-	private Container extractData(Date startDate, Date endDate) throws DatatypeConfigurationException {
+	private Container extractData() throws Exception {
 
 		//	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
 		//	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
@@ -187,7 +184,11 @@ public class NDRExtractionController {
 		consumptionReportType.getConsumptionSummary().add(consumptionSummaryType);
 
 		NewConsumptionType newConsumptionType = new NewConsumptionType();
-		newConsumptionType.setConsumptionDate(RestUtils.getXmlDate(new Date()));
+		System.out.println("about to create xml date");
+		XMLGregorianCalendar xmldate = RestUtils.getXmlDate(new Date());
+		System.out.println("finished creating xml date");
+		newConsumptionType.setConsumptionDate(xmldate);
+		System.out.println("finished setting xml date");
 		newConsumptionType.setItemBatch("HY78383");
 		newConsumptionType.setItemCode(getRandomValue().intValue());
 		newConsumptionType.setTestPurposeCode("testing");

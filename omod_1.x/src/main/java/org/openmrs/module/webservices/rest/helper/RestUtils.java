@@ -28,12 +28,13 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.Utility;
 import org.xml.sax.SAXException;
 
+// org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl cannot be cast to javax.xml.datatype.DatatypeFactory
 /**
  * @author MORRISON.I
  */
 public class RestUtils {
 
-	private static final Log LOG = LogFactory.getLog(Utility.class);
+	//	private static final Log LOG = LogFactory.getLog(RestUtils.class);
 	private static final int DATE_ONLY_TEXT_LENGTH = 10;
 	private static final int DATE_TIME_TEXT_LENGTH = 16;
 	private static final int DATE_TIME_SECOND_TEXT_LENGTH = 19;
@@ -56,12 +57,12 @@ public class RestUtils {
 
 		Date result = null;
 		if (dateFormat == null) {
-			LOG.warn("Could not parse the date string '" + dateText + "'.");
+			//		LOG.warn("Could not parse the date string '" + dateText + "'.");
 		} else {
 			try {
 				result = dateFormat.parse(dateText);
 			} catch (ParseException pex) {
-				LOG.warn("Could not parse the date string '" + dateText + "'.", pex);
+				//		LOG.warn("Could not parse the date string '" + dateText + "'.", pex);
 			}
 		}
 
@@ -144,10 +145,15 @@ public class RestUtils {
 		return jaxbMarshaller;
 	}
 
-	public static XMLGregorianCalendar getXmlDate(Date date) throws DatatypeConfigurationException {
+	public static XMLGregorianCalendar getXmlDate(Date date) throws Exception {
 		XMLGregorianCalendar cal = null;
+		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
 		if (date != null) {
-			cal = DatatypeFactory.newInstance().newXMLGregorianCalendar(new SimpleDateFormat("yyyy-MM-dd").format(date));
+			System.out.println("about to create datatypefactory");
+			DatatypeFactory df = DatatypeFactory.newInstance();
+			System.out.println("finished creating datatypefactory");
+			cal = df
+			        .newXMLGregorianCalendar(dateString);
 		}
 		return cal;
 	}

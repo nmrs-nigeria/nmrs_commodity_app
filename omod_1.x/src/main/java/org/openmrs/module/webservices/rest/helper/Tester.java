@@ -5,20 +5,27 @@
  */
 package org.openmrs.module.webservices.rest.helper;
 
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.XMLGregorianCalendar;
+import org.openmrs.module.openhmis.ndrmodel.NewConsumptionType;
+
 /**
  * @author MORRISON.I
  */
 public class Tester {
 
 	public static void main(String args[]) {
-		//    System.out.println(Byte.parseByte(String.valueOf(Math.round(Math.random() * 10))));
-		//		java.net.URL xsdFilePath = Thread.currentThread().getContextClassLoader().getResource("NDR_CM_1.0.xsd");
-		//		if (xsdFilePath != null) {
-		//			System.out.println("Not null");
-		//			System.out.println(xsdFilePath);
-		//		} else {
-		//			System.err.println("Could not find file");
-		//		}
+		try {
+			XMLGregorianCalendar xmldate = RestUtils.getXmlDate(new Date());
+			NewConsumptionType newConsumptionType = new NewConsumptionType();
+			newConsumptionType.setConsumptionDate(xmldate);
+			System.out.println(xmldate);
+		} catch (Exception ex) {
+			Logger.getLogger(Tester.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
 
 }

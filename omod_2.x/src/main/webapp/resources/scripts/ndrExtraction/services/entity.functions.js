@@ -29,7 +29,7 @@
 		};
 
 		function formatDate(date) {
-			return $filter('date')(new Date(date), "dd-MM-yyyy");
+			 return $filter('date')(new Date(date), "yyyy-MM-dd");
 		}
 
 		function onChangeDatePicker(id, successfulCallback) {

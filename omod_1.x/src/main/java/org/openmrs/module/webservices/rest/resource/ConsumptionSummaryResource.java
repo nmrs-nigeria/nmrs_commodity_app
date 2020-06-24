@@ -118,63 +118,68 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 	private PageableResult searchConsumptionSummary(RequestContext context) {
 
-        List<ConsumptionSummary> fromConsumption = null;
-        List<ConsumptionSummary> fromReceived = null;
-        List<ConsumptionSummary> finalConsumptionSummarys = null;
+		List<ConsumptionSummary> fromConsumption = null;
+		List<ConsumptionSummary> fromReceived = null;
+		List<ConsumptionSummary> finalConsumptionSummarys = null;
 
-        PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
-        Item searchItem = getItem(context);
-        Department searchDepartment = getDepartment(context);
-        StockOperationStatus status = StockOperationStatus.COMPLETED;
-        IStockOperationType stockOperationType = getStockOperationType(context);
-        Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
-        Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
+		Item searchItem = getItem(context);
+		Department searchDepartment = getDepartment(context);
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		IStockOperationType stockOperationType = getStockOperationType(context);
+		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
+		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
 
-        SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
 
-        searchConsumptionSummary.setDepartment(searchDepartment);
-        searchConsumptionSummary.setItem(searchItem);
-        searchConsumptionSummary.setStartDate(startDate);
-        searchConsumptionSummary.setEndDate(endDate);
-        searchConsumptionSummary.setOperationStatus(status);
-        searchConsumptionSummary.setOperationType(stockOperationType);
+		searchConsumptionSummary.setDepartment(searchDepartment);
+		searchConsumptionSummary.setItem(searchItem);
+		searchConsumptionSummary.setStartDate(startDate);
+		searchConsumptionSummary.setEndDate(endDate);
+		searchConsumptionSummary.setOperationStatus(status);
+		searchConsumptionSummary.setOperationType(stockOperationType);
 
-        List<StockOperation> stockOps = null;
-        List<Consumption> consumptions = new ArrayList<>();
+		List<StockOperation> stockOps = null;
+		List<Consumption> consumptions = new ArrayList<>();
 
-        stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, pagingInfo);
-        
-            System.out.println("stock operations result: "+stockOps.size());
-            
-        fromReceived = getSummaryFromStockOperation(stockOps,searchDepartment);
-        
-            System.out.println("After stock summary: "+fromReceived.size());
+		stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, pagingInfo);
 
-        consumptions = consumptionDataService.getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(), 
-                searchConsumptionSummary.getEndDate(), pagingInfo);
-        
-         System.out.println("stock consumptions result: "+consumptions.size());
-        
-        //filter out the Department
-        consumptions = consumptions.stream().filter(a -> a.getDepartment().equals(searchDepartment))
-                .collect(Collectors.toList());
-        fromConsumption = getSummaryFromConsumption(consumptions, searchDepartment);
-        
-         System.out.println("stock consumptions aggregate result  : "+fromConsumption.size());
+		System.out.println("stock operations result: " + stockOps.size());
 
-         List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
-         
-        tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, searchDepartment);
-        
-        finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
-        
-            System.out.println("final consumption summary is "+finalConsumptionSummarys.size());
+		//        fromReceived = getSummaryFromStockOperation(stockOps,searchDepartment);
+		//        
+		//            System.out.println("After stock summary: "+fromReceived.size());
+		//
+		//        consumptions = consumptionDataService
+		// .getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(), 
+		//                searchConsumptionSummary.getEndDate(), pagingInfo);
+		//        
+		//         System.out.println("stock consumptions result: "+consumptions.size());
+		//        
+		//        //filter out the Department
+		//        consumptions = consumptions.stream().filter(a -> a.getDepartment().equals(searchDepartment))
+		//                .collect(Collectors.toList());
+		//        fromConsumption = getSummaryFromConsumption(consumptions, searchDepartment);
+		//        
+		//         System.out.println("stock consumptions aggregate result  : "+fromConsumption.size());
+		//
+		//         List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
+		//         
+		//        tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, searchDepartment);
 
-        return new AlreadyPagedWithLength<ConsumptionSummary>(context, finalConsumptionSummarys, pagingInfo.hasMoreResults(),
-                pagingInfo.getTotalRecordCount());
+		//  finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
 
-    }
+		finalConsumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
+		    searchConsumptionSummary, pagingInfo, distinctItems);
+
+		System.out.println("final consumption summary is " + finalConsumptionSummarys.size());
+
+		return new AlreadyPagedWithLength<ConsumptionSummary>(context, finalConsumptionSummarys,
+		        pagingInfo.hasMoreResults(),
+		        pagingInfo.getTotalRecordCount());
+
+	}
 
 	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
 
