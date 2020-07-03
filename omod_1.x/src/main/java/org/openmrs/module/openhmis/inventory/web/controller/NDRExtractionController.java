@@ -25,12 +25,16 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
+import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
@@ -80,6 +84,9 @@ public class NDRExtractionController {
 	private Date startDate;
 	private Date endDate;
 	private DictionaryMaps dictionaryMaps = new DictionaryMaps();
+	private List<Department> allDepartments = null;
+	private List<Item> allItems = null;
+	private IConsumptionDataService consumptionDataService;
 
 	//general date formats
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -96,6 +103,7 @@ public class NDRExtractionController {
 		this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
+		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
 
 		SimpleObject result = new SimpleObject();
 		String datimCode = RestUtils.getFacilityLocalId();
@@ -296,6 +304,65 @@ public class NDRExtractionController {
 		return taskOperationType;
 
 	}
+
+	private List<ConsumptionSummaryType> extractConsumptionReport() {
+
+		List<StockOperation> stockOps;
+		List<ConsumptionSummaryType> finalConsumptionSummaryTypes = new ArrayList<>();
+
+		allDepartments = departmentService.getAll();
+		allItems = itemDataService.getAll();
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		IStockOperationType stockOperationType = getStockOperationType();
+
+		for (Department department : allDepartments) {
+
+			searchConsumptionSummary.setDepartment(department);
+			//	searchConsumptionSummary.setItem(searchItem);
+			searchConsumptionSummary.setStartDate(startDate);
+			searchConsumptionSummary.setEndDate(endDate);
+			searchConsumptionSummary.setOperationStatus(status);
+			searchConsumptionSummary.setOperationType(stockOperationType);
+
+			stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+			List<ConsumptionSummary> consumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
+			    searchConsumptionSummary, null, allItems);
+			if (!consumptionSummarys.isEmpty()) {
+				List<ConsumptionSummaryType> consumptionSummaryTypes = convertToConsumptionSummaryType(consumptionSummarys);
+				finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
+			}
+
+		}
+
+		return finalConsumptionSummaryTypes;
+
+	}
+
+	private List<ConsumptionSummaryType> convertToConsumptionSummaryType(List<ConsumptionSummary> consumptionSummarys) {
+
+        List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
+        consumptionSummarys.stream().forEach(a -> {
+
+            if (a.getTotalQuantityReceived() > 0 || a.getTotalQuantityConsumed() > 0) {
+                ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
+                consumptionSummaryType.setDepartmentCode(dictionaryMaps.getDepartmentMappings().
+                        get(a.getDepartment().getUuid()));
+                consumptionSummaryType.setItemCode(dictionaryMaps.getItemMappings().get(a.getItem().getUuid()));
+                consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
+                consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
+                consumptionSummaryType.setTotalQuantityReceived(BigInteger.valueOf(a.getTotalQuantityReceived()));
+
+                consumptionSummaryTypes.add(consumptionSummaryType);
+            }
+
+        });
+
+        return consumptionSummaryTypes;
+
+    }
 
 	private List<DistributionType> mapAndExtractDistribution(List<StockOperation> stockOperations) {
 
@@ -565,19 +632,19 @@ public class NDRExtractionController {
 		return BigInteger.valueOf(Math.round(Math.random() * a));
 	}
 
-	private javax.xml.datatype.XMLGregorianCalendar getXmlDate(Date date) throws DatatypeConfigurationException {
-
-		javax.xml.datatype.XMLGregorianCalendar cal = null;
-		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
-		if (date != null) {
-			System.out.println("about to create datatypefactory");
-			javax.xml.datatype.DatatypeFactory df = javax.xml.datatype.DatatypeFactory.newInstance();
-			// DatatypeFactoryImpl df = new DatatypeFactoryImpl();
-			System.out.println("finished creating datatypefactory");
-			cal = df
-			        .newXMLGregorianCalendar(dateString);
+	private IStockOperationType getStockOperationType() {
+		IStockOperationType stockOperationType = null;
+		String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		if (StringUtils.isNotEmpty(stockOperationTypeUuid)) {
+			stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
+			if (stockOperationType == null) {
+				LOG.warn("Could not parse Stock Operation Type '" + stockOperationTypeUuid + "'");
+				throw new IllegalArgumentException("The type '" + stockOperationTypeUuid
+				        + "' is not a valid operation type.");
+			}
 		}
-		return cal;
+
+		return stockOperationType;
 	}
 
 }
