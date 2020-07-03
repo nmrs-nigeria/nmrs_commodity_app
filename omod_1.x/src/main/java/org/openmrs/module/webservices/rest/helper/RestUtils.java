@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import javax.xml.validation.SchemaFactory;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.Utility;
 import org.xml.sax.SAXException;
@@ -145,7 +147,8 @@ public class RestUtils {
 		return jaxbMarshaller;
 	}
 
-	public static XMLGregorianCalendar getXmlDate(Date date) throws Exception {
+	public static XMLGregorianCalendar getXmlDate(Date date) throws DatatypeConfigurationException {
+
 		XMLGregorianCalendar cal = null;
 		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
 		if (date != null) {

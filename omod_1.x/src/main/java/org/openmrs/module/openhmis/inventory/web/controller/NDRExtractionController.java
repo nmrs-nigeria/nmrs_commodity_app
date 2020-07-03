@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -78,6 +80,10 @@ public class NDRExtractionController {
 	private Date startDate;
 	private Date endDate;
 	private DictionaryMaps dictionaryMaps = new DictionaryMaps();
+
+	//general date formats
+	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
@@ -159,12 +165,13 @@ public class NDRExtractionController {
 		//	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
 		Container ndrReportTemplate = new Container();
 		MessageHeaderType messageHeaderType = new MessageHeaderType();
-		//	messageHeaderType.setExportEndDate(convertEndDate);
-		//	messageHeaderType.setExportStartDate(convertStartDate);
-		//	messageHeaderType.setMessageCreationDateTime(RestUtils.getXmlDateTime(new Date()));
+		messageHeaderType.setExportEndDate(dateTimeFormat.format(endDate));
+		messageHeaderType.setExportStartDate(dateTimeFormat.format(startDate));
+		messageHeaderType.setMessageCreationDateTime(dateTimeFormat.format(new Date()));
 		messageHeaderType.setMessageStatusCode("UPDATED");
 		messageHeaderType.setMessageUniqueID(UUID.randomUUID().toString());
 		messageHeaderType.setMessageVersion(1.0f);
+		messageHeaderType.setXmlType("commodity");
 
 		ndrReportTemplate.setMessageHeader(messageHeaderType);
 
@@ -185,9 +192,7 @@ public class NDRExtractionController {
 
 		NewConsumptionType newConsumptionType = new NewConsumptionType();
 		System.out.println("about to create xml date");
-		XMLGregorianCalendar xmldate = RestUtils.getXmlDate(new Date());
-		System.out.println("finished creating xml date");
-		newConsumptionType.setConsumptionDate(xmldate);
+		newConsumptionType.setConsumptionDate(dateFormat.format(new Date()));
 		System.out.println("finished setting xml date");
 		newConsumptionType.setItemBatch("HY78383");
 		newConsumptionType.setItemCode(getRandomValue().intValue());
@@ -309,7 +314,7 @@ public class NDRExtractionController {
 					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
 					        .get(ConstantUtils.DEPARTMENT_STRING));
 				}
-				distributionType.setOperationDate(RestUtils.getXmlDate(st.getDateCreated()));
+				distributionType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				distributionType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
@@ -346,7 +351,7 @@ public class NDRExtractionController {
 			try {
 				receiptType = new ReceiptType();
 				receiptType.setOperationID(st.getOperationNumber());
-				receiptType.setOperationDate(RestUtils.getXmlDate(st.getDateCreated()));
+				receiptType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				receiptType.setDestinationStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
@@ -387,7 +392,7 @@ public class NDRExtractionController {
 					adjustmentType.setAdjustmentTypeCode(dictionaryMaps.getAdjustmentTypeMappings()
 					        .get(st.getAdjustmentKind().toLowerCase()));
 				}
-				adjustmentType.setOperationDate(RestUtils.getXmlDate(st.getDateCreated()));
+				adjustmentType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				adjustmentType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
@@ -435,7 +440,7 @@ public class NDRExtractionController {
 					        .get(ConstantUtils.INSTITUTION_STRING));
 				}
 
-				returnType.setOperationDate(RestUtils.getXmlDate(st.getDateCreated()));
+				returnType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				returnType.setDestinationStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
@@ -481,7 +486,7 @@ public class NDRExtractionController {
 					// TODO    transferType.setInstitutionType(value);
 				}
 
-				transferType.setOperationDate(RestUtils.getXmlDate(st.getDateCreated()));
+				transferType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				transferType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
@@ -513,7 +518,7 @@ public class NDRExtractionController {
             ItemType operationItemType = new ItemType();
             operationItemType.setBatch(a.getItemBatch());
             try {
-                operationItemType.setExpirationDate(RestUtils.getXmlDate(a.getExpiration()));
+                operationItemType.setExpirationDate(dateFormat.format(a.getExpiration()));
             } catch (Exception ex) {
                 System.out.println("Error occured while pulling ITEM " + ex.getMessage());
             }
@@ -558,6 +563,21 @@ public class NDRExtractionController {
 	private BigInteger getRandomValue() {
 		final int a = 10;
 		return BigInteger.valueOf(Math.round(Math.random() * a));
+	}
+
+	private javax.xml.datatype.XMLGregorianCalendar getXmlDate(Date date) throws DatatypeConfigurationException {
+
+		javax.xml.datatype.XMLGregorianCalendar cal = null;
+		String dateString = new SimpleDateFormat("yyyy-MM-dd").format(date);
+		if (date != null) {
+			System.out.println("about to create datatypefactory");
+			javax.xml.datatype.DatatypeFactory df = javax.xml.datatype.DatatypeFactory.newInstance();
+			// DatatypeFactoryImpl df = new DatatypeFactoryImpl();
+			System.out.println("finished creating datatypefactory");
+			cal = df
+			        .newXMLGregorianCalendar(dateString);
+		}
+		return cal;
 	}
 
 }

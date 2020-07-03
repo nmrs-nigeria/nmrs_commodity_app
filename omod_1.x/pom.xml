@@ -57,7 +57,7 @@
             <artifactId>idgen-api</artifactId>
         </dependency>
 
-        <dependency>
+       <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
         </dependency>
