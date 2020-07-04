@@ -189,14 +189,15 @@ public class NDRExtractionController {
 		InventoryReportType inventoryReportType = new InventoryReportType();
 		ConsumptionReportType consumptionReportType = new ConsumptionReportType();
 
-		ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
-		consumptionSummaryType.setDepartmentCode(b);
-		consumptionSummaryType.setItemCode(c);
-		consumptionSummaryType.setStockBalance(getRandomValue());
-		consumptionSummaryType.setTotalQuantityConsumed(getRandomValue());
-		consumptionSummaryType.setTotalQuantityReceived(getRandomValue());
+		//		ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
+		//		consumptionSummaryType.setDepartmentCode(b);
+		//		consumptionSummaryType.setItemCode(c);
+		//		consumptionSummaryType.setStockBalance(getRandomValue());
+		//		consumptionSummaryType.setTotalQuantityConsumed(getRandomValue());
+		//		consumptionSummaryType.setTotalQuantityReceived(getRandomValue());
+		List<ConsumptionSummaryType> consumptionSummaryTypes = extractConsumptionReport();
 
-		consumptionReportType.getConsumptionSummary().add(consumptionSummaryType);
+		consumptionReportType.getConsumptionSummary().addAll(consumptionSummaryTypes);
 
 		NewConsumptionType newConsumptionType = new NewConsumptionType();
 		System.out.println("about to create xml date");
@@ -212,12 +213,13 @@ public class NDRExtractionController {
 		consumptionReportType.getNewConsumption().add(newConsumptionType);
 
 		inventoryReportType.setConsumptionReport(consumptionReportType);
-		ndrReportTemplate.setInventoryReport(inventoryReportType);
 
 		TaskOperationType taskOperationType = extractTaskOperation();
 		if (taskOperationType != null) {
 			inventoryReportType.setTaskOperation(taskOperationType);
 		}
+
+		ndrReportTemplate.setInventoryReport(inventoryReportType);
 
 		return ndrReportTemplate;
 	}
@@ -318,21 +320,25 @@ public class NDRExtractionController {
 		IStockOperationType stockOperationType = getStockOperationType();
 
 		for (Department department : allDepartments) {
+			try {
+				searchConsumptionSummary.setDepartment(department);
+				//	searchConsumptionSummary.setItem(searchItem);
+				searchConsumptionSummary.setStartDate(startDate);
+				searchConsumptionSummary.setEndDate(endDate);
+				searchConsumptionSummary.setOperationStatus(status);
+				searchConsumptionSummary.setOperationType(stockOperationType);
 
-			searchConsumptionSummary.setDepartment(department);
-			//	searchConsumptionSummary.setItem(searchItem);
-			searchConsumptionSummary.setStartDate(startDate);
-			searchConsumptionSummary.setEndDate(endDate);
-			searchConsumptionSummary.setOperationStatus(status);
-			searchConsumptionSummary.setOperationType(stockOperationType);
+				stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
 
-			stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-
-			List<ConsumptionSummary> consumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
-			    searchConsumptionSummary, null, allItems);
-			if (!consumptionSummarys.isEmpty()) {
-				List<ConsumptionSummaryType> consumptionSummaryTypes = convertToConsumptionSummaryType(consumptionSummarys);
-				finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
+				List<ConsumptionSummary> consumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
+				    searchConsumptionSummary, null, allItems);
+				if (!consumptionSummarys.isEmpty()) {
+					List<ConsumptionSummaryType> consumptionSummaryTypes =
+					        convertToConsumptionSummaryType(consumptionSummarys);
+					finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
+				}
+			} catch (Exception ex) {
+				LOG.error("error occured during consumption for" + department, ex);
 			}
 
 		}
@@ -342,10 +348,10 @@ public class NDRExtractionController {
 	}
 
 	private List<ConsumptionSummaryType> convertToConsumptionSummaryType(List<ConsumptionSummary> consumptionSummarys) {
-
+        
         List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
         consumptionSummarys.stream().forEach(a -> {
-
+            
             if (a.getTotalQuantityReceived() > 0 || a.getTotalQuantityConsumed() > 0) {
                 ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
                 consumptionSummaryType.setDepartmentCode(dictionaryMaps.getDepartmentMappings().
@@ -354,14 +360,14 @@ public class NDRExtractionController {
                 consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
                 consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
                 consumptionSummaryType.setTotalQuantityReceived(BigInteger.valueOf(a.getTotalQuantityReceived()));
-
+                
                 consumptionSummaryTypes.add(consumptionSummaryType);
             }
-
+            
         });
-
+        
         return consumptionSummaryTypes;
-
+        
     }
 
 	private List<DistributionType> mapAndExtractDistribution(List<StockOperation> stockOperations) {
@@ -581,7 +587,7 @@ public class NDRExtractionController {
 	private List<ItemType> extractOPerationItems(Set<StockOperationItem> stockOperationItems) {
         List<ItemType> itemTypes = new ArrayList<>();
         stockOperationItems.forEach(a -> {
-
+            
             ItemType operationItemType = new ItemType();
             operationItemType.setBatch(a.getItemBatch());
             try {
@@ -595,7 +601,7 @@ public class NDRExtractionController {
             //TODO: add checks for required feilds later
             itemTypes.add(operationItemType);
         });
-
+        
         return itemTypes;
     }
 
