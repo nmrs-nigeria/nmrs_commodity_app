@@ -5,6 +5,9 @@
  */
 package org.openmrs.module.webservices.rest.helper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author MORRISON.I
  */

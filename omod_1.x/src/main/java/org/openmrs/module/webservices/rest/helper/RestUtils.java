@@ -118,6 +118,11 @@ public class RestUtils {
 		return Context.getAdministrationService().getGlobalProperty("Facility_Name");
 	}
 
+	public static String getFacilityType() {
+		//use FAC for now
+		return "FAC";
+	}
+
 	public static String getFacilityLocalId() {
 		return Context.getAdministrationService().getGlobalProperty("facility_local_id");
 	}
