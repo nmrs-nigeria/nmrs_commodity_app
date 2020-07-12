@@ -115,11 +115,8 @@
             console.log(parametersAreValid);
 
             if (parametersAreValid) {
-//				var reportId = $scope.expiringStockReport.reportId;
-//				var parameters = "expiresBy=" + NdrExtractionFunctions.formatDate(expiryDate);
-//				if (stockroom != null) {
-//					parameters += "&stockroomId=" + stockroom.id;
-//				}
+                
+                 $scope.loading = true;
 
                 NdrExtractionRestfulService.getReport(NdrExtractionFunctions.formatDate(startDate), 
                 NdrExtractionFunctions.formatDate(endDate), function (data) {
@@ -127,8 +124,10 @@
                     console.log('logging error data');
                     console.log(data.error);
                     if(data.error !== undefined){
+                         $scope.loading = false;
                       alert('error occurred\n'+data.error);  
                     }else{
+                         $scope.loading = false;
                         return printReport(data.results); 
                     }
                    
@@ -136,7 +135,7 @@
 
 
             } else {
-
+                 $scope.loading = false;
                 console.log("The start date is " + startDate);
                 console.log("The end date is " + endDate);
                 alert('select a start and end date to continue');

@@ -9,7 +9,6 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
@@ -23,11 +22,7 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl;
 import org.openmrs.api.context.Context;
-import org.openmrs.module.openhmis.commons.api.Utility;
 import org.xml.sax.SAXException;
 
 // org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl cannot be cast to javax.xml.datatype.DatatypeFactory
@@ -184,12 +179,16 @@ public class RestUtils {
 		}
 
 		ZipUtil appZip = new ZipUtil(folderToZip);
-
+		appZip.generateFileList(toZIP);
 		appZip.zipIt(Paths.get(toZIP.getParent(), zipFileName).toString());
 
 		//old implementation
 		//  return request.getContextPath() + "/downloads/" + reportType + "/" + zipFileName;
 		return Paths.get(request.getContextPath(), "CMdownloads", reportType, zipFileName).toString();
+	}
+
+	public static void main(String args[]) {
+		System.out.println("seen");
 	}
 
 }

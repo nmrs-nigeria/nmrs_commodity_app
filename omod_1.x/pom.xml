@@ -34,6 +34,12 @@
             <artifactId>openhmis.backboneforms-omod</artifactId>
             <type>jar</type>
         </dependency>
+        
+        <dependency>
+            <groupId>com.morris.NDRSigner</groupId>
+            <artifactId>nmrs-encrypt-obs</artifactId>
+            <version>1.0</version>           
+        </dependency>
 
         <dependency>
             <groupId>org.openmrs.module</groupId>
@@ -57,7 +63,7 @@
             <artifactId>idgen-api</artifactId>
         </dependency>
 
-       <dependency>
+        <dependency>
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
         </dependency>

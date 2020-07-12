@@ -92,6 +92,12 @@
             <groupId>org.openmrs.module</groupId>
             <artifactId>uiframework-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.morris.NDRSigner</groupId>
+            <artifactId>nmrs-encrypt-obs</artifactId>
+            <version>1.0</version>
+            <type>jar</type>
+        </dependency>
     </dependencies>
 
     <build>

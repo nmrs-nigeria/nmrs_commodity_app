@@ -16,12 +16,12 @@
           <xs:complexType name="MessageHeaderType">
             <xs:sequence>
               <xs:element type="xs:string" name="MessageStatusCode"/>
-              <xs:element type="xs:dateTime" name="MessageCreationDateTime"/>
+              <xs:element type="xs:string" name="MessageCreationDateTime"/>
               <xs:element type="xs:string" name="MessageUniqueID"/>
 			  <xs:element type="xs:string" name="XmlType"/>
               <xs:element type="xs:float" name="MessageVersion"/>
-              <xs:element type="xs:date" name="ExportStartDate"/>
-              <xs:element type="xs:date" name="ExportEndDate"/>
+              <xs:element type="xs:string" name="ExportStartDate"/>
+              <xs:element type="xs:string" name="ExportEndDate"/>
                   <xs:element name="MessageSendingOrganisation" type="MessageSendingOrganisationType"
 				minOccurs="1" maxOccurs="1" />
 				 <xs:element name="Validation" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
@@ -108,14 +108,14 @@
     <xs:element type="ItemCodeType" name="ItemCode"/> 
 	
                                             <xs:element type="xs:short" name="Quantity"/>
-                                            <xs:element type="xs:date" name="ExpirationDate"/>
+                                            <xs:element type="xs:string" name="ExpirationDate"/>
                                             <xs:element type="xs:string" name="Batch"/>
 				</xs:sequence>
   </xs:complexType>
    <xs:complexType name="AdjustmentType">
     <xs:sequence>
 	<xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element name="AdjustmentTypeCode">
 								<xs:simpleType>
           <xs:restriction base="CodeType">
@@ -137,7 +137,7 @@
    <xs:complexType name="DisposedType">
    <xs:sequence>
    <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element name="DisposedTypeCode">
 								<xs:simpleType>
 		  <xs:restriction base="CodeType">
@@ -161,7 +161,7 @@
     <xs:complexType name="DistributionType">
    <xs:sequence>
    <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element  name="SourceStockroomCode">
 								<xs:simpleType>
 	  <xs:restriction base="CodeType">
@@ -184,7 +184,7 @@
     <xs:complexType name="ReceiptType">
    <xs:sequence>
       <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element name="DestinationStockroomCode">
 								<xs:simpleType>
 	  <xs:restriction base="CodeType">
@@ -199,7 +199,7 @@
       <xs:complexType name="TransferType">
    <xs:sequence>
      <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element name="SourceStockroomCode">
 								<xs:simpleType>
 	  <xs:restriction base="CodeType">
@@ -222,7 +222,7 @@
        <xs:complexType name="ReturnType">
    <xs:sequence>
     <xs:element type="xs:string" name="OperationID"/>
-                                <xs:element type="xs:date" name="OperationDate"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
                                 <xs:element  name="ReturnTypeCode">
 								<xs:simpleType>
 	  <xs:restriction base="CodeType">
@@ -254,7 +254,7 @@
                 </xs:complexType>
 				      <xs:complexType name="NewConsumptionType">
      <xs:sequence>
-                          <xs:element type="xs:date" name="ConsumptionDate"/>
+                          <xs:element type="xs:string" name="ConsumptionDate"/>
                           <xs:element type="DepartmentType" name="TestingPointCode"/>      
                           <xs:element type="ItemCodeType" name="ItemCode"/>
                           <xs:element type="xs:string" name="ItemBatch"/>

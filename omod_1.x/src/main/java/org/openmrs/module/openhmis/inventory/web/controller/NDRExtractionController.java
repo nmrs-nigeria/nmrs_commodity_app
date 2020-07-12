@@ -5,22 +5,23 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
+import com.umb.ndr.signer.Signer;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,6 +29,7 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.INDRValidationService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
@@ -83,12 +85,14 @@ public class NDRExtractionController {
 	private IStockOperationDataService stockOperationDataService;
 	private IStockOperationTransactionDataService stockOperationTransactionDataService;
 	private IStockOperationTypeDataService stockOperationTypeDataService;
+	private IConsumptionDataService consumptionDataService;
+	private INDRValidationService nDRValidationService;
+
 	private Date startDate;
 	private Date endDate;
 	private DictionaryMaps dictionaryMaps = new DictionaryMaps();
 	private List<Department> allDepartments = null;
 	private List<Item> allItems = null;
-	private IConsumptionDataService consumptionDataService;
 
 	//general date formats
 	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -106,6 +110,7 @@ public class NDRExtractionController {
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
 		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
+		this.nDRValidationService = Context.getService(INDRValidationService.class);
 
 		SimpleObject result = new SimpleObject();
 		String datimCode = RestUtils.getFacilityLocalId();
@@ -134,6 +139,11 @@ public class NDRExtractionController {
 			String formattedDate = new SimpleDateFormat("ddMMyy").format(new Date());
 
 			Container reportObject = extractData();
+			String validationStr = extractValidation();
+			if (validationStr != null) {
+				reportObject.getMessageHeader().setValidation(validationStr);
+			}
+
 			if (reportObject != null) {
 
 				System.out.println("starting xml creating process");
@@ -169,6 +179,12 @@ public class NDRExtractionController {
 
 	}
 
+	private String extractValidation() {
+		String validationString = nDRValidationService.getValidation(RestUtils.getFacilityLocalId());
+		return validationString;
+
+	}
+
 	private Container extractData() throws Exception {
 
 		//	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
@@ -178,7 +194,7 @@ public class NDRExtractionController {
 		messageHeaderType.setExportEndDate(dateTimeFormat.format(endDate));
 		messageHeaderType.setExportStartDate(dateTimeFormat.format(startDate));
 		messageHeaderType.setMessageCreationDateTime(dateTimeFormat.format(new Date()));
-		messageHeaderType.setMessageStatusCode("UPDATED");
+		messageHeaderType.setMessageStatusCode("INITIAL");
 		messageHeaderType.setMessageUniqueID(UUID.randomUUID().toString());
 		messageHeaderType.setMessageVersion(1.0f);
 		messageHeaderType.setXmlType("commodity");
@@ -187,6 +203,8 @@ public class NDRExtractionController {
 		messageSendingOrganisationType.setFacilityID(RestUtils.getFacilityLocalId());
 		messageSendingOrganisationType.setFacilityName(RestUtils.getFacilityName());
 		messageSendingOrganisationType.setFacilityTypeCode(RestUtils.getFacilityType());
+
+		messageHeaderType.setMessageSendingOrganisation(messageSendingOrganisationType);
 
 		ndrReportTemplate.setMessageHeader(messageHeaderType);
 
@@ -355,7 +373,7 @@ public class NDRExtractionController {
         List<NewConsumptionType> finalConsumptionReport = new ArrayList<>();
         
         consumptions.stream().forEach(con -> {
-            try{
+            try {
                 NewConsumptionType newConsumptionType = new NewConsumptionType();
                 newConsumptionType.setConsumptionDate(dateFormat.format(con.getConsumptionDate()));
                 newConsumptionType.setItemBatch(con.getBatchNumber());
@@ -365,20 +383,20 @@ public class NDRExtractionController {
                 newConsumptionType.setTotalUsed(BigInteger.valueOf(con.getQuantity()));
                 newConsumptionType.setTestPurposeCode(con.getTestPurpose());
                 newConsumptionType.setTotalWastageLoses(BigInteger.valueOf(con.getWastage()));
-
+                
                 finalConsumptionReport.add(newConsumptionType);
-            }catch(Exception ex){
+            } catch (Exception ex) {
                 LOG.warn(ex.getMessage());
             }
-
+            
         });
-
-       return finalConsumptionReport;
+        
+        return finalConsumptionReport;
         
     }
 
 	private List<ConsumptionSummaryType> convertToConsumptionSummaryType(List<ConsumptionSummary> consumptionSummarys) {
-
+        
         List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
         consumptionSummarys.stream().forEach(a -> {
             try {
@@ -390,17 +408,17 @@ public class NDRExtractionController {
                     consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
                     consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
                     consumptionSummaryType.setTotalQuantityReceived(BigInteger.valueOf(a.getTotalQuantityReceived()));
-
+                    
                     consumptionSummaryTypes.add(consumptionSummaryType);
                 }
             } catch (Exception ex) {
                 System.out.println("Error converting a record to summary: " + ex.getMessage());
             }
-
+            
         });
-
+        
         return consumptionSummaryTypes;
-
+        
     }
 
 	private List<DistributionType> mapAndExtractDistribution(List<StockOperation> stockOperations) {
@@ -594,7 +612,7 @@ public class NDRExtractionController {
 				}
 
 				if (st.getInstitution() != null) {
-					// TODO    transferType.setInstitutionType(value);
+					transferType.setInstitutionType(st.getUuid());
 				}
 
 				transferType.setOperationDate(dateFormat.format(st.getDateCreated()));
@@ -625,7 +643,7 @@ public class NDRExtractionController {
 	private List<ItemType> extractOPerationItems(Set<StockOperationItem> stockOperationItems) {
         List<ItemType> itemTypes = new ArrayList<>();
         stockOperationItems.forEach(a -> {
-
+            
             ItemType operationItemType = new ItemType();
             operationItemType.setBatch(a.getItemBatch());
             try {
@@ -639,7 +657,7 @@ public class NDRExtractionController {
             //TODO: add checks for required feilds later
             itemTypes.add(operationItemType);
         });
-
+        
         return itemTypes;
     }
 
@@ -671,11 +689,6 @@ public class NDRExtractionController {
 
 	}
 
-	private BigInteger getRandomValue() {
-		final int a = 10;
-		return BigInteger.valueOf(Math.round(Math.random() * a));
-	}
-
 	private IStockOperationType getStockOperationType() {
 		IStockOperationType stockOperationType = null;
 		String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
@@ -690,5 +703,7 @@ public class NDRExtractionController {
 
 		return stockOperationType;
 	}
+
+	
 
 }

@@ -85,12 +85,14 @@
 
 	<div id="entities" ng-show="showStockDetails == true" class="detail-section-border-top">
 		<br/>
+                <span>Items Expiring within 30 days</span>
+                <br/>
 		<table class="manage-entities-table" id="stockTakeTable">
 			<thead>
 			<tr>
 				<th>${ui.message('openhmis.inventory.item.name')}</th>
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
-				<th>${ui.message('openhmis.inventory.item.quantity')}</th>
+				<th>${ui.message('openhmis.inventory.item.quantity')} left</th>
 				
 			</tr>
 			</thead>

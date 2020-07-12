@@ -1691,7 +1691,7 @@
         <comment>
             create a default stock room called main stock room
         </comment>
-          <sql><![CDATA[
+        <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
         <sql><![CDATA[			
@@ -1701,7 +1701,7 @@
                 
     </changeSet>
     
-     <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
         <comment>
             Update Transfer Operation to perform actual ops type
         </comment>
@@ -1714,7 +1714,7 @@
 	
         
         
-       <changeSet id="openhmis.inventory-v1.8.8-0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.8-0" author="Morrison Idiasirue" >
         <comment>
             remove Initial from operation types
         </comment>
@@ -1725,7 +1725,7 @@
                 
     </changeSet>  
     
-        <changeSet id="openhmis.inventory-v1.8.9-0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.9-0" author="Morrison Idiasirue" >
                                        
         <addColumn tableName="inv_stock_operation_item">
             <column name="item_batch" type="varchar(255)">
@@ -1735,7 +1735,7 @@
         </addColumn>
                 
         <addColumn tableName="inv_item_stock_detail">
-             <column name="item_batch" type="varchar(255)">
+            <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
             			
@@ -1744,7 +1744,7 @@
     </changeSet>
     
      
-      <changeSet id="openhmis.inventory-v1.8.9-1" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.9-1" author="Morrison Idiasirue" >
                                        
         <addColumn tableName="inv_transaction">
             <column name="item_batch" type="varchar(255)">
@@ -1754,13 +1754,313 @@
         </addColumn>
                 
         <addColumn tableName="inv_reserved_transaction">
-             <column name="item_batch" type="varchar(255)">
+            <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
             			
         </addColumn>
                   
-    </changeSet>  
+    </changeSet>
+    
+      
+    <changeSet id="openhmis.inventory-v1.9.0" author="Morrison Idiasirue" >
+                                       
+        <addColumn tableName="inv_institution">
+            <column name="state" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+			
+        </addColumn>
+                
+        <addColumn tableName="inv_institution">
+            <column name="lga" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            			
+        </addColumn>
+                  
+    </changeSet>
+    
+          
+    <changeSet id="openhmis.inventory-v1.9.1" author="Morrison Idiasirue" >
+                                       
+        <insert tableName="inv_institution">
+            <column name="name">Aliade General Hospital</column>
+            <column name="description">Aliade General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">OPnJnEYeq1I</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Gwer East</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Fr. Mathias Clinic</column>
+            <column name="description">Fr. Mathias Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">KWB8RTTIeya</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Gwer West</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">General Hospital Naka</column>
+            <column name="description">General Hospital Naka</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">A6vVFRBdTaM</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Gwer West</column>
+        </insert>
+      
+      
+        <insert tableName="inv_institution">
+            <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Sai</column>
+            <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Sai</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">x9AGFcyHbas</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Katsina-Ala</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Anber</column>
+            <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Anber</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">fqQMHzXeExZ</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Katsina-Ala</column>
+        </insert>
+        
+        
+        <insert tableName="inv_institution">
+            <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Kasar</column>
+            <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Kasar</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">bD3Z7sBYAkk</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Katsina-Ala</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Bishop Murray Medical Center</column>
+            <column name="description">Bishop Murray Medical Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">xbHk6A9M5Ah</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Makurdi</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Federal Medical Center - Makurdi</column>
+            <column name="description">Federal Medical Center - Makurdi</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">EA0gMmZjNn6</column>
+            <column name="state">Benue</column>
+            <column name="lga">be Makurdi</column>
+        </insert>
+      
+        <insert tableName="inv_institution">
+            <column name="name">Annunciation Specialist Hospital- Emene</column>
+            <column name="description">Annunciation Specialist Hospital- Emene</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">qDxr0sPGxet</column>
+            <column name="state">Enugu</column>
+            <column name="lga">en Enugu East</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Iji Nike Cottage Hospital</column>
+            <column name="description">Iji Nike Cottage Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">uQbpdclPuRf</column>
+            <column name="state">Enugu</column>
+            <column name="lga">en Enugu East</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Asata Poly Clinic (Sub District Hospital)</column>
+            <column name="description">Asata Poly Clinic (Sub District Hospital)</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">MrDvUf2PGh6</column>
+            <column name="state">Enugu</column>
+            <column name="lga">en Enugu North</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Enugu State University Teaching Hospital  (Parklane Specialist Hospital)</column>
+            <column name="description">Enugu State University Teaching Hospital  (Parklane Specialist Hospital)</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">r0oeAcBd6iU</column>
+            <column name="state">Enugu</column>
+            <column name="lga">en Enugu North</column>
+        </insert>
+        
+        
+        <insert tableName="inv_institution">
+            <column name="name">Mother of Christ Specialist Hospital</column>
+            <column name="description">Mother of Christ Specialist Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">a3HwE6yZKfa</column>
+            <column name="state">Enugu</column>
+            <column name="lga">en Enugu North</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Gombe State Specialist Hospital</column>
+            <column name="description">Gombe State Specialist Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">kQSAihTQQep</column>
+            <column name="state">Gombe</column>
+            <column name="lga">go Gombe</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Miyetti Hospital</column>
+            <column name="description">Miyetti Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">Lx9SQTEgXS3</column>
+            <column name="state">Gombe</column>
+            <column name="lga">go Gombe</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Musaba Clinic</column>
+            <column name="description">Musaba Clinic</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">jRNyO3ImWmI</column>
+            <column name="state">Gombe</column>
+            <column name="lga">go Gombe</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Kaltungo General Hospital</column>
+            <column name="description">Kaltungo General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">CnFTZ4Yu5A8</column>
+            <column name="state">Gombe</column>
+            <column name="lga">go Kaltungo</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Ifako Ijaiye General Hospital</column>
+            <column name="description">Ifako Ijaiye General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">OWOckBlm9Du</column>
+            <column name="state">Lagos</column>
+            <column name="lga">la Ifako-Ijaiye</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Lagos State University Teaching Hospital</column>
+            <column name="description">Lagos State University Teaching Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">y5TzOvctmba</column>
+            <column name="state">Lagos</column>
+            <column name="lga">la Ikeja</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Lagos University Teaching Hospital (LUTH)</column>
+            <column name="description">Lagos University Teaching Hospital (LUTH)</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">WlXQVJSBvrn</column>
+            <column name="state">Lagos</column>
+            <column name="lga">la Mushin</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Mushin General Hospital</column>
+            <column name="description">Mushin General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">bjExvCDZVsB</column>
+            <column name="state">Lagos</column>
+            <column name="lga">la Mushin</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Asokoro District Hospital</column>
+            <column name="description">Asokoro District Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">wp753KYAdno</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Garki Hospital Abuja</column>
+            <column name="description">Garki Hospital Abuja</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">SLDfqhuQVZW</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Gwarimpa General Hospital</column>
+            <column name="description">Gwarimpa General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">xiXIP4UV1BR</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        
+        <insert tableName="inv_institution">
+            <column name="name">Maitama General Hospital</column>
+            <column name="description">Gwarimpa General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">TJ3gInbwDXs</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">National Hospital - Abuja</column>
+            <column name="description">National Hospital - Abuja</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">meYf9FxUI4c</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Nyanya General Hospital</column>
+            <column name="description">Nyanya General Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-07-10</column>
+            <column name="uuid">vdQKOn1w8Ql</column>
+            <column name="state">FCT</column>
+            <column name="lga">fc Abuja Municipal Area Council</column>
+        </insert>
+        
+        
+    </changeSet>      
+                          
         
            
 </databaseChangeLog>
