@@ -704,6 +704,4 @@ public class NDRExtractionController {
 		return stockOperationType;
 	}
 
-	
-
 }

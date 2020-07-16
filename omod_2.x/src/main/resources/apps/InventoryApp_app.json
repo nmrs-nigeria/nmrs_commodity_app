@@ -40,15 +40,7 @@
                 "icon": "icon-cogs",
                 "requiredPrivilege": "Task: Manage Inventory Module"
             },
-            {
-                "id": "openhmis.inventory.inventoryRoleCreationLink",
-                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
-                "type": "link",
-                "label": "openhmis.inventory.admin.role",
-                "url": "module/openhmis/inventory/roleCreation2x.page",
-                "icon": "icon-user",
-                "requiredPrivilege": "Task: Manage Inventory Metadata"
-            },
+         
             {
                 "id": "openhmis.inventory.manageItemsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
@@ -58,15 +50,7 @@
                 "icon": "icon-italic",
                 "requiredPrivilege": "Task: Manage Inventory Metadata"
             },
-            {
-                "id": "openhmis.inventory.manageItemAttributeTypesLink",
-                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
-                "type": "link",
-                "label": "openhmis.inventory.admin.item.attribute.types",
-                "url": "openhmis.inventory/itemAttributes/entities.page",
-                "icon": "icon-edit",
-                "requiredPrivilege": "Task: Manage Inventory Metadata"
-            },
+          
             {
                 "id": "openhmis.inventory.manageDepartmentsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
@@ -93,25 +77,7 @@
                 "url": "openhmis.inventory/stockroom/entities.page",
                 "icon": "icon-home",
                 "requiredPrivilege": "Task: Manage Inventory Metadata"
-            },
-            {
-                "id": "openhmis.inventory.manageOperationTypesLink",
-                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
-                "type": "link",
-                "label": "openhmis.inventory.admin.operationTypes",
-                "url": "openhmis.inventory/operationTypes/entities.page",
-                "icon": "icon-edit",
-                "requiredPrivilege": "Task: Manage Inventory Metadata"
-            },
-            {
-                "id": "openhmis.inventory.generateItemMappingsLink",
-                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
-                "type": "link",
-                "label": "openhmis.inventory.admin.items.concept.mapping",
-                "url": "module/openhmis/inventory/itemConceptSuggestion.form",
-                "icon": "icon-random",
-                "requiredPrivilege": "Task: Manage Inventory Metadata"
-            },
+            },           
             {
                 "id": "openhmis.inventory.inventorySettingsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",

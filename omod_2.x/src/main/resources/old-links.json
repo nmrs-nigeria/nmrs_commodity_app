@@ -1,0 +1,38 @@
+[
+    {
+"id": "openhmis.inventory.inventoryRoleCreationLink",
+        "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
+        "type": "link",
+        "label": "openhmis.inventory.admin.role",
+        "url": "module/openhmis/inventory/roleCreation2x.page",
+        "icon": "icon-user",
+        "requiredPrivilege": "Task: Manage Inventory Metadata"
+},
+  {
+                "id": "openhmis.inventory.manageItemAttributeTypesLink",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
+                "type": "link",
+                "label": "openhmis.inventory.admin.item.attribute.types",
+                "url": "openhmis.inventory/itemAttributes/entities.page",
+                "icon": "icon-edit",
+                "requiredPrivilege": "Task: Manage Inventory Metadata"
+            },
+             {
+                "id": "openhmis.inventory.generateItemMappingsLink",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
+                "type": "link",
+                "label": "openhmis.inventory.admin.items.concept.mapping",
+                "url": "module/openhmis/inventory/itemConceptSuggestion.form",
+                "icon": "icon-random",
+                "requiredPrivilege": "Task: Manage Inventory Metadata"
+            },
+             {
+                "id": "openhmis.inventory.manageOperationTypesLink",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
+                "type": "link",
+                "label": "openhmis.inventory.admin.operationTypes",
+                "url": "openhmis.inventory/operationTypes/entities.page",
+                "icon": "icon-edit",
+                "requiredPrivilege": "Task: Manage Inventory Metadata"
+            }
+]
