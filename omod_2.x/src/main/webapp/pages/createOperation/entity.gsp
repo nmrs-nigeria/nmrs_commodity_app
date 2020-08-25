@@ -128,6 +128,16 @@
                     </select>
                 </li>
             </ul>
+             <ul class="table-layout" ng-show="operationType.name === 'Receipt'">
+                <li class="not-required">
+                    <span>Source of Commodity</span>
+                </li>
+                <li>
+                    <select ng-model="stockSourceType" class="form-control"
+                    ng-options="stockSourceType for stockSourceType in stockSourceTypes">
+                    </select>
+                </li>
+            </ul>
             <ul class="table-layout" ng-show="operationType.name === 'Adjustment'">
                 <li class="not-required">
                     <span>${ui.message('openhmis.inventory.operations.adjustmentKind')}</span>

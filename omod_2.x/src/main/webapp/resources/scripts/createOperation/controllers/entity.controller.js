@@ -97,6 +97,8 @@
                     $scope.transferType = $scope.transferTypes[0];
                     $scope.returnOperationTypes = ["Department", "Institution", "Patient"];
                     $scope.returnOperationType = $scope.returnOperationTypes[0];
+                    $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors"];
+                    $scope.stockSourceType = $scope.stockSourceTypes[0];
                     $scope.disposedTypes = ["expired", "damaged", "others"];
                     $scope.adjustmentKinds = ["positive"];
                     //  $scope.adjustmentType = $scope.adjustmentTypes[0];

@@ -376,6 +376,7 @@ public class NDRExtractionController {
             try {
                 NewConsumptionType newConsumptionType = new NewConsumptionType();
                 newConsumptionType.setConsumptionDate(dateFormat.format(con.getConsumptionDate()));
+               newConsumptionType.setConsumptionUUID(con.getUuid());
                 newConsumptionType.setItemBatch(con.getBatchNumber());
                 newConsumptionType.setItemCode(dictionaryMaps.getItemMappings().get(con.getItem().getUuid()));
                 newConsumptionType.setTestingPointCode(dictionaryMaps.getDepartmentMappings()
