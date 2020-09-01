@@ -133,8 +133,8 @@
                     <span>Source of Commodity</span>
                 </li>
                 <li>
-                    <select ng-model="stockSourceType" class="form-control"
-                    ng-options="stockSourceType for stockSourceType in stockSourceTypes">
+                    <select ng-model="commoditySource" class="form-control"
+                    ng-options="commoditySource for commoditySource in stockSourceTypes">
                     </select>
                 </li>
             </ul>

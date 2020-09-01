@@ -112,6 +112,7 @@ public class StockOperationResource
 			description.addProperty("canRollback", findMethod("userCanRollback"));
 			description.addProperty("disposedType");
 			description.addProperty("adjustmentKind");
+			description.addProperty("commoditySource");
 		}
 
 		return description;

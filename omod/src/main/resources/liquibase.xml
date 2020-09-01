@@ -2059,7 +2059,21 @@
         </insert>
         
         
-    </changeSet>      
+    </changeSet>
+    
+    
+     <changeSet id="openhmis.inventory-v1.9.2" author="Morrison Idiasirue" >
+                                       
+                   
+        <addColumn tableName="inv_stock_operation">
+            <column name="commodity_source" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+          
+			
+        </addColumn>
+            
+    </changeSet>       
                           
         
            

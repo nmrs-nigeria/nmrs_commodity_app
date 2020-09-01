@@ -98,7 +98,7 @@
                     $scope.returnOperationTypes = ["Department", "Institution", "Patient"];
                     $scope.returnOperationType = $scope.returnOperationTypes[0];
                     $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors"];
-                    $scope.stockSourceType = $scope.stockSourceTypes[0];
+                    $scope.commoditySource = $scope.stockSourceTypes[0];
                     $scope.disposedTypes = ["expired", "damaged", "others"];
                     $scope.adjustmentKinds = ["positive"];
                     //  $scope.adjustmentType = $scope.adjustmentTypes[0];
@@ -126,16 +126,23 @@
             }
 
 
+            //for empty commodity source
+               if ($scope.commoditySource === undefined || $scope.commoditySource === '') {
+              //  $scope.entity.commoditySource = '';
+            } else {
+                $scope.entity.commoditySource = $scope.commoditySource;
+            }
+
             //for empty adjustmenttype
             if ($scope.adjustmentKind === undefined || $scope.adjustmentKind === '') {
-                $scope.entity.adjustmentKind = '';
+            //    $scope.entity.adjustmentKind = '';
             } else {
                 $scope.entity.adjustmentKind = $scope.adjustmentKind;
             }
 
             //for empty disposed type
             if ($scope.disposedType === undefined || $scope.disposedType === '') {
-                $scope.entity.disposedType = '';
+           //     $scope.entity.disposedType = '';
             } else {
                 $scope.entity.disposedType = $scope.disposedType;
             }
