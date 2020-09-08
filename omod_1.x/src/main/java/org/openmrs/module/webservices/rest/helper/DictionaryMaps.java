@@ -19,6 +19,8 @@ public class DictionaryMaps {
 	private final Map<String, String> distributeToMappings = new HashMap<>();
 	private final Map<String, String> adjustmentTypeMappings = new HashMap<>();
 	private final Map<String, Integer> itemMappings = new HashMap<>();
+	private final Map<String, String> testPurpose = new HashMap<>();
+	private final Map<String, String> commoditySource = new HashMap<>();
 
 	public DictionaryMaps() {
 		this.fillUpDepartments();
@@ -27,6 +29,8 @@ public class DictionaryMaps {
 		this.fillUpDistributeTo();
 		this.fillUpAdjustment();
 		this.fillUpItemMappings();
+		this.fillUpCommoditySource();
+		this.fillUpTestPurpose();
 	}
 
 	private void fillUpDepartments() {
@@ -48,6 +52,7 @@ public class DictionaryMaps {
 		this.departmentMappings.put("1952ff56-a3dc-40cb-954a-c05810259b03", 15); //STI
 		this.departmentMappings.put("7d4b8a26-9cf8-4d7a-8767-aaac21aca521", 16); //TB
 		this.departmentMappings.put("1f2ac9f2-d2db-4933-b04d-0b85455a141b", 17); //VCT
+		this.departmentMappings.put("36ccbd54-ab90-4bab-88b9-eb7bd7e1df1a", 18); //EID
 
 	}
 
@@ -79,6 +84,19 @@ public class DictionaryMaps {
 		this.itemMappings.put("7559842c-0599-429d-90b5-e5935d0cd720", 7);
 	}
 
+	private void fillUpTestPurpose() {
+
+		this.testPurpose.put("Initial", "I");
+		this.testPurpose.put("Confirmation", "C");
+		this.testPurpose.put("Controls", "CX");// 
+	}
+
+	private void fillUpCommoditySource() {
+		this.commoditySource.put("PEPFAR", "P");
+		this.commoditySource.put("GF", "G");
+		this.commoditySource.put("other donors", "O");
+	}
+
 	public Map<String, Integer> getDepartmentMappings() {
 		return departmentMappings;
 	}
@@ -101,6 +119,14 @@ public class DictionaryMaps {
 
 	public Map<String, String> getDistributeToMappings() {
 		return distributeToMappings;
+	}
+
+	public Map<String, String> getTestPurpose() {
+		return testPurpose;
+	}
+
+	public Map<String, String> getCommoditySource() {
+		return commoditySource;
 	}
 
 }

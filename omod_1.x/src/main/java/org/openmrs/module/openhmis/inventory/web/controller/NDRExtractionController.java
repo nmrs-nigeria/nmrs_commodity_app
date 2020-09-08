@@ -376,13 +376,13 @@ public class NDRExtractionController {
             try {
                 NewConsumptionType newConsumptionType = new NewConsumptionType();
                 newConsumptionType.setConsumptionDate(dateFormat.format(con.getConsumptionDate()));
-               newConsumptionType.setConsumptionUUID(con.getUuid());
+                newConsumptionType.setConsumptionUUID(con.getUuid());
                 newConsumptionType.setItemBatch(con.getBatchNumber());
                 newConsumptionType.setItemCode(dictionaryMaps.getItemMappings().get(con.getItem().getUuid()));
                 newConsumptionType.setTestingPointCode(dictionaryMaps.getDepartmentMappings()
                         .get(con.getDepartment().getUuid()));
                 newConsumptionType.setTotalUsed(BigInteger.valueOf(con.getQuantity()));
-                newConsumptionType.setTestPurposeCode(con.getTestPurpose());
+                newConsumptionType.setTestPurposeCode(dictionaryMaps.getTestPurpose().get(con.getTestPurpose()));
                 newConsumptionType.setTotalWastageLoses(BigInteger.valueOf(con.getWastage()));
                 
                 finalConsumptionReport.add(newConsumptionType);
@@ -477,6 +477,11 @@ public class NDRExtractionController {
 				receiptType = new ReceiptType();
 				receiptType.setOperationID(st.getOperationNumber());
 				receiptType.setOperationDate(dateFormat.format(st.getDateCreated()));
+
+				if (st.getCommoditySource() != null && !"".equals(st.getCommoditySource())) {
+					receiptType.setStockSource(dictionaryMaps.getCommoditySource()
+					        .get(st.getCommoditySource()));
+				}
 
 				try {
 					receiptType.setDestinationStockroomCode(dictionaryMaps.getSourceStockRoomMappings()

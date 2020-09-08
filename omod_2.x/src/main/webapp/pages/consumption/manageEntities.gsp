@@ -5,10 +5,10 @@
 			label: "${ ui.message("openhmis.inventory.page")}",
 			link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
-    {
-			label: "${ ui.message("openhmis.inventory.manage.module")}",
-    link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/manageModule.page'
-    },
+   {
+            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+        },
 		{label: "${ ui.message("openhmis.inventory.admin.consumptions")}",}
     ];
 

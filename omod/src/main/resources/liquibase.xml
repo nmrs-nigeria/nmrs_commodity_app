@@ -2073,7 +2073,18 @@
 			
         </addColumn>
             
-    </changeSet>       
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v1.9.3" author="Morrison Idiasirue" >
+          <insert tableName="inv_department">
+            <column name="name">EID</column>
+            <column name="description">Early infant diagnosis</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-09-04</column>
+            <column name="uuid">36ccbd54-ab90-4bab-88b9-eb7bd7e1df1a</column>
+        </insert>
+        
+    </changeSet>            
                           
         
            
