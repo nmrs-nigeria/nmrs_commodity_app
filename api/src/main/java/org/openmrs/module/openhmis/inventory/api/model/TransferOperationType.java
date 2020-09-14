@@ -32,10 +32,13 @@ public class TransferOperationType extends StockOperationTypeBase {
 			@Override
 			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
 				tx.setStockroom(operation.getSource());
+				//     tx.setPatient(operation.getPatient());
+				tx.setInstitution(operation.getInstitution());
 
 				// Negate the quantity because the item stock needs to be removed from the source stockroom
 				tx.setQuantity(tx.getQuantity() * -1);
 			}
+
 		});
 	}
 
@@ -56,7 +59,9 @@ public class TransferOperationType extends StockOperationTypeBase {
 		executeCopyReservedAndClear(operation, new Action2<ReservedTransaction, StockOperationTransaction>() {
 			@Override
 			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
-				tx.setStockroom(operation.getDestination());
+				//tx.setStockroom(operation.getDestination());
+				//did this based on NMRS needs
+				operation.getReserved().clear();
 			}
 		});
 	}
