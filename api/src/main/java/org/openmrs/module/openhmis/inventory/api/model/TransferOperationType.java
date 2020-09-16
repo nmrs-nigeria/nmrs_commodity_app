@@ -54,15 +54,21 @@ public class TransferOperationType extends StockOperationTypeBase {
 	}
 
 	@Override
-	public void onCompleted(final StockOperation operation) {
-		// Add the item stock to the destination stockroom
-		executeCopyReservedAndClear(operation, new Action2<ReservedTransaction, StockOperationTransaction>() {
-			@Override
-			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
-				//tx.setStockroom(operation.getDestination());
-				//did this based on NMRS needs
-				operation.getReserved().clear();
-			}
-		});
+	public void onCompleted(StockOperation operation) {
+		// Clear out the transactions for the operation
+		operation.getReserved().clear();
 	}
+
+	//	@Override
+	//	public void onCompleted(final StockOperation operation) {
+	//		// Add the item stock to the destination stockroom
+	//		executeCopyReservedAndClear(operation, new Action2<ReservedTransaction, StockOperationTransaction>() {
+	//			@Override
+	//			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
+	//				tx.setStockroom(operation.getSource());
+	//				//did this based on NMRS needs
+	//				operation.getReserved().clear();
+	//			}
+	//		});
+	//	}
 }
