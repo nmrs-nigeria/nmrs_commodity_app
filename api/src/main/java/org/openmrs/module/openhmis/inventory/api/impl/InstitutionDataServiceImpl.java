@@ -13,11 +13,16 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
+import java.util.List;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IInstitutionDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Institution;
 import org.openmrs.module.openhmis.inventory.api.security.BasicMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.inventory.api.util.HibernateCriteriaConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -25,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class InstitutionDataServiceImpl extends BaseMetadataDataServiceImpl<Institution> implements IInstitutionDataService {
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
@@ -34,4 +40,22 @@ public class InstitutionDataServiceImpl extends BaseMetadataDataServiceImpl<Inst
 	protected void validate(Institution entity) {
 		return;
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Institution> getInstitutionByStateAndLga(String state, String lga) {
+		if (state == null || lga == null) {
+			throw new IllegalArgumentException("The state and lga must be defined.");
+		}
+
+		return executeCriteria(Institution.class, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria parameter) {
+				parameter.add(Restrictions.eq(HibernateCriteriaConstants.FACILITY_STATE, state).ignoreCase())
+				        .add(Restrictions.eq(HibernateCriteriaConstants.FACILITY_LGA, lga).ignoreCase());
+			}
+		});
+
+	}
+
 }

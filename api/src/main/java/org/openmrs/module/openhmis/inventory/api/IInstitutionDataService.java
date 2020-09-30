@@ -13,6 +13,7 @@
  */
 package org.openmrs.module.openhmis.inventory.api;
 
+import java.util.List;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Institution;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * Interface that represents classes which perform data operations for {@link Institution}s.
  */
-@Transactional
+@Transactional(readOnly = true)
 public interface IInstitutionDataService extends IMetadataDataService<Institution> {
+
+	List<Institution> getInstitutionByStateAndLga(String state, String lga);
 
 }

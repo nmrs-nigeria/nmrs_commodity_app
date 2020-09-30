@@ -34,6 +34,7 @@
 			isOperationNumberGenerated: isOperationNumberGenerated,
 			isNegativeStockRestricted: isNegativeStockRestricted,
 			searchStockOperationItems: searchStockOperationItems,
+                        getInstitution: getInstitution,
 		};
 
 		return service
@@ -142,6 +143,24 @@
 
 			return EntityRestFactory.autocompleteSearch(requestParams, 'item', module_name);
 		}
+                
+                   function getInstitution(module_name,state,lga, successCallback) {
+                       console.log('started get institution service');
+			var requestParams = [];
+			requestParams['resource'] = INVENTORY_MODULE_INSTITUTION_URL;
+			requestParams['state'] = state;
+                        requestParams['lga'] = lga;
+
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
+				console.log(error)
+			});
+                        
+                        console.log('finished calling institutions URL');
+                       setBaseUrl(module_name);
+                     
+                        
+		}
 
 		function setBaseUrl(module_name) {
 			EntityRestFactory.setBaseUrl(module_name);
@@ -150,5 +169,12 @@
 		function errorCallback(error) {
 			emr.errorAlert(error);
 		}
+                
+                
+                
+                
+                
+                
+                
 	}
 })();

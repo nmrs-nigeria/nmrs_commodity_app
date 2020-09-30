@@ -46,5 +46,7 @@ public class HibernateCriteriaConstants {
 	public static final String OPERATION_ORDER = "operationOrder";
 	public static final String CONSUMPTION_DATE = "consumptionDate";
 	public static final String CONSUMPTION_QUANTITY = "quantity";
+	public static final String FACILITY_STATE = "state";
+	public static final String FACILITY_LGA = "lga";
 
 }

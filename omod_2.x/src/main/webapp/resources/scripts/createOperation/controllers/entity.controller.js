@@ -68,7 +68,7 @@
                     $scope.destinationStockrooms = [];
                     CreateOperationRestfulService.loadStockrooms(INVENTORY_MODULE_NAME, self.onLoadStockroomsSuccessful);
                     $scope.institutions = [];
-                    CreateOperationRestfulService.loadInstitutions(INVENTORY_MODULE_NAME, self.onLoadInstitutionsSuccessful);
+                    //  CreateOperationRestfulService.loadInstitutions(INVENTORY_MODULE_NAME, self.onLoadInstitutionsSuccessful);
                     $scope.departments = [];
                     CreateOperationRestfulService.loadDepartments(INVENTORY_MODULE_NAME, self.onLoadDepartmentsSuccessful);
                     $scope.loadOperationTypeAttributes = self.loadOperationTypeAttributes;
@@ -110,6 +110,15 @@
                             self.onOperationDateSuccessfulCallback,
                             'operationDateId-display');
                     $scope.loading = false;
+                    $scope.state;
+                    $scope.states = ["Abia", "Adamawa", "AkwaIbom", "Anambra",
+                        "Bauchi", "Bayelsa", "Benue", "Borno", "Cross River", "Delta"
+                                , "Ebonyi", "Edo", "Ekiti", "Enugu", "FCT", "Gombe", "Imo", "Jigawa", "Kaduna", "Kano", "Katsina", "Kebbi", "Kogi"
+                                , "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun", "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba", "Yobe", "Zamfara"];
+                    $scope.lgas = [];
+                    $scope.lga;
+                    $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
+                    $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
                 }
 
         /**
@@ -127,22 +136,22 @@
 
 
             //for empty commodity source
-               if ($scope.commoditySource === undefined || $scope.commoditySource === '') {
-              //  $scope.entity.commoditySource = '';
+            if ($scope.commoditySource === undefined || $scope.commoditySource === '') {
+                //  $scope.entity.commoditySource = '';
             } else {
                 $scope.entity.commoditySource = $scope.commoditySource;
             }
 
             //for empty adjustmenttype
             if ($scope.adjustmentKind === undefined || $scope.adjustmentKind === '') {
-            //    $scope.entity.adjustmentKind = '';
+                //    $scope.entity.adjustmentKind = '';
             } else {
                 $scope.entity.adjustmentKind = $scope.adjustmentKind;
             }
 
             //for empty disposed type
             if ($scope.disposedType === undefined || $scope.disposedType === '') {
-           //     $scope.entity.disposedType = '';
+                //     $scope.entity.disposedType = '';
             } else {
                 $scope.entity.disposedType = $scope.disposedType;
             }
@@ -210,8 +219,8 @@
         self.checkDatePickerExpirationSection = self.checkDatePickerExpirationSection || function (lineItem) {
             return CreateOperationFunctions.checkDatePickerExpirationSection(lineItem, $scope);
         }
-        
-         self.checkBatchItemExistSection = self.checkBatchItemExistSection || function (lineItem) {
+
+        self.checkBatchItemExistSection = self.checkBatchItemExistSection || function (lineItem) {
             return CreateOperationFunctions.checkBatchItemExistSection(lineItem, $scope);
         }
 
@@ -234,8 +243,8 @@
 
             lineItem.setNewQuantity(newQuantity);
         }
-        
-          self.changeItemBatch = self.changeItemBatch || function (lineItem) {
+
+        self.changeItemBatch = self.changeItemBatch || function (lineItem) {
             var itemBatch = lineItem.itemStockBatch;
             lineItem.setItemStockBatch(itemBatch);
         }
@@ -341,11 +350,11 @@
                             lineItem.expirationDates = [];
                             CreateOperationFunctions.onChangeDatePicker(self.onLineItemExpDateSuccessfulCallback, undefined, lineItem);
                         }
-                        
-                        if(lineItem.batchItemExist){
+
+                        if (lineItem.batchItemExist) {
                             lineItem.itemBatchs = [];
-                          $scope.lineItem.itemStockBatch = '';
-                            
+                            $scope.lineItem.itemStockBatch = '';
+
                         }
 
                         // load next line item
@@ -464,6 +473,8 @@
         }
 
         self.onLoadInstitutionsSuccessful = self.onLoadInstitutionsSuccessful || function (data) {
+            console.log('about to load institutions');
+            console.log(data.results);
             $scope.institutions = data.results;
             $scope.institutions.unshift(notDefined);
             $scope.institutionStockroom = $scope.institutions[0];
@@ -511,8 +522,8 @@
                 $scope.lineItem.setItemStockExpirationDate(itemStockExpirationDates[0]);
                 $scope.lineItem.setExpirationDates(itemStockExpirationDates);
             }
-            
-             if (!$scope.lineItem.batchItemExist) {
+
+            if (!$scope.lineItem.batchItemExist) {
                 var itemStockBatchs = CreateOperationFunctions.createItemBatches(itemStocks);
                 $scope.lineItem.setItemStockBatch(itemStockBatchs[0]);
                 $scope.lineItem.setItemBatchs(itemStockBatchs);
@@ -553,6 +564,17 @@
 
         self.onChangeEntitySuccessful = self.onChangeEntitySuccessful || function () {
             window.location = VIEW_STOCK_OPERATIONS;
+        }
+
+        //for states and lgas
+        self.onChangeStateSuccessful = self.onChangeStateSuccessful || function (state) {
+
+            CreateOperationFunctions.resolveLga($scope, state);
+        }
+
+        self.onChangeLgaSuccessful = self.onChangeLgaSuccessful || function (lga) {
+            console.log('called lga change');
+            CreateOperationRestfulService.getInstitution(INVENTORY_MODULE_NAME, $scope.state, lga, self.onLoadInstitutionsSuccessful);
         }
 
         // @Override

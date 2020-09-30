@@ -14,12 +14,28 @@
 package org.openmrs.module.openhmis.inventory.web.controller;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.inventory.api.IInstitutionDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemStockDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Institution;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStock;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetailBase;
 
 import org.openmrs.module.openhmis.inventory.web.ModuleWebConstants;
+import org.openmrs.module.webservices.rest.SimpleObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * Controller for the Manage Institutions page.
@@ -28,8 +44,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller(value = "invInstitutionController")
 @RequestMapping(ModuleWebConstants.INSTITUTIONS_ROOT)
 public class InstitutionsController {
+
+	private static final Log LOG = LogFactory.getLog(InstitutionsController.class);
+
 	@RequestMapping(method = RequestMethod.GET)
 	public void institutions(ModelMap model) throws IOException {
 		model.addAttribute("modelBase", "openhmis.inventory.institution");
 	}
+
 }

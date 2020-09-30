@@ -102,6 +102,7 @@ public class ModuleWebConstants extends WebConstants {
 	public static final String MODULE_ITEM_UTILITY_ROOT = MODULE_ROOT + "itemUtility";
 	public static final String NDR_EXTRACTION_ROOT = MODULE_ROOT + "ndrExtraction";
 	public static final String NDR_EXTRACTION_PAGE = NDR_EXTRACTION_ROOT + ".form";
+	public static final String MODULE_INSTITUTION_UTILITY_ROOT = MODULE_ROOT + "institutionUtility";
 
 	protected ModuleWebConstants() {}
 }

@@ -34,6 +34,8 @@ public class InstitutionResource extends BaseRestMetadataResource<Institution> {
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("description", Representation.REF);
+		description.addProperty("state");
+		description.addProperty("lga");
 
 		return description;
 	}

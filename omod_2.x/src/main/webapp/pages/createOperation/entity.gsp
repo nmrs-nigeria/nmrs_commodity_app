@@ -128,7 +128,7 @@
                     </select>
                 </li>
             </ul>
-             <ul class="table-layout" ng-show="operationType.name === 'Receipt'">
+            <ul class="table-layout" ng-show="operationType.name === 'Receipt'">
                 <li class="not-required">
                     <span>Source of Commodity</span>
                 </li>
@@ -217,6 +217,25 @@
 
             <ul class="table-layout"
             ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+
+            <li> <span>State</span></li>
+
+            <li>
+                  <select ng-model="state" class="form-control"
+                    ng-options="state for state in states"
+                    ng-change="onChangeStateSuccessful(state)">
+                    </select>
+            </li>
+            <li>
+                <span>LGA</span>
+            </li>
+            <li>
+                <select ng-model="lga" class="form-control"
+                    ng-options="lga for lga in lgas"
+                    ng-change="onChangeLgaSuccessful(lga)">
+                    </select>
+            </li>
+
             <li class="required">
                 <span>${ui.message('openhmis.inventory.institution.name')}</span>
             </li>

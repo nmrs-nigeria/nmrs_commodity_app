@@ -15,6 +15,9 @@
 
         <property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
         <property name="description" type="java.lang.String" column="description" length="1024" />
+         <property name="state" type="java.lang.String" column="state" not-null="true" length="255" />
+          <property name="lga" type="java.lang.String" column="lga" not-null="true" length="255" />
+          
 
         <!-- bi-directional many-to-one association to User -->
         <many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
