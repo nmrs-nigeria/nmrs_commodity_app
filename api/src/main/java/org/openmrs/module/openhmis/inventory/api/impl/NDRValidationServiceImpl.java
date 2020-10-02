@@ -34,6 +34,7 @@ public class NDRValidationServiceImpl implements INDRValidationService {
 			textToEnc += datimCode;
 
 			String returnVar = Signer.encryptText(textToEnc);
+
 			String hashReturnVar = Base64.getEncoder().encodeToString(returnVar.getBytes());
 			returnVar += "||";
 			//add hash of encrpt string

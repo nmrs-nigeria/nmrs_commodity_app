@@ -5,10 +5,13 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.User;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IInstitutionDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Institution;
@@ -47,7 +50,9 @@ public class InstitutionUtilityController {
 			List<Institution> institutions =
 			        iInstitutionDataService.getInstitutionByStateAndLga(state, lga);
 
-			result.put("results", mapper.writeValueAsString(institutions));
+			List<Institution> cleanedInstitutions = cleanUpInstitution(institutions);
+
+			result.put("results", cleanedInstitutions);
 
 		} catch (Exception ex) {
 			LOG.error(ex.getMessage());
@@ -58,4 +63,18 @@ public class InstitutionUtilityController {
 
 	}
 
+	private List<Institution> cleanUpInstitution(List<Institution> institutions){
+        
+            List<Institution> response = new ArrayList<>();
+            
+            institutions.stream().forEach(a -> {
+            a.setChangedBy(null);
+            a.setCreator(null);
+            
+            response.add(a);
+            });
+            
+            return response;
+            
+        }
 }

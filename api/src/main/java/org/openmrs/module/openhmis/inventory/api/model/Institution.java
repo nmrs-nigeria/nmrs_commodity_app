@@ -13,6 +13,11 @@
  */
 package org.openmrs.module.openhmis.inventory.api.model;
 
+import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonProperty;
+import org.openmrs.User;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 
 /**
