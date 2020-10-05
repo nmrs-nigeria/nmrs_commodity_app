@@ -85,7 +85,7 @@ public class NDRValidationServiceImpl implements INDRValidationService {
 		try {
 			//  TODO: will read version from spring version
 			textToEnc += "|";
-			textToEnc += "3.3.1-SNAPSHOT";
+			textToEnc += "3.3.2-SNAPSHOT";
 
 			encMap.put("validation", "1.1");
 
