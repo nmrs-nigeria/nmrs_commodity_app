@@ -226,7 +226,12 @@
                     ng-change="onChangeStateSuccessful(state)">
                     </select>
             </li>
-            <li>
+            </ul>
+            
+            <ul class="table-layout"
+            ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+            
+              <li>
                 <span>LGA</span>
             </li>
             <li>
@@ -235,7 +240,12 @@
                     ng-change="onChangeLgaSuccessful(lga)">
                     </select>
             </li>
-
+            
+            </ul>
+            
+            <ul class="table-layout"
+            ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+            
             <li class="required">
                 <span>${ui.message('openhmis.inventory.institution.name')}</span>
             </li>

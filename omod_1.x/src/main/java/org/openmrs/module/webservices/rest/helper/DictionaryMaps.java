@@ -82,6 +82,8 @@ public class DictionaryMaps {
 		this.itemMappings.put("ac0226fa-6752-4fe5-8a27-3da7ec78012d", 5);
 		this.itemMappings.put("db9484ff-a255-4e19-aee2-1b29fb69153b", 6);
 		this.itemMappings.put("7559842c-0599-429d-90b5-e5935d0cd720", 7);
+		this.itemMappings.put("e6a0df24-ca6c-47e6-a237-6c18482d1d50", 8); // DBS Kit(20)
+		this.itemMappings.put("925d818a-3e3a-4c72-b566-1b94cc12a888", 9); //DBS Kits(50)
 	}
 
 	private void fillUpTestPurpose() {
@@ -89,6 +91,7 @@ public class DictionaryMaps {
 		this.testPurpose.put("Initial", "I");
 		this.testPurpose.put("Confirmation", "C");
 		this.testPurpose.put("Controls", "CX");// 
+		this.testPurpose.put("Tie Breaker", "TB");
 	}
 
 	private void fillUpCommoditySource() {

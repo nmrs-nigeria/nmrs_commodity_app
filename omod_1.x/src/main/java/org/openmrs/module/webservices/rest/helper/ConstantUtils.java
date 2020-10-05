@@ -17,7 +17,7 @@ public class ConstantUtils {
 	public static final String RETURN_TYPE_UUID = "128924d7-72ee-414e-ae40-52f1f89d3e7d";
 	public static final String TRANSFER_TYPE_UUID = "db40707f-9175-4199-8df2-a5702f41ec7d";
 
-	public static final int EXPIRYDAYSCOUNT = 30;
+	public static final int EXPIRYDAYSCOUNT = 120;
 	public static final String DEPARTMENT_STRING = "department";
 	public static final String INSTITUTION_STRING = "institution";
 

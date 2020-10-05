@@ -85,7 +85,7 @@
 
 	<div id="entities" ng-show="showStockDetails == true" class="detail-section-border-top">
 		<br/>
-                <span>Items Expiring within 30 days</span>
+                <span>Items Expiring within 120 days</span>
                 <br/>
 		<table class="manage-entities-table" id="stockTakeTable">
 			<thead>
