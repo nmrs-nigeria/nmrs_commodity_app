@@ -212,7 +212,7 @@
     <fieldset class="format">
         <span>
             <input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()" />
-            <input type="button" class="confirm right" value="{{messageLabels['general.save']}}" ng-click="saveOrUpdate()" />
+<!--            <input type="button" class="confirm right" value="{{messageLabels['general.save']}}" ng-click="saveOrUpdate()" />-->
         </span>
     </fieldset>
     <div id="item-price-dialog" class="dialog" style="display:none;">
@@ -266,7 +266,7 @@
             <div class="ngdialog-buttons detail-section-border-top">
                 <br />
                 <input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="closeThisDialog('Cancel')" />
-                <input type="button" class="confirm right" value="Confirm"  ng-disabled="itemCode.code == undefined" ng-click="confirm('OK')" />
+              <input type="button" class="confirm right" value="Confirm"  ng-disabled="itemCode.code == undefined" ng-click="confirm('OK')" />
             </div>
         </div>
     </div>

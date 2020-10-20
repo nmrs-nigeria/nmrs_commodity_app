@@ -149,8 +149,10 @@ public class NDRExtractionController {
 				System.out.println("starting xml creating process");
 				LOG.info("Testing log4j");
 				String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
+				datimCode = datimCode.replace("/", "_");
 
 				String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
+				System.out.println("File name is " + fileName);
 
 				String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
 

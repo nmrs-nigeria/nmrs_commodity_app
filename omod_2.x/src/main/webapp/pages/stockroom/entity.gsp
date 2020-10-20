@@ -268,8 +268,8 @@
 				<p>
 					<span><input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()"/>
 					</span>
-					<span><input type="button" class="confirm right" value="{{messageLabels['general.save']}}"
-								 ng-click="saveOrUpdate()"/></span>
+<!--					<span><input type="button" class="confirm right" value="{{messageLabels['general.save']}}"
+								 ng-click="saveOrUpdate()"/></span>-->
 				</p>
 			</div>
 			<br/><br/>

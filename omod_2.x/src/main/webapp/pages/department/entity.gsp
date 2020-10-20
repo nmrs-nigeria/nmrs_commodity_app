@@ -50,7 +50,7 @@
     <fieldset class="format">
         <span>
             <input type="button" class="cancel" value="{{messageLabels['general.cancel']}}" ng-click="cancel()" />
-            <input type="button" class="confirm right" value="{{messageLabels['general.save']}}" ng-click="saveOrUpdate()" />
+<!--            <input type="button" class="confirm right" value="{{messageLabels['general.save']}}" ng-click="saveOrUpdate()" />-->
         </span>
     </fieldset>
 </form>

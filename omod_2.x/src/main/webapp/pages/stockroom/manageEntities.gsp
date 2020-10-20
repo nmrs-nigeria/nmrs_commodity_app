@@ -23,12 +23,12 @@
 		<span class="h1-substitue-left" style="float:left;">
 			${ui.message('openhmis.inventory.admin.stockrooms')}
 		</span>
-		<span style="float:right;">
+<!--		<span style="float:right;">
 			<a class="button confirm" ui-sref="new">
 				<i class="icon-plus"></i>
 				{{newEntityLabel}}
 			</a>
-		</span>
+		</span>-->
 	</div>
 	<br/><br/><br/>
 
