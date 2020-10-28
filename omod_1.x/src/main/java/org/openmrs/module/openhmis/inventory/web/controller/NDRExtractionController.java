@@ -174,7 +174,6 @@ public class NDRExtractionController {
 		} catch (Exception ex) {
 			result.put("error", ex.getMessage());
 			System.err.println(ex.getMessage());
-
 		}
 
 		return result;
@@ -202,7 +201,7 @@ public class NDRExtractionController {
 		messageHeaderType.setXmlType("commodity");
 
 		MessageSendingOrganisationType messageSendingOrganisationType = new MessageSendingOrganisationType();
-		messageSendingOrganisationType.setFacilityID(RestUtils.getFacilityLocalId());
+		messageSendingOrganisationType.setFacilityID(RestUtils.getFacilityDATIMId());
 		messageSendingOrganisationType.setFacilityName(RestUtils.getFacilityName());
 		messageSendingOrganisationType.setFacilityTypeCode(RestUtils.getFacilityType());
 

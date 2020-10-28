@@ -126,6 +126,10 @@ public class RestUtils {
 		return Context.getAdministrationService().getGlobalProperty("partner_short_name");
 	}
 
+	public static String getFacilityDATIMId() {
+		return Context.getAdministrationService().getGlobalProperty("facility_datim_code");
+	}
+
 	public static Marshaller createMarshaller(JAXBContext jaxbContext) throws JAXBException, SAXException {
 		Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
 
