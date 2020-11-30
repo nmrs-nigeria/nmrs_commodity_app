@@ -158,6 +158,15 @@
                 "url": "openhmis.inventory/ndrExtraction/entities.page",
                 "icon": "icon-share-alt",
                 "requiredPrivilege": "Task: Access Inventory Reports"
+            },
+            {
+                "id": "openhmis.inventory.pharmacyInventory",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.landing",
+                "type": "link",
+                "label": "openhmis.inventory.manage.pharmacy",
+               "url": "openhmis.inventory/inventory/inventoryTasksDashboard.page",
+                "icon": "icon-medkit",
+                "requiredPrivilege": "Task: Pharmacy Menu"
             }
         ]
     }

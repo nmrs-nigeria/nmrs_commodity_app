@@ -255,5 +255,41 @@
 		<name>Task: View Stock Operations</name>
 		<description>Able to access the view stock operations page.</description>
 	</privilege>
+        
+        <privilege>
+		<name>Task: Pharmacy Menu</name>
+		<description>Able to access the pharmacy inventory dashboard page.</description>
+	</privilege>
+        
+          <privilege>
+		<name>View NDR Extraction Reports</name>
+		<description>Able to access the NDR Extraction dashboard.</description>
+	</privilege>
+        
+         <privilege>
+		<name>View Item Expiration Summary</name>
+		<description>Able to view the item expiration page.</description>
+	</privilege>
+        
+        <privilege>
+		<name>View Inventory Consumption Summary</name>
+		<description>Able to view consumption summary.</description>
+	</privilege>
+        
+         <privilege>
+		<name>Manage Inventory Consumption</name>
+		<description>Able to edit consumption.</description>
+	</privilege>
+        
+        <privilege>
+		<name>View Inventory Consumption</name>
+		<description>Able to view consumption.</description>
+	</privilege>
+        
+         <privilege>
+		<name>Purge Consumption</name>
+		<description>Able to purge consumption.</description>
+	</privilege>
+        
 
 </module>
