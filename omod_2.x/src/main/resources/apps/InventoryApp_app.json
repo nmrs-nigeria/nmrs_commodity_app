@@ -40,7 +40,7 @@
                 "icon": "icon-cogs",
                 "requiredPrivilege": "Task: Manage Inventory Module"
             },
-         
+
             {
                 "id": "openhmis.inventory.manageItemsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
@@ -50,7 +50,7 @@
                 "icon": "icon-italic",
                 "requiredPrivilege": "Task: Manage Inventory Metadata"
             },
-          
+
             {
                 "id": "openhmis.inventory.manageDepartmentsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
@@ -164,8 +164,17 @@
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.landing",
                 "type": "link",
                 "label": "openhmis.inventory.manage.pharmacy",
-               "url": "openhmis.inventory/inventory/inventoryTasksDashboard.page",
+                "url": "openhmis.inventory/inventory/pharmacyInventoryDashboard.page",
                 "icon": "icon-medkit",
+                "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+              {
+                "id": "openhmis.inventory.createInventoryOperations",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.operations.createOperation",
+                "url": "openhmis.inventory/pharmacyOperation/entities.page",
+                "icon": "icon-folder-open",
                 "requiredPrivilege": "Task: Pharmacy Menu"
             }
         ]
