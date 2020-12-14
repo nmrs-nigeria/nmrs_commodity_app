@@ -33,6 +33,7 @@ public class PrivilegeConstants {
 
 	private static PrivilegeConstantsCompatibility privilegeConstantsCompatibility;
 
+	public static final String TASK_ACCESS_PHARMACY_MENU_PAGE = "Task: Pharmacy Menu";
 	public static final String VIEW_NDR_REPORTING = "View NDR Extraction Reports";
 	public static final String VIEW_ITEM_EXPIRATION_SUMMARY = "View Item Expiration Summary";
 	public static final String VIEW_CONSUMPTIONS_SUMMARY = "View Inventory Consumption Summary";
@@ -74,7 +75,8 @@ public class PrivilegeConstants {
 	        TASK_MANAGE_INVENTORY_MODULE_PAGE, TASK_ACCESS_INVENTORY_TASK_PAGE, TASK_ACCESS_VIEW_STOCK_OPERATIONS_PAGE,
 	        TASK_ACCESS_CREATE_OPERATION_PAGE, TASK_ACCESS_INVENTORY_REPORTS_PAGE, TASK_ACCESS_STOCK_TAKE_PAGE,
 	        ROLLBACK_OPERATIONS, TASK_MANAGE_INVENTORY_METADATA, MANAGE_CONSUMPTION, VIEW_CONSUMPTIONS,
-	        PURGE_CONSUMPTION, VIEW_CONSUMPTIONS_SUMMARY, VIEW_ITEM_EXPIRATION_SUMMARY };
+	        PURGE_CONSUMPTION, VIEW_CONSUMPTIONS_SUMMARY, VIEW_ITEM_EXPIRATION_SUMMARY,
+	        VIEW_NDR_REPORTING, TASK_ACCESS_PHARMACY_MENU_PAGE };
 
 	@Autowired
 	protected PrivilegeConstants(PrivilegeConstantsCompatibility privilegeConstantsCompatibility) {

@@ -119,6 +119,7 @@
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
                     $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
+               //     $scope.commodityType = "pharmacy";
                 }
 
         /**
@@ -134,9 +135,9 @@
                 return false;
             }
 
-                //fill constant value
-            $scope.entity.commodityType = "lab";
 
+            //fill constant value
+            $scope.entity.commodityType = "pharmacy";
 
             //for empty commodity source
             if ($scope.commoditySource === undefined || $scope.commoditySource === '') {

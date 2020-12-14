@@ -2109,7 +2109,7 @@ update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc 
     </changeSet>
     
     <changeSet id="openhmis.inventory-v1.9.5" author="Morrison Idiasirue" >
-       <insert tableName="inv_item">
+        <insert tableName="inv_item">
             <column name="name">DBS Kits(20)</column>
             <column name="description">DBS Kits for 20 test per pack</column>
             <column name="has_expiration">1</column>
@@ -2122,7 +2122,7 @@ update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc 
         </insert>                                                                                                 
       
                           
-     <insert tableName="inv_item">
+        <insert tableName="inv_item">
             <column name="name">DBS Kits(50)</column>
             <column name="description">DBS Kits for 50 test per pack</column>
             <column name="has_expiration">1</column>
@@ -2137,7 +2137,7 @@ update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc 
     </changeSet>  
            
     
-      <changeSet id="openhmis.inventory-v1.9.6" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.9.6" author="Morrison Idiasirue" >
         <comment>
             insert remaining external facilities.
         </comment>
@@ -3800,7 +3800,535 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 
 		]]></sql>
                 
-    </changeSet>                                                           
+    </changeSet>       
+    
+                                                        
+    <changeSet id="openhmis.inventory-v1.9.7" author="Morrison Idiasirue" >
+                                       
+                   
+        <addColumn tableName="inv_item">
+            <column name="strength" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="regimen_line" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            
+                
+            <column name="item_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+          
+			
+        </addColumn>
+        
+        
+        <addColumn tableName="inv_stock_operation">
+            <column name="commodity_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+			
+        </addColumn>
+            
+    </changeSet> 
+    
+   
+    <changeSet id="openhmis.inventory-v1.9.8" author="Morrison Idiasirue" >
+        <comment>
+            set item_type and commodity_type for already existing items and operations
+        </comment>
+    
+        <sql><![CDATA[			
+            update inv_stock_operation set commodity_type = 'lab' where stock_operation_id is not null;
+            update inv_item set item_type = 'lab' where item_id is not null;
+		]]></sql>
+                
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v1.9.9" author="Morrison Idiasirue">
+        
+        <insert tableName="inv_item">
+            <column name="name">Tenofovir/Lamivudine/Efavirenz(30)(300/300/600mg)</column>
+            <column name="description">Tenofovir/Lamivudine/Efavirenz for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">300/300/600mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">b798dad9-d7d6-480d-8bd4-d2819145ea31</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Tenofovir/Lamivudine/Dolutegravir(30)(300/300/50mg)</column>
+            <column name="description">Tenofovir/Lamivudine/Dolutegravir for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">300/300/50mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">55dfcd9b-e3b9-4164-a2fc-8faf8df25d58</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Tenofovir/Lamivudine/Dolutegravir(90)(300/300/50mg)</column>
+            <column name="description">Tenofovir/Lamivudine/Dolutegravir for 90 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">90</column>
+            <column name="strength">300/300/50mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">161937c6-c1b2-44a9-b2f3-1d7ad3da85da</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Lamivudine/Zidovudine/Nevirapine(60)(150/300/200mg)</column>
+            <column name="description">Lamivudine/Zidovudine/Nevirapine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">150/300/200mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">3d66d5eb-bbad-474b-9637-971f6a8e5b01</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Tenofovir/Lamivudine(30)(300/300mg)</column>
+            <column name="description">Tenofovir/Lamivudine for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">300/300mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">e52a152b-1eb7-4189-8899-b91308f8b7b0</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Lamivudine/Zidovudine(60)(300/150mg)</column>
+            <column name="description">Lamivudine/Zidovudine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">300/150mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">d4c09c9b-bead-4578-85d8-0802f8bf1b4a</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Abacavir/Lamivudine(30)(600/300mg)</column>
+            <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">600/300mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">f49501ee-637a-4115-87dc-bb2e72019a6c</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Abacavir/Lamivudine(30)(120/60mg)</column>
+            <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">120/60mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">c2a303db-bcd4-46d9-b6d1-5c0c4eabcd2a</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Efavirenz(30)(600mg)</column>
+            <column name="description">Efavirenz for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">600mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">91dc08f8-f7ae-4ea7-b2ea-0e483c0cb463</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Zidovudine(60)(300mg)</column>
+            <column name="description">Zidovudine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">300mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">0b17816e-d41a-4c8f-917a-8b55e3c345cc</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Atazanavir/Ritonavir(30)(300/100mg)</column>
+            <column name="description">Atazanavir/Ritonavir for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">300/100mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">1860973c-1031-489c-b650-4c3d564a9844</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Lopinavir/Ritonavir(120)(200/50mg)</column>
+            <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">120</column>
+            <column name="strength">200/50mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">d7232d03-06a9-4915-9299-2fd511afb215</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
+            <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">120</column>
+            <column name="strength">40/10mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">5e949026-a650-423e-85c5-4c760e6b201b</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Darunavir(60)(600mg)</column>
+            <column name="description">Darunavir for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">600mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">8bdc5767-636c-4a86-be12-a4dae87bbae3</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Ritonavir(30)(100mg)</column>
+            <column name="description">Ritonavir for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">100mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">6102fcba-aec7-4b55-896b-606217a8de6b</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Darunavir/Ritonavir(30)(800mg/100mg)</column>
+            <column name="description">Darunavir/Ritonavir for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">800mg/100mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">681b29bf-2ca0-48bb-8832-4eb701c5e070</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Dolutegravir(30)(50mg)</column>
+            <column name="description">Dolutegravir for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">50mg</column>
+            <column name="regimen_line">adult</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">f85affcc-9e07-4303-aabf-a00c13bee5d1</column>
+        </insert>
+        
+        <!-- pediatric starts -->
+        
+        <insert tableName="inv_item">
+            <column name="name">Lamivudine/Zidovudine/Nevirapine(60)(30/60/50mg)</column>
+            <column name="description">Lamivudine/Zidovudine/Nevirapine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">30/60/50mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">95800b9b-f334-4871-a383-13d663a99a2f</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Abacavir/Lamivudine(60)(60/30mg)</column>
+            <column name="description">Abacavir/Lamivudine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">60/30mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">c837ea4c-1aa5-4289-b8ea-033a4c2c793a</column>
+        </insert> 
+       
+         
+        <insert tableName="inv_item">
+            <column name="name">Abacavir/Lamivudine(30)(60/30mg)</column>
+            <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">30</column>
+            <column name="strength">60/30mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">68817326-9e61-4cb6-95a7-75193c377f7f</column>
+        </insert> 
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Lamivudine/Zidovudine(60)(60/30mg)</column>
+            <column name="description">Lamivudine/Zidovudine for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">60/30mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">cc047f31-8b44-4ca1-bb02-a85186adfe15</column>
+        </insert> 
+        
+        <insert tableName="inv_item">
+            <column name="name">Efavirenz(90)(200mg)</column>
+            <column name="description">Efavirenz for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">90</column>
+            <column name="strength">200mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">291cf1a7-de8a-43a9-9c68-9c83b1c8cc4a</column>
+        </insert> 
+        
+        <insert tableName="inv_item">
+            <column name="name">Nevirapine(100ml)(50mg/5ml)</column>
+            <column name="description">Nevirapinez for 100ml bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">100</column>
+            <column name="strength">50mg/5ml</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">b9261d1a-ee6c-4ae0-b03e-15f93a12db20</column>
+        </insert> 
+        
+        <insert tableName="inv_item">
+            <column name="name">Lopinavir/Ritonavir(60)(100/25mg)</column>
+            <column name="description">Lopinavir/Ritonavir for 60 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">100/25mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">c04a2ff5-a0df-40e8-865c-174a4004d7b9</column>
+        </insert> 
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
+            <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">60</column>
+            <column name="strength">40/10mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">72b03d62-3df0-45b8-91f8-bfe774998736</column>
+        </insert> 
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
+            <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">120</column>
+            <column name="strength">40/10mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">8ca997ff-b5f8-4386-bff4-6a98ce7377bf</column>
+        </insert>
+        
+          
+        <insert tableName="inv_item">
+            <column name="name">Zidovudine(50mg)(240ml)</column>
+            <column name="description">Zidovudine for 50mg bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">50</column>
+            <column name="strength">240ml</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">7605d1cf-94de-44bf-9f6f-006d8361eab4</column>
+        </insert>  
+          
+        <!-- oi drugs -->
+        
+        <insert tableName="inv_item">
+            <column name="name">Co-trimoxazole(1000)(120mg)</column>
+            <column name="description">Co-trimoxazole for 1000 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">1000</column>
+            <column name="strength">120mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">3e3fba6b-cdce-4b20-bae5-7b6916e691a0</column>
+        </insert>
+        
+        <insert tableName="inv_item">
+            <column name="name">Co-trimoxazole(100)(960mg)</column>
+            <column name="description">Co-trimoxazole for 100 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">100</column>
+            <column name="strength">960mg</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">4c511821-236e-42d3-9272-9f12841b8e35</column>
+        </insert>
+        
+        
+        <insert tableName="inv_item">
+            <column name="name">Isoniazid(100)(100ml)</column>
+            <column name="description">Isoniazid for 100 bottles per pack</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="pack_size">100</column>
+            <column name="strength">100ml</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2020-11-20</column>
+            <column name="uuid">1fc71936-ef5f-4105-b020-2d63f6704dc6</column>
+        </insert>
+     
+    </changeSet>                                                                                                       
+ 
+    <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
+        <comment>
+            create a default stock room called Pharmacy main stock room
+        </comment>
+        <sql><![CDATA[
+			select @locationIDVar:=location_id from location limit 0,1;
+		]]></sql>
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
+                    VALUES('Pharmacy Main Stockroom', 'Main Stock room in the Pharmacy', @locationIDVar, 1, NOW(), '5452ec3e-2fe1-46de-8a6e-28c6442e4cc0');
+		]]></sql>
+                
+    </changeSet>                                                                                                                                                                                                                                                                                                                                          
+                                                                                                                                                                                                                                                                                  
         
            
 </databaseChangeLog>

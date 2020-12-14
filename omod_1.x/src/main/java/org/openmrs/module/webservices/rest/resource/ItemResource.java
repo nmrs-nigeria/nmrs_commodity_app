@@ -13,13 +13,9 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 import org.openmrs.Concept;
@@ -30,18 +26,12 @@ import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemAttribute;
 import org.openmrs.module.openhmis.inventory.api.model.ItemCode;
-import org.openmrs.module.openhmis.inventory.api.model.ItemPrice;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
-import org.openmrs.module.webservices.rest.helper.Converter;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
-
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 
 /**
  * REST resource representing an {@link Item}.
@@ -60,6 +50,9 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 		description.addProperty("minimumQuantity");
 		description.addProperty("unitOfMeasure");
 		description.addProperty("packSize");
+		description.addProperty("strength");
+		description.addProperty("regimenLine");
+		description.addProperty("itemType");
 
 		if (!(rep instanceof RefRepresentation)) {
 			// description.addProperty("prices", Representation.REF);

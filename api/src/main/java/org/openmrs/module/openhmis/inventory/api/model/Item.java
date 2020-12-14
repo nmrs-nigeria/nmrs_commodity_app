@@ -42,6 +42,9 @@ public class Item extends BaseSimpleCustomizableMetadata<ItemAttribute> implemen
 	private Boolean conceptAccepted;
 	private String unitOfMeasure;
 	private Integer packSize;
+	private String strength;
+	private String regimenLine;
+	private String itemType;
 
 	public String getUnitOfMeasure() {
 		return unitOfMeasure;
@@ -235,6 +238,38 @@ public class Item extends BaseSimpleCustomizableMetadata<ItemAttribute> implemen
 
 	public void setBuyingPrice(BigDecimal buyingPrice) {
 		this.buyingPrice = buyingPrice;
+	}
+
+	public Integer getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Integer itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getStrength() {
+		return strength;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public String getRegimenLine() {
+		return regimenLine;
+	}
+
+	public void setRegimenLine(String regimenLine) {
+		this.regimenLine = regimenLine;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
 	}
 
 	@Override
