@@ -28,7 +28,7 @@
 			var fields = ["operationNumber", "instanceType",
 				"operationDate", "source", "destination", "institution",
 				"department", "items", "status", "patient","disposedType",
-                                "adjustmentKind","commoditySource"];
+                                "adjustmentKind","commoditySource","commodityType"];
 			return fields;
 		};
 

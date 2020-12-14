@@ -178,6 +178,7 @@
                 <property name="disposedType" type="java.lang.String" column="disposed_type" not-null="false" />
                  <property name="adjustmentKind" type="java.lang.String" column="adjustment_kind" not-null="false" />
                   <property name="commoditySource" type="java.lang.String" column="commodity_source" not-null="false" />
+                  <property name="commodityType" type="java.lang.String" column="commodity_type" not-null="false" />
                 
 		<property name="name" type="java.lang.String" column="name" />
 		<property name="description" type="java.lang.String" column="description" />

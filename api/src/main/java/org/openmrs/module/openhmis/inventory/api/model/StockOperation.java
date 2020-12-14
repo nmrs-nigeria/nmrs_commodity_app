@@ -57,6 +57,7 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	private String adjustmentKind;
 	private String disposedType;
 	private String commoditySource;
+	private String commodityType;
 
 	@Override
 	public Integer getId() {
@@ -399,6 +400,14 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 
 	public void setCommoditySource(String commoditySource) {
 		this.commoditySource = commoditySource;
+	}
+
+	public String getCommodityType() {
+		return commodityType;
+	}
+
+	public void setCommodityType(String commodityType) {
+		this.commodityType = commodityType;
 	}
 
 }

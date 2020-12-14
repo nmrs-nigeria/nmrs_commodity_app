@@ -134,6 +134,9 @@
                 return false;
             }
 
+                //fill constant value
+            $scope.entity.commodityType = "lab";
+
 
             //for empty commodity source
             if ($scope.commoditySource === undefined || $scope.commoditySource === '') {

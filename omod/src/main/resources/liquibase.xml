@@ -4298,7 +4298,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         </insert>
         
         
-          <insert tableName="inv_item">
+        <insert tableName="inv_item">
             <column name="name">Isoniazid(100)(100ml)</column>
             <column name="description">Isoniazid for 100 bottles per pack</column>
             <column name="has_expiration">1</column>
@@ -4312,12 +4312,22 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">1fc71936-ef5f-4105-b020-2d63f6704dc6</column>
         </insert>
-        
-        
-        
-        
+     
     </changeSet>                                                                                                       
-                                                                                                                                                                      
+ 
+    <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
+        <comment>
+            create a default stock room called Pharmacy main stock room
+        </comment>
+        <sql><![CDATA[
+			select @locationIDVar:=location_id from location limit 0,1;
+		]]></sql>
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
+                    VALUES('Pharmacy Main Stockroom', 'Main Stock room in the Pharmacy', @locationIDVar, 1, NOW(), '5452ec3e-2fe1-46de-8a6e-28c6442e4cc0');
+		]]></sql>
+                
+    </changeSet>                                                                                                                                                                                                                                                                                                                                          
                                                                                                                                                                                                                                                                                   
         
            
