@@ -4275,7 +4275,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="unit_of_measure">bottles</column>
             <column name="pack_size">1000</column>
             <column name="strength">120mg</column>
-            <column name="regimen_line">pediatric</column>
+            <column name="regimen_line">OI</column>
             <column name="item_type">pharmacy</column>
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
@@ -4290,7 +4290,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="unit_of_measure">bottles</column>
             <column name="pack_size">100</column>
             <column name="strength">960mg</column>
-            <column name="regimen_line">pediatric</column>
+            <column name="regimen_line">OI</column>
             <column name="item_type">pharmacy</column>
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
@@ -4306,7 +4306,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="unit_of_measure">bottles</column>
             <column name="pack_size">100</column>
             <column name="strength">100ml</column>
-            <column name="regimen_line">pediatric</column>
+            <column name="regimen_line">OI</column>
             <column name="item_type">pharmacy</column>
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
