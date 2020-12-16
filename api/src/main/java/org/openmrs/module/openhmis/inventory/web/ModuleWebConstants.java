@@ -36,6 +36,9 @@ public class ModuleWebConstants extends WebConstants {
 	public static final String ITEMS_ROOT = MODULE_ROOT + "items";
 	public static final String ITEMS_PAGE = ITEMS_ROOT + ".form";
 
+	public static final String PHARMACY_CONSUMPTIONS_ROOT = MODULE_ROOT + "pharmacyConsumptions";
+	public static final String PARMACY_CONSUMPTIONS_PAGE = PHARMACY_CONSUMPTIONS_ROOT + ".form";
+
 	public static final String CONSUMPTIONS_ROOT = MODULE_ROOT + "consumptions";
 	public static final String CONSUMPTIONS_PAGE = CONSUMPTIONS_ROOT + ".form";
 

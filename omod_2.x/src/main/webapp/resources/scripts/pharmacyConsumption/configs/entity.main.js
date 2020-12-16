@@ -1,7 +1,7 @@
 
 
 /* initialize and bootstrap application */
-requirejs(['consumption/configs/entity.module'], function() {
+requirejs(['pharmacyConsumption/configs/entity.module'], function() {
 	angular.bootstrap(document, ['entitiesApp']);
 });
 
@@ -50,5 +50,6 @@ emr.loadMessages([
 	"openhmis.commons.general.add",
 	"openhmis.commons.general.enterSearchPhrase",
 	"openhmis.commons.general.edit",
-	"openhmis.commons.general.postSearchMessage"
+	"openhmis.commons.general.postSearchMessage",
+        "openhmis.inventory.pharmacyConsumption.name"
 ]);

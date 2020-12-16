@@ -11,8 +11,8 @@
 
         var self = this;
 
-        var entity_name_message_key = "openhmis.inventory.consumption.name";
-        var REST_ENTITY_NAME = "consumption";
+        var entity_name_message_key = "openhmis.inventory.pharmacyConsumption.name";
+        var REST_ENTITY_NAME = "pharmacyConsumption";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function () {

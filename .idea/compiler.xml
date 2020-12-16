@@ -12,8 +12,5 @@
         <module name="openhmis.inventory-omod_1.x" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="nmrs-commodity-app" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>

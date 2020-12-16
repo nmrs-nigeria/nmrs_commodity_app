@@ -25,7 +25,7 @@
 
 		function searchConsumptions(startIndex, limit, department_uuid,item_uuid, includeRetired, onLoadSuccessfulCallback){
 			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
-			requestParams['rest_entity_name'] = 'consumption';
+			requestParams['rest_entity_name'] = 'pharmacyConsumption';
                         
 			if(angular.isDefined(department_uuid)){
 				requestParams['department_uuid'] = department_uuid;

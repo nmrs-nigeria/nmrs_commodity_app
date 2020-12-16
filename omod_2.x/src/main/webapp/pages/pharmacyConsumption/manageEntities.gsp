@@ -7,9 +7,9 @@
     },
    {
             label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
-		{label: "${ ui.message("openhmis.inventory.admin.consumptions")}",}
+		{label: "${ ui.message("openhmis.inventory.admin.phamacyConsumptions")}",}
     ];
 
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));

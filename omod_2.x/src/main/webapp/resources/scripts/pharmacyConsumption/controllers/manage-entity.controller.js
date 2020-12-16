@@ -14,8 +14,8 @@
 
 		var self = this;
 
-		var entity_name = emr.message("openhmis.inventory.consumption.name");
-		var REST_ENTITY_NAME = "consumption";
+		var entity_name = emr.message("openhmis.inventory.pharmacyConsumption.name");
+		var REST_ENTITY_NAME = "pharmacyConsumption";
 
 		// @Override
 		self.getModelAndEntityName = self.getModelAndEntityName

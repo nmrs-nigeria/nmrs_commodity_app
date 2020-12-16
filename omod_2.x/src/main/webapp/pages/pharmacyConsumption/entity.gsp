@@ -4,10 +4,10 @@
     { label: "${ ui.message("openhmis.inventory.page")}" , link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'},
      {
             label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
-    { label: "${ ui.message("openhmis.inventory.admin.consumptions")}", link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/consumption/entities.page##/'},
-    { label: "${ui.message("openhmis.inventory.consumption.name")}"}
+    { label: "${ ui.message("openhmis.inventory.admin.phamacyConsumptions")}", link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/pharmacyConsumption/entities.page##/'},
+    { label: "${ui.message("openhmis.inventory.pharmacyConsumption.name")}"}
     ];
 
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
@@ -103,16 +103,7 @@
                {{entity.wastage + entity.quantity}}
             </li>
         </ul>
-          <ul class="table-layout">
-            <li class="required">
-                <span>{{messageLabels['openhmis.inventory.consumption.testPurpose']}}</span>
-            </li>
-            <li>
-                 <select ng-model="entity.testPurpose" class="form-control"
-                            ng-options="testPurpose for testPurpose in testPurposeTypes">
-                    </select>
-            </li>
-        </ul>
+        
 
     </fieldset>
 
