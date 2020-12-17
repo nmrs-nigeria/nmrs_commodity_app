@@ -62,6 +62,7 @@
                 function loadItems(onLoadItemsSuccessful) {
 			var requestParams = [];
 			requestParams['rest_entity_name'] = 'item';
+                         requestParams['itemType'] = 'lab';
 			EntityRestFactory.loadEntities(requestParams,
 					onLoadItemsSuccessful, errorCallback);
 		}
