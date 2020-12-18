@@ -76,5 +76,8 @@ public class ItemSearch extends BaseMetadataTemplateSearch<Item> {
 		if (item.getPackSize() != null) {
 			criteria.add(Restrictions.eq("packSize", item.getPackSize()));
 		}
+		if (item.getItemType() != null) {
+			criteria.add(Restrictions.eq("itemType", item.getItemType()));
+		}
 	}
 }

@@ -63,7 +63,11 @@
 			var requestParams = [];
 			requestParams['rest_entity_name'] = 'item';
                         requestParams['itemType'] = 'pharmacy';
-			EntityRestFactory.loadEntities(requestParams,
+                       
+	//		EntityRestFactory.loadEntities(requestParams,
+	//				onLoadItemsSuccessful, errorCallback);
+                                        
+                                        EntityRestFactory.loadEntities(requestParams,
 					onLoadItemsSuccessful, errorCallback);
 		}
 

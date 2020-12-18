@@ -18,19 +18,27 @@ import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemAttribute;
 import org.openmrs.module.openhmis.inventory.api.model.ItemCode;
+import org.openmrs.module.openhmis.inventory.api.search.ItemSearch;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
+import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.RefRepresentation;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 /**
@@ -39,6 +47,17 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
 @Resource(name = ModuleRestConstants.ITEM_RESOURCE, supportedClass = Item.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
 public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Item, ItemAttribute> {
+
+	private static final Log LOG = LogFactory.getLog(ItemResource.class);
+
+	private final IDepartmentDataService departmentService;
+	private IItemDataService iItemDataService;
+
+	public ItemResource() {
+		this.departmentService = Context.getService(IDepartmentDataService.class);
+		this.iItemDataService = Context.getService(IItemDataService.class);
+	}
+
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
@@ -64,6 +83,41 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 		return description;
 	}
 
+	@Override
+	protected PageableResult doSearch(RequestContext context) {
+
+		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+		List<Item> results;
+		ItemSearch itemSearch = new ItemSearch();
+		Department department = getDepartment(context);
+		String itemType = context.getParameter("itemType");
+		String regimenLine = context.getParameter("regimenLine");
+		//   Integer packSize = Integer.valueOf(context.getParameter("packSize"));
+
+		if (department != null) {
+			itemSearch.getTemplate().setDepartment(department);
+		}
+
+		if (itemType != null) {
+			itemSearch.getTemplate().setItemType(itemType);
+		}
+
+		if (regimenLine != null) {
+			itemSearch.getTemplate().setRegimenLine(regimenLine);
+		}
+
+		//        if(packSize != null){
+		//            itemSearch.getTemplate().setPackSize(packSize);
+		//        }
+
+		results = this.iItemDataService.getItemsByItemSearch(itemSearch, pagingInfo);
+
+		return new AlreadyPagedWithLength<Item>(context, results, pagingInfo.hasMoreResults(),
+		        pagingInfo.getTotalRecordCount());
+
+		// return super.doSearch(context); //To change body of generated methods, choose Tools | Templates.
+	}
+
 	@PropertySetter(value = "codes")
 	public void setItemCodes(Item instance, Set<ItemCode> codes) {
 		if (instance.getCodes() == null) {
@@ -87,7 +141,6 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 	//			price.setItem(instance);
 	//		}
 	//	}
-
 	//	@PropertySetter(value = "defaultPrice")
 	//	public void setDefaultPrice(Item instance, ItemPrice defaultPrice) {
 	//		IItemDataService service = Context.getService(IItemDataService.class);
@@ -99,7 +152,6 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 	//		instance.setDefaultPrice(defaultPrice);
 	//		setNewDefaultPrice(instance, defaultPrice.getPrice().toPlainString(), defaultPrice.getName());
 	//	}
-
 	@PropertySetter(value = "concept")
 	public void setConcept(Item instance, final String uuid) {
 		if (StringUtils.isBlank(uuid)) {
@@ -124,7 +176,6 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 	//			instance.setBuyingPrice(Converter.objectToBigDecimal(price));
 	//		}
 	//	}
-
 	@PropertySetter("attributes")
 	public void setAttributes(Item instance, List<ItemAttribute> attributes) {
 		super.baseSetAttributes(instance, attributes);
@@ -164,7 +215,6 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 	//			instance.setDefaultPrice(new ItemPrice(new BigDecimal(price), ""));
 	//		}
 	//	}
-
 	private boolean namesEqualOrBlank(final String name1, final String name2) {
 		if (StringUtils.isBlank(name1) && StringUtils.isBlank(name2)) {
 			return true;
@@ -173,5 +223,20 @@ public class ItemResource extends BaseRestSimpleCustomizableMetadataResource<Ite
 			return true;
 		}
 		return false;
+	}
+
+	private Department getDepartment(RequestContext context) {
+		Department department = null;
+		String departmentUUID = context.getParameter("department_uuid");
+		if (org.apache.commons.lang.StringUtils.isNotEmpty(departmentUUID)) {
+			department = departmentService.getByUuid(departmentUUID);
+			if (department == null) {
+				LOG.warn("Could not parse Department '" + departmentUUID + "'");
+				throw new IllegalArgumentException("The Department '" + departmentUUID
+				        + "' is not a valid operation type.");
+			}
+		}
+
+		return department;
 	}
 }
