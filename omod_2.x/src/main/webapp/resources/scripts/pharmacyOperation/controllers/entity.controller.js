@@ -91,7 +91,7 @@
                     $scope.addLineItem = self.addLineItem;
                     $scope.removeLineItem = self.removeLineItem;
                     $scope.warningDialog = self.warningDialog;
-                    $scope.distributionTypes = ["Department"];
+                    $scope.distributionTypes = ["Patient"];
                     $scope.distributionType = $scope.distributionTypes[0];
                     $scope.transferTypes = ["Institution"];
                     $scope.transferType = $scope.transferTypes[0];
