@@ -131,7 +131,7 @@ public class PharmacyConsumptionSearchHandler
 
 		PharmacyConsumptionSearch template = new PharmacyConsumptionSearch();
 
-		template.getTemplate().setDepartment(department);
+		// template.getTemplate().setDepartment(department);
 		template.getTemplate().setItem(item);
 
 		if (!context.getIncludeAll()) {

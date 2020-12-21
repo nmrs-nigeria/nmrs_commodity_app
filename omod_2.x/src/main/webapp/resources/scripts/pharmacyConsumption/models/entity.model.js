@@ -16,7 +16,7 @@
 		extended.getModelFields = function() {
 
                         var fields = ["consumptionDate",
-					"item", "department",
+					"item", 
 					"quantity", "wastage","batchNumber"
 					];
 

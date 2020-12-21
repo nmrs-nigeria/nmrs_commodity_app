@@ -48,7 +48,7 @@
         </ul>
 
         
-        <ul class="table-layout">
+<!--        <ul class="table-layout">
             <li class="required">
                 <span>Testing Points</span>
             </li>
@@ -57,7 +57,7 @@
                 ng-options='department.name for department in departments track by department.uuid'>
                 </select>
             </li>
-        </ul>
+        </ul>-->
         <ul class="table-layout">
             <li class="required">
                 <span>{{messageLabels['openhmis.inventory.item.name']}}</span>

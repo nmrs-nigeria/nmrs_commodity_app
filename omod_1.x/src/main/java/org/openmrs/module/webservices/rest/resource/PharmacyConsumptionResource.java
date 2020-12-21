@@ -52,7 +52,7 @@ public class PharmacyConsumptionResource extends BaseRestMetadataResource<Pharma
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("item", Representation.REF);
-		description.addProperty("department", Representation.REF);
+		// description.addProperty("department", Representation.REF);
 		description.addProperty("consumptionDate", Representation.DEFAULT);
 		description.addProperty("dateCreated", Representation.DEFAULT);
 		description.addProperty("quantity");
@@ -135,9 +135,9 @@ public class PharmacyConsumptionResource extends BaseRestMetadataResource<Pharma
 			if (item != null) {
 				search.getTemplate().setItem(item);
 			}
-			if (department != null) {
-				search.getTemplate().setDepartment(department);
-			}
+			//			if (department != null) {
+			//				search.getTemplate().setDepartment(department);
+			//			}
 
 			results = ((IPharmacyConsumptionDataService)getService())
 			        .getConsumptionsByConsumptionSearch(search, pagingInfo);

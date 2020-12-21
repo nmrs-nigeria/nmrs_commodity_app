@@ -80,7 +80,7 @@
                 
                 
                 <!-- Associations -->
-		<many-to-one name="department" class="Department" column="department_id" />
+		
                 <many-to-one name="item" class="Item" column="item_id" />
                 
 	</class>

@@ -36,7 +36,7 @@
         <div id="entities">
 
             <table class="search-area" >
-                <td>
+<!--                <td>
                     ${ ui.message('openhmis.inventory.department.name') }:
                     <ul>
                         <li>
@@ -47,7 +47,7 @@
                         </li>
 
                     </ul>
-                </td>
+                </td>-->
 
                 <td>
                     ${ ui.message('openhmis.inventory.item.name') }:
@@ -73,7 +73,7 @@
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
                          <th>${ui.message('openhmis.inventory.consumption.batchNumber')}</th>
-                        <th>${ui.message('openhmis.inventory.department.name')}</th>
+<!--                        <th>${ui.message('openhmis.inventory.department.name')}</th>-->
                         <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
@@ -84,7 +84,7 @@
                     total-items="totalNumOfResults" current-page="currentPage" ui-sref="edit({uuid: entity.uuid})">
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.batchNumber}}</td>
-                <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
+<!--                <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>-->
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.wastage}}
                 </td>

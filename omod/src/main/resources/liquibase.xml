@@ -4389,5 +4389,10 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 
     </changeSet>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
         
+        
+    <changeSet id="openhmis.inventory-v2.0.2" author="Morrison Idiasirue" >
+        <dropColumn tableName="inv_pharmacy_consumption" columnName="department_id" />
+    </changeSet>
+        
            
 </databaseChangeLog>
