@@ -92,6 +92,7 @@
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
 				<th>${ui.message('openhmis.inventory.item.quantity')}</th>
 				<th>${ui.message('openhmis.inventory.item.actual.quantity')}</th>
+			    <th>${ui.message('openhmis.inventory.item.reasonforchange')}</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -105,6 +106,9 @@
 				           id="{{'actualQuantity-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"
 				           type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
 				           ng-blur="getActualQuantity(entity)"></td>
+				 <td><input name="reasonForChange"
+                                            id="{{'reasonForChange-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"
+                                            type="text" class="form-control input-sm" ng-model="entity.reasonForChange"></td>
 			</tr>
 			</tbody>
 		</table>
@@ -146,6 +150,7 @@
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
 				<th>${ui.message('openhmis.inventory.item.quantity')}</th>
 				<th>${ui.message('openhmis.inventory.item.actual.quantity')}</th>
+			    <th>${ui.message('openhmis.inventory.item.reasonforchange')}</th>
 			</tr>
 			</thead>
 			<tbody><tr class="clickable-tr" pagination-id="__stockTakeChangeReview"
@@ -155,6 +160,7 @@
 				<td>{{stock.expiration | date: "yyyy-MM-dd"}}</td>
 				<td>{{stock.quantity}}</td>
 				<td>{{stock.actualQuantity}}</td>
+				<td>{{stock.reasonForChange}}</td>
 			</tr>
 			</tbody>
 		</table>

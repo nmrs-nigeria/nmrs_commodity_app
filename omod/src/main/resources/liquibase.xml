@@ -919,6 +919,9 @@
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
+            <column name="reason_for_change" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
         </createTable>
 
         <createIndex tableName="inv_item_stock" indexName="inv_item_stock_item_stockroom_idx" unique="true">
