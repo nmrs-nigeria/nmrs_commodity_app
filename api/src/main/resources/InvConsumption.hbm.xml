@@ -43,4 +43,46 @@
                 <many-to-one name="item" class="Item" column="item_id" />
                 
 	</class>
+        
+        <class name="PharmacyConsumption" table="inv_pharmacy_consumption">
+		<cache usage="read-write"/>
+
+		<id name="id" type="int" column="consumption_id">
+			<generator class="native">
+				<param name="sequence">inv_pharmacy_consumption_consumption_id_seq</param>
+			</generator>
+		</id>
+		<discriminator column="consumption_id" insert="false" />
+                
+                
+		<property name="quantity" type="int" column="quantity" not-null="true" />
+		<property name="consumptionDate" type="java.util.Date" column="consumption_date" not-null="true" length="19" />
+                <property name="wastage" type="int" column="wastage" not-null="false" />
+                 <property name="batchNumber" type="java.lang.String" column="batch_number" not-null="false" />
+               
+                 
+		<!-- bi-directional many-to-one association to User -->
+		<many-to-one name="creator" class="org.openmrs.User" not-null="true" column="creator" />
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+
+		<many-to-one name="changedBy" class="org.openmrs.User" column="changed_by" />
+		<property name="dateChanged" type="java.util.Date" column="date_changed" length="19" />
+
+		<many-to-one name="retiredBy" class="org.openmrs.User" column="retired_by" />
+		<property name="dateRetired" type="java.util.Date"
+		          column="date_retired" length="19" />
+		<property name="retireReason" type="java.lang.String"
+		          column="retire_reason" length="255" />
+		<property name="retired" type="boolean" column="retired"
+		          length="1" not-null="true" />
+
+		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
+                
+                
+                <!-- Associations -->
+		
+                <many-to-one name="item" class="Item" column="item_id" />
+                
+	</class>
+        
 </hibernate-mapping>

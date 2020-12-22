@@ -21,6 +21,7 @@ import org.openmrs.module.webservices.rest.web.RestConstants;
 public class ModuleRestConstants extends ModuleWebConstants {
 	public static final String MODULE_REST_ROOT = RestConstants.VERSION_2 + "/inventory/";
 
+	public static final String PHARMACY_CONSUMPTION_RESOURCE = MODULE_REST_ROOT + "pharmacyConsumption";
 	public static final String CONSUMPTION_RESOURCE = MODULE_REST_ROOT + "consumption";
 	public static final String CONSUMPTION_SUMMARY_RESOURCE = MODULE_REST_ROOT + "consumptionSummary";
 

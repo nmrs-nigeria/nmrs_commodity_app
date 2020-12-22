@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
   		    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
   		    http://www.springframework.org/schema/context
   		    http://www.springframework.org/schema/context/spring-context-3.0.xsd
@@ -17,124 +17,134 @@
   		    http://www.springframework.org/schema/util
   		    http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<!-- Add here beans related to the API context -->
+    <!-- Add here beans related to the API context -->
 
 
-	<!-- Services accessible via Context.getService() -->
-        <bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.INDRValidationService</value>
-				<ref bean="invNDRValidationService" />
-			</list>
-		</property>
-	</bean>
+    <!-- Services accessible via Context.getService() -->
         
-         <bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService</value>
-				<ref bean="invItemExpirationSummaryService" />
-			</list>
-		</property>
-	</bean>
-          <bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IConsumptionSummaryDataService</value>
-				<ref bean="invConsumptionSummaryService" />
-			</list>
-		</property>
-	</bean>
-        <bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IConsumptionDataService</value>
-				<ref bean="invConsumptionService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemDataService</value>
-				<ref bean="invItemService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemAttributeDataService</value>
-				<ref bean="invItemAttributeService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemAttributeTypeDataService</value>
-				<ref bean="invItemAttributeTypeService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IDepartmentDataService</value>
-				<ref bean="invDepartmentService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockroomDataService</value>
-				<ref bean="invStockroomDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemStockDataService</value>
-				<ref bean="invItemStockDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockOperationDataService</value>
-				<ref bean="invStockOperationDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockOperationService</value>
-				<ref bean="invStockOperationService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService</value>
-				<ref bean="invStockOperationTypeDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService</value>
-				<ref bean="invStockOperationTransactionDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService</value>
+                <ref bean="invPharmacyConsumptionService" />
+            </list>
+        </property>
+    </bean>
+        
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.INDRValidationService</value>
+                <ref bean="invNDRValidationService" />
+            </list>
+        </property>
+    </bean>
+        
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService</value>
+                <ref bean="invItemExpirationSummaryService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IConsumptionSummaryDataService</value>
+                <ref bean="invConsumptionSummaryService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IConsumptionDataService</value>
+                <ref bean="invConsumptionService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemDataService</value>
+                <ref bean="invItemService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemAttributeDataService</value>
+                <ref bean="invItemAttributeService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemAttributeTypeDataService</value>
+                <ref bean="invItemAttributeTypeService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IDepartmentDataService</value>
+                <ref bean="invDepartmentService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockroomDataService</value>
+                <ref bean="invStockroomDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemStockDataService</value>
+                <ref bean="invItemStockDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockOperationDataService</value>
+                <ref bean="invStockOperationDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockOperationService</value>
+                <ref bean="invStockOperationService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService</value>
+                <ref bean="invStockOperationTypeDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService</value>
+                <ref bean="invStockOperationTransactionDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
         <property name="moduleService">
             <list merge="true">
                 <value>org.openmrs.module.openhmis.inventory.api.IInstitutionDataService</value>
@@ -150,165 +160,176 @@
             </list>
         </property>
     </bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IStockOperationAttributeTypeDataService</value>
-				<ref bean="invStockOperationAttributeTypeDataService" />
-			</list>
-		</property>
-	</bean>
-	<bean parent="serviceContext">
-		<property name="moduleService">
-			<list merge="true">
-				<value>org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService</value>
-				<ref bean="invItemStockDetailDataService" />
-			</list>
-		</property>
-	</bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IStockOperationAttributeTypeDataService</value>
+                <ref bean="invStockOperationAttributeTypeDataService" />
+            </list>
+        </property>
+    </bean>
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService</value>
+                <ref bean="invItemStockDetailDataService" />
+            </list>
+        </property>
+    </bean>
 
-	<!-- Service Bean Definitions -->
+    <!-- Service Bean Definitions -->
         
-            <bean id="invNDRValidationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.NDRValidationServiceImpl">
+    <bean id="invPharmacyConsumptionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.PharmacyConsumptionDataServiceImpl">
+			 <property name="repository" ref="genericRepository" />	
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean> 
+        
+    <bean id="invNDRValidationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.NDRValidationServiceImpl">
 				
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>   
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>   
         
-        <bean id="invItemExpirationSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemExpirationSummaryServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-           <bean id="invConsumptionSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ConsumptionSummaryDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-        <bean id="invConsumptionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ConsumptionDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invItemAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemAttributeDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invItemAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemAttributeTypeDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invDepartmentService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.DepartmentDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invStockroomDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockroomDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invItemStockDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemStockDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invStockOperationDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invStockOperationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationServiceImpl" />
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invStockOperationTypeDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationTypeDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invStockOperationTransactionDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationTransactionDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invInstitutionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <bean id="invItemExpirationSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemExpirationSummaryServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invConsumptionSummaryService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ConsumptionSummaryDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invConsumptionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ConsumptionDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invItemService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invItemAttributeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemAttributeDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invItemAttributeTypeService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemAttributeTypeDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invDepartmentService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.DepartmentDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invStockroomDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockroomDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invItemStockDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemStockDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invStockOperationDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invStockOperationService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationServiceImpl" />
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invStockOperationTypeDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationTypeDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invStockOperationTransactionDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationTransactionDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invInstitutionService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">
             <bean class="org.openmrs.module.openhmis.inventory.api.impl.InstitutionDataServiceImpl">
@@ -329,24 +350,24 @@
         <property name="preInterceptors" ref="serviceInterceptors" />
         <property name="transactionAttributeSource" ref="transactionAttributeSource" />
     </bean>
-	<bean id="invStockOperationAttributeTypeDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationAttributeTypeDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
-	<bean id="invItemStockDetailDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
-		<property name="transactionManager" ref="transactionManager" />
-		<property name="target">
-			<bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemStockDetailDataServiceImpl">
-				<property name="repository" ref="genericRepository" />
-			</bean>
-		</property>
-		<property name="preInterceptors" ref="serviceInterceptors" />
-		<property name="transactionAttributeSource" ref="transactionAttributeSource" />
-	</bean>
+    <bean id="invStockOperationAttributeTypeDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.StockOperationAttributeTypeDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
+    <bean id="invItemStockDetailDataService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.ItemStockDetailDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
 </beans>
