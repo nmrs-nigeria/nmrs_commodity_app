@@ -26,7 +26,7 @@
                 "id": "openhmis.inventory.inventoryTasksLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.landing",
                 "type": "link",
-                "label": "openhmis.inventory.task.page",
+                "label": "openhmis.inventory.task.lab.page",
                 "url": "openhmis.inventory/inventory/inventoryTasksDashboard.page",
                 "icon": "icon-book",
                 "requiredPrivilege": "App: Access Inventory Tasks"
