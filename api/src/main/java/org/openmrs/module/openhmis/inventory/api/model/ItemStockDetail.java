@@ -23,6 +23,7 @@ public class ItemStockDetail extends ItemStockDetailBase {
 
 	private ItemStock itemStock;
 	private Stockroom stockroom;
+	private String reasonForChange;
 
 	/**
 	 * Creates a new empty {@link ItemStockDetail} object.
@@ -54,6 +55,7 @@ public class ItemStockDetail extends ItemStockDetailBase {
 		this.setCalculatedBatch(tx.isCalculatedBatch());
 		this.setQuantity(tx.getQuantity());
 		this.setItemBatch(tx.getItemBatch());
+		this.setReasonForChange(tx.getReasonForChange());
 	}
 
 	/**
@@ -76,6 +78,7 @@ public class ItemStockDetail extends ItemStockDetailBase {
 		setCalculatedExpiration(base.isCalculatedExpiration());
 		setQuantity(base.getQuantity());
 		this.setItemBatch(base.getItemBatch());
+		setReasonForChange(base.getReasonForChange());
 	}
 
 	/**

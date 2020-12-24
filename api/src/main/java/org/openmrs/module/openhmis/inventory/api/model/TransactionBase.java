@@ -37,6 +37,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 	private Boolean calculatedBatch;
 	private Boolean sourceCalculatedBatch;
 	private String itemBatch;
+	private String reasonForChange;
 
 	private User creator;
 	private Date dateCreated = new Date();
@@ -54,6 +55,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		calculatedExpiration = tx.calculatedExpiration;
 		calculatedBatch = tx.calculatedBatch;
 		itemBatch = tx.itemBatch;
+		reasonForChange = tx.reasonForChange;
 	}
 
 	protected TransactionBase(StockOperationItem item) {
@@ -65,6 +67,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		this.calculatedExpiration = item.isCalculatedExpiration();
 		System.out.println("About to set item batch:" + item.getItemBatch());
 		this.itemBatch = item.getItemBatch();
+		this.reasonForChange = item.getReasonForChange();
 	}
 
 	public Integer getId() {
@@ -190,4 +193,11 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		this.itemBatch = itemBatch;
 	}
 
+	public String getReasonForChange() {
+		return reasonForChange;
+	}
+
+	public void setReasonForChange(String reasonForChange) {
+		this.reasonForChange = reasonForChange;
+	}
 }

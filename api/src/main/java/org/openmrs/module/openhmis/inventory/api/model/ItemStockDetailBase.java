@@ -33,6 +33,7 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	private Boolean calculatedExpiration;
 	private Boolean calculatedBatch;
 	private String itemBatch;
+	private String reasonForChange;
 
 	/**
 	 * Gets the unique database record identifier.
@@ -174,4 +175,11 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 		this.itemBatch = itemBatch;
 	}
 
+	public String getReasonForChange() {
+		return reasonForChange;
+	}
+
+	public void setReasonForChange(String reasonForChange) {
+		this.reasonForChange = reasonForChange;
+	}
 }

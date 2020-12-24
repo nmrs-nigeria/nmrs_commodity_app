@@ -30,6 +30,7 @@ public class ItemStock extends BaseOpenmrsObject implements Comparable<ItemStock
 	private Stockroom stockroom;
 	private Item item;
 	private int quantity;
+	private String reasonForChange;
 	private Set<ItemStockDetail> details;
 
 	public ItemStock() {}
@@ -38,6 +39,7 @@ public class ItemStock extends BaseOpenmrsObject implements Comparable<ItemStock
 		this.stockroom = base.stockroom;
 		this.item = base.item;
 		this.quantity = base.quantity;
+		this.reasonForChange = base.reasonForChange;
 
 		if (base.details != null) {
 			this.details = new HashSet<ItemStockDetail>(base.details.size());
@@ -80,6 +82,14 @@ public class ItemStock extends BaseOpenmrsObject implements Comparable<ItemStock
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
+	}
+
+	public String getReasonForChange() {
+		return reasonForChange;
+	}
+
+	public void setReasonForChange(String reasonForChange) {
+		this.reasonForChange = reasonForChange;
 	}
 
 	public ItemStockDetail addDetail(ItemStockDetail detail) {

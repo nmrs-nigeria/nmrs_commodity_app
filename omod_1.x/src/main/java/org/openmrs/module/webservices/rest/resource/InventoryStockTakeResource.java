@@ -108,6 +108,7 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 
 			int quantity = invitem.getActualQuantity() - invitem.getQuantity();
 			item.setQuantity(quantity);
+			item.setReasonForChange(invitem.getReasonForChange());
 
 			if (quantity < 0 || invitem.getActualQuantity() == 0) {
 				item.setCalculatedBatch(true);

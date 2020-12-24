@@ -48,5 +48,6 @@ public class HibernateCriteriaConstants {
 	public static final String CONSUMPTION_QUANTITY = "quantity";
 	public static final String FACILITY_STATE = "state";
 	public static final String FACILITY_LGA = "lga";
+	public static final String REASON_FOR_CHANGE = "reasonForChange";
 
 }

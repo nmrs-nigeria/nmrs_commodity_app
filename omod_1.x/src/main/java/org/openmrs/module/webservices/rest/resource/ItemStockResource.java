@@ -53,7 +53,7 @@ public class ItemStockResource extends BaseRestObjectResource<ItemStock> {
 		description.addProperty("item", Representation.REF);
 		description.addProperty("quantity", Representation.DEFAULT);
 		description.addProperty("details", Representation.REF);
-
+		description.addProperty("reasonForChange", Representation.DEFAULT);
 		return description;
 	}
 
