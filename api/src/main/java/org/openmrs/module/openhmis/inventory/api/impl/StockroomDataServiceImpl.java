@@ -176,9 +176,12 @@ public class StockroomDataServiceImpl extends BaseMetadataDataServiceImpl<Stockr
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_STOCKROOMS })
 	public ItemStock getItem(Stockroom stockroom, Item item) {
-		if (stockroom == null) {
-			throw new IllegalArgumentException("The stockroom must be defined.");
-		}
+		//		if (stockroom == null) {
+		//			Stockroom stockroom = new Stockroom();
+		//		}
+		//		if (stockroom == null) {
+		//			throw new IllegalArgumentException("The stockroom must be defined.");
+		//		}
 		if (item == null) {
 			throw new IllegalArgumentException("The item must be defined.");
 		}
