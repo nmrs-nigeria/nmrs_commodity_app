@@ -185,6 +185,15 @@
                 "url": "openhmis.inventory/pharmacyConsumption/entities.page",
                 "icon": "icon-folder-open",
                 "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+            {
+                "id": "openhmis.inventory.viewPharmacyConsumptionSummary",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.consumptionSummary",
+                "url": "openhmis.inventory/pharmacyConsumptionSummary/entities.page",
+                "icon": "icon-list",
+                "requiredPrivilege": "Task: Pharmacy Menu"
             }
         ]
     }

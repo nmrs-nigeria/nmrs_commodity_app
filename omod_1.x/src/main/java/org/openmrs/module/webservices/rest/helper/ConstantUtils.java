@@ -20,5 +20,7 @@ public class ConstantUtils {
 	public static final int EXPIRYDAYSCOUNT = 120;
 	public static final String DEPARTMENT_STRING = "department";
 	public static final String INSTITUTION_STRING = "institution";
+	public static final String PHARMACY_ITEM_TYPE = "pharmacy";
+	public static final String LAB_ITEM_TYPE = "lab";
 
 }
