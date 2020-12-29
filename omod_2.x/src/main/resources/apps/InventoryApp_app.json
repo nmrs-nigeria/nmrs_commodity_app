@@ -168,7 +168,7 @@
                 "icon": "icon-medkit",
                 "requiredPrivilege": "Task: Pharmacy Menu"
             },
-              {
+            {
                 "id": "openhmis.inventory.createInventoryOperations",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
@@ -177,7 +177,7 @@
                 "icon": "icon-folder-open",
                 "requiredPrivilege": "Task: Pharmacy Menu"
             },
-                {
+            {
                 "id": "openhmis.inventory.createPharmacyConsumption",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
@@ -194,6 +194,15 @@
                 "url": "openhmis.inventory/pharmacyConsumptionSummary/entities.page",
                 "icon": "icon-list",
                 "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+            {
+                "id": "openhmis.inventory.inventoryNDRExtraction.pharm",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.ndrextraction",
+                "url": "openhmis.inventory/ndrExtraction/entities.page",
+                "icon": "icon-share-alt",
+                "requiredPrivilege": "Task: Access Inventory Reports"
             }
         ]
     }
