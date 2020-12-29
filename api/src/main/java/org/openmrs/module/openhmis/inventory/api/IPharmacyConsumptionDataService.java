@@ -13,6 +13,9 @@ import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.search.PharmacyConsumptionSearch;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,11 +63,13 @@ public interface IPharmacyConsumptionDataService extends IMetadataDataService<Ph
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	//	@Authorized({ PrivilegeConstants.VIEW_CONSUMPTIONS })
-	List<PharmacyConsumption> getConsumptionByConsumptionDate(Date startDate, Date endDate, PagingInfo pagingInfo);
+	List<PharmacyConsumption> getConsumptionByConsumptionDate(Date startDate,
+	        Date endDate, PagingInfo pagingInfo);
 
-	//	@Transactional(readOnly = true)
-	//	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
-	//	List<ConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
-	//	        SearchConsumptionSummary searchConsumptionSummary, PagingInfo pagingInfo, List<Item> distinctItems);
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	List<PharmacyConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
+	        SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo pagingInfo, List<Item> distinctItems);
 
 }

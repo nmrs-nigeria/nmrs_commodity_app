@@ -26,7 +26,7 @@
                 "id": "openhmis.inventory.inventoryTasksLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.landing",
                 "type": "link",
-                "label": "openhmis.inventory.task.page",
+                "label": "openhmis.inventory.task.lab.page",
                 "url": "openhmis.inventory/inventory/inventoryTasksDashboard.page",
                 "icon": "icon-book",
                 "requiredPrivilege": "App: Access Inventory Tasks"
@@ -184,6 +184,15 @@
                 "label": "openhmis.inventory.admin.phamacyConsumption",
                 "url": "openhmis.inventory/pharmacyConsumption/entities.page",
                 "icon": "icon-folder-open",
+                "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+            {
+                "id": "openhmis.inventory.viewPharmacyConsumptionSummary",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.consumptionSummary",
+                "url": "openhmis.inventory/pharmacyConsumptionSummary/entities.page",
+                "icon": "icon-list",
                 "requiredPrivilege": "Task: Pharmacy Menu"
             }
         ]

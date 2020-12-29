@@ -22,10 +22,11 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServi
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
-import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.search.PharmacyConsumptionSearch;
@@ -171,61 +172,56 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 		    Order.asc(HibernateCriteriaConstants.CONSUMPTION_DATE));
 	}
 
-	//	@Override
-	//        public List<ConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
-	//                SearchConsumptionSummary searchConsumptionSummary,PagingInfo pagingInfo, List<Item> distinctItems){
-	//             List<ConsumptionSummary> fromConsumption = null;
-	//        List<ConsumptionSummary> fromReceived = null;
-	//        List<ConsumptionSummary> finalConsumptionSummarys = null;
-	//         List<Consumption> consumptions = new ArrayList<>();
-	//         
-	//         
-	//         
-	//               System.out.println("stock operations result: "+stockOperations.size());
-	//            
-	//        fromReceived = getSummaryFromStockOperation(stockOperations,
-	//                searchConsumptionSummary.getDepartment(),distinctItems);
-	//        
-	//            System.out.println("After stock summary: "+fromReceived.size());
-	//
-	//        consumptions = getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(), 
-	//                searchConsumptionSummary.getEndDate(), pagingInfo);
-	//        
-	//         System.out.println("stock consumptions result: "+consumptions.size());
-	//         
-	//         
-	//          //filter out the Department
-	//        consumptions = consumptions.stream().filter(a -> a.getDepartment()
-	//.equals(searchConsumptionSummary.getDepartment()))
-	//                .collect(Collectors.toList());
-	//        fromConsumption = getSummaryFromConsumption(consumptions, searchConsumptionSummary
-	//     .getDepartment(),distinctItems);
-	//        
-	//        
-	//         System.out.println("stock consumptions aggregate result  : "+fromConsumption.size());
-	//
-	//         List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
-	//         
-	//        tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, 
-	//                searchConsumptionSummary.getDepartment(),distinctItems);
-	//        
-	//          finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
-	//        
-	//            System.out.println("final consumption summary is "+finalConsumptionSummarys.size());
-	//            
-	//            return finalConsumptionSummarys;
-	//        
-	//         
-	//        }
+	@Override
+	public List<PharmacyConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
+	        SearchConsumptionSummary searchConsumptionSummary, PagingInfo pagingInfo, List<Item> distinctItems) {
+		List<PharmacyConsumptionSummary> fromConsumption = null;
+		List<PharmacyConsumptionSummary> fromReceived = null;
+		List<PharmacyConsumptionSummary> finalConsumptionSummarys = null;
+		List<PharmacyConsumption> consumptions = new ArrayList<>();
 
-	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
+		System.out.println("stock operations result: " + stockOperations.size());
 
-		List<ConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
+		fromReceived = getSummaryFromStockOperation(stockOperations,
+		    searchConsumptionSummary.getDepartment(), distinctItems);
 
-		for (ConsumptionSummary summary : consumptionSummarys) {
-			ConsumptionSummary each = new ConsumptionSummary();
+		System.out.println("After stock summary: " + fromReceived.size());
+
+		consumptions = getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(),
+		    searchConsumptionSummary.getEndDate(), pagingInfo);
+
+		System.out.println("stock consumptions result: " + consumptions.size());
+
+		//filter out the Department
+		//	        consumptions = consumptions.stream().filter(a -> a.getDepartment()
+		//	.equals(searchConsumptionSummary.getDepartment()))
+		//	                .collect(Collectors.toList());
+		fromConsumption = getSummaryFromConsumption(consumptions, searchConsumptionSummary
+		        .getDepartment(), distinctItems);
+
+		System.out.println("stock consumptions aggregate result  : " + fromConsumption.size());
+
+		List<PharmacyConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
+
+		tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived,
+		    searchConsumptionSummary.getDepartment(), distinctItems);
+
+		finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
+
+		System.out.println("final consumption summary is " + finalConsumptionSummarys.size());
+
+		return finalConsumptionSummarys;
+
+	}
+
+	private List<PharmacyConsumptionSummary> calculateStockBalance(List<PharmacyConsumptionSummary> consumptionSummarys) {
+
+		List<PharmacyConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
+
+		for (PharmacyConsumptionSummary summary : consumptionSummarys) {
+			PharmacyConsumptionSummary each = new PharmacyConsumptionSummary();
 			each.setItem(summary.getItem());
-			each.setDepartment(summary.getDepartment());
+			// each.setDepartment(summary.getDepartment());
 			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
 			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
 			each.setTotalQuantityWasted(summary.getTotalQuantityWasted());
@@ -243,24 +239,24 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
 	}
 
-	private List<ConsumptionSummary> mergeSummary(List<ConsumptionSummary> fromConsumption, 
-            List<ConsumptionSummary> fromReceived, Department department, List<Item> distinctItems) {
+	private List<PharmacyConsumptionSummary> mergeSummary(List<PharmacyConsumptionSummary> fromConsumption, 
+            List<PharmacyConsumptionSummary> fromReceived, Department department, List<Item> distinctItems) {
 
-        List<ConsumptionSummary> mergedConsumptionSummarys = new ArrayList<>();
+        List<PharmacyConsumptionSummary> mergedConsumptionSummarys = new ArrayList<>();
 
         distinctItems.forEach(a -> {
-            ConsumptionSummary each = new ConsumptionSummary();
+            PharmacyConsumptionSummary each = new PharmacyConsumptionSummary();
             //get sum from received
             int sumReceived = fromReceived.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityReceived).findFirst().get();
+                    .map(PharmacyConsumptionSummary::getTotalQuantityReceived).findFirst().get();
             each.setTotalQuantityReceived(sumReceived);
-            each.setDepartment(department);
+           // each.setDepartment(department);
             int sumConsumed = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
+                    .map(PharmacyConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
             each.setTotalQuantityConsumed(sumConsumed);
             
             int sumWastage = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityWasted).findFirst().get();
+                    .map(PharmacyConsumptionSummary::getTotalQuantityWasted).findFirst().get();
             
             each.setTotalQuantityWasted(sumWastage);
             
@@ -274,50 +270,50 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
     }
 
-	//	private List<ConsumptionSummary> getSummaryFromConsumption(List<Consumption> consumptions, 
-	//            Department department,List<Item> distinctItems) {
-	//
-	//        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
-	//
-	//        distinctItems.forEach(a -> {
-	//
-	//            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-	//
-	//            int totalQuantityUsed = 0;
-	//            int totalQuantityWastated = 0;
-	//
-	//            List<Consumption> filteredConsumptions = null;
-	//
-	//            filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
-	//                    .collect(Collectors.toList());
-	//            consumptionSummary.setDepartment(department);
-	//            consumptionSummary.setItem(a);
-	//
-	//            for (Consumption c : filteredConsumptions) {
-	//                int tempTotalWasted = c.getWastage();
-	//                int tempTotalQuantityUsed = c.getQuantity();
-	//                totalQuantityUsed += tempTotalQuantityUsed;
-	//                totalQuantityWastated += tempTotalWasted;
-	//                
-	//
-	//            }
-	//           // System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
-	//
-	//            consumptionSummary.setTotalQuantityConsumed(totalQuantityUsed);
-	//            consumptionSummary.setTotalQuantityWasted(totalQuantityWastated);
-	//
-	//            aggregateConsumption.add(consumptionSummary);
-	//        });
-	//
-	//        return aggregateConsumption;
-	//
-	//    }
+	private List<PharmacyConsumptionSummary> getSummaryFromConsumption(List<PharmacyConsumption> consumptions, 
+	            Department department,List<Item> distinctItems) {
+	
+	        List<PharmacyConsumptionSummary> aggregateConsumption = new ArrayList<>();
+	
+	        distinctItems.forEach(a -> {
+	
+	            PharmacyConsumptionSummary consumptionSummary = new PharmacyConsumptionSummary();
+	
+	            int totalQuantityUsed = 0;
+	            int totalQuantityWastated = 0;
+	
+	            List<PharmacyConsumption> filteredConsumptions = null;
+	
+	            filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
+	                    .collect(Collectors.toList());
+	          //  consumptionSummary.setDepartment(department);
+	            consumptionSummary.setItem(a);
+	
+	            for (PharmacyConsumption c : filteredConsumptions) {
+	                int tempTotalWasted = c.getWastage();
+	                int tempTotalQuantityUsed = c.getQuantity();
+	                totalQuantityUsed += tempTotalQuantityUsed;
+	                totalQuantityWastated += tempTotalWasted;
+	                
+	
+	            }
+	           // System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
+	
+	            consumptionSummary.setTotalQuantityConsumed(totalQuantityUsed);
+	            consumptionSummary.setTotalQuantityWasted(totalQuantityWastated);
+	
+	            aggregateConsumption.add(consumptionSummary);
+	        });
+	
+	        return aggregateConsumption;
+	
+	    }
 
-	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
+	protected List<PharmacyConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
 	        Department department, List<Item> distinctItems) {
 
-		List<ConsumptionSummary> rConsumptions = new ArrayList<>();
-		List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
+		List<PharmacyConsumptionSummary> rConsumptions = new ArrayList<>();
+		List<PharmacyConsumptionSummary> aggregateConsumption = new ArrayList<>();
 
 		for (StockOperation stockOperation : stockOperations) {
 
@@ -331,22 +327,22 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
 	}
 
-	private List<ConsumptionSummary> aggregateItems(List<ConsumptionSummary> consumptionSummarys, 
+	private List<PharmacyConsumptionSummary> aggregateItems(List<PharmacyConsumptionSummary> consumptionSummarys, 
             Department department,List<Item> distinctItems) {
 //        distinctItems = consumptionSummarys.stream()
 //                .map(ConsumptionSummary::getItem).distinct().collect(Collectors.toList());
         
             System.out.println("The items count is "+distinctItems.size());
 
-        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
+        List<PharmacyConsumptionSummary> aggregateConsumption = new ArrayList<>();
 
         distinctItems.forEach(a -> {
             // assume a department would be selected at all time
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-            consumptionSummary.setDepartment(department);
+            PharmacyConsumptionSummary consumptionSummary = new PharmacyConsumptionSummary();
+           // consumptionSummary.setDepartment(department);
             consumptionSummary.setItem(a);
             long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();
+                    .map(PharmacyConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();
             if (itemCount > 0) {
                 System.out.println("");
                 consumptionSummary.setTotalQuantityReceived((int) itemCount);
@@ -360,12 +356,12 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
     }
 
-	private List<ConsumptionSummary> fillUpItems(Set<StockOperationItem> items, StockOperation stockOperation) {
-        List<ConsumptionSummary> rConsumptions = new ArrayList<>();
+	private List<PharmacyConsumptionSummary> fillUpItems(Set<StockOperationItem> items, StockOperation stockOperation) {
+        List<PharmacyConsumptionSummary> rConsumptions = new ArrayList<>();
 
         items.stream().forEach(a -> {
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-            consumptionSummary.setDepartment(stockOperation.getDepartment());
+            PharmacyConsumptionSummary consumptionSummary = new PharmacyConsumptionSummary();
+          //  consumptionSummary.setDepartment(stockOperation.getDepartment());
             consumptionSummary.setItem(a.getItem());
             consumptionSummary.setTotalQuantityReceived(a.getQuantity());
             rConsumptions.add(consumptionSummary);
