@@ -244,6 +244,10 @@
                     if ($scope.sourceStockroom !== undefined && $scope.sourceStockroom.name !== NOT_DEFINED) {
                         return true;
                     }
+                }else if(operationType.hasDestination){
+                    if ($scope.destinationStockroom !== undefined && $scope.destinationStockroom.name !== NOT_DEFINED) {
+                        return true;
+                    }
                 } else {
                     if ((operationType.hasDestination && $scope.destinationStockroom.name !== NOT_DEFINED)) {
                         return true;
@@ -256,7 +260,7 @@
         function checkDatePickerExpirationSection(lineItem, $scope) {
             if (lineItem !== undefined && lineItem.itemStockHasExpiration) {
                 if ($scope.operationType.name === 'Receipt' || $scope.operationType.name === 'Return' ||
-                        $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
+                       $scope.operationType.name === 'Adjustment' ||  $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
                         $scope.operationType.name === 'Recibo' || $scope.operationType.name === 'Retorno') {
                     lineItem.setExpirationHasDatePicker(true);
                 }
@@ -266,7 +270,7 @@
         function checkBatchItemExistSection(lineItem, $scope) {
             if (lineItem !== undefined && lineItem.itemStockHasBatch) {
                 if ($scope.operationType.name === 'Receipt' || $scope.operationType.name === 'Return' ||
-                        $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
+                      $scope.operationType.name === 'Adjustment' ||   $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
                         $scope.operationType.name === 'Recibo' || $scope.operationType.name === 'Retorno') {
                     lineItem.setBatchItemExist(true);
                 }

@@ -68,6 +68,7 @@ public abstract class TransactionBase extends BaseOpenmrsObject implements Compa
 		System.out.println("About to set item batch:" + item.getItemBatch());
 		this.itemBatch = item.getItemBatch();
 		this.reasonForChange = item.getReasonForChange();
+
 	}
 
 	public Integer getId() {
