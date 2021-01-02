@@ -22,7 +22,10 @@ import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.apache.commons.lang.StringUtils;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.ndrmodel.TaskOperationType;
 import org.xml.sax.SAXException;
 
 // org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl cannot be cast to javax.xml.datatype.DatatypeFactory
@@ -35,6 +38,9 @@ public class RestUtils {
 	private static final int DATE_ONLY_TEXT_LENGTH = 10;
 	private static final int DATE_TIME_TEXT_LENGTH = 16;
 	private static final int DATE_TIME_SECOND_TEXT_LENGTH = 19;
+	public static final int PEPFAR_IDENTIFIER_INDEX = 4;
+
+	public static final int HOSPITAL_IDENTIFIER_INDEX = 5;
 
 	public RestUtils() {}
 
@@ -191,8 +197,25 @@ public class RestUtils {
 		return Paths.get(request.getContextPath(), "CMdownloads", reportType, zipFileName).toString();
 	}
 
-	public static void main(String args[]) {
-		System.out.println("seen");
+	public static String getPatientId(Patient patient) {
+
+		PatientIdentifier patientId = patient.getPatientIdentifier(PEPFAR_IDENTIFIER_INDEX);
+
+		if (patientId != null) {
+			return patientId.getIdentifier();
+		} else {
+			patientId = patient.getPatientIdentifier(HOSPITAL_IDENTIFIER_INDEX);
+			if (patientId != null) {
+				return patientId.getIdentifier();
+			}
+			return "";
+		}
+	}
+
+	public static boolean isNull(TaskOperationType taskOperationType) {
+		return taskOperationType.getAdjustmentOperation() == null && taskOperationType.getDisposedOperation() == null
+		        && taskOperationType.getDistributionOperation() == null && taskOperationType.getReceiptOperation() == null
+		        && taskOperationType.getReturnOperation() == null && taskOperationType.getTransferOperation() == null;
 	}
 
 }

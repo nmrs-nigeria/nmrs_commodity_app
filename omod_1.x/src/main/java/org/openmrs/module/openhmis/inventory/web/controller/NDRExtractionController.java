@@ -5,19 +5,16 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
-import com.umb.ndr.signer.Signer;
 import java.io.File;
 import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBContext;
@@ -30,6 +27,7 @@ import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.INDRValidationService;
+import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
@@ -38,6 +36,8 @@ import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
@@ -49,12 +49,13 @@ import org.openmrs.module.openhmis.ndrmodel.ConsumptionReportType;
 import org.openmrs.module.openhmis.ndrmodel.ConsumptionSummaryType;
 import org.openmrs.module.openhmis.ndrmodel.Container;
 import org.openmrs.module.openhmis.ndrmodel.DistributionType;
-import org.openmrs.module.openhmis.ndrmodel.InventoryReportType;
 import org.openmrs.module.openhmis.ndrmodel.ItemType;
+import org.openmrs.module.openhmis.ndrmodel.LabInventoryType;
 import org.openmrs.module.openhmis.ndrmodel.MessageHeaderType;
 import org.openmrs.module.openhmis.ndrmodel.MessageSendingOrganisationType;
 import org.openmrs.module.openhmis.ndrmodel.NewConsumptionType;
 import org.openmrs.module.openhmis.ndrmodel.OperationItemType;
+import org.openmrs.module.openhmis.ndrmodel.PharmacyInventoryType;
 import org.openmrs.module.openhmis.ndrmodel.ReceiptOperationType;
 import org.openmrs.module.openhmis.ndrmodel.ReceiptType;
 import org.openmrs.module.openhmis.ndrmodel.ReturnOperationType;
@@ -87,6 +88,7 @@ public class NDRExtractionController {
 	private IStockOperationTypeDataService stockOperationTypeDataService;
 	private IConsumptionDataService consumptionDataService;
 	private INDRValidationService nDRValidationService;
+	private IPharmacyConsumptionDataService pharmacyConsumptionDataService;
 
 	private Date startDate;
 	private Date endDate;
@@ -111,6 +113,7 @@ public class NDRExtractionController {
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
 		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
 		this.nDRValidationService = Context.getService(INDRValidationService.class);
+		this.pharmacyConsumptionDataService = Context.getService(IPharmacyConsumptionDataService.class);
 
 		SimpleObject result = new SimpleObject();
 		String datimCode = RestUtils.getFacilityLocalId();
@@ -209,39 +212,95 @@ public class NDRExtractionController {
 
 		ndrReportTemplate.setMessageHeader(messageHeaderType);
 
-		InventoryReportType inventoryReportType = new InventoryReportType();
-		ConsumptionReportType consumptionReportType = new ConsumptionReportType();
+		// InventoryReportType inventoryReportType = new InventoryReportType();
+		LabInventoryType labInventoryType = new LabInventoryType();
+		PharmacyInventoryType pharmacyInventoryType = new PharmacyInventoryType();
 
-		List<ConsumptionSummaryType> consumptionSummaryTypes = extractConsumptionSummaryReport();
+		//  for Lab inventory
+		TaskOperationType taskOperationType = null;
+		List<ConsumptionSummaryType> consumptionSummaryTypes = null;
+		List<NewConsumptionType> newConsumptionTypeList = null;
 
-		if (!consumptionSummaryTypes.isEmpty()) {
-			consumptionReportType.getConsumptionSummary().addAll(consumptionSummaryTypes);
+		try {
+			ConsumptionReportType consumptionReportType = new ConsumptionReportType();
+
+			consumptionSummaryTypes = extractConsumptionSummaryReport();
+
+			if (!consumptionSummaryTypes.isEmpty()) {
+				consumptionReportType.getConsumptionSummary().addAll(consumptionSummaryTypes);
+			}
+
+			newConsumptionTypeList = extractConsumptionReport();
+
+			if (!newConsumptionTypeList.isEmpty()) {
+				consumptionReportType.getNewConsumption().addAll(newConsumptionTypeList);
+			}
+
+			labInventoryType.setConsumptionReport(consumptionReportType);
+
+			taskOperationType = extractTaskOperation(ConstantUtils.LAB_COMMIDITY_TYPE);
+			if (taskOperationType != null) {
+				labInventoryType.setTaskOperation(taskOperationType);
+			}
+
+		} catch (Exception ex) {
+			LOG.debug(ex.getMessage());
 		}
 
-		List<NewConsumptionType> newConsumptionTypeList = extractConsumptionReport();
-
-		if (!newConsumptionTypeList.isEmpty()) {
-			consumptionReportType.getNewConsumption().addAll(newConsumptionTypeList);
+		if (!RestUtils.isNull(taskOperationType) || !consumptionSummaryTypes.isEmpty()
+		        || !newConsumptionTypeList.isEmpty()) {
+			ndrReportTemplate.setLabInventory(labInventoryType);
 		}
 
-		inventoryReportType.setConsumptionReport(consumptionReportType);
+		//pharmacy inventory
+		TaskOperationType ptaskOperationType = null;
+		List<ConsumptionSummaryType> pconsumptionSummaryTypes = null;
+		List<NewConsumptionType> pnewConsumptionTypeList = null;
 
-		TaskOperationType taskOperationType = extractTaskOperation();
-		if (taskOperationType != null) {
-			inventoryReportType.setTaskOperation(taskOperationType);
+		try {
+			ConsumptionReportType consumptionReportType = new ConsumptionReportType();
+
+			pconsumptionSummaryTypes = extractPharmacyConsumptionSummaryReport();
+
+			if (!pconsumptionSummaryTypes.isEmpty()) {
+				consumptionReportType.getConsumptionSummary().addAll(pconsumptionSummaryTypes);
+			}
+
+			pnewConsumptionTypeList = extractPharmacyConsumptionReport();
+
+			if (!pnewConsumptionTypeList.isEmpty()) {
+				consumptionReportType.getNewConsumption().addAll(pnewConsumptionTypeList);
+			}
+
+			pharmacyInventoryType.setConsumptionReport(consumptionReportType);
+
+			ptaskOperationType = extractTaskOperation(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+			if (ptaskOperationType != null) {
+				pharmacyInventoryType.setTaskOperation(ptaskOperationType);
+			}
+
+		} catch (Exception ex) {
+			LOG.debug(ex.getMessage());
 		}
 
-		ndrReportTemplate.setInventoryReport(inventoryReportType);
+		if (!RestUtils.isNull(ptaskOperationType) || !pconsumptionSummaryTypes.isEmpty()
+		        || !pnewConsumptionTypeList.isEmpty()) {
+			ndrReportTemplate.setPharmacyInventory(pharmacyInventoryType);
+		}
 
 		return ndrReportTemplate;
 	}
 
-	private TaskOperationType extractTaskOperation() {
+	private TaskOperationType extractTaskOperation(String commodityType) {
 
 		TaskOperationType taskOperationType = new TaskOperationType();
 
 		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
 		List<StockOperation> stockOps = null;
+
+		if (commodityType != null) {
+			searchConsumptionSummary.setCommodityType(commodityType);
+		}
 
 		//  searchConsumptionSummary.setDepartment();
 		// searchConsumptionSummary.setItem(searchItem);
@@ -319,60 +378,112 @@ public class NDRExtractionController {
 
 	}
 
+	private List<ConsumptionSummaryType> extractPharmacyConsumptionSummaryReport() {
+
+        List<StockOperation> stockOps;
+        List<ConsumptionSummaryType> finalConsumptionSummaryTypes = new ArrayList<>();
+
+        // allDepartments = departmentService.getAll();
+        allItems = itemDataService.getAll();
+        allItems = allItems.stream().filter(a -> a.getItemType()
+                .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
+                .collect(Collectors.toList());
+
+        SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+        StockOperationStatus status = StockOperationStatus.COMPLETED;
+        IStockOperationType stockOperationType = getStockOperationType();
+
+        try {
+            //  searchConsumptionSummary.setDepartment(department);
+            //	searchConsumptionSummary.setItem(searchItem);
+            searchConsumptionSummary.setStartDate(startDate);
+            searchConsumptionSummary.setEndDate(endDate);
+            searchConsumptionSummary.setOperationStatus(status);
+            searchConsumptionSummary.setOperationType(stockOperationType);
+            searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+            stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+            //   System.out.println("About to get summary for " + department.getName());
+            List<PharmacyConsumptionSummary> consumptionSummarys = pharmacyConsumptionDataService
+                    .retrieveConsumptionSummary(stockOps,
+                            searchConsumptionSummary, null, allItems);
+
+            System.err.println("Records for testing point is " + consumptionSummarys.size());
+
+            if (!consumptionSummarys.isEmpty()) {
+                List<ConsumptionSummaryType> consumptionSummaryTypes
+                        = convertToPharmacyConsumptionSummaryType(consumptionSummarys);
+                finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
+            }
+
+            //  System.out.println("Finished getting summary for " + department.getName());
+        } catch (Exception ex) {
+            LOG.error("error occured during consumption", ex);
+        }
+
+        return finalConsumptionSummaryTypes;
+
+    }
+
 	private List<ConsumptionSummaryType> extractConsumptionSummaryReport() {
 
-		List<StockOperation> stockOps;
-		List<ConsumptionSummaryType> finalConsumptionSummaryTypes = new ArrayList<>();
+        List<StockOperation> stockOps;
+        List<ConsumptionSummaryType> finalConsumptionSummaryTypes = new ArrayList<>();
 
-		allDepartments = departmentService.getAll();
-		allItems = itemDataService.getAll();
+        allDepartments = departmentService.getAll();
+        allItems = itemDataService.getAll();
+        allItems = allItems.stream().filter(a -> a.getItemType()
+                .equals(ConstantUtils.LAB_COMMIDITY_TYPE))
+                .collect(Collectors.toList());
 
-		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
-		StockOperationStatus status = StockOperationStatus.COMPLETED;
-		IStockOperationType stockOperationType = getStockOperationType();
+        SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+        StockOperationStatus status = StockOperationStatus.COMPLETED;
+        IStockOperationType stockOperationType = getStockOperationType();
 
-		for (Department department : allDepartments) {
-			try {
-				searchConsumptionSummary.setDepartment(department);
-				//	searchConsumptionSummary.setItem(searchItem);
-				searchConsumptionSummary.setStartDate(startDate);
-				searchConsumptionSummary.setEndDate(endDate);
-				searchConsumptionSummary.setOperationStatus(status);
-				searchConsumptionSummary.setOperationType(stockOperationType);
+        for (Department department : allDepartments) {
+            try {
+                searchConsumptionSummary.setDepartment(department);
+                //	searchConsumptionSummary.setItem(searchItem);
+                searchConsumptionSummary.setStartDate(startDate);
+                searchConsumptionSummary.setEndDate(endDate);
+                searchConsumptionSummary.setOperationStatus(status);
+                searchConsumptionSummary.setOperationType(stockOperationType);
+                searchConsumptionSummary.setCommodityType(ConstantUtils.LAB_COMMIDITY_TYPE);
 
-				stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+                stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
 
-				System.out.println("About to get summary for " + department.getName());
+                System.out.println("About to get summary for " + department.getName());
 
-				List<ConsumptionSummary> consumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
-				    searchConsumptionSummary, null, allItems);
+                List<ConsumptionSummary> consumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
+                        searchConsumptionSummary, null, allItems);
 
-				System.err.println("Records for testing point is " + consumptionSummarys.size());
+                System.err.println("Records for testing point is " + consumptionSummarys.size());
 
-				if (!consumptionSummarys.isEmpty()) {
-					List<ConsumptionSummaryType> consumptionSummaryTypes =
-					        convertToConsumptionSummaryType(consumptionSummarys);
-					finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
-				}
+                if (!consumptionSummarys.isEmpty()) {
+                    List<ConsumptionSummaryType> consumptionSummaryTypes
+                            = convertToConsumptionSummaryType(consumptionSummarys);
+                    finalConsumptionSummaryTypes.addAll(consumptionSummaryTypes);
+                }
 
-				System.out.println("Finished getting summary for " + department.getName());
+                System.out.println("Finished getting summary for " + department.getName());
 
-			} catch (Exception ex) {
-				LOG.error("error occured during consumption for" + department, ex);
-			}
+            } catch (Exception ex) {
+                LOG.error("error occured during consumption for" + department, ex);
+            }
 
-		}
+        }
 
-		return finalConsumptionSummaryTypes;
+        return finalConsumptionSummaryTypes;
 
-	}
+    }
 
 	private List<NewConsumptionType> extractConsumptionReport() {
         List<Consumption> consumptions
                 = consumptionDataService.getConsumptionByConsumptionDate(startDate, endDate, null);
-        
+
         List<NewConsumptionType> finalConsumptionReport = new ArrayList<>();
-        
+
         consumptions.stream().forEach(con -> {
             try {
                 NewConsumptionType newConsumptionType = new NewConsumptionType();
@@ -385,20 +496,48 @@ public class NDRExtractionController {
                 newConsumptionType.setTotalUsed(BigInteger.valueOf(con.getQuantity()));
                 newConsumptionType.setTestPurposeCode(dictionaryMaps.getTestPurpose().get(con.getTestPurpose()));
                 newConsumptionType.setTotalWastageLoses(BigInteger.valueOf(con.getWastage()));
-                
+
                 finalConsumptionReport.add(newConsumptionType);
             } catch (Exception ex) {
                 LOG.warn(ex.getMessage());
             }
-            
+
         });
-        
+
         return finalConsumptionReport;
-        
+
+    }
+
+	private List<NewConsumptionType> extractPharmacyConsumptionReport() {
+        List<PharmacyConsumption> consumptions
+                = pharmacyConsumptionDataService.getConsumptionByConsumptionDate(startDate, endDate, null);
+
+        List<NewConsumptionType> finalConsumptionReport = new ArrayList<>();
+
+        consumptions.stream().forEach(con -> {
+            try {
+                NewConsumptionType newConsumptionType = new NewConsumptionType();
+                newConsumptionType.setConsumptionDate(dateFormat.format(con.getConsumptionDate()));
+                newConsumptionType.setConsumptionUUID(con.getUuid());
+                newConsumptionType.setItemBatch(con.getBatchNumber());
+                newConsumptionType.setItemCode(dictionaryMaps.getItemMappings().get(con.getItem().getUuid()));
+                newConsumptionType.setTotalUsed(BigInteger.valueOf(con.getQuantity()));
+
+                newConsumptionType.setTotalWastageLoses(BigInteger.valueOf(con.getWastage()));
+
+                finalConsumptionReport.add(newConsumptionType);
+            } catch (Exception ex) {
+                LOG.warn(ex.getMessage());
+            }
+
+        });
+
+        return finalConsumptionReport;
+
     }
 
 	private List<ConsumptionSummaryType> convertToConsumptionSummaryType(List<ConsumptionSummary> consumptionSummarys) {
-        
+
         List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
         consumptionSummarys.stream().forEach(a -> {
             try {
@@ -410,17 +549,44 @@ public class NDRExtractionController {
                     consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
                     consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
                     consumptionSummaryType.setTotalQuantityReceived(BigInteger.valueOf(a.getTotalQuantityReceived()));
-                    
+
                     consumptionSummaryTypes.add(consumptionSummaryType);
                 }
             } catch (Exception ex) {
                 System.out.println("Error converting a record to summary: " + ex.getMessage());
             }
-            
+
         });
-        
+
         return consumptionSummaryTypes;
-        
+
+    }
+
+	private List<ConsumptionSummaryType> convertToPharmacyConsumptionSummaryType(List<PharmacyConsumptionSummary> 
+            consumptionSummarys) {
+
+        List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
+        consumptionSummarys.stream().forEach(a -> {
+            try {
+                if (a.getTotalQuantityReceived() > 0 || a.getTotalQuantityConsumed() > 0) {
+                    ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
+//                    consumptionSummaryType.setDepartmentCode(dictionaryMaps.getDepartmentMappings().
+//                            get(a.getDepartment().getUuid()));
+                    consumptionSummaryType.setItemCode(dictionaryMaps.getItemMappings().get(a.getItem().getUuid()));
+                    consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
+                    consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
+                    consumptionSummaryType.setTotalQuantityReceived(BigInteger.valueOf(a.getTotalQuantityReceived()));
+
+                    consumptionSummaryTypes.add(consumptionSummaryType);
+                }
+            } catch (Exception ex) {
+                System.out.println("Error converting a record to summary: " + ex.getMessage());
+            }
+
+        });
+
+        return consumptionSummaryTypes;
+
     }
 
 	private List<DistributionType> mapAndExtractDistribution(List<StockOperation> stockOperations) {
@@ -439,6 +605,12 @@ public class NDRExtractionController {
 					        .get(st.getDepartment().getUuid()));
 					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
 					        .get(ConstantUtils.DEPARTMENT_STRING));
+				}
+				if (st.getPatient() != null) {
+					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
+					        .get(ConstantUtils.PATIENT_STRING));
+					distributionType.setPatientID(RestUtils.getPatientId(st.getPatient()));
+
 				}
 				distributionType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				distributionType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
@@ -529,7 +701,7 @@ public class NDRExtractionController {
 					        .get(st.getAdjustmentKind().toLowerCase()));
 				}
 				adjustmentType.setOperationDate(dateFormat.format(st.getDateCreated()));
-				adjustmentType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
+				adjustmentType.setDestinationStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
 				OperationItemType op = new OperationItemType();
@@ -650,7 +822,7 @@ public class NDRExtractionController {
 	private List<ItemType> extractOPerationItems(Set<StockOperationItem> stockOperationItems) {
         List<ItemType> itemTypes = new ArrayList<>();
         stockOperationItems.forEach(a -> {
-            
+
             ItemType operationItemType = new ItemType();
             operationItemType.setBatch(a.getItemBatch());
             try {
@@ -664,7 +836,7 @@ public class NDRExtractionController {
             //TODO: add checks for required feilds later
             itemTypes.add(operationItemType);
         });
-        
+
         return itemTypes;
     }
 

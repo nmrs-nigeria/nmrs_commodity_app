@@ -103,7 +103,7 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 
 		distinctItems = itemDataService.getAll();
                 distinctItems = distinctItems.stream().filter(a->a.getItemType()
-                        .equals(ConstantUtils.PHARMACY_ITEM_TYPE))
+                        .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
                         .collect(Collectors.toList());
 
 		//	Department searchDepartment = getDepartment(context);

@@ -97,6 +97,9 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 	protected PageableResult doSearch(RequestContext context) {
 
 		distinctItems = itemDataService.getAll();
+                distinctItems = distinctItems.stream().filter(a->a.getItemType()
+                        .equals(ConstantUtils.LAB_COMMIDITY_TYPE))
+                        .collect(Collectors.toList());
 
 		Department searchDepartment = getDepartment(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
