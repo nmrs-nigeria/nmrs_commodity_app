@@ -4407,6 +4407,19 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         
         
     </changeSet>
+    
+    
+     <changeSet id="openhmis.inventory-v2.0.4" author="Morrison Idiasirue">
         
+        <comment>
+            delete wrongly created ARV
+        </comment>     
+        <sql><![CDATA[			
+                    delete from inv_item where uuid = '72b03d62-3df0-45b8-91f8-bfe774998736';
+		]]></sql>
+        
+        
+    </changeSet>
+      
            
 </databaseChangeLog>

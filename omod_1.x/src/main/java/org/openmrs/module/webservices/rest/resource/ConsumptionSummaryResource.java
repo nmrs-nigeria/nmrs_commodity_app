@@ -98,7 +98,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 		distinctItems = itemDataService.getAll();
                 distinctItems = distinctItems.stream().filter(a->a.getItemType()
-                        .equals(ConstantUtils.LAB_ITEM_TYPE))
+                        .equals(ConstantUtils.LAB_COMMIDITY_TYPE))
                         .collect(Collectors.toList());
 
 		Department searchDepartment = getDepartment(context);

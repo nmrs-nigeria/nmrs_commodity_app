@@ -18,6 +18,7 @@ public class SearchConsumptionSummary {
 	private StockOperationStatus operationStatus;
 	private Date startDate;
 	private Date endDate;
+	private String commodityType;
 
 	public Item getItem() {
 		return item;
@@ -65,6 +66,14 @@ public class SearchConsumptionSummary {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getCommodityType() {
+		return commodityType;
+	}
+
+	public void setCommodityType(String commodityType) {
+		this.commodityType = commodityType;
 	}
 
 }
