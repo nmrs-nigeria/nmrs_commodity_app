@@ -40,7 +40,12 @@ public class AdjustmentOperationType extends StockOperationTypeBase {
 		executeCopyReserved(operation, new Action2<ReservedTransaction, StockOperationTransaction>() {
 			@Override
 			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
-				tx.setStockroom(operation.getSource());
+				if (operation.getDestination() != null) {
+					tx.setStockroom(operation.getDestination());
+				}
+				if (operation.getSource() != null) {
+					tx.setStockroom(operation.getSource());
+				}
 
 				if (negateAppliedQuantity()) {
 					tx.setQuantity(tx.getQuantity() * -1);
@@ -54,8 +59,12 @@ public class AdjustmentOperationType extends StockOperationTypeBase {
 		executeCopyReservedAndClear(operation, new Action2<ReservedTransaction, StockOperationTransaction>() {
 			@Override
 			public void apply(ReservedTransaction reserved, StockOperationTransaction tx) {
-				tx.setStockroom(operation.getSource());
-
+				if (operation.getDestination() != null) {
+					tx.setStockroom(operation.getDestination());
+				}
+				if (operation.getSource() != null) {
+					tx.setStockroom(operation.getSource());
+				}
 				// Undo the previously applied transaction by setting the quantity to the opposite of the pending transaction
 				if (!negateAppliedQuantity()) {
 					tx.setQuantity(tx.getQuantity() * -1);

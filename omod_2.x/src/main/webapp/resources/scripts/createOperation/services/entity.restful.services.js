@@ -17,7 +17,7 @@
 	'use strict';
 
 	angular.module('app.restfulServices').service('CreateOperationRestfulService', CreateOperationRestfulService);
-	
+
 	CreateOperationRestfulService.$inject = ['EntityRestFactory'];
 
 	function CreateOperationRestfulService(EntityRestFactory) {
@@ -34,7 +34,8 @@
 			isOperationNumberGenerated: isOperationNumberGenerated,
 			isNegativeStockRestricted: isNegativeStockRestricted,
 			searchStockOperationItems: searchStockOperationItems,
-                        getInstitution: getInstitution,
+			getInstitution: getInstitution,
+			getItemBatch : getItemBatch,
 		};
 
 		return service
@@ -143,8 +144,8 @@
 
 			return EntityRestFactory.autocompleteSearch(requestParams, 'item', module_name);
 		}
-                
-                   function getInstitution(module_name,state,lga, successCallback) {
+
+        function getInstitution(module_name,state,lga, successCallback) {
                        console.log('started get institution service');
 			var requestParams = [];
 			requestParams['resource'] = INVENTORY_MODULE_INSTITUTION_URL;
@@ -155,11 +156,11 @@
 			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
 				console.log(error)
 			});
-                        
+
                         console.log('finished calling institutions URL');
                        setBaseUrl(module_name);
-                     
-                        
+
+
 		}
 
 		function setBaseUrl(module_name) {
@@ -169,12 +170,30 @@
 		function errorCallback(error) {
 			emr.errorAlert(error);
 		}
-                
-                
-                
-                
-                
-                
-                
+
+		//added by Toyeeb
+		function getItemBatch(itemUUIDProperty, expirationProperty, successCallback) {
+			console.log("entity.restful.service getItemBatch itemUUid: " + itemUUIDProperty);
+			console.log("entity.restful.service getItemBatch itemExpiration: " + expirationProperty);
+			var requestParams = [];
+			requestParams['resource'] = INVENTORY_MODULE_ITEMS_UTILITY_TWO_URL;
+			requestParams['itemUUID'] = itemUUIDProperty;
+			requestParams['itemExpiration'] = expirationProperty;
+
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
+				console.log(error)
+			});
+
+            EntityRestFactory.setBaseUrl(INVENTORY_MODULE_NAME);
+
+            console.log('finished calling item batch');
+
+		}
+        //End
+
+
+
+
 	}
 })();

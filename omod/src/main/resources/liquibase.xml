@@ -919,9 +919,6 @@
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
-            <column name="reason_for_change" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
         </createTable>
 
         <createIndex tableName="inv_item_stock" indexName="inv_item_stock_item_stockroom_idx" unique="true">
@@ -4397,6 +4394,22 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         <dropForeignKeyConstraint baseTableName="inv_pharmacy_consumption" constraintName="inv_pharmacy_consumption_department_fk" />
         <dropColumn tableName="inv_pharmacy_consumption" columnName="department_id" />
     </changeSet>
-        
-           
+
+    <changeSet id="openhmis.inventory-v2.0.3" author="Morrison Idiasirue">
+        <addColumn tableName="inv_item_stock_detail">
+            <column name="reason_for_change" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+        </addColumn>
+    </changeSet>
+    <changeSet author="Toyeeb" id="openhmis.inventory-v2.0.3-20211046">
+        <update tableName="inv_stock_operation_type">
+            <column name="has_source" value="0"/>
+            <column name="has_destination" value="1"/>
+            <where>uuid='288fd7fe-1374-4f7a-89e6-d5f1ac97d4a5'</where>
+        </update>
+    </changeSet>
+
+
 </databaseChangeLog>

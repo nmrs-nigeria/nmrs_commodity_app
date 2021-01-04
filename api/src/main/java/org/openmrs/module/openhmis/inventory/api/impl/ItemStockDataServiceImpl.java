@@ -75,4 +75,5 @@ public class ItemStockDataServiceImpl extends BaseObjectDataServiceImpl<ItemStoc
 			}
 		});
 	}
+
 }

@@ -87,7 +87,7 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 		StockOperation operation = new StockOperation();
 		operation.setStatus(StockOperationStatus.NEW);
 		operation.setInstanceType(WellKnownOperationTypes.getAdjustment());
-		operation.setSource(delegate.getStockroom());
+		operation.setDestination(delegate.getStockroom());
 		operation.setOperationNumber(delegate.getOperationNumber());
 		operation.setOperationDate(new Date());
 		operation.setItems(createOperationsItemSet(operation, delegate.getItemStockSummaryList()));
