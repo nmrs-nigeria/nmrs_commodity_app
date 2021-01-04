@@ -919,10 +919,7 @@
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
-<<<<<<< HEAD
-=======
-           
->>>>>>> 5b6053079d7ca84decdf1c8e36a34fe7f8448f16
+
         </createTable>
 
         <createIndex tableName="inv_item_stock" indexName="inv_item_stock_item_stockroom_idx" unique="true">
@@ -1103,9 +1100,9 @@
     </changeSet>
     <changeSet id="openhmis.inventory-v1.0.0-11" author="marios">
         <addNotNullConstraint
-            columnDataType="varchar(255)"
-            columnName="operation_number"
-            tableName="inv_stock_operation"/>
+                columnDataType="varchar(255)"
+                columnName="operation_number"
+                tableName="inv_stock_operation"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.2.0-1" author="ibewes">
         <addColumn tableName="inv_stock_operation">
@@ -1344,9 +1341,9 @@
     </changeSet>
     <changeSet id="openhmis.inventory-v1.7.0-0" author="marios">
         <dropNotNullConstraint
-            columnDataType="varchar(255)"
-            columnName="attribute_order"
-            tableName="inv_item_attribute_type"/>
+                columnDataType="varchar(255)"
+                columnName="attribute_order"
+                tableName="inv_item_attribute_type"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.8.0-0" author="Morrison" >
         <createTable tableName="inv_consumption">
@@ -1380,69 +1377,69 @@
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
-                        
+
             <column name="consumption_date" type="datetime">
                 <constraints nullable="false" />
             </column>
-                        
+
             <column name="test_type" type="varchar(255)" defaultValue="" >
                 <constraints nullable="false"/>
             </column>
-                        
-                        
-                      
-        </createTable> 
-          
+
+
+
+        </createTable>
+
         <addForeignKeyConstraint constraintName="inv_consumption_department_fk"
                                  baseTableName="inv_consumption" baseColumnNames="department_id"
                                  referencedTableName="inv_department" referencedColumnNames="department_id"/>
-          
+
         <addForeignKeyConstraint constraintName="inv_consumption_item_id_fk"
                                  baseTableName="inv_consumption" baseColumnNames="item_id"
                                  referencedTableName="inv_item" referencedColumnNames="item_id"
                                  onDelete="CASCADE" onUpdate="CASCADE"/>
-          
+
         <addColumn tableName="inv_item">
             <column name="unit_of_measure" type="varchar(255)"  />
             <column name="pack_size" type="int" defaultValueBoolean="true" />
         </addColumn>
 
     </changeSet>
-        
+
     <changeSet id="openhmis.inventory-v1.8.1-0" author="Morrison Idiasirue" >
-            
+
         <dropColumn tableName="inv_consumption" columnName="test_type" />
-                
+
         <addColumn tableName="inv_consumption">
             <column name="wastage" type="int">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-            
+
     </changeSet>
-        
+
     <changeSet id="openhmis.inventory-v1.8.2-0" author="Morrison Idiasirue" >
-            
-                             
+
+
         <addColumn tableName="inv_consumption">
             <column name="batch_number" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-            
+
     </changeSet>
-        
+
     <changeSet id="openhmis.inventory-v1.8.3-0" author="Morrison Idiasirue" >
-                                       
+
         <addColumn tableName="inv_consumption">
             <column name="test_purpose" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-                
+
         <addColumn tableName="inv_stock_operation">
             <column name="adjustment_kind" type="varchar(255)">
                 <constraints nullable="true"/>
@@ -1450,18 +1447,18 @@
             <column name="disposed_type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-        
-        <dropNotNullConstraint 
-            columnDataType="int"
-            columnName="department_id"
-            tableName="inv_item"/>
-            
+
+        <dropNotNullConstraint
+                columnDataType="int"
+                columnName="department_id"
+                tableName="inv_item"/>
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.8.4-0" author="Morrison Idiasirue" >
-            
+
         <insert tableName="inv_department">
             <column name="name">VCT</column>
             <column name="description">Voluntary Counseling and Testing</column>
@@ -1469,7 +1466,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">1f2ac9f2-d2db-4933-b04d-0b85455a141b</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Mob</column>
             <column name="description">Mobile-Facility</column>
@@ -1477,7 +1474,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">57c54916-668c-41bf-a089-5257fdb358a3</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Com</column>
             <column name="description">Communiy</column>
@@ -1485,7 +1482,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">63dfb487-4410-43fa-9ef5-1d98937b0828</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Emerg</column>
             <column name="description">Emergency</column>
@@ -1493,7 +1490,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">bc5efa90-30f6-4e2c-89c1-d0fdae4cddea</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">OPD</column>
             <column name="description">Outpatient</column>
@@ -1501,7 +1498,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">a5e899da-27c8-47a3-9ea6-5c0df9dee87d</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">In-Pat</column>
             <column name="description">Inpatient</column>
@@ -1509,7 +1506,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">e0add9d4-24c5-447d-b9b5-39c30f3f93f2</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Mal</column>
             <column name="description">Malnutrition</column>
@@ -1517,7 +1514,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">e2b1f92a-5af3-411a-b114-c9b310cb9f8c</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Paed</column>
             <column name="description">Paediatrics Clinic</column>
@@ -1525,7 +1522,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">759f4329-6420-4cf6-b65c-ee8ea0cd5e37</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">ANC</column>
             <column name="description">Antenatal Clinic</column>
@@ -1533,7 +1530,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">9a0a3f68-d3cc-4319-8b11-2f0af9a13493</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">L-and-D</column>
             <column name="description">Labour and Delivery Ward</column>
@@ -1541,7 +1538,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">3816323a-bbfa-4cbf-ae29-1397ad0f6c62</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">PP</column>
             <column name="description">Post Partum Clinic</column>
@@ -1549,7 +1546,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">53dcc49a-89ca-4076-8507-3f43a345cf1e</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">STI</column>
             <column name="description">Sexually Transmitted Infecion Clinic</column>
@@ -1557,7 +1554,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">1952ff56-a3dc-40cb-954a-c05810259b03</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">FP</column>
             <column name="description">Family Planning</column>
@@ -1565,7 +1562,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">bc22078e-c5be-4cdb-ad9f-17376a6fe9f4</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">TB</column>
             <column name="description">Tuberculosis/DOT Unit</column>
@@ -1573,7 +1570,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">7d4b8a26-9cf8-4d7a-8767-aaac21aca521</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">OSS</column>
             <column name="description">Key Population One Stop Shop</column>
@@ -1581,7 +1578,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">34b14c5c-2824-4d70-9637-9d5792dd700e</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Lab</column>
             <column name="description">Laboratory</column>
@@ -1589,7 +1586,7 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">8eb2330d-7970-41b7-8240-b07d4534c923</column>
         </insert>
-		
+
         <insert tableName="inv_department">
             <column name="name">Oth</column>
             <column name="description">Others</column>
@@ -1597,13 +1594,13 @@
             <column name="date_created">2020-03-16</column>
             <column name="uuid">43dd09f9-2773-4f67-b694-0b37d66db406</column>
         </insert>
-		
-            
+
+
     </changeSet>
-        
-        
+
+
     <changeSet id="openhmis.inventory-v1.8.5-0" author="Morrison Idiasirue" >
-		 
+
         <insert tableName="inv_item">
             <column name="name">Determine(100)</column>
             <column name="description">Determine for 100 test per pack</column>
@@ -1615,7 +1612,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">06d5326c-b994-4d2f-a57a-4fe8755dc1a3</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Uni-Gold(20)</column>
             <column name="description">Uni-Gold for 20 test per pack</column>
@@ -1627,7 +1624,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">7559842c-0599-429d-90b5-e5935d0cd720</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Stat-Pak(20)</column>
             <column name="description">Stat-Pak for 20 test per pack</column>
@@ -1639,7 +1636,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">db9484ff-a255-4e19-aee2-1b29fb69153b</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Alere HIV Combo(100)</column>
             <column name="description">Alere HIV Combo for 100 test per pack</column>
@@ -1651,7 +1648,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">5f261815-f35c-4d34-914b-696a7b7f5eac</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Insti HIV 1/2(24)</column>
             <column name="description">Insti HIV 1/2 for 24 test per pack</column>
@@ -1663,7 +1660,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">cc97ad9f-efae-4fc3-81d6-a7813a2ec8fa</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Oraquick HIV Self Test(50)</column>
             <column name="description">Oraquick HIV Self Test for 50 test per pack</column>
@@ -1675,7 +1672,7 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">ac0226fa-6752-4fe5-8a27-3da7ec78012d</column>
         </insert>
-		
+
         <insert tableName="inv_item">
             <column name="name">Omega Visitect CD4 RTK(25)</column>
             <column name="description">Omega Visitect CD4 RTK for 25 test per pack</column>
@@ -1687,10 +1684,10 @@
             <column name="date_created">2020-03-20</column>
             <column name="uuid">41e9f6dd-5286-4961-8fcc-edf9a78e1467</column>
         </insert>
-		
-		
+
+
     </changeSet>
-		
+
     <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called main stock room
@@ -1698,96 +1695,96 @@
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[			
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
+        <sql><![CDATA[
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
                     VALUES('Main Stockroom', 'Main Stock room in the Facility', @locationIDVar, 1, NOW(), '2741bae2-c5de-43ef-891f-7ec2fd58f442');
 		]]></sql>
-                
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
         <comment>
             Update Transfer Operation to perform actual ops type
         </comment>
-    
-        <sql><![CDATA[			
-                update inv_stock_operation_type set has_destination = 0, has_recipient = 1 where stock_operation_type_id = 6;    
+
+        <sql><![CDATA[
+                update inv_stock_operation_type set has_destination = 0, has_recipient = 1 where stock_operation_type_id = 6;
 		]]></sql>
-                
+
     </changeSet>
-	
-        
-        
+
+
+
     <changeSet id="openhmis.inventory-v1.8.8-0" author="Morrison Idiasirue" >
         <comment>
             remove Initial from operation types
         </comment>
-    
-        <sql><![CDATA[			
+
+        <sql><![CDATA[
                update inv_stock_operation_type set retired = 1 where uuid = '20f3734f-5b1a-490d-8676-1225a9cdddf7';
 		]]></sql>
-                
-    </changeSet>  
-    
+
+    </changeSet>
+
     <changeSet id="openhmis.inventory-v1.8.9-0" author="Morrison Idiasirue" >
-                                       
+
         <addColumn tableName="inv_stock_operation_item">
             <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-                
+
         <addColumn tableName="inv_item_stock_detail">
             <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            			
+
         </addColumn>
-                  
+
     </changeSet>
-    
-     
+
+
     <changeSet id="openhmis.inventory-v1.8.9-1" author="Morrison Idiasirue" >
-                                       
+
         <addColumn tableName="inv_transaction">
             <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-                
+
         <addColumn tableName="inv_reserved_transaction">
             <column name="item_batch" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            			
+
         </addColumn>
-                  
+
     </changeSet>
-    
-      
+
+
     <changeSet id="openhmis.inventory-v1.9.0" author="Morrison Idiasirue" >
-                                       
+
         <addColumn tableName="inv_institution">
             <column name="state" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-                
+
         <addColumn tableName="inv_institution">
             <column name="lga" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            			
+
         </addColumn>
-                  
+
     </changeSet>
-    
-          
+
+
     <changeSet id="openhmis.inventory-v1.9.1" author="Morrison Idiasirue" >
-                                       
+
         <insert tableName="inv_institution">
             <column name="name">Aliade General Hospital</column>
             <column name="description">Aliade General Hospital</column>
@@ -1797,7 +1794,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Gwer East</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Fr. Mathias Clinic</column>
             <column name="description">Fr. Mathias Clinic</column>
@@ -1807,7 +1804,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Gwer West</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">General Hospital Naka</column>
             <column name="description">General Hospital Naka</column>
@@ -1817,8 +1814,8 @@
             <column name="state">Benue</column>
             <column name="lga">be Gwer West</column>
         </insert>
-      
-      
+
+
         <insert tableName="inv_institution">
             <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Sai</column>
             <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Hospital - Sai</column>
@@ -1828,7 +1825,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Katsina-Ala</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Anber</column>
             <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Anber</column>
@@ -1838,8 +1835,8 @@
             <column name="state">Benue</column>
             <column name="lga">be Katsina-Ala</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_institution">
             <column name="name">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Kasar</column>
             <column name="description">Nongu u Kristu ke Sudan hen Tiv (NKST) Primary Health Center - Kasar</column>
@@ -1849,7 +1846,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Katsina-Ala</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Bishop Murray Medical Center</column>
             <column name="description">Bishop Murray Medical Center</column>
@@ -1859,7 +1856,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Makurdi</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Federal Medical Center - Makurdi</column>
             <column name="description">Federal Medical Center - Makurdi</column>
@@ -1869,7 +1866,7 @@
             <column name="state">Benue</column>
             <column name="lga">be Makurdi</column>
         </insert>
-      
+
         <insert tableName="inv_institution">
             <column name="name">Annunciation Specialist Hospital- Emene</column>
             <column name="description">Annunciation Specialist Hospital- Emene</column>
@@ -1879,7 +1876,7 @@
             <column name="state">Enugu</column>
             <column name="lga">en Enugu East</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Iji Nike Cottage Hospital</column>
             <column name="description">Iji Nike Cottage Hospital</column>
@@ -1889,7 +1886,7 @@
             <column name="state">Enugu</column>
             <column name="lga">en Enugu East</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Asata Poly Clinic (Sub District Hospital)</column>
             <column name="description">Asata Poly Clinic (Sub District Hospital)</column>
@@ -1899,7 +1896,7 @@
             <column name="state">Enugu</column>
             <column name="lga">en Enugu North</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Enugu State University Teaching Hospital  (Parklane Specialist Hospital)</column>
             <column name="description">Enugu State University Teaching Hospital  (Parklane Specialist Hospital)</column>
@@ -1909,8 +1906,8 @@
             <column name="state">Enugu</column>
             <column name="lga">en Enugu North</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_institution">
             <column name="name">Mother of Christ Specialist Hospital</column>
             <column name="description">Mother of Christ Specialist Hospital</column>
@@ -1920,7 +1917,7 @@
             <column name="state">Enugu</column>
             <column name="lga">en Enugu North</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Gombe State Specialist Hospital</column>
             <column name="description">Gombe State Specialist Hospital</column>
@@ -1930,7 +1927,7 @@
             <column name="state">Gombe</column>
             <column name="lga">go Gombe</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Miyetti Hospital</column>
             <column name="description">Miyetti Hospital</column>
@@ -1940,7 +1937,7 @@
             <column name="state">Gombe</column>
             <column name="lga">go Gombe</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Musaba Clinic</column>
             <column name="description">Musaba Clinic</column>
@@ -1950,7 +1947,7 @@
             <column name="state">Gombe</column>
             <column name="lga">go Gombe</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Kaltungo General Hospital</column>
             <column name="description">Kaltungo General Hospital</column>
@@ -1960,7 +1957,7 @@
             <column name="state">Gombe</column>
             <column name="lga">go Kaltungo</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Ifako Ijaiye General Hospital</column>
             <column name="description">Ifako Ijaiye General Hospital</column>
@@ -1970,7 +1967,7 @@
             <column name="state">Lagos</column>
             <column name="lga">la Ifako-Ijaiye</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Lagos State University Teaching Hospital</column>
             <column name="description">Lagos State University Teaching Hospital</column>
@@ -1980,7 +1977,7 @@
             <column name="state">Lagos</column>
             <column name="lga">la Ikeja</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Lagos University Teaching Hospital (LUTH)</column>
             <column name="description">Lagos University Teaching Hospital (LUTH)</column>
@@ -1990,7 +1987,7 @@
             <column name="state">Lagos</column>
             <column name="lga">la Mushin</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Mushin General Hospital</column>
             <column name="description">Mushin General Hospital</column>
@@ -2000,7 +1997,7 @@
             <column name="state">Lagos</column>
             <column name="lga">la Mushin</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Asokoro District Hospital</column>
             <column name="description">Asokoro District Hospital</column>
@@ -2010,7 +2007,7 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Garki Hospital Abuja</column>
             <column name="description">Garki Hospital Abuja</column>
@@ -2020,7 +2017,7 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Gwarimpa General Hospital</column>
             <column name="description">Gwarimpa General Hospital</column>
@@ -2030,8 +2027,8 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_institution">
             <column name="name">Maitama General Hospital</column>
             <column name="description">Gwarimpa General Hospital</column>
@@ -2041,7 +2038,7 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">National Hospital - Abuja</column>
             <column name="description">National Hospital - Abuja</column>
@@ -2051,7 +2048,7 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
+
         <insert tableName="inv_institution">
             <column name="name">Nyanya General Hospital</column>
             <column name="description">Nyanya General Hospital</column>
@@ -2061,24 +2058,24 @@
             <column name="state">FCT</column>
             <column name="lga">fc Abuja Municipal Area Council</column>
         </insert>
-        
-        
+
+
     </changeSet>
-    
-    
+
+
     <changeSet id="openhmis.inventory-v1.9.2" author="Morrison Idiasirue" >
-                                       
-                   
+
+
         <addColumn tableName="inv_stock_operation">
             <column name="commodity_source" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-          
-			
+
+
         </addColumn>
-            
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.9.3" author="Morrison Idiasirue" >
         <insert tableName="inv_department">
             <column name="name">EID</column>
@@ -2087,15 +2084,15 @@
             <column name="date_created">2020-09-04</column>
             <column name="uuid">36ccbd54-ab90-4bab-88b9-eb7bd7e1df1a</column>
         </insert>
-        
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.9.4" author="Morrison Idiasirue" >
         <comment>
             Fix all buggy lgas in institutions
         </comment>
-    
-        <sql><![CDATA[			
+
+        <sql><![CDATA[
                 update inv_institution set lga = 'Gwer East' where lga = 'be Gwer East';
 update inv_institution set lga = 'Gwer West' where lga = 'be Gwer West';
 update inv_institution set lga = 'Katsina-Ala' where lga = 'be Katsina-Ala';
@@ -2107,11 +2104,11 @@ update inv_institution set lga = 'Kaltungo' where lga = 'go Kaltungo';
 update inv_institution set lga = 'Ifako-Ijaiye' where lga = 'la Ifako-Ijaiye';
 update inv_institution set lga = 'Ikeja' where lga = 'la Ikeja';
 update inv_institution set lga = 'Mushin' where lga = 'la Mushin';
-update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc Abuja Municipal Area Council';   
+update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc Abuja Municipal Area Council';
 		]]></sql>
-                
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.9.5" author="Morrison Idiasirue" >
         <insert tableName="inv_item">
             <column name="name">DBS Kits(20)</column>
@@ -2123,9 +2120,9 @@ update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc 
             <column name="creator">1</column>
             <column name="date_created">2020-10-02</column>
             <column name="uuid">e6a0df24-ca6c-47e6-a237-6c18482d1d50</column>
-        </insert>                                                                                                 
-      
-                          
+        </insert>
+
+
         <insert tableName="inv_item">
             <column name="name">DBS Kits(50)</column>
             <column name="description">DBS Kits for 50 test per pack</column>
@@ -2136,17 +2133,17 @@ update inv_institution set lga = 'Abuja Municipal Area Council' where lga = 'fc 
             <column name="creator">1</column>
             <column name="date_created">2020-10-02</column>
             <column name="uuid">925d818a-3e3a-4c72-b566-1b94cc12a888</column>
-        </insert>   
-        
-    </changeSet>  
-           
-    
+        </insert>
+
+    </changeSet>
+
+
     <changeSet id="openhmis.inventory-v1.9.6" author="Morrison Idiasirue" >
         <comment>
             insert remaining external facilities.
         </comment>
-    
-        <sql><![CDATA[			
+
+        <sql><![CDATA[
 INSERT INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES('Bonta Family Support Program Clinic', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'A0oG89zfO3P', 'Benue', 'Konshisha');
 INSERT INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES('Arumangye Bosco Primary Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'A0ta1i6orqf', 'Nasarawa', 'Doma');
 INSERT INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES('Marmara Primary Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'a1NJaUQ6ydV', 'Nasarawa', 'Nasarawa');
@@ -3803,55 +3800,55 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 INSERT INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES('Lagos General Hospital', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'zyxDXEYBxqA', 'Lagos', 'Lagos Island');
 
 		]]></sql>
-                
-    </changeSet>       
-    
-                                                        
+
+    </changeSet>
+
+
     <changeSet id="openhmis.inventory-v1.9.7" author="Morrison Idiasirue" >
-                                       
-                   
+
+
         <addColumn tableName="inv_item">
             <column name="strength" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            
+
             <column name="regimen_line" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-            
-                
+
+
             <column name="item_type" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
-          
-			
+
+
         </addColumn>
-        
-        
+
+
         <addColumn tableName="inv_stock_operation">
             <column name="commodity_type" type="varchar(255)">
                 <constraints nullable="true"/>
             </column>
-			
+
         </addColumn>
-            
-    </changeSet> 
-    
-   
+
+    </changeSet>
+
+
     <changeSet id="openhmis.inventory-v1.9.8" author="Morrison Idiasirue" >
         <comment>
             set item_type and commodity_type for already existing items and operations
         </comment>
-    
-        <sql><![CDATA[			
+
+        <sql><![CDATA[
             update inv_stock_operation set commodity_type = 'lab' where stock_operation_id is not null;
             update inv_item set item_type = 'lab' where item_id is not null;
 		]]></sql>
-                
+
     </changeSet>
-    
+
     <changeSet id="openhmis.inventory-v1.9.9" author="Morrison Idiasirue">
-        
+
         <insert tableName="inv_item">
             <column name="name">Tenofovir/Lamivudine/Efavirenz(30)(300/300/600mg)</column>
             <column name="description">Tenofovir/Lamivudine/Efavirenz for 30 bottles per pack</column>
@@ -3866,7 +3863,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">b798dad9-d7d6-480d-8bd4-d2819145ea31</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Tenofovir/Lamivudine/Dolutegravir(30)(300/300/50mg)</column>
             <column name="description">Tenofovir/Lamivudine/Dolutegravir for 30 bottles per pack</column>
@@ -3881,8 +3878,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">55dfcd9b-e3b9-4164-a2fc-8faf8df25d58</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Tenofovir/Lamivudine/Dolutegravir(90)(300/300/50mg)</column>
             <column name="description">Tenofovir/Lamivudine/Dolutegravir for 90 bottles per pack</column>
@@ -3897,7 +3894,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">161937c6-c1b2-44a9-b2f3-1d7ad3da85da</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Lamivudine/Zidovudine/Nevirapine(60)(150/300/200mg)</column>
             <column name="description">Lamivudine/Zidovudine/Nevirapine for 60 bottles per pack</column>
@@ -3912,8 +3909,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">3d66d5eb-bbad-474b-9637-971f6a8e5b01</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Tenofovir/Lamivudine(30)(300/300mg)</column>
             <column name="description">Tenofovir/Lamivudine for 30 bottles per pack</column>
@@ -3928,7 +3925,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">e52a152b-1eb7-4189-8899-b91308f8b7b0</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Lamivudine/Zidovudine(60)(300/150mg)</column>
             <column name="description">Lamivudine/Zidovudine for 60 bottles per pack</column>
@@ -3943,7 +3940,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">d4c09c9b-bead-4578-85d8-0802f8bf1b4a</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Abacavir/Lamivudine(30)(600/300mg)</column>
             <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
@@ -3958,7 +3955,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">f49501ee-637a-4115-87dc-bb2e72019a6c</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Abacavir/Lamivudine(30)(120/60mg)</column>
             <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
@@ -3973,8 +3970,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">c2a303db-bcd4-46d9-b6d1-5c0c4eabcd2a</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Efavirenz(30)(600mg)</column>
             <column name="description">Efavirenz for 30 bottles per pack</column>
@@ -3989,7 +3986,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">91dc08f8-f7ae-4ea7-b2ea-0e483c0cb463</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Zidovudine(60)(300mg)</column>
             <column name="description">Zidovudine for 60 bottles per pack</column>
@@ -4004,8 +4001,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">0b17816e-d41a-4c8f-917a-8b55e3c345cc</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Atazanavir/Ritonavir(30)(300/100mg)</column>
             <column name="description">Atazanavir/Ritonavir for 30 bottles per pack</column>
@@ -4020,7 +4017,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">1860973c-1031-489c-b650-4c3d564a9844</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Lopinavir/Ritonavir(120)(200/50mg)</column>
             <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
@@ -4035,8 +4032,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">d7232d03-06a9-4915-9299-2fd511afb215</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
             <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
@@ -4051,7 +4048,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">5e949026-a650-423e-85c5-4c760e6b201b</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Darunavir(60)(600mg)</column>
             <column name="description">Darunavir for 60 bottles per pack</column>
@@ -4066,7 +4063,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">8bdc5767-636c-4a86-be12-a4dae87bbae3</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Ritonavir(30)(100mg)</column>
             <column name="description">Ritonavir for 30 bottles per pack</column>
@@ -4081,7 +4078,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">6102fcba-aec7-4b55-896b-606217a8de6b</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Darunavir/Ritonavir(30)(800mg/100mg)</column>
             <column name="description">Darunavir/Ritonavir for 30 bottles per pack</column>
@@ -4096,7 +4093,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">681b29bf-2ca0-48bb-8832-4eb701c5e070</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Dolutegravir(30)(50mg)</column>
             <column name="description">Dolutegravir for 30 bottles per pack</column>
@@ -4111,9 +4108,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">f85affcc-9e07-4303-aabf-a00c13bee5d1</column>
         </insert>
-        
+
         <!-- pediatric starts -->
-        
+
         <insert tableName="inv_item">
             <column name="name">Lamivudine/Zidovudine/Nevirapine(60)(30/60/50mg)</column>
             <column name="description">Lamivudine/Zidovudine/Nevirapine for 60 bottles per pack</column>
@@ -4128,7 +4125,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">95800b9b-f334-4871-a383-13d663a99a2f</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Abacavir/Lamivudine(60)(60/30mg)</column>
             <column name="description">Abacavir/Lamivudine for 60 bottles per pack</column>
@@ -4142,9 +4139,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">c837ea4c-1aa5-4289-b8ea-033a4c2c793a</column>
-        </insert> 
-       
-         
+        </insert>
+
+
         <insert tableName="inv_item">
             <column name="name">Abacavir/Lamivudine(30)(60/30mg)</column>
             <column name="description">Abacavir/Lamivudine for 30 bottles per pack</column>
@@ -4158,9 +4155,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">68817326-9e61-4cb6-95a7-75193c377f7f</column>
-        </insert> 
-        
-        
+        </insert>
+
+
         <insert tableName="inv_item">
             <column name="name">Lamivudine/Zidovudine(60)(60/30mg)</column>
             <column name="description">Lamivudine/Zidovudine for 60 bottles per pack</column>
@@ -4174,8 +4171,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">cc047f31-8b44-4ca1-bb02-a85186adfe15</column>
-        </insert> 
-        
+        </insert>
+
         <insert tableName="inv_item">
             <column name="name">Efavirenz(90)(200mg)</column>
             <column name="description">Efavirenz for 60 bottles per pack</column>
@@ -4189,8 +4186,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">291cf1a7-de8a-43a9-9c68-9c83b1c8cc4a</column>
-        </insert> 
-        
+        </insert>
+
         <insert tableName="inv_item">
             <column name="name">Nevirapine(100ml)(50mg/5ml)</column>
             <column name="description">Nevirapinez for 100ml bottles per pack</column>
@@ -4204,8 +4201,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">b9261d1a-ee6c-4ae0-b03e-15f93a12db20</column>
-        </insert> 
-        
+        </insert>
+
         <insert tableName="inv_item">
             <column name="name">Lopinavir/Ritonavir(60)(100/25mg)</column>
             <column name="description">Lopinavir/Ritonavir for 60 bottles per pack</column>
@@ -4219,9 +4216,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">c04a2ff5-a0df-40e8-865c-174a4004d7b9</column>
-        </insert> 
-        
-        
+        </insert>
+
+
         <insert tableName="inv_item">
             <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
             <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
@@ -4235,9 +4232,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">72b03d62-3df0-45b8-91f8-bfe774998736</column>
-        </insert> 
-        
-        
+        </insert>
+
+
         <insert tableName="inv_item">
             <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
             <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
@@ -4252,8 +4249,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">8ca997ff-b5f8-4386-bff4-6a98ce7377bf</column>
         </insert>
-        
-          
+
+
         <insert tableName="inv_item">
             <column name="name">Zidovudine(50mg)(240ml)</column>
             <column name="description">Zidovudine for 50mg bottles per pack</column>
@@ -4267,10 +4264,10 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="creator">1</column>
             <column name="date_created">2020-11-20</column>
             <column name="uuid">7605d1cf-94de-44bf-9f6f-006d8361eab4</column>
-        </insert>  
-          
+        </insert>
+
         <!-- oi drugs -->
-        
+
         <insert tableName="inv_item">
             <column name="name">Co-trimoxazole(1000)(120mg)</column>
             <column name="description">Co-trimoxazole for 1000 bottles per pack</column>
@@ -4285,7 +4282,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">3e3fba6b-cdce-4b20-bae5-7b6916e691a0</column>
         </insert>
-        
+
         <insert tableName="inv_item">
             <column name="name">Co-trimoxazole(100)(960mg)</column>
             <column name="description">Co-trimoxazole for 100 bottles per pack</column>
@@ -4300,8 +4297,8 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">4c511821-236e-42d3-9272-9f12841b8e35</column>
         </insert>
-        
-        
+
+
         <insert tableName="inv_item">
             <column name="name">Isoniazid(100)(100ml)</column>
             <column name="description">Isoniazid for 100 bottles per pack</column>
@@ -4316,9 +4313,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="date_created">2020-11-20</column>
             <column name="uuid">1fc71936-ef5f-4105-b020-2d63f6704dc6</column>
         </insert>
-     
-    </changeSet>                                                                                                       
- 
+
+    </changeSet>
+
     <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called Pharmacy main stock room
@@ -4326,14 +4323,14 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[			
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
+        <sql><![CDATA[
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
                     VALUES('Pharmacy Main Stockroom', 'Main Stock room in the Pharmacy', @locationIDVar, 1, NOW(), '5452ec3e-2fe1-46de-8a6e-28c6442e4cc0');
 		]]></sql>
-                
-    </changeSet>                                                                                                                                                                                                                                                                                                                                          
-      
-                                                                                                                                                                                                                                                                                  
+
+    </changeSet>
+
+
     <changeSet id="openhmis.inventory-v2.0.1" author="Morrison Idiasirue" >
         <createTable tableName="inv_pharmacy_consumption">
             <column name="consumption_id" autoIncrement="true" type="int">
@@ -4366,41 +4363,63 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
-                        
+
             <column name="consumption_date" type="datetime">
                 <constraints nullable="false" />
             </column>
-                                                
+
             <column name="wastage" type="int">
                 <constraints nullable="true"/>
-            </column>                        
-             
+            </column>
+
             <column name="batch_number" type="varchar(255)">
                 <constraints nullable="true"/>
-            </column>                           
-                      
-        </createTable> 
-          
+            </column>
+
+        </createTable>
+
         <addForeignKeyConstraint constraintName="inv_pharmacy_consumption_department_fk"
                                  baseTableName="inv_pharmacy_consumption" baseColumnNames="department_id"
                                  referencedTableName="inv_department" referencedColumnNames="department_id"/>
-          
+
         <addForeignKeyConstraint constraintName="inv_pharmacy_consumption_item_id_fk"
                                  baseTableName="inv_pharmacy_consumption" baseColumnNames="item_id"
                                  referencedTableName="inv_item" referencedColumnNames="item_id"
                                  onDelete="CASCADE" onUpdate="CASCADE"/>
-        
 
-    </changeSet>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-        
-        
+
+    </changeSet>
+
+
     <changeSet id="openhmis.inventory-v2.0.2" author="Morrison Idiasirue" >
         <dropForeignKeyConstraint baseTableName="inv_pharmacy_consumption" constraintName="inv_pharmacy_consumption_department_fk" />
         <dropColumn tableName="inv_pharmacy_consumption" columnName="department_id" />
     </changeSet>
 
+    <changeSet id="openhmis.inventory-v2.0.3" author="Morrison Idiasirue">
+
+        <addColumn tableName="inv_item_stock_detail">
+            <column name="reason_for_change" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+        </addColumn>
 
 
+    </changeSet>
+
+
+    <changeSet id="openhmis.inventory-v2.0.4" author="Morrison Idiasirue">
+
+        <comment>
+            delete wrongly created ARV
+        </comment>
+        <sql><![CDATA[
+                    delete from inv_item where uuid = '72b03d62-3df0-45b8-91f8-bfe774998736';
+		]]></sql>
+
+
+    </changeSet>
 
     <changeSet author="Toyeeb" id="openhmis.inventory-v2.0.3-20211046">
         <update tableName="inv_stock_operation_type">
@@ -4409,21 +4428,5 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <where>uuid='288fd7fe-1374-4f7a-89e6-d5f1ac97d4a5'</where>
         </update>
     </changeSet>
-
-
-
-    
-     <changeSet id="openhmis.inventory-v2.0.4" author="Morrison Idiasirue">
-        
-        <comment>
-            delete wrongly created ARV
-        </comment>     
-        <sql><![CDATA[			
-                    delete from inv_item where uuid = '72b03d62-3df0-45b8-91f8-bfe774998736';
-		]]></sql>
-        
-        
-    </changeSet>
-      
 
 </databaseChangeLog>

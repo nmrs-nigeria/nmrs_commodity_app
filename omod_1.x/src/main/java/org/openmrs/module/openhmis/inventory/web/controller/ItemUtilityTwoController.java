@@ -69,6 +69,10 @@ public class ItemUtilityTwoController {
                     .collect(Collectors.toList()).stream()
                     .filter(a->Objects.nonNull(a)).collect(Collectors.toList());
 
+            System.out.println("Item Exp Dates " + itemExpiration + " or " + itemExpr);
+            System.out.println("Dates " + expiryDates);
+			System.out.println("Batches " + item_Batchess);
+
             int k = 0;
             for (java.util.Date exp : expiryDates) {
                 String expFormat = formatUtilDateToString(exp.toString());
@@ -81,6 +85,7 @@ public class ItemUtilityTwoController {
             }
          	List<String> itemBatches = item_Batches.stream().distinct().collect(Collectors.toList());
 
+			System.out.println("itemBatches " + itemBatches);
 			result.put("results", itemBatches);
 
         } catch (Exception ex) {
