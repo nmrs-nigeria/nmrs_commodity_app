@@ -20,6 +20,8 @@ import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionSummaryDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
+import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionSummaryDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
@@ -28,6 +30,8 @@ import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
@@ -45,26 +49,27 @@ import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 /**
  * @author MORRISON.I
  */
-@Resource(name = ModuleRestConstants.CONSUMPTION_SUMMARY_RESOURCE, supportedClass = ConsumptionSummaryResource.class,
+@Resource(name = ModuleRestConstants.PHARMACY_CONSUMPTION_SUMMARY_RESOURCE,
+        supportedClass = PharmacyConsumptionSummaryResource.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
-public class ConsumptionSummaryResource extends BaseRestMetadataResource<ConsumptionSummary> {
+public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource<PharmacyConsumptionSummary> {
 
-	private static final Log LOG = LogFactory.getLog(ConsumptionSummaryResource.class);
+	private static final Log LOG = LogFactory.getLog(PharmacyConsumptionSummaryResource.class);
 
 	private IItemDataService itemDataService;
 	private IDepartmentDataService departmentService;
 	private IStockOperationDataService stockOperationDataService;
 	private IStockOperationTransactionDataService stockOperationTransactionDataService;
-	private IConsumptionDataService consumptionDataService;
+	private IPharmacyConsumptionDataService consumptionDataService;
 	private IStockOperationTypeDataService stockOperationTypeDataService;
 	private List<Item> distinctItems = null;
 
-	public ConsumptionSummaryResource() {
+	public PharmacyConsumptionSummaryResource() {
 		this.itemDataService = Context.getService(IItemDataService.class);
 		this.departmentService = Context.getService(IDepartmentDataService.class);
 		this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
-		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
+		this.consumptionDataService = Context.getService(IPharmacyConsumptionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
 	}
 
@@ -72,7 +77,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("item", Representation.REF);
-		description.addProperty("department", Representation.REF);
+		// description.addProperty("department", Representation.REF);
 		description.addProperty("totalQuantityReceived");
 		description.addProperty("totalQuantityConsumed");
 		description.addProperty("totalQuantityWasted");
@@ -84,13 +89,13 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 	}
 
 	@Override
-	public ConsumptionSummary newDelegate() {
-		return new ConsumptionSummary();
+	public PharmacyConsumptionSummary newDelegate() {
+		return new PharmacyConsumptionSummary();
 	}
 
 	@Override
-	public Class<? extends IMetadataDataService<ConsumptionSummary>> getServiceClass() {
-		return IConsumptionSummaryDataService.class;
+	public Class<? extends IMetadataDataService<PharmacyConsumptionSummary>> getServiceClass() {
+		return IPharmacyConsumptionSummaryDataService.class;
 	}
 
 	@Override
@@ -98,20 +103,20 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 		distinctItems = itemDataService.getAll();
                 distinctItems = distinctItems.stream().filter(a->a.getItemType()
-                        .equals(ConstantUtils.LAB_COMMIDITY_TYPE))
+                        .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
                         .collect(Collectors.toList());
 
-		Department searchDepartment = getDepartment(context);
+		//	Department searchDepartment = getDepartment(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
 		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
 
 		System.out.println("Printing request params");
 
-		System.out.println(searchDepartment.getName());
+		//	System.out.println(searchDepartment.getName());
 		System.out.println(startDate);
 		System.out.println(endDate);
 
-		if (searchDepartment == null || startDate == null || endDate == null) {
+		if (startDate == null || endDate == null) {
 			System.out.println("if statement returns null");
 			return new EmptySearchResult();
 		}
@@ -121,14 +126,14 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 	private PageableResult searchConsumptionSummary(RequestContext context) {
 
-		List<ConsumptionSummary> fromConsumption = null;
-		List<ConsumptionSummary> fromReceived = null;
-		List<ConsumptionSummary> finalConsumptionSummarys = null;
+		List<PharmacyConsumptionSummary> fromConsumption = null;
+		List<PharmacyConsumptionSummary> fromReceived = null;
+		List<PharmacyConsumptionSummary> finalConsumptionSummarys = null;
 
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
 		Item searchItem = getItem(context);
-		Department searchDepartment = getDepartment(context);
+		//	Department searchDepartment = getDepartment(context);
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
 		IStockOperationType stockOperationType = getStockOperationType(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
@@ -136,7 +141,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
 
-		searchConsumptionSummary.setDepartment(searchDepartment);
+		// searchConsumptionSummary.setDepartment(searchDepartment);
 		searchConsumptionSummary.setItem(searchItem);
 		searchConsumptionSummary.setStartDate(startDate);
 		searchConsumptionSummary.setEndDate(endDate);
@@ -144,7 +149,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		searchConsumptionSummary.setOperationType(stockOperationType);
 
 		List<StockOperation> stockOps = null;
-		List<Consumption> consumptions = new ArrayList<>();
+		List<PharmacyConsumption> consumptions = new ArrayList<>();
 
 		stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, pagingInfo);
 
@@ -178,106 +183,11 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 		System.out.println("final consumption summary is " + finalConsumptionSummarys.size());
 
-		return new AlreadyPagedWithLength<ConsumptionSummary>(context, finalConsumptionSummarys,
+		return new AlreadyPagedWithLength<PharmacyConsumptionSummary>(context, finalConsumptionSummarys,
 		        pagingInfo.hasMoreResults(),
 		        pagingInfo.getTotalRecordCount());
 
 	}
-
-	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
-
-		List<ConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
-
-		for (ConsumptionSummary summary : consumptionSummarys) {
-			ConsumptionSummary each = new ConsumptionSummary();
-			each.setItem(summary.getItem());
-			each.setDepartment(summary.getDepartment());
-			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
-			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
-			each.setTotalQuantityWasted(summary.getTotalQuantityWasted());
-			if (each.getTotalQuantityReceived() > 0) {
-				each.setStockBalance(each.getTotalQuantityReceived()
-				        - (each.getTotalQuantityConsumed() + each.getTotalQuantityWasted()));
-			} else {
-				each.setStockBalance(0);
-			}
-
-			consumptionSummarysWithBalance.add(each);
-		}
-
-		return consumptionSummarysWithBalance;
-
-	}
-
-	private List<ConsumptionSummary> mergeSummary(List<ConsumptionSummary> fromConsumption, 
-            List<ConsumptionSummary> fromReceived, Department department) {
-
-        List<ConsumptionSummary> mergedConsumptionSummarys = new ArrayList<>();
-
-        distinctItems.forEach(a -> {
-            ConsumptionSummary each = new ConsumptionSummary();
-            //get sum from received
-            int sumReceived = fromReceived.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityReceived).findFirst().get();
-            each.setTotalQuantityReceived(sumReceived);
-            each.setDepartment(department);
-            int sumConsumed = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
-            each.setTotalQuantityConsumed(sumConsumed);
-            
-            int sumWastage = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityWasted).findFirst().get();
-            
-            each.setTotalQuantityWasted(sumWastage);
-            
-            
-            each.setItem(a);
-            mergedConsumptionSummarys.add(each);
-
-        });
-        
-        return mergedConsumptionSummarys;
-
-    }
-
-	private List<ConsumptionSummary> getSummaryFromConsumption(List<Consumption> consumptions, 
-            Department department) {
-
-        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
-
-        distinctItems.forEach(a -> {
-
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-
-            int totalQuantityUsed = 0;
-            int totalQuantityWastated = 0;
-
-            List<Consumption> filteredConsumptions = null;
-
-            filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
-                    .collect(Collectors.toList());
-            consumptionSummary.setDepartment(department);
-            consumptionSummary.setItem(a);
-
-            for (Consumption c : filteredConsumptions) {
-                int tempTotalWasted = c.getWastage();
-                int tempTotalQuantityUsed = c.getQuantity();
-                totalQuantityUsed += tempTotalQuantityUsed;
-                totalQuantityWastated += tempTotalWasted;
-                
-
-            }
-           // System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
-
-            consumptionSummary.setTotalQuantityConsumed(totalQuantityUsed);
-            consumptionSummary.setTotalQuantityWasted(totalQuantityWastated);
-
-            aggregateConsumption.add(consumptionSummary);
-        });
-
-        return aggregateConsumption;
-
-    }
 
 	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
 	        Department department) {

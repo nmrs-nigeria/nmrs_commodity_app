@@ -919,6 +919,10 @@
             <column name="uuid" type="char(38)">
                 <constraints nullable="false" unique="true" />
             </column>
+<<<<<<< HEAD
+=======
+           
+>>>>>>> 5b6053079d7ca84decdf1c8e36a34fe7f8448f16
         </createTable>
 
         <createIndex tableName="inv_item_stock" indexName="inv_item_stock_item_stockroom_idx" unique="true">
@@ -4394,15 +4398,12 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         <dropForeignKeyConstraint baseTableName="inv_pharmacy_consumption" constraintName="inv_pharmacy_consumption_department_fk" />
         <dropColumn tableName="inv_pharmacy_consumption" columnName="department_id" />
     </changeSet>
+<<<<<<< HEAD
 
     <changeSet id="openhmis.inventory-v2.0.3" author="Morrison Idiasirue">
-        <addColumn tableName="inv_item_stock_detail">
-            <column name="reason_for_change" type="varchar(255)">
-                <constraints nullable="true" />
-            </column>
+=======
+    
 
-        </addColumn>
-    </changeSet>
     <changeSet author="Toyeeb" id="openhmis.inventory-v2.0.3-20211046">
         <update tableName="inv_stock_operation_type">
             <column name="has_source" value="0"/>
@@ -4412,4 +4413,26 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
     </changeSet>
 
 
+=======
+			
+        </addColumn>
+        
+        
+    </changeSet>
+    
+    
+     <changeSet id="openhmis.inventory-v2.0.4" author="Morrison Idiasirue">
+        
+        <comment>
+            delete wrongly created ARV
+        </comment>     
+        <sql><![CDATA[			
+                    delete from inv_item where uuid = '72b03d62-3df0-45b8-91f8-bfe774998736';
+		]]></sql>
+        
+        
+    </changeSet>
+      
+           
+>>>>>>> 5b6053079d7ca84decdf1c8e36a34fe7f8448f16
 </databaseChangeLog>

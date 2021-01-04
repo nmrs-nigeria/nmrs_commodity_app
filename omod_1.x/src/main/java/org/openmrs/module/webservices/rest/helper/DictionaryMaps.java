@@ -58,6 +58,7 @@ public class DictionaryMaps {
 
 	private void fillUpSourceStockRoom() {
 		this.sourceStockRoomMappings.put("2741bae2-c5de-43ef-891f-7ec2fd58f442", "M");
+		this.sourceStockRoomMappings.put("5452ec3e-2fe1-46de-8a6e-28c6442e4cc0", "P");
 	}
 
 	private void fillUpReturns() {
@@ -68,6 +69,7 @@ public class DictionaryMaps {
 	private void fillUpDistributeTo() {
 		this.distributeToMappings.put(ConstantUtils.DEPARTMENT_STRING, "D");
 		this.distributeToMappings.put(ConstantUtils.INSTITUTION_STRING, "I");
+		this.distributeToMappings.put(ConstantUtils.PATIENT_STRING, "P");
 	}
 
 	private void fillUpAdjustment() {
@@ -84,6 +86,34 @@ public class DictionaryMaps {
 		this.itemMappings.put("7559842c-0599-429d-90b5-e5935d0cd720", 7);
 		this.itemMappings.put("e6a0df24-ca6c-47e6-a237-6c18482d1d50", 8); // DBS Kit(20)
 		this.itemMappings.put("925d818a-3e3a-4c72-b566-1b94cc12a888", 9); //DBS Kits(50)
+		this.itemMappings.put("b798dad9-d7d6-480d-8bd4-d2819145ea31", 10);
+		this.itemMappings.put("55dfcd9b-e3b9-4164-a2fc-8faf8df25d58", 12);
+		this.itemMappings.put("161937c6-c1b2-44a9-b2f3-1d7ad3da85da", 11);
+		this.itemMappings.put("3d66d5eb-bbad-474b-9637-971f6a8e5b01", 13);
+		this.itemMappings.put("e52a152b-1eb7-4189-8899-b91308f8b7b0", 14);
+		this.itemMappings.put("d4c09c9b-bead-4578-85d8-0802f8bf1b4a", 15);
+		this.itemMappings.put("f49501ee-637a-4115-87dc-bb2e72019a6c", 16);
+		this.itemMappings.put("c2a303db-bcd4-46d9-b6d1-5c0c4eabcd2a", 17);
+		this.itemMappings.put("91dc08f8-f7ae-4ea7-b2ea-0e483c0cb463", 18);
+		this.itemMappings.put("0b17816e-d41a-4c8f-917a-8b55e3c345cc", 19);
+		this.itemMappings.put("1860973c-1031-489c-b650-4c3d564a9844", 20);
+		this.itemMappings.put("d7232d03-06a9-4915-9299-2fd511afb215", 21);
+		this.itemMappings.put("5e949026-a650-423e-85c5-4c760e6b201b", 22);
+		this.itemMappings.put("8bdc5767-636c-4a86-be12-a4dae87bbae3", 23);
+		this.itemMappings.put("6102fcba-aec7-4b55-896b-606217a8de6b", 24);
+		this.itemMappings.put("681b29bf-2ca0-48bb-8832-4eb701c5e070", 25);
+		this.itemMappings.put("f85affcc-9e07-4303-aabf-a00c13bee5d1", 26);
+		this.itemMappings.put("95800b9b-f334-4871-a383-13d663a99a2f", 27);
+		this.itemMappings.put("c837ea4c-1aa5-4289-b8ea-033a4c2c793a", 28);
+		this.itemMappings.put("68817326-9e61-4cb6-95a7-75193c377f7f", 29);
+		this.itemMappings.put("cc047f31-8b44-4ca1-bb02-a85186adfe15", 30);
+		this.itemMappings.put("291cf1a7-de8a-43a9-9c68-9c83b1c8cc4a", 31);
+		this.itemMappings.put("b9261d1a-ee6c-4ae0-b03e-15f93a12db20", 32);
+		this.itemMappings.put("c04a2ff5-a0df-40e8-865c-174a4004d7b9", 33);
+		this.itemMappings.put("8ca997ff-b5f8-4386-bff4-6a98ce7377bf", 34);
+		this.itemMappings.put("3e3fba6b-cdce-4b20-bae5-7b6916e691a0", 35);
+		this.itemMappings.put("4c511821-236e-42d3-9272-9f12841b8e35", 36);
+		this.itemMappings.put("1fc71936-ef5f-4105-b020-2d63f6704dc6", 39);
 	}
 
 	private void fillUpTestPurpose() {

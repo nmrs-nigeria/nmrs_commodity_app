@@ -361,6 +361,9 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 				if (searchConsumptionSummary.getDepartment() != null) {
 					criteria.add(Restrictions.eq("department", searchConsumptionSummary.getDepartment()));
 				}
+				if (searchConsumptionSummary.getCommodityType() != null) {
+					criteria.add(Restrictions.eq("commodityType", searchConsumptionSummary.getCommodityType()));
+				}
 
 				if (maxResults != null && maxResults > 0) {
 					criteria.setMaxResults(maxResults);
