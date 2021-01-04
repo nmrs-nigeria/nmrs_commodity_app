@@ -627,7 +627,7 @@
 
             console.log("entity.controller ChangeItemBatchByExpDate itemUUid: " + itemUUid);
             console.log("entity.controller ChangeItemBatchByExpDate date: " + itemExpirationSelected);
-            CreateOperationRestfulService.getItemBatch(itemUUid,itemExpirationSelected,self.onLoadItemBatchSuccessful);
+            CreateOperationRestfulService.getItemBatch(itemUUid, itemExpirationSelected, self.onLoadItemBatchSuccessful);
             CreateOperationRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);
         }
 
@@ -636,20 +636,23 @@
             console.log('entity.controller onLoadItemBatchSuccessful: ACTUAL RESULT');
             console.log(data.results);
 
-            lineItem.itemBatchs = [];
-                            console.log("1" + lineItem.itemBatchs);
-                            lineItem.itemBatchs = data.results;
-                            console.log("2" + lineItem.itemBatchs);
-                            $scope.lineItem.itemStockBatch = '';
-                            console.log("3" + lineItem.itemStockBatch);
-                            console.log("4" + $scope.lineItem.itemStockBatch);
-                            $scope.lineItem.itemBatchs = data.results;
-                            console.log("5" + $scope.lineItem.itemBatchs);
-                            console.log("6" + lineItem.itemBatchs);
-                            var itemBatch = lineItem.itemStockBatch;
-                            console.log("7" + itemBatch);
-                            lineItem.setItemStockBatch(itemBatch);
-                            lineItem.setItemBatchs(lineItem.itemBatchs);
+            $scope.lineItem.setItemStockBatch(data.results[0]);
+            $scope.lineItem.setItemBatchs(data.results);
+
+//            lineItem.itemBatchs = [];
+//                            console.log("1" + lineItem.itemBatchs);
+//                            lineItem.itemBatchs = data.results;
+//                            console.log("2" + lineItem.itemBatchs);
+//                            $scope.lineItem.itemStockBatch = '';
+//                            console.log("3" + lineItem.itemStockBatch);
+//                            console.log("4" + $scope.lineItem.itemStockBatch);
+//                            $scope.lineItem.itemBatchs = data.results;
+//                            console.log("5" + $scope.lineItem.itemBatchs);
+//                            console.log("6" + lineItem.itemBatchs);
+//                            var itemBatch = lineItem.itemStockBatch;
+//                            console.log("7" + itemBatch);
+//                            lineItem.setItemStockBatch(itemBatch);
+//                            lineItem.setItemBatchs(lineItem.itemBatchs);
 
         }
         //end
