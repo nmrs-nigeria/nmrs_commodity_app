@@ -4398,11 +4398,9 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         <dropForeignKeyConstraint baseTableName="inv_pharmacy_consumption" constraintName="inv_pharmacy_consumption_department_fk" />
         <dropColumn tableName="inv_pharmacy_consumption" columnName="department_id" />
     </changeSet>
-<<<<<<< HEAD
 
-    <changeSet id="openhmis.inventory-v2.0.3" author="Morrison Idiasirue">
-=======
-    
+
+
 
     <changeSet author="Toyeeb" id="openhmis.inventory-v2.0.3-20211046">
         <update tableName="inv_stock_operation_type">
@@ -4413,13 +4411,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
     </changeSet>
 
 
-=======
-			
-        </addColumn>
-        
-        
-    </changeSet>
-    
+
     
      <changeSet id="openhmis.inventory-v2.0.4" author="Morrison Idiasirue">
         
@@ -4433,6 +4425,5 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         
     </changeSet>
       
-           
->>>>>>> 5b6053079d7ca84decdf1c8e36a34fe7f8448f16
+
 </databaseChangeLog>
