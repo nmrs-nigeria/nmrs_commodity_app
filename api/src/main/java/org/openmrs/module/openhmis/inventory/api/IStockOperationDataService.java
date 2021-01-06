@@ -85,6 +85,10 @@ public interface IStockOperationDataService extends IMetadataDataService<StockOp
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	List<StockOperationItem> getItemsByOperation(StockOperation operation, PagingInfo paging);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	List<StockOperationItem> getItemsByItem(Item item);
+
 	/**
 	 * Returns the {@link StockOperation}s that are associated with the specified user.
 	 * @param user The {@link org.openmrs.User}.

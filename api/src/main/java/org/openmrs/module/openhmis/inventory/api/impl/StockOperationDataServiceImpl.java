@@ -127,6 +127,23 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	@Override
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	public List<StockOperationItem> getItemsByItem(Item item) {
+		if (item == null) {
+			throw new IllegalArgumentException("The item must be defined.");
+		}
+
+		return executeCriteria(StockOperationItem.class, null, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				criteria.add(Restrictions.eq(HibernateCriteriaConstants.ITEM, item));
+				criteria.createCriteria(HibernateCriteriaConstants.ITEM, "i");
+			}
+		}, Order.asc("i.name"));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	public List<StockOperation> getUserOperations(User user, PagingInfo paging) {
 		return getUserOperations(user, null, null, null, null, paging);
 	}
