@@ -178,9 +178,12 @@
                     for (var i = 0; i < itemStock.details.length; i++) {
                         var detail = itemStock.details[i];
                         var expiration = detail.expiration;
+                        console.log("Create Expiration Date: " + expiration);
                         if (expiration !== null) {
                             expiration = expiration.split("T")[0];
+                            console.log("Create Expiration Date After Split: " + expiration);
                             expiration = formatDate(expiration);
+                            console.log("Create Expiration Date After Format: " + expiration);
                         } else {
                             nullExpiration = true;
                             continue;
@@ -188,6 +191,7 @@
 
                         if (itemStockExpirationDates.indexOf(expiration) === -1) {
                             itemStockExpirationDates.push(expiration);
+                            console.log("Create Expiration Date itemStockExpirationDates: " + itemStockExpirationDates);
                         }
                     }
                     if (nullExpiration) {
@@ -220,7 +224,9 @@
                         if (itemBatches.indexOf(itemBatch) === -1) {
                             itemBatches.push(itemBatch);
                         }
+                        console.log("Item Batch: " + itemBatch);
                     }
+                    console.log("Item Batches: " + itemBatches);
                     if (nullIemBatch) {
                         itemBatches.push("None");
                     }
@@ -228,6 +234,14 @@
             }
             return itemBatches;
         }
+
+
+
+
+
+
+
+
 
         function showOperationItemsSection($scope) {
             var operationType = $scope.operationType;

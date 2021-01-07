@@ -5,12 +5,15 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
+import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.openmrs.Encounter;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDataService;
@@ -62,7 +65,6 @@ public class ItemUtilityController {
                     .map(ItemStockDetailBase::getItemBatch)
                     .collect(Collectors.toList()).stream().distinct()
                     .filter(a->Objects.nonNull(a)).collect(Collectors.toList());
-            
 
             result.put("results", item_Batches);
 

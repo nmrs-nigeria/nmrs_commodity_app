@@ -130,6 +130,9 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 		if (operation.getInstanceType().getHasSource()) {
 			return;
 		}
+		if (operation.getInstanceType().getHasDestination()) {
+			return;
+		}
 
 		// Check operation items
 		for (StockOperationItem item : operation.getItems()) {
@@ -490,6 +493,8 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 		// To undo the transaction we are merely going to negate the quantity and then reapply the transactions
 		if (operation.getTransactions() != null) {
 			Set<StockOperationTransaction> transactions = operation.getTransactions();
+			//added by toyeeb
+
 			for (StockOperationTransaction tx : transactions) {
 				tx.setQuantity(tx.getQuantity() * -1);
 			}

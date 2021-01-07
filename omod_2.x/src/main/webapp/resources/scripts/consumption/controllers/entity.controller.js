@@ -111,14 +111,14 @@
             if ($scope.consumptionDate !== undefined) {
                 // $scope.entity.consumptionDate = ConsumptionFunctions.formatDate($scope.consumptionDate);
                $scope.currDate = formatDate(new Date());
-               
+
                console.log('currDate: '+$scope.currDate);
                var time = formatTime(new Date());
                // var time = $scope.currDate.time;
             console.log('the time is '+time);
             var tempDate = $scope.consumptionDate + ', ' + time;
             console.log('tempdate is :'+ tempDate);
-            
+
                 $scope.entity.consumptionDate = formatDate(tempDate);
             }
 
@@ -160,7 +160,7 @@
 
 
         }
-        
+
         function formatTime(time) {
 			var format = 'HH:mm';
 			return ($filter('date')(new Date(time), format));
@@ -169,7 +169,7 @@
         function formatDate(date) {
             //  return $filter('date')(new Date(date), "yyyy-MM-dd");
 
-           
+
          //   date = new Date(date);
             var format = 'yyyy-MM-dd';
 
@@ -201,17 +201,17 @@
                 $scope.item = $scope.item || $scope.items[0];
             }
         }
-        
+
         self.onLoadItemBatchSuccessful = self.onLoadItemBatchSuccessful || function (data) {
             console.log(data);
             console.log('ACTUAL RESULT');
             console.log(data.results);
             if(angular.isDefined($scope.entity)){
-                $scope.itemBatchs = data.results;               
+                $scope.itemBatchs = data.results;
             }
         }
-        
-        
+
+
          self.changeItemBatch = self.changeItemBatch || function (itemUUID) {
          ConsumptionRestfulService.getItemBatch(itemUUID,self.onLoadItemBatchSuccessful);
          ConsumptionRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);

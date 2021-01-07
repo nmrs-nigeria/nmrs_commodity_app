@@ -227,10 +227,10 @@
                     </select>
             </li>
             </ul>
-            
+
             <ul class="table-layout"
             ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
-            
+
               <li>
                 <span>LGA</span>
             </li>
@@ -240,12 +240,12 @@
                     ng-change="onChangeLgaSuccessful(lga)">
                     </select>
             </li>
-            
+
             </ul>
-            
+
             <ul class="table-layout"
             ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
-            
+
             <li class="required">
                 <span>${ui.message('openhmis.inventory.institution.name')}</span>
             </li>
@@ -324,7 +324,7 @@ placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                 </td>
                 <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
                     <select ng-model="lineItem.itemStockExpirationDate"
-                    ng-change="changeExpiration(lineItem)"
+                    ng-change="changeExpirationByExp(lineItem)"
                     ng-show="!lineItem.expirationHasDatePicker && lineItem.expirationDates.length > 0"
                     class="right-justify form-control"
                     ng-options="itemStockExpirationDate for itemStockExpirationDate in lineItem.expirationDates">
@@ -359,7 +359,7 @@ startDate : new Date(),
             <b>Batch</b>
             </td>
             <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
-                <select ng-model="lineItem.itemStockBatch"           
+                <select ng-model="lineItem.itemStockBatch"
                 ng-show="!lineItem.batchItemExist && lineItem.itemBatchs.length > 0"
                 class="right-justify form-control"
                 ng-options="itemStockBatch for itemStockBatch in lineItem.itemBatchs">
@@ -369,7 +369,7 @@ startDate : new Date(),
                     <input type="text" ng-model="lineItem.itemStockBatch" class="form-control"
                     ng-enter="changeItemBatch(lineItem)"
                     ng-change="changeItemBatch(lineItem)"
-                    />  
+                    />
 
                 </span>
                 <br />
@@ -378,7 +378,7 @@ startDate : new Date(),
             </table>
             </td>
             </tr>
-            </table>  
+            </table>
 
 
         </fieldset>

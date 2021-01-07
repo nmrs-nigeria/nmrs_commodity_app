@@ -49,6 +49,7 @@
                         CommonsRestfulFunctions.getSession(INVENTORY_MODULE_NAME, self.onLoadSessionLocationSuccessful);
                     }
 
+                    $scope.itemUUIDTobeUsed = 0;
                     $scope.count = 0;
                     $scope.isOperationNumberGenerated = false;
                     $scope.isNegativeStockRestricted = false;
@@ -105,7 +106,9 @@
                     $scope.showOperationItemsSection = self.showOperationItemsSection;
                     $scope.changeItemQuantity = self.changeItemQuantity;
                     $scope.changeItemBatch = self.changeItemBatch;
+                    $scope.changeItemBatchByExpDate = self.changeItemBatchByExpDate;
                     $scope.changeExpiration = self.changeExpiration;
+                    $scope.changeExpirationByExp = self.changeExpirationByExp;
                     CreateOperationFunctions.onChangeDatePicker(
                             self.onOperationDateSuccessfulCallback,
                             'operationDateId-display');
@@ -134,7 +137,7 @@
                 return false;
             }
 
-                //fill constant value
+            //fill constant value
             $scope.entity.commodityType = "lab";
 
 
@@ -380,6 +383,9 @@
 
         self.searchItemStock = self.searchItemStock || function (stockOperationItem) {
             if ("uuid" in stockOperationItem && $scope.sourceStockroom !== undefined) {
+                //added by toyeeb
+                $scope.itemUUIDTobeUsed = stockOperationItem.uuid;
+                //
                 CreateOperationRestfulService.searchItemStock(INVENTORY_MODULE_NAME, stockOperationItem.uuid, $scope.sourceStockroom.uuid,
                         self.onLoadItemStockSuccessful);
             }
@@ -579,6 +585,82 @@
             console.log('called lga change');
             CreateOperationRestfulService.getInstitution(INVENTORY_MODULE_NAME, $scope.state, lga, self.onLoadInstitutionsSuccessful);
         }
+
+        //added by toyeeb
+        self.changeExpirationByExp = self.changeExpirationByExp || function (lineItem) {
+            var itemUUid = $scope.itemUUIDTobeUsed;
+            console.log("Line Item in changeExpirationByExp: " + lineItem);
+            console.log("lineItem.itemStock.uuid: " + itemUUid);
+
+            if (lineItem.itemStockExpirationDate !== 'Auto') {
+                var selectedExpiration = lineItem.itemStockExpirationDate;
+                console.log("entity.controller selectedExpiration: " + selectedExpiration);
+                var existingQuantity = 0;
+                if (selectedExpiration === 'None') {
+                    selectedExpiration = null;
+                }
+                for (var i = 0; i < lineItem.itemStockDetails.details.length; i++) {
+                    var detail = lineItem.itemStockDetails.details[i];
+                    console.log("entity.controller detail: " + detail);
+                    var expiration = detail.expiration;
+                    console.log("entity.controller detail.expiration: " + expiration);
+                    if (expiration !== null) {
+                        expiration = expiration.split("T")[0];
+                        expiration = CreateOperationFunctions.formatDate(expiration);
+                        console.log("entity.controller after format date: " + expiration);
+                    }
+
+                    if (expiration === selectedExpiration) {
+                        existingQuantity += detail.quantity;
+                    }
+                }
+                lineItem.existingQuantity = existingQuantity;
+            } else {
+                lineItem.existingQuantity = lineItem.itemStockDetails.quantity;
+            }
+            self.changeItemQuantity(lineItem);
+            self.changeItemBatchByExpDate(lineItem, itemUUid);
+        }
+
+        self.changeItemBatchByExpDate = self.changeItemBatchByExpDate || function (lineItem, itemUUid) {
+            var itemExpirationSelected = lineItem.itemStockExpirationDate;
+
+            console.log("entity.controller ChangeItemBatchByExpDate itemUUid: " + itemUUid);
+            console.log("entity.controller ChangeItemBatchByExpDate date: " + itemExpirationSelected);
+            CreateOperationRestfulService.getItemBatch(itemUUid, itemExpirationSelected, self.onLoadItemBatchSuccessful);
+            CreateOperationRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);
+        }
+
+        self.onLoadItemBatchSuccessful = self.onLoadItemBatchSuccessful || function (data) {
+            console.log("entity.controller onLoadItemBatchSuccessful: " + data);
+            console.log('entity.controller onLoadItemBatchSuccessful: ACTUAL RESULT');
+            console.log(data.results);
+
+            $scope.lineItem.setItemStockBatch(data.results[0]);
+            $scope.lineItem.setItemBatchs(data.results);
+
+//            lineItem.itemBatchs = [];
+//                            console.log("1" + lineItem.itemBatchs);
+//                            lineItem.itemBatchs = data.results;
+//                            console.log("2" + lineItem.itemBatchs);
+//                            $scope.lineItem.itemStockBatch = '';
+//                            console.log("3" + lineItem.itemStockBatch);
+//                            console.log("4" + $scope.lineItem.itemStockBatch);
+//                            $scope.lineItem.itemBatchs = data.results;
+//                            console.log("5" + $scope.lineItem.itemBatchs);
+//                            console.log("6" + lineItem.itemBatchs);
+//                            var itemBatch = lineItem.itemStockBatch;
+//                            console.log("7" + itemBatch);
+//                            lineItem.setItemStockBatch(itemBatch);
+//                            lineItem.setItemBatchs(lineItem.itemBatchs);
+
+        }
+        //end
+
+
+
+
+
 
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function () {
