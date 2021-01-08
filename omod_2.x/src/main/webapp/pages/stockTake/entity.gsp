@@ -106,9 +106,9 @@
 				           id="{{'actualQuantity-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"
 				           type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
 				           ng-blur="getActualQuantity(entity)"></td>
-				 <td><input name="reasonForChange"
+				 <td><input name="reasonForChange" required
                                             id="{{'reasonForChange-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"
-                                            type="text" class="form-control input-sm" ng-model="entity.reasonForChange"></td>
+                                            type="text" class="form-control input-sm" ng-model="entity.reasonForChange" ></td>
 			</tr>
 			</tbody>
 		</table>

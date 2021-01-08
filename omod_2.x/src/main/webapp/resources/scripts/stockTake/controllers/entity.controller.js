@@ -49,6 +49,7 @@
 				$scope.showStockChangeDetails = false;
 				$scope.showStockDetailsTable = false;
 				$scope.stockTakeDetails = [];
+
 				$scope.loading = false;
 				
 				$scope.stockroomDialog = function (stockroomChange, stockTakeCurrentPage) {
@@ -93,7 +94,7 @@
 						self.getNewStock(entity);
 					}
 				}
-				
+
 			}
 		
 		self.stockroomChangeDialog = self.stockroomChangeDialog || function (id) {
@@ -188,6 +189,12 @@
 					if (stockObject[i].expiration != null) {
 						stockObject[i].expiration = StockTakeFunctions.formatDate(stockObject[i].expiration);
 					}
+
+                    if (stockObject[i].reasonForChange == "" || stockObject[i].reasonForChange == null || stockObject[i].reasonForChange == undefined) {
+                        console.log(stockObject[i].reasonForChange);
+                        emr.errorAlert("Reason for change is required");
+                        return false;
+                    }
 
 					stockObject[i].item = stockObject[i].item.uuid;
 				}

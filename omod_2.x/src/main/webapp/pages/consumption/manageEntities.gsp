@@ -77,6 +77,7 @@
                         <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
