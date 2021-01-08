@@ -48,6 +48,8 @@ import org.openmrs.module.openhmis.ndrmodel.AdjustmentType;
 import org.openmrs.module.openhmis.ndrmodel.ConsumptionReportType;
 import org.openmrs.module.openhmis.ndrmodel.ConsumptionSummaryType;
 import org.openmrs.module.openhmis.ndrmodel.Container;
+import org.openmrs.module.openhmis.ndrmodel.DisposedOperationType;
+import org.openmrs.module.openhmis.ndrmodel.DisposedType;
 import org.openmrs.module.openhmis.ndrmodel.DistributionType;
 import org.openmrs.module.openhmis.ndrmodel.ItemType;
 import org.openmrs.module.openhmis.ndrmodel.LabInventoryType;
@@ -372,6 +374,19 @@ public class NDRExtractionController {
 			TransferOperationType transferOperationType = new TransferOperationType();
 			transferOperationType.getTransfer().addAll(allTRansferTypes);
 			taskOperationType.setTransferOperation(transferOperationType);
+		}
+
+		//for disposed
+		IStockOperationType disposedStockOperationType = getStockOperationType(ConstantUtils.DISPOSED_TYPE_UUID);
+		searchConsumptionSummary.setOperationType(disposedStockOperationType);
+
+		stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+		List<DisposedType> allDisposedTypes = mapAndExtractDisposed(stockOps);
+		if (!allDisposedTypes.isEmpty()) {
+			DisposedOperationType disposedOperationType = new DisposedOperationType();
+			disposedOperationType.getDisposed().addAll(allDisposedTypes);
+			taskOperationType.setDisposedOperation(disposedOperationType);
 		}
 
 		return taskOperationType;
@@ -816,6 +831,49 @@ public class NDRExtractionController {
 		}
 
 		return transfers;
+
+	}
+
+	private List<DisposedType> mapAndExtractDisposed(List<StockOperation> stockOperations) {
+
+		List<DisposedType> disposed = new ArrayList<>();
+
+		for (StockOperation st : stockOperations) {
+
+			DisposedType disposedType = null;
+
+			try {
+				disposedType = new DisposedType();
+				disposedType.setOperationID(st.getOperationNumber());
+				if (st.getDisposedType() != null) {
+
+					disposedType.setDisposedTypeCode(dictionaryMaps.getDisposedTypeMappings()
+					        .get(st.getDisposedType()));
+				}
+
+				disposedType.setOperationDate(dateFormat.format(st.getDateCreated()));
+				disposedType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
+				        .get(st.getSource().getUuid()));
+
+				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+
+				OperationItemType op = new OperationItemType();
+				if (!itemTypes.isEmpty()) {
+					op.getItem().addAll(itemTypes);
+					disposedType.getOperationItem().add(op);
+				}
+
+			} catch (Exception ex) {
+				System.out.println("Error pulling a distribution " + ex.getMessage());
+			}
+
+			if (disposedType != null) {
+				disposed.add(disposedType);
+			}
+
+		}
+
+		return disposed;
 
 	}
 

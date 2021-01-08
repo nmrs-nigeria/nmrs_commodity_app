@@ -17,9 +17,11 @@ import org.openmrs.Encounter;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDataService;
+import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStock;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetailBase;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.web.ModuleWebConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
@@ -40,6 +42,7 @@ public class ItemUtilityController {
 
 	private IItemStockDataService itemStockDataService;
 	private IItemDataService itemDataService;
+	private IStockOperationDataService stockOperationDataService;
 
 	@ResponseBody
     @RequestMapping(method = RequestMethod.GET)
@@ -47,15 +50,19 @@ public class ItemUtilityController {
 
         this.itemStockDataService = Context.getService(IItemStockDataService.class);
         this.itemDataService = Context.getService(IItemDataService.class);
+        this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
+        
 
         SimpleObject result = new SimpleObject();
-
-        try {
+        
+        
+        // new implementation       
+            try {
             Item find_item = getItem(itemUUID);
-            List<ItemStock> itemStocks = itemStockDataService.getItemStockByItemWithOutPaging(find_item);
+            List<StockOperationItem> itemStockOpsItem = stockOperationDataService.getItemsByItem(find_item);
 
-            List<String> item_Batches = itemStocks.stream().findFirst()
-                    .get().getDetails().stream().map(ItemStockDetailBase::getItemBatch)
+            List<String> item_Batches = itemStockOpsItem.stream()
+                    .map(ItemStockDetailBase::getItemBatch)
                     .collect(Collectors.toList()).stream().distinct()
                     .filter(a->Objects.nonNull(a)).collect(Collectors.toList());
 
@@ -65,6 +72,25 @@ public class ItemUtilityController {
             LOG.error(ex.getMessage());
             result.put("error", ex.getMessage());
         }
+
+            
+        //old implementation    
+//        try {
+//            Item find_item = getItem(itemUUID);
+//            List<ItemStock> itemStocks = itemStockDataService.getItemStockByItemWithOutPaging(find_item);
+//
+//            List<String> item_Batches = itemStocks.stream().findFirst()
+//                    .get().getDetails().stream().map(ItemStockDetailBase::getItemBatch)
+//                    .collect(Collectors.toList()).stream().distinct()
+//                    .filter(a->Objects.nonNull(a)).collect(Collectors.toList());
+//            
+//
+//            result.put("results", item_Batches);
+//
+//        } catch (Exception ex) {
+//            LOG.error(ex.getMessage());
+//            result.put("error", ex.getMessage());
+//        }
 
         return result;
 

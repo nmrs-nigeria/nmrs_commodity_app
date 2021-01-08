@@ -21,6 +21,7 @@ public class DictionaryMaps {
 	private final Map<String, Integer> itemMappings = new HashMap<>();
 	private final Map<String, String> testPurpose = new HashMap<>();
 	private final Map<String, String> commoditySource = new HashMap<>();
+	private final Map<String, String> disposedTypeMappings = new HashMap<>();
 
 	public DictionaryMaps() {
 		this.fillUpDepartments();
@@ -31,6 +32,7 @@ public class DictionaryMaps {
 		this.fillUpItemMappings();
 		this.fillUpCommoditySource();
 		this.fillUpTestPurpose();
+		this.fillUpDisposedType();
 	}
 
 	private void fillUpDepartments() {
@@ -74,6 +76,12 @@ public class DictionaryMaps {
 
 	private void fillUpAdjustment() {
 		this.adjustmentTypeMappings.put("positive", "P");
+	}
+
+	private void fillUpDisposedType() {
+		this.disposedTypeMappings.put("expired", "E");
+		this.disposedTypeMappings.put("damaged", "D");
+		this.disposedTypeMappings.put("others", "O");
 	}
 
 	private void fillUpItemMappings() {
@@ -160,6 +168,10 @@ public class DictionaryMaps {
 
 	public Map<String, String> getCommoditySource() {
 		return commoditySource;
+	}
+
+	public Map<String, String> getDisposedTypeMappings() {
+		return disposedTypeMappings;
 	}
 
 }
