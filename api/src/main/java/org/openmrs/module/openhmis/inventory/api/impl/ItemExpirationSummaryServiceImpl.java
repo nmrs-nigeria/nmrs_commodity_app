@@ -18,6 +18,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummary;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 import org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
@@ -72,6 +73,87 @@ public class ItemExpirationSummaryServiceImpl
 		query = this.createPagingQuery(pagingInfo, query);
 
 		List list = query.list();
+
+		// Parse the aggregate query into an ItemStockSummary object
+		List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
+		for (Object obj : list) {
+			Object[] row = (Object[])obj;
+
+			ItemExpirationSummary summary = new ItemExpirationSummary();
+			summary.setItem((Item)row[0]);
+
+			// If the expiration column is null it does not appear to be included in the row array
+			if (row.length == 2) {
+				summary.setExpiration(null);
+				Integer quantity = Ints.checkedCast((Long)row[1]);
+				// skip record if the sum of item stock quantities == 0
+				if (quantity != 0) {
+					summary.setQuantity(quantity);
+				} else {
+					continue;
+				}
+			} else {
+				summary.setExpiration((Date)row[1]);
+				Integer quantity = Ints.checkedCast((Long)row[2]);
+				if (quantity != 0) {
+					summary.setQuantity(quantity);
+				} else {
+					continue;
+				}
+			}
+
+			results.add(summary);
+		}
+
+		// We done.
+		return results;
+	}
+
+	public List<ItemExpirationSummary> getItemStockSummaryByDepartment(final Department department, PagingInfo pagingInfo) {
+		if (department == null) {
+			throw new IllegalArgumentException("The testing point must be defined.");
+		}
+
+		// We cannot use a normal Criteria query here because criteria does not support a group by with a having statement
+		// so HQL it is!
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			// Load the record count (for paging)
+			String countHql = "SELECT 1 "
+			        + "FROM StockOperation AS a "
+			        + "INNER JOIN StockOperationItem AS b "
+			        + "ON a.id=b.id "
+			        + "LEFT JOIN Consumption AS c "
+			        + "ON b.itemBatch = c.batchNumber "
+			        + "AND c.department.id= " + department.getId() + " "
+			        + "WHERE a.department.id= " + department.getId() + " "
+			        + "GROUP BY b.itemBatch";
+
+			Query countQuery = getRepository().createQuery(countHql);
+
+			Integer count = countQuery.list().size();
+			System.out.println("HQL Count " + count);
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+
+		}
+
+		// Create the query and optionally add paging	
+		String hql = "SELECT b.item, b.expiration, b.quantity - coalesce(SUM(c.quantity + c.wastage), 0) as sumQty "
+		        + "FROM StockOperation AS a "
+		        + "INNER JOIN StockOperationItem AS b "
+		        + "ON a.id=b.id "
+		        + "LEFT JOIN Consumption AS c "
+		        + "ON b.itemBatch = c.batchNumber "
+		        + "AND c.department.id= " + department.getId() + " "
+		        + "WHERE a.department.id= " + department.getId() + " "
+		        + "GROUP BY b.itemBatch";
+
+		Query query = getRepository().createQuery(hql);
+		query = this.createPagingQuery(pagingInfo, query);
+
+		List list = query.list();
+		System.out.println("HQL list Size " + list.size());
 
 		// Parse the aggregate query into an ItemStockSummary object
 		List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
