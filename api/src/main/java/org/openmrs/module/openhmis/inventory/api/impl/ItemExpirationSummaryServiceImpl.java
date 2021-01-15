@@ -120,13 +120,10 @@ public class ItemExpirationSummaryServiceImpl
 			// Load the record count (for paging)
 			String countHql = "SELECT 1 "
 			        + "FROM StockOperation AS a "
-			        + "INNER JOIN StockOperationItem AS b "
-			        + "ON a.id=b.id "
-			        + "LEFT JOIN Consumption AS c "
-			        + "ON b.itemBatch = c.batchNumber "
-			        + "AND c.department.id= " + department.getId() + " "
-			        + "WHERE a.department.id= " + department.getId() + " "
-			        + "GROUP BY b.itemBatch";
+			        + "INNER JOIN a.items AS b "
+			        + "LEFT JOIN b.itemBatch AS c "
+			        + "WITH c.department.id= " + department.getId() + " "
+			        + "WHERE a.department.id= " + department.getId();
 
 			Query countQuery = getRepository().createQuery(countHql);
 
