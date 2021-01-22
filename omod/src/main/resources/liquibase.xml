@@ -1100,9 +1100,9 @@
     </changeSet>
     <changeSet id="openhmis.inventory-v1.0.0-11" author="marios">
         <addNotNullConstraint
-                columnDataType="varchar(255)"
-                columnName="operation_number"
-                tableName="inv_stock_operation"/>
+            columnDataType="varchar(255)"
+            columnName="operation_number"
+            tableName="inv_stock_operation"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.2.0-1" author="ibewes">
         <addColumn tableName="inv_stock_operation">
@@ -1341,9 +1341,9 @@
     </changeSet>
     <changeSet id="openhmis.inventory-v1.7.0-0" author="marios">
         <dropNotNullConstraint
-                columnDataType="varchar(255)"
-                columnName="attribute_order"
-                tableName="inv_item_attribute_type"/>
+            columnDataType="varchar(255)"
+            columnName="attribute_order"
+            tableName="inv_item_attribute_type"/>
     </changeSet>
     <changeSet id="openhmis.inventory-v1.8.0-0" author="Morrison" >
         <createTable tableName="inv_consumption">
@@ -1451,9 +1451,9 @@
         </addColumn>
 
         <dropNotNullConstraint
-                columnDataType="int"
-                columnName="department_id"
-                tableName="inv_item"/>
+            columnDataType="int"
+            columnName="department_id"
+            tableName="inv_item"/>
 
     </changeSet>
 
@@ -1688,18 +1688,18 @@
 
     </changeSet>
 
-    <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
+   <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called main stock room
         </comment>
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
                     VALUES('Main Stockroom', 'Main Stock room in the Facility', @locationIDVar, 1, NOW(), '2741bae2-c5de-43ef-891f-7ec2fd58f442');
 		]]></sql>
-
+                
     </changeSet>
 
     <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
@@ -4316,18 +4316,18 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 
     </changeSet>
 
-    <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
+       <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called Pharmacy main stock room
         </comment>
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
                     VALUES('Pharmacy Main Stockroom', 'Main Stock room in the Pharmacy', @locationIDVar, 1, NOW(), '5452ec3e-2fe1-46de-8a6e-28c6442e4cc0');
 		]]></sql>
-
+                
     </changeSet>
 
 
@@ -4428,5 +4428,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <where>uuid='288fd7fe-1374-4f7a-89e6-d5f1ac97d4a5'</where>
         </update>
     </changeSet>
+    
+
 
 </databaseChangeLog>
