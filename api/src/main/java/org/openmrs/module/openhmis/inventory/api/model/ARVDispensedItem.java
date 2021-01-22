@@ -5,95 +5,62 @@
  */
 package org.openmrs.module.openhmis.inventory.api.model;
 
+import java.io.Serializable;
 import java.util.Date;
 import org.openmrs.BaseOpenmrsObject;
 
 /**
  * @author MORRISON.I
  */
-public class ARVDispensedItem extends BaseOpenmrsObject {
+public class ARVDispensedItem implements Serializable {
 
-	private Integer id;
-	private ARVPharmacyDispense dispensary;
-	private Item item;
-	private Integer quantity;
-	private Date expiration;
-	private ARVPharmacyDispense batchOperation;
+	private Integer quantityPrescribed;
+	private int quantityDispensed;
+	private Integer duration;
+        private String itemName;
+        private String ARVPharmacyDispenseUUID;
 
-	public ARVPharmacyDispense getDispensary() {
-		return dispensary;
-	}
+    public Integer getQuantityPrescribed() {
+        return quantityPrescribed;
+    }
 
-	public void setDispensary(ARVPharmacyDispense dispensary) {
-		this.dispensary = dispensary;
-	}
+    public void setQuantityPrescribed(Integer quantityPrescribed) {
+        this.quantityPrescribed = quantityPrescribed;
+    }
 
-	public Item getItem() {
-		return item;
-	}
+    public int getQuantityDispensed() {
+        return quantityDispensed;
+    }
 
-	public void setItem(Item item) {
-		this.item = item;
-	}
+    public void setQuantityDispensed(int quantityDispensed) {
+        this.quantityDispensed = quantityDispensed;
+    }
 
-	public Integer getQuantity() {
-		return quantity;
-	}
+    public Integer getDuration() {
+        return duration;
+    }
 
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
-	}
+    public void setDuration(Integer duration) {
+        this.duration = duration;
+    }
 
-	public Date getExpiration() {
-		return expiration;
-	}
+    public String getItemName() {
+        return itemName;
+    }
 
-	public void setExpiration(Date expiration) {
-		this.expiration = expiration;
-	}
+    public void setItemName(String itemName) {
+        this.itemName = itemName;
+    }
 
-	public ARVPharmacyDispense getBatchOperation() {
-		return batchOperation;
-	}
+    public String getARVPharmacyDispenseUUID() {
+        return ARVPharmacyDispenseUUID;
+    }
 
-	public void setBatchOperation(ARVPharmacyDispense batchOperation) {
-		this.batchOperation = batchOperation;
-	}
-
-	public Boolean getCalculatedExpiration() {
-		return calculatedExpiration;
-	}
-
-	public void setCalculatedExpiration(Boolean calculatedExpiration) {
-		this.calculatedExpiration = calculatedExpiration;
-	}
-
-	public Boolean getCalculatedBatch() {
-		return calculatedBatch;
-	}
-
-	public void setCalculatedBatch(Boolean calculatedBatch) {
-		this.calculatedBatch = calculatedBatch;
-	}
-
-	public String getItemBatch() {
-		return itemBatch;
-	}
-
-	public void setItemBatch(String itemBatch) {
-		this.itemBatch = itemBatch;
-	}
-	private Boolean calculatedExpiration;
-	private Boolean calculatedBatch;
-	private String itemBatch;
-
-	@Override
-	public Integer getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setARVPharmacyDispenseUUID(String ARVPharmacyDispenseUUID) {
+        this.ARVPharmacyDispenseUUID = ARVPharmacyDispenseUUID;
+    }
+	
+	
+        
+        
 }
