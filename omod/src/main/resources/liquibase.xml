@@ -1688,18 +1688,18 @@
 
     </changeSet>
 
-    <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
+   <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called main stock room
         </comment>
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
                     VALUES('Main Stockroom', 'Main Stock room in the Facility', @locationIDVar, 1, NOW(), '2741bae2-c5de-43ef-891f-7ec2fd58f442');
 		]]></sql>
-
+                
     </changeSet>
 
     <changeSet id="openhmis.inventory-v1.8.7-0" author="Morrison Idiasirue" >
@@ -4316,18 +4316,18 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 
     </changeSet>
 
-    <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
+       <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called Pharmacy main stock room
         </comment>
         <sql><![CDATA[
 			select @locationIDVar:=location_id from location limit 0,1;
 		]]></sql>
-        <sql><![CDATA[
-                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid)
+        <sql><![CDATA[			
+                    INSERT INTO inv_stockroom (name, description, location_id, creator, date_created,  uuid) 
                     VALUES('Pharmacy Main Stockroom', 'Main Stock room in the Pharmacy', @locationIDVar, 1, NOW(), '5452ec3e-2fe1-46de-8a6e-28c6442e4cc0');
 		]]></sql>
-
+                
     </changeSet>
 
 
@@ -4429,94 +4429,6 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         </update>
     </changeSet>
     
-    <changeSet id="openhmis.inventory-v2.0.6" author="Morrison Idiasirue">
-    
-        <createTable tableName="inv_pharmacy_dispense_arv">
-            <column name="dispensary_id" autoIncrement="true" type="int">
-                <constraints nullable="false" primaryKey="true"/>
-            </column>
-            <column name="item_id" type="int">
-                <constraints nullable="false"/>
-            </column>
-            <column name="department_id" type="int">
-                <constraints nullable="false" />
-            </column>
-            <column name="quantity" type="int">
-                <constraints nullable="false"/>
-            </column>
-            
-            <column name="dispense_date" type="datetime">
-                <constraints nullable="false" />
-            </column>
 
-            <column name="batch_number" type="varchar(255)">
-                <constraints nullable="true"/>
-            </column>
-            
-            <column name="patient_category" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            
-            <column name="treatment_type" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            
-            <column name="visit_type" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            
-            <column name="pickup_reason" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-            
-            <column name="patient_id" type="int">
-                <constraints nullable="false" />
-            </column>
-            
-            <column name="quantity_prescribed" type="int">
-                <constraints nullable="true" />
-            </column>
-            
-             <column name="quantity_dispensed" type="int">
-                <constraints nullable="true" />
-            </column>
-            
-             <column name="duration" type="int">
-                <constraints nullable="ture" />
-            </column>
-
-            <column name="creator" type="int">
-                <constraints nullable="false" />
-            </column>
-            <column name="date_created" type="datetime">
-                <constraints nullable="false" />
-            </column>
-            <column name="changed_by" type="int" />
-            <column name="date_changed" type="datetime" />
-            <column name="retired" type="boolean" defaultValueBoolean="false">
-                <constraints nullable="false" />
-            </column>
-            <column name="retired_by" type="int" />
-            <column name="date_retired" type="datetime" />
-            <column name="retire_reason" type="varchar(255)" defaultValue="null" />
-
-            <column name="uuid" type="char(38)">
-                <constraints nullable="false" unique="true" />
-            </column>
-
-        </createTable>
-
-        <addForeignKeyConstraint constraintName="inv_pharmacy_dispense_arv_department_fk"
-                                 baseTableName="inv_pharmacy_dispense_arv" baseColumnNames="department_id"
-                                 referencedTableName="inv_department" referencedColumnNames="department_id"/>
-
-        <addForeignKeyConstraint constraintName="inv_pharmacy_dispense_arv_item_id_fk"
-                                 baseTableName="inv_pharmacy_dispense_arv" baseColumnNames="item_id"
-                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
-       
-        <addForeignKeyConstraint constraintName="inv_pharmacy_dispense_arv_patient_fk"
-                                 baseTableName="inv_pharmacy_dispense_arv" baseColumnNames="patient_id"
-                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
-    </changeSet>
 
 </databaseChangeLog>
