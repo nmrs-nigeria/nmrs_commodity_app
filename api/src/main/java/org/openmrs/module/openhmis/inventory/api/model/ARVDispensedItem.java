@@ -17,50 +17,47 @@ public class ARVDispensedItem implements Serializable {
 	private Integer quantityPrescribed;
 	private int quantityDispensed;
 	private Integer duration;
-        private String itemName;
-        private String ARVPharmacyDispenseUUID;
+	private String itemName;
+	private String arvPharmacyDispenseUuid;
 
-    public Integer getQuantityPrescribed() {
-        return quantityPrescribed;
-    }
+	public Integer getQuantityPrescribed() {
+		return quantityPrescribed;
+	}
 
-    public void setQuantityPrescribed(Integer quantityPrescribed) {
-        this.quantityPrescribed = quantityPrescribed;
-    }
+	public void setQuantityPrescribed(Integer quantityPrescribed) {
+		this.quantityPrescribed = quantityPrescribed;
+	}
 
-    public int getQuantityDispensed() {
-        return quantityDispensed;
-    }
+	public int getQuantityDispensed() {
+		return quantityDispensed;
+	}
 
-    public void setQuantityDispensed(int quantityDispensed) {
-        this.quantityDispensed = quantityDispensed;
-    }
+	public void setQuantityDispensed(int quantityDispensed) {
+		this.quantityDispensed = quantityDispensed;
+	}
 
-    public Integer getDuration() {
-        return duration;
-    }
+	public Integer getDuration() {
+		return duration;
+	}
 
-    public void setDuration(Integer duration) {
-        this.duration = duration;
-    }
+	public void setDuration(Integer duration) {
+		this.duration = duration;
+	}
 
-    public String getItemName() {
-        return itemName;
-    }
+	public String getItemName() {
+		return itemName;
+	}
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
 
-    public String getARVPharmacyDispenseUUID() {
-        return ARVPharmacyDispenseUUID;
-    }
+	public String getArvPharmacyDispenseUuid() {
+		return arvPharmacyDispenseUuid;
+	}
 
-    public void setARVPharmacyDispenseUUID(String ARVPharmacyDispenseUUID) {
-        this.ARVPharmacyDispenseUUID = ARVPharmacyDispenseUUID;
-    }
-	
-	
-        
-        
+	public void setArvPharmacyDispenseUuid(String arvPharmacyDispenseUuid) {
+		this.arvPharmacyDispenseUuid = arvPharmacyDispenseUuid;
+	}
+
 }
