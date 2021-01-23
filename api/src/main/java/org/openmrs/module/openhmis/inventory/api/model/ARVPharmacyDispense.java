@@ -12,7 +12,7 @@ import java.util.Set;
 /**
  * @author MORRISON.I
  */
-public class ARVPharmacyDispense implements Serializable{
+public class ARVPharmacyDispense implements Serializable {
 
 	public static final long serialVersionUID = 2L;
 
@@ -22,92 +22,90 @@ public class ARVPharmacyDispense implements Serializable{
 	private String treatmentType;
 	private String visitType;
 	private String pickupReason;
-        private Date dateOfDispensed;
-        private String uuid;
-	
+	private Date dateOfDispensed;
+	private String uuid;
+
 	private Set<ARVDispensedItem> items;
 	private String patientID;
 
-    public Date getDispenseDate() {
-        return dispenseDate;
-    }
+	public Date getDispenseDate() {
+		return dispenseDate;
+	}
 
-    public void setDispenseDate(Date dispenseDate) {
-        this.dispenseDate = dispenseDate;
-    }
+	public void setDispenseDate(Date dispenseDate) {
+		this.dispenseDate = dispenseDate;
+	}
 
-    public String getBatchNumber() {
-        return batchNumber;
-    }
+	public String getBatchNumber() {
+		return batchNumber;
+	}
 
-    public void setBatchNumber(String batchNumber) {
-        this.batchNumber = batchNumber;
-    }
+	public void setBatchNumber(String batchNumber) {
+		this.batchNumber = batchNumber;
+	}
 
-    public String getPatientCategory() {
-        return patientCategory;
-    }
+	public String getPatientCategory() {
+		return patientCategory;
+	}
 
-    public void setPatientCategory(String patientCategory) {
-        this.patientCategory = patientCategory;
-    }
+	public void setPatientCategory(String patientCategory) {
+		this.patientCategory = patientCategory;
+	}
 
-    public String getTreatmentType() {
-        return treatmentType;
-    }
+	public String getTreatmentType() {
+		return treatmentType;
+	}
 
-    public void setTreatmentType(String treatmentType) {
-        this.treatmentType = treatmentType;
-    }
+	public void setTreatmentType(String treatmentType) {
+		this.treatmentType = treatmentType;
+	}
 
-    public String getVisitType() {
-        return visitType;
-    }
+	public String getVisitType() {
+		return visitType;
+	}
 
-    public void setVisitType(String visitType) {
-        this.visitType = visitType;
-    }
+	public void setVisitType(String visitType) {
+		this.visitType = visitType;
+	}
 
-    public String getPickupReason() {
-        return pickupReason;
-    }
+	public String getPickupReason() {
+		return pickupReason;
+	}
 
-    public void setPickupReason(String pickupReason) {
-        this.pickupReason = pickupReason;
-    }
+	public void setPickupReason(String pickupReason) {
+		this.pickupReason = pickupReason;
+	}
 
-    public Date getDateOfDispensed() {
-        return dateOfDispensed;
-    }
+	public Date getDateOfDispensed() {
+		return dateOfDispensed;
+	}
 
-    public void setDateOfDispensed(Date dateOfDispensed) {
-        this.dateOfDispensed = dateOfDispensed;
-    }
+	public void setDateOfDispensed(Date dateOfDispensed) {
+		this.dateOfDispensed = dateOfDispensed;
+	}
 
-    public String getUuid() {
-        return uuid;
-    }
+	public String getUuid() {
+		return uuid;
+	}
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
-    }
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 
-    public Set<ARVDispensedItem> getItems() {
-        return items;
-    }
+	public Set<ARVDispensedItem> getItems() {
+		return items;
+	}
 
-    public void setItems(Set<ARVDispensedItem> items) {
-        this.items = items;
-    }
+	public void setItems(Set<ARVDispensedItem> items) {
+		this.items = items;
+	}
 
-    public String getPatientID() {
-        return patientID;
-    }
+	public String getPatientID() {
+		return patientID;
+	}
 
-    public void setPatientID(String patientID) {
-        this.patientID = patientID;
-    }
+	public void setPatientID(String patientID) {
+		this.patientID = patientID;
+	}
 
-
-        
 }
