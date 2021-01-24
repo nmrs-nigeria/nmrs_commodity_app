@@ -16,7 +16,6 @@ public class ARVPharmacyDispense implements Serializable {
 
 	public static final long serialVersionUID = 2L;
 
-	private Date dispenseDate;
 	private String batchNumber;
 	private String patientCategory;
 	private String treatmentType;
@@ -27,14 +26,6 @@ public class ARVPharmacyDispense implements Serializable {
 
 	private Set<ARVDispensedItem> items;
 	private String patientID;
-
-	public Date getDispenseDate() {
-		return dispenseDate;
-	}
-
-	public void setDispenseDate(Date dispenseDate) {
-		this.dispenseDate = dispenseDate;
-	}
 
 	public String getBatchNumber() {
 		return batchNumber;
