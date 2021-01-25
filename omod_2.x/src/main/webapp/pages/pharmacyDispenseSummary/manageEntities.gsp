@@ -44,8 +44,6 @@
     ])}
                                     </span>
                                 </li>
-
-
                             </ul>
                             </td>
                         </tr>                  
@@ -64,8 +62,6 @@
     ])}
                                     </span>
                                 </li>
-
-
                             </ul>
                             </td>
                         </tr>                       
@@ -83,7 +79,6 @@
                     </table>
                 </fieldset>   
              </form>          
-
             <br/><br/>
             <table style="margin-bottom:5px;margin-bottom:5px;" class="manage-entities-table manage-stockOperations-table">
                 <thead>
@@ -98,7 +93,7 @@
                 </thead>
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
-                    total-items="totalNumOfResults" current-page="currentPage" onClick="viewARVDispensedItem(entity.items)">
+                    total-items="totalNumOfResults" current-page="currentPage" onClick="viewARVDispensedItem(entity.items)" >
                         <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>
                         <td ng-style="strikeThrough(entity.retired)">{{entity.patientCategory}}</td>
                         <td ng-style="strikeThrough(entity.retired)">
@@ -113,14 +108,12 @@
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.dateOfDispensed}}
                         </td>
-                      
                     </tr>
                 </tbody>
             </table>
 
             <div ng-show="fetchedEntities.length == 0">
                 <br/>
-        <!--	${ui.message('openhmis.commons.general.preSearchMessage')} - <b> {{searchField}} </b> - {{postSearchMessage}} -->
                 <br/><br/>
                 <span><input type="checkbox" ng-checked="includeRetired" ng-model="includeRetired"
                     ng-change="searchDispenseSummarys(currentPage)"></span>
@@ -131,30 +124,28 @@
     </div>
 </div>
 
-<!-- View Dispense Samples Modal -->
-<div class="modal fade" id="mySampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl" role="document">
-        <div class="modal-content">
-            <div class="modal-header" style="background-color: #00463f;">
-            <h5 class="modal-title" id="exampleModalLabel" style="color: white;"><i class="icon-folder-open"></i> ARV Pharmacy Dispense Items</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-            </div>
-            <div class="modal-body" id="sample-details">
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" style="color: black" data-dismiss="modal">Ok</button>
-            </div>
-        </div>
-        </div>
+<div id="arvItemsDialog" class="dialog ng-scope" style="display: none; width: 800px;">
+    <div class="dialog-header">
+        <span>
+            <i class="icon-list"></i>
+            <h3>ARV Pharmacy Dispensed Items</h3>
+        </span>
+        <i class="icon-remove cancel show-cursor" style="float:right;" ng-click="closeThisDialog()"></i>
+    </div>
+    <div class="dialog-content form" id="item-dispense-details">
+    </div>
 </div>
 
 <script type="application/javascript">
     var jq = jQuery;
 
     function viewARVDispensedItem(items) {
+        showOperationActionsDialog('arvItemsDialog');
+    }
+    
+    function showOperationActionsDialog(selectorId) {
         var conts = "";
+        var counter = 1;
         conts += "<table>";
         conts += "<tr><th>S/N</th><th>Item Name</th><th>Quantity Prescribed</th><th>Quantity Dispensed</th><th>Duration</th>";
         for (i = 0; i < items.length; i++) {
@@ -169,9 +160,23 @@
             counter++;
         }        
         conts += "</table>";
-        var element = document.getElementById("sample-details");
+        conts += "<br>";
+        conts += "<div class='detail-section-border-top'>";
+        conts += "<br>";
+        conts += "<input type=\"button\" class=\"cancel\" value=\"Close\" ng-click=\"closeThisDialog('Cancel')\">";
+        conts += "</div>";
+        var element = document.getElementById("item-dispense-details");
         element.innerHTML = conts;
-        jq('#mySampleModal').modal('show');
-    }
 
+        var dialog = emr.setupConfirmationDialog({
+            selector: '#' + selectorId,
+            actions: {
+                cancel: function () {
+                    dialog.close();
+                }
+            }
+        });
+
+        dialog.show();
+    }
 </script>
