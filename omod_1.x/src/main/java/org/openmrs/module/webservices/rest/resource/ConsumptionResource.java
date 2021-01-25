@@ -87,7 +87,9 @@ public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 	public Consumption save(Consumption entity) {
 
 		System.out.println("PRINTING ENTITIES BEFORE A SAVE");
-		//	System.out.println(entity.toString());
+		System.out.println(entity.toString());
+
+		System.out.println("Entity UUID: " + entity.getUuid());
 
 		//	entity.setUuid(UUID.randomUUID().toString());
 		return super.save(entity); //To change body of generated methods, choose Tools | Templates.

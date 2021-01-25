@@ -25,6 +25,8 @@
 		
 		service = {
 			loadStockrooms: loadStockrooms,
+			loadDepartments: loadDepartments,
+			loadStockDetailsDepartment: loadStockDetailsDepartment,
 			loadStockDetails: loadStockDetails
 		};
 		
@@ -33,6 +35,7 @@
 		/**
 		 * Retrieve all Stockrooms
 		 * @param onLoadStockroomsSuccessful
+		 * @param onLoadDepartmentsSuccessful
 		 * @param module_name
 		 */
 		function loadStockrooms(module_name, onLoadStockroomsSuccessful) {
@@ -43,7 +46,18 @@
 				errorCallback
 			);
 		}
-		
+		/**
+		 * Retrieve all departments
+		 */
+		function loadDepartments(module_name, onLoadDepartmentsSuccessful) {
+			var requestParams = [];
+			requestParams['rest_entity_name'] = 'department';
+			EntityRestFactory.loadEntities(requestParams,
+				onLoadDepartmentsSuccessful,
+				errorCallback
+			);
+		}
+
 		/**
 		 * Retrieve all the stock in the selected stockroom
 		 * @param stockroomUuid
@@ -53,6 +67,7 @@
 		 * @param onLoadStockDetailsSuccessful
 		 * */
 		function loadStockDetails(stockroomUuid, currentPage, limit, onLoadStockDetailsSuccessful) {
+			console.log("inside loadStockDetails entity.restful.service");
 			currentPage = currentPage || 1;
 			if (angular.isDefined(stockroomUuid) && stockroomUuid !== '' && stockroomUuid !== undefined) {
 				var requestParams = PaginationService.paginateParams(currentPage, limit, false);
@@ -65,6 +80,20 @@
 			}
 		}
 		
+		function loadStockDetailsDepartment(departmentUuid, currentPage, limit, onLoadStockDetailsSuccessful) {
+			console.log("inside loadStockDetailsDepartment entity.restful.service");
+			currentPage = currentPage || 1;
+			if (angular.isDefined(departmentUuid) && departmentUuid !== '' && departmentUuid !== undefined) {
+				var requestParams = PaginationService.paginateParams(currentPage, limit, false);
+				requestParams['rest_entity_name'] = 'itemExpirationSummary';
+				requestParams['department_uuid'] = departmentUuid;
+				EntityRestFactory.loadEntities(requestParams,
+					onLoadStockDetailsSuccessful,
+					errorCallback
+				);
+			}
+		}
+
 		function errorCallback(error) {
 			emr.errorAlert(error);
 		}

@@ -113,6 +113,7 @@ public class ModuleWebConstants extends WebConstants {
 	public static final String MODULE_INSTITUTION_UTILITY_ROOT = MODULE_ROOT + "institutionUtility";
 
 	public static final String MODULE_ITEM_UTILITY_TWO_ROOT = MODULE_ROOT + "itemUtilityTwo";
+	public static final String PHARMACY_DISPENSE_SUMMARY_ROOT = MODULE_ROOT + "pharmacyDispenseSummary";
 
 	protected ModuleWebConstants() {}
 }

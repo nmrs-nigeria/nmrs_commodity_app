@@ -18,6 +18,7 @@ import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
@@ -75,21 +76,46 @@ public class ItemExipirationSummaryResource extends DelegatingCrudResource<ItemE
 	@Override
     protected PageableResult doSearch(RequestContext context) {
 
-        PageableResult result;
+        PageableResult result = null;
         String stockroomUuid = context.getParameter("stockroom_uuid");
-        if (StringUtils.isNotBlank(stockroomUuid)) {
+        String departmentUuid = context.getParameter("department_uuid");
+        
+        if (StringUtils.isNotBlank(stockroomUuid) || StringUtils.isNotBlank(departmentUuid)) {
             PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-            Stockroom stockroom = stockroomDataService.getByUuid(stockroomUuid);
-            List<ItemExpirationSummary> itemStockDetails
-                    = itemExpirationSummaryService.getItemStockSummaryByStockroom(stockroom, pagingInfo);
-
-            //    = itemExpirationSummaryService.getItemStockDetailsByStockroom(stockroom, pagingInfo);
-            itemStockDetails = itemStockDetails.stream().filter(a -> a.getQuantity() > 0)
-                    .filter(a -> getDaysDiff(new Date(),a.getExpiration()) <= ConstantUtils.EXPIRYDAYSCOUNT)
-                    .collect(Collectors.toList());
-            result
-            = new AlreadyPagedWithLength<ItemExpirationSummary>(context, itemStockDetails, pagingInfo.hasMoreResults(),
-                            pagingInfo.getTotalRecordCount());
+            System.out.println("stockroomUuid" + stockroomUuid);
+            System.out.println("departmentUuid" + departmentUuid);
+            if(stockroomUuid != null && !stockroomUuid.isEmpty()) {
+	            Stockroom stockroom = stockroomDataService.getByUuid(stockroomUuid);
+	       	 	System.out.println("stockroom: " + stockroom);
+	            List<ItemExpirationSummary> itemStockDetails
+	                    = itemExpirationSummaryService.getItemStockSummaryByStockroom(stockroom, pagingInfo);
+	
+	            System.out.println("itemStockDetails: " + itemStockDetails);
+	            //    = itemExpirationSummaryService.getItemStockDetailsByStockroom(stockroom, pagingInfo);
+	            itemStockDetails = itemStockDetails.stream().filter(a -> a.getQuantity() > 0)
+	                    .filter(a -> getDaysDiff(new Date(),a.getExpiration()) <= ConstantUtils.EXPIRYDAYSCOUNT)
+	                    .collect(Collectors.toList());
+	            System.out.println("itemStockDetails 2: " + itemStockDetails);
+	            result
+	            = new AlreadyPagedWithLength<ItemExpirationSummary>(context, itemStockDetails, pagingInfo.hasMoreResults(),
+	                            pagingInfo.getTotalRecordCount());
+            }else if(departmentUuid != null && !departmentUuid.isEmpty()) {
+            	Department department = departmentService.getByUuid(departmentUuid);
+	       	 	System.out.println("department: " + department);
+	            List<ItemExpirationSummary> itemStockDetails
+	                    = itemExpirationSummaryService.getItemStockSummaryByDepartment(department, pagingInfo);
+	
+	            System.out.println("itemStockDetails: " + itemStockDetails);
+	            
+	            itemStockDetails = itemStockDetails.stream().filter(a -> a.getQuantity() > 0)
+	                    .filter(a -> getDaysDiff(new Date(),a.getExpiration()) <= ConstantUtils.EXPIRYDAYSCOUNT)
+	                    .collect(Collectors.toList());
+	            System.out.println("itemStockDetails 2: " + itemStockDetails);
+	            result
+	            = new AlreadyPagedWithLength<ItemExpirationSummary>(context, itemStockDetails, pagingInfo.hasMoreResults(),
+	                            pagingInfo.getTotalRecordCount());
+            }
+            
         } else {
             result = super.doSearch(context);
         }
