@@ -24,30 +24,45 @@ import org.openmrs.Obs;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.Patient;
 import org.openmrs.PatientIdentifier;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
+import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.entity.security.IObjectAuthorizationPrivileges;
 import org.openmrs.module.openhmis.inventory.api.model.ARVDispensedItem;
 import org.openmrs.module.openhmis.inventory.api.model.ARVPharmacyDispense;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
+import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 
 /**
  * @author MORRISON.I
  */
-public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl implements IARVPharmacyDispenseService {
+public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<ARVPharmacyDispense>
+        implements IARVPharmacyDispenseService, IMetadataAuthorizationPrivileges {
 
 	@Override
-	public List<ARVPharmacyDispense> getARVs(Date startDate, Date endDate) {
+	public List<ARVPharmacyDispense> getARVs(Date startDate, Date endDate, PagingInfo pagingInfo) {
 		String queryString = "select  a from " + Encounter.class.getName() + " "
 		        + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
 		        + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
 
 		Query query = getRepository().createQuery(queryString);
+		//   Query query = getRepository().createQuery(queryString);
 		query.setDate("startDate", startDate);
 		query.setDate("endDate", endDate);
 		List<Encounter> encounters = (List<Encounter>)query.list();
 		System.out.println("found arv encounters");
 		System.out.println(encounters.size());
+
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			Integer count = query.list().size();
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
+
+		//      query = this.createPagingQuery(pagingInfo, query);
 
 		List<ARVPharmacyDispense> aRVPharmacyDispenses = new ArrayList<>();
 		List<Obs> obsPerVisit = null;
@@ -106,7 +121,6 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl 
 		DateTime stopDateTime = null, startDateTime = null;
 
 		//	PatientIdentifier pepfarIdentifier = patient.getPatientIdentifier(Utils.PEPFAR_IDENTIFIER_INDEX);
-
 		String pepfarID = "";
 		String ndrCode = "";
 		Obs obs = null;
@@ -130,8 +144,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl 
 					//    valueCoded = obs.getValueCoded().getConceptId();
 					//   ndrCode = getRegimenMapValue(valueCoded);  
 					//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
-					Set<ARVDispensedItem> aRVDispensedItems =
-					        retrieveMedicationDuration(visitDate, obsListForAVisit, uuid);
+					Set<ARVDispensedItem> aRVDispensedItems = retrieveMedicationDuration(visitDate, obsListForAVisit, uuid);
 
 					return aRVDispensedItems;
 				}
@@ -186,9 +199,9 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl 
                 if (obs != null) {
                     aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
                 }
-                
+
                 obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-                if(obs != null){
+                if (obs != null) {
                     aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
                 }
 
@@ -202,13 +215,33 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl 
     }
 
 	@Override
-	protected void validate(OpenmrsObject object) {
-		return;
+	protected void validate(ARVPharmacyDispense object) {
+		throw new UnsupportedOperationException("Not supported yet.");
 	}
 
 	@Override
-	protected IObjectAuthorizationPrivileges getPrivileges() {
-		return null;
+	protected IMetadataAuthorizationPrivileges getPrivileges() {
+		return this;
+	}
+
+	@Override
+	public String getRetirePrivilege() {
+		return PrivilegeConstants.MANAGE_CONSUMPTION;
+	}
+
+	@Override
+	public String getSavePrivilege() {
+		return PrivilegeConstants.MANAGE_CONSUMPTION;
+	}
+
+	@Override
+	public String getPurgePrivilege() {
+		return PrivilegeConstants.PURGE_CONSUMPTION;
+	}
+
+	@Override
+	public String getGetPrivilege() {
+		return PrivilegeConstants.VIEW_CONSUMPTIONS;
 	}
 
 }

@@ -26,8 +26,8 @@
                 }
 
         self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function () {
-            self.loadDepartments();
-            self.loadItems();
+           // self.loadDepartments();
+          // self.loadItems();
             $scope.searchDispenseSummarys = self.searchDispenseSummarys;
             //	$scope.searchItemsByName = self.searchItemsByName;
             //	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
@@ -91,14 +91,7 @@
             $scope.totalNumOfResults = data.length;
         }
 
-        self.onLoadDepartmentsSuccessful = self.onLoadDepartmentsSuccessful || function (data) {
-            $scope.departments = data.results;
-        }
-
-
-        self.onLoadItemsSuccessful = self.onLoadItemsSuccessful || function (data) {
-            $scope.items = data.results;
-        }
+      
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericManageController, self, {

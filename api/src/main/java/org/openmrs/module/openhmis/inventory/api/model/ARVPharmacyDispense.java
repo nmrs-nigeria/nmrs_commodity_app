@@ -8,11 +8,13 @@ package org.openmrs.module.openhmis.inventory.api.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 
 /**
  * @author MORRISON.I
  */
-public class ARVPharmacyDispense implements Serializable {
+public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 
 	public static final long serialVersionUID = 2L;
 
@@ -23,6 +25,7 @@ public class ARVPharmacyDispense implements Serializable {
 	private String pickupReason;
 	private Date dateOfDispensed;
 	private String uuid;
+	private Integer dispenseId;
 
 	private Set<ARVDispensedItem> items;
 	private String patientID;
@@ -97,6 +100,22 @@ public class ARVPharmacyDispense implements Serializable {
 
 	public void setPatientID(String patientID) {
 		this.patientID = patientID;
+	}
+
+	@Override
+	public Integer getId() {
+		return this.dispenseId;
+	}
+
+	@Override
+	public void setId(Integer intgr) {
+		this.dispenseId = intgr;
+	}
+
+	@Override
+	@JsonIgnore
+	public Boolean getRetired() {
+		return super.getRetired();
 	}
 
 }

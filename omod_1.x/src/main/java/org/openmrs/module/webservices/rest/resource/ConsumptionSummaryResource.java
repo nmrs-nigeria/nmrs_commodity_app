@@ -64,8 +64,9 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 	private IConsumptionDataService consumptionDataService;
 	private IStockOperationTypeDataService stockOperationTypeDataService;
 	private List<Item> distinctItems = null;
-	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
-	final ObjectMapper mapper = new ObjectMapper();
+
+	//private IARVPharmacyDispenseService iARVPharmacyDispenseService;
+	//final ObjectMapper mapper = new ObjectMapper();
 
 	public ConsumptionSummaryResource() {
 		this.itemDataService = Context.getService(IItemDataService.class);
@@ -74,7 +75,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
 		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
-		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
+		//this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 	}
 
 	@Override
@@ -125,13 +126,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 			return new EmptySearchResult();
 		}
                 
-                System.out.println("started calling ARVPharmacy");
-                List<ARVPharmacyDispense> aRVPharmacyDispenses = iARVPharmacyDispenseService.getARVs(startDate, endDate);
-            try {
-                System.out.println(mapper.writeValueAsString(aRVPharmacyDispenses));
-            } catch (JsonProcessingException ex) {
-                Logger.getLogger(ConsumptionSummaryResource.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
 
 		return searchConsumptionSummary(context);
 	}
