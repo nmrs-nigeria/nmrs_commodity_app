@@ -203,6 +203,15 @@
                 "url": "openhmis.inventory/ndrExtraction/entities.page",
                 "icon": "icon-share-alt",
                 "requiredPrivilege": "Task: Access Inventory Reports"
+            },
+            {
+                "id": "openhmis.inventory.viewPharmacyDispenseSummary",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.dispenseSummarys",
+                "url": "openhmis.inventory/pharmacyDispenseSummary/entities.page",
+                "icon": "icon-list",
+                "requiredPrivilege": "Task: Pharmacy Menu"
             }
         ]
     }
