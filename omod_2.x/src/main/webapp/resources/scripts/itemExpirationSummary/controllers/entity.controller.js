@@ -30,6 +30,7 @@
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
 				self.loadStockrooms();
+				self.loadDepartments();
 				$scope.showNoStockroomSelected = true;
 				$scope.showNoStockSummaries = false;
 				$scope.showStockDetails = false;
@@ -39,21 +40,63 @@
 				$scope.loading = false;
 				
 				$scope.stockroomDialog = function (stockroomChange, itemExpiryCurrentPage) {
+					console.log("Stockroom Has been selected");
+					console.log("stockroomChange: " +  stockroomChange);
+					console.log("itemExpiryCurrentPage: " +  itemExpiryCurrentPage);
 					if ($scope.itemExpiryDetails.length != 0) {
 						$scope.itemExpiryDetails = [];
+						console.log("Item Expiry Details is not equal 0: Calling stockroomChangeDialog function");
 						self.stockroomChangeDialog(stockroomChange);
 					} else {
+						console.log("Item Expiry Details is equal 0: Calling loadStockDetails function");					
 						$scope.loadStockDetails(itemExpiryCurrentPage);
+					}
+				}
+
+				$scope.departmentDialog = function (departmentChange, itemExpiryCurrentPage) {
+					console.log("Department Has been selected");
+					console.log("departmentChange: " +  departmentChange);
+					console.log("itemExpiryCurrentPage: " +  itemExpiryCurrentPage);
+					if ($scope.itemExpiryDetails.length != 0) {
+						$scope.itemExpiryDetails = [];
+						console.log("Item Expiry Details is not equal 0: Calling stockroomChangeDialog function");
+						self.departmentChangeDialog(departmentChange);
+					} else {
+						console.log("Item Expiry Details is equal 0: Calling loadStockDetails function");					
+						$scope.loadStockDetailsDepartment(itemExpiryCurrentPage);
 					}
 				}
 				
 				$scope.loadStockDetails = function (itemExpiryCurrentPage) {
 					if ($scope.entity.stockroom != null) {
 						var stockroom_uuid = $scope.entity.stockroom.uuid;
+						console.log("Inside loadStockDetails (Stockroom UUID): " + stockroom_uuid);
+					
 						self.loadStockDetails(stockroom_uuid, itemExpiryCurrentPage);
 						
 						$scope.itemExpiryLimit = CookiesService.get(stockroom_uuid + 'itemExpiryLimit') || 5;
 						$scope.itemExpiryCurrentPage = CookiesService.get(stockroom_uuid + 'itemExpiryCurrentPage') || 1;
+						$scope.itemExpiryPagingFrom = PaginationService.pagingFrom;
+						$scope.itemExpiryPagingTo = PaginationService.pagingTo;
+					} else {
+						$scope.showNoStockroomSelected = true;
+						$scope.showNoStockSummaries = false;
+						$scope.showStockChangeDetails = false;
+						$scope.itemExpiryDetails = [];
+						$scope.showStockDetails = false;
+						$scope.showStockDetailsTable = false;
+					}
+				}
+
+				$scope.loadStockDetailsDepartment = function (itemExpiryCurrentPage) {
+					if ($scope.entity.department != null) {
+						var department_uuid = $scope.entity.department.uuid;
+						console.log("Inside loadStockDetailsDepartment (Department UUID): " + department_uuid);
+					
+						self.loadStockDetailsDepartment(department_uuid, itemExpiryCurrentPage);
+						
+						$scope.itemExpiryLimit = CookiesService.get(department_uuid + 'itemExpiryLimit') || 5;
+						$scope.itemExpiryCurrentPage = CookiesService.get(department_uuid + 'itemExpiryCurrentPage') || 1;
 						$scope.itemExpiryPagingFrom = PaginationService.pagingFrom;
 						$scope.itemExpiryPagingTo = PaginationService.pagingTo;
 					} else {
@@ -84,11 +127,13 @@
 			}
 		
 		self.stockroomChangeDialog = self.stockroomChangeDialog || function (id) {
+				console.log("inside stockroomChangeDialog: " + id);
 				ItemExpirationSummaryFunctions.stockroomChangeDialog(id, $scope);
 			}
 		
 		self.getNewStock = self.getNewStock || function (newStock) {
-				console.log($scope.itemExpiryDetails);
+				console.log(" $scope.itemExpiryDetails: " + $scope.itemExpiryDetails);
+				console.log("newStock: " + newStock);
 				var index = EntityFunctions.findIndexByKeyValue($scope.itemExpiryDetails,newStock.id);
 				if (index < 0 ) {
 					$scope.itemExpiryDetails.push(newStock);
@@ -115,10 +160,19 @@
 			}
 		
 		self.loadStockrooms = self.loadStockrooms || function () {
+				console.log("loadStockrooms restful service");			
 				ItemExpirationSummaryRestfulService.loadStockrooms(INVENTORY_MODULE_NAME, self.onLoadStockroomsSuccessful);
+			}
+
+		self.loadDepartments = self.loadDepartments || function () {
+				console.log("loadDepartments restful service");			
+				ItemExpirationSummaryRestfulService.loadDepartments(INVENTORY_MODULE_NAME, self.onLoadDepartmentsSuccessful);
 			}
 		
 		self.loadStockDetails = self.loadStockDetails || function (stockroomUuid, itemExpiryCurrentPage) {
+				console.log("Inside loadStockDetails 2: ");				
+				console.log("stockroomUuid: " + stockroomUuid);		
+				console.log("itemExpiryCurrentPage: " + itemExpiryCurrentPage);		
 				itemExpiryCurrentPage = itemExpiryCurrentPage || $scope.itemExpiryCurrentPage;
 				CookiesService.set(stockroomUuid + 'itemExpiryCurrentPage', itemExpiryCurrentPage);
 				CookiesService.set(stockroomUuid + 'itemExpiryLimit', $scope.itemExpiryLimit);
@@ -128,14 +182,36 @@
 					self.onLoadStockDetailsSuccessful);
 			}
 		
+		self.loadStockDetailsDepartment = self.loadStockDetailsDepartment || function (departmentUuid, itemExpiryCurrentPage) {
+				console.log("Inside loadStockDetailsDepartment 2: ");				
+				console.log("departmentUuid: " + departmentUuid);		
+				console.log("itemExpiryCurrentPage: " + itemExpiryCurrentPage);		
+				itemExpiryCurrentPage = itemExpiryCurrentPage || $scope.itemExpiryCurrentPage;
+				CookiesService.set(departmentUuid + 'itemExpiryCurrentPage', itemExpiryCurrentPage);
+				CookiesService.set(departmentUuid + 'itemExpiryLimit', $scope.itemExpiryLimit);
+				
+				ItemExpirationSummaryRestfulService.loadStockDetailsDepartment(departmentUuid, CookiesService.get(departmentUuid + 'itemExpiryCurrentPage'),
+					CookiesService.get(departmentUuid + 'itemExpiryLimit'),
+					self.onLoadStockDetailsSuccessful);
+			}
+
 		//callback
 		self.onLoadStockroomsSuccessful = self.onLoadStockroomsSuccessful || function (data) {
+				console.log("onLoadStockroomsSuccessful: " + data.results);		
+				console.log("onLoadStockroomsSuccessful: " + data.results[0]);						
 				$scope.stockrooms = data.results;
 			}
 		
+		self.onLoadDepartmentsSuccessful = self.onLoadDepartmentsSuccessful || function (data) {
+				console.log("onLoadDepartmentsSuccessful: " + data.results);		
+				console.log("onLoadDepartmentsSuccessful: " + data.results[0]);						
+				$scope.departments = data.results;
+			}
+
 		self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {
 				$scope.fetchedEntities = data.results;
-				
+				console.log("onLoadStockDetailsSuccessful: " + data.results);		
+				console.log("onLoadStockDetailsSuccessful: " + data.results[0]);		
 				for (var i = 0; i < $scope.fetchedEntities.length; i++) {
 					$scope.fetchedEntities[i].id = $scope.fetchedEntities[i].item.uuid + "_" + $scope.fetchedEntities[i].expiration;
 					var index = EntityFunctions.findIndexByKeyValue($scope.itemExpiryDetails,$scope.fetchedEntities[i].id);
