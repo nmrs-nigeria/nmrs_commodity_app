@@ -110,7 +110,7 @@
             </ul>
             <ul class="table-layout" ng-show="(operationType.name === 'Distribution' || operationType.name === 'Distribucion') && distributionType !== 'Patient'">
                 <li class="not-required">
-                    <span>${ui.message('openhmis.inventory.operations.distributeTo')}</span>
+                    <span>${ui.message('openhmis.inventory.operations.issueTo')}</span>
                 </li>
                 <li>
                     <select ng-model="distributionType" class="form-control"
@@ -195,7 +195,7 @@
 
             <ul class="table-layout" ng-show="(operationType.name === 'Distribution' || operationType.name === 'Distribucion') && distributionType === 'Patient'">
                 <li class="not-required">
-                    <span>${ui.message('openhmis.inventory.operations.distributeTo')}</span>
+                    <span>${ui.message('openhmis.inventory.operations.issueTo')}</span>
                 </li>
                 <li>
                     <select ng-model="distributionType" class="form-control"

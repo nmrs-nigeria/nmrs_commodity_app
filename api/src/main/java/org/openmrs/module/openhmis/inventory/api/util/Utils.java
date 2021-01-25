@@ -13,6 +13,8 @@ import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
 import org.openmrs.Obs;
+import org.openmrs.Patient;
+import org.openmrs.PatientIdentifier;
 
 /**
  * @author MORRISON.I
@@ -20,7 +22,6 @@ import org.openmrs.Obs;
 public class Utils {
 
 	public static final int CURRENT_REGIMEN_LINE_CONCEPT = 165708; // From Pharmacy Form
-	public static final int PEPFAR_IDENTIFIER_INDEX = 4;
 	public static final int VISIT_TYPE_CONCEPT = 164181; // Visit Type concept from Pharmacy Forms
 	public static final int ARV_DRUGS_GROUPING_CONCEPT_SET = 162240;// 
 	public static final int MEDICATION_DURATION_CONCEPT = 159368;// Medication Duration Concept From Pharmacy Form
@@ -47,6 +48,28 @@ public class Utils {
 	public static final int SERVICE_DELIVERY_MODEL_REFILL_FAST_TRACK = 166151;
 	public static final int SERVICE_DELIVERY_MODEL_MULTIMONTH_SCRIPTING = 166149;
 	public static final int SERVICE_DELIVERY_MODEL_FAMILY_DRUG_PICKUP = 166150;
+
+	public static final int ARV_DRUG = 165724;
+	public static final int ARV_DRUG_STRENGHT = 165725;
+	public static final int ARV_QTY_PRESCRIBED = 160856;
+	public static final int ARV_QTY_DISPENSED = 1443;
+
+	/* Identifier IDs */
+	public static final int PEPFAR_IDENTIFIER_INDEX = 4;
+
+	public static final int HOSPITAL_IDENTIFIER_INDEX = 5;
+
+	public static final int OTHER_IDENTIFIER_INDEX = 3;
+
+	public static final int HTS_IDENTIFIER_INDEX = 8;
+
+	public static final int PMTCT_IDENTIFIER_INDEX = 6;
+
+	public static final int EXPOSE_INFANT_IDENTIFIER_INDEX = 7;
+
+	public static final int PEP_IDENTIFIER_INDEX = 9;
+
+	public static final int RECENCY_INDENTIFIER_INDEX = 10;
 
 	public static boolean contains(List<Obs> obsList, int conceptID) {
 		boolean ans = false;
@@ -82,4 +105,19 @@ public class Utils {
         }
         return obsList.stream().filter(ele -> ele.getConcept().getConceptId() == conceptID).findFirst().orElse(null);
     }
+
+	public static String getPatientPEPFARId(Patient patient) {
+
+		PatientIdentifier patientId = patient.getPatientIdentifier(PEPFAR_IDENTIFIER_INDEX);
+
+		if (patientId != null) {
+			return patientId.getIdentifier();
+		} else {
+			patientId = patient.getPatientIdentifier(HOSPITAL_IDENTIFIER_INDEX); //hospital number
+			if (patientId != null) {
+				return patientId.getIdentifier();
+			}
+			return "";
+		}
+	}
 }

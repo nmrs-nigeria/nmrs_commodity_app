@@ -13,13 +13,18 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import java.util.List;
 import org.openmrs.annotation.Handler;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
+import org.openmrs.module.webservices.rest.web.RequestContext;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
+import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
 import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceDescription;
 
 /**
@@ -27,13 +32,20 @@ import org.openmrs.module.webservices.rest.web.resource.impl.DelegatingResourceD
  */
 @Resource(name = ModuleRestConstants.DEPARTMENT_RESOURCE, supportedClass = Department.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
-@Handler(supports = { Department.class }, order = 0)
+// @Handler(supports = { Department.class }, order = 0)
 public class DepartmentResource extends BaseRestMetadataResource<Department> {
+
+	private final IDepartmentDataService departmentService;
+
+	public DepartmentResource() {
+		this.departmentService = Context.getService(IDepartmentDataService.class);
+	}
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
 		description.addProperty("description", Representation.REF);
+		description.addProperty("departmentType");
 
 		return description;
 	}
@@ -41,6 +53,18 @@ public class DepartmentResource extends BaseRestMetadataResource<Department> {
 	@Override
 	public Department newDelegate() {
 		return new Department();
+	}
+
+	@Override
+	protected PageableResult doSearch(RequestContext context) {
+		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+		String departmentType = context.getParameter("departmentType");
+		String name = context.getParameter("name");
+
+		List<Department> results = departmentService.getByNameFragment(name, departmentType, pagingInfo);
+
+		return new AlreadyPagedWithLength<Department>(context, results, pagingInfo.hasMoreResults(),
+		        pagingInfo.getTotalRecordCount());
 	}
 
 	@Override

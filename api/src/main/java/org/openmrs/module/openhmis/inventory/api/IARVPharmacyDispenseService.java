@@ -12,7 +12,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ARVPharmacyDispense;
 /**
  * @author MORRISON.I
  */
-public interface IARVPharmacyDispense {
+public interface IARVPharmacyDispenseService {
 
 	List<ARVPharmacyDispense> getARVs(Date startDate, Date endDate);
 

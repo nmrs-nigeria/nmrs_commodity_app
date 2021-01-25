@@ -13,8 +13,17 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
+import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
+import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
+import org.openmrs.module.openhmis.commons.api.f.Action1;
+import org.openmrs.module.openhmis.commons.api.util.PrivilegeUtil;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.security.BasicMetadataAuthorizationPrivileges;
@@ -25,9 +34,36 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Transactional
 public class DepartmentDataServiceImpl extends BaseMetadataDataServiceImpl<Department> implements IDepartmentDataService {
+
 	@Override
 	protected IMetadataAuthorizationPrivileges getPrivileges() {
 		return new BasicMetadataAuthorizationPrivileges();
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Department> getByNameFragment(final String nameFragment, final String departmentType,
+	        PagingInfo pagingInfo) {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			PrivilegeUtil.requirePrivileges(Context.getAuthenticatedUser(), privileges.getGetPrivilege());
+		}
+
+		return executeCriteria(getEntityClass(), pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				if (nameFragment != null) {
+					criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
+				}
+
+				if (departmentType != null) {
+					criteria.add(Restrictions.eq("departmentType", departmentType));
+				}
+
+				criteria.add(Restrictions.eq("retired", false));
+
+			}
+		}, getDefaultSort());
 	}
 
 	@Override

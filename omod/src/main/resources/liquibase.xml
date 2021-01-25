@@ -1688,7 +1688,7 @@
 
     </changeSet>
 
-   <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v1.8.6-0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called main stock room
         </comment>
@@ -4316,7 +4316,7 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 
     </changeSet>
 
-       <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
+    <changeSet id="openhmis.inventory-v2.0.0" author="Morrison Idiasirue" >
         <comment>
             create a default stock room called Pharmacy main stock room
         </comment>
@@ -4429,6 +4429,53 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         </update>
     </changeSet>
     
+    
+    <changeSet id="openhmis.inventory-v2.0.6" author="Morrison Idiasirue" >
+
+        <addColumn tableName="inv_department">
+ 
+            <column name="department_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+
+        </addColumn>
+    </changeSet>
+
+
+    <changeSet id="openhmis.inventory-v2.0.7" author="Morrison Idiasirue" >
+        <comment>
+            set department_type for already existing testing points
+        </comment>
+
+        <sql><![CDATA[
+            update inv_department set department_type = 'lab' where department_id is not null;
+		]]></sql>
+
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v2.0.8" author="Morrison Idiasirue" >
+       
+        <insert tableName="inv_department">
+            <column name="name">Com-Pharmacy</column>
+            <column name="description">Community Pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-01-25</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">4e72896f-f8d4-493d-bf2c-11afd0c32da3</column>
+        </insert>
+        
+          <insert tableName="inv_department">
+            <column name="name">Dispensary</column>
+            <column name="description">Dispensary</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-01-25</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">9e059670-5576-4e8a-b770-10f8cee9f36e</column>
+        </insert>
+        
+    </changeSet>
+
 
 
 </databaseChangeLog>

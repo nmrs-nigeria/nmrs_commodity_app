@@ -5,10 +5,14 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -16,6 +20,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionSummaryDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
@@ -23,6 +28,7 @@ import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTransactionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
+import org.openmrs.module.openhmis.inventory.api.model.ARVPharmacyDispense;
 import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
@@ -58,6 +64,8 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 	private IConsumptionDataService consumptionDataService;
 	private IStockOperationTypeDataService stockOperationTypeDataService;
 	private List<Item> distinctItems = null;
+	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
+	final ObjectMapper mapper = new ObjectMapper();
 
 	public ConsumptionSummaryResource() {
 		this.itemDataService = Context.getService(IItemDataService.class);
@@ -66,6 +74,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
 		this.consumptionDataService = Context.getService(IConsumptionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
+		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 	}
 
 	@Override
@@ -115,6 +124,14 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 			System.out.println("if statement returns null");
 			return new EmptySearchResult();
 		}
+                
+                System.out.println("started calling ARVPharmacy");
+                List<ARVPharmacyDispense> aRVPharmacyDispenses = iARVPharmacyDispenseService.getARVs(startDate, endDate);
+            try {
+                System.out.println(mapper.writeValueAsString(aRVPharmacyDispenses));
+            } catch (JsonProcessingException ex) {
+                Logger.getLogger(ConsumptionSummaryResource.class.getName()).log(Level.SEVERE, null, ex);
+            }
 
 		return searchConsumptionSummary(context);
 	}

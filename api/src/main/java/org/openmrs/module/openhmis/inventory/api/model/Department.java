@@ -19,9 +19,11 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpen
  * Model class that represents an institutional department.
  */
 public class Department extends BaseSerializableOpenmrsMetadata {
+
 	public static final long serialVersionUID = 0L;
 
 	private Integer departmentId;
+	private String departmentType;
 
 	@Override
 	public Integer getId() {
@@ -32,4 +34,13 @@ public class Department extends BaseSerializableOpenmrsMetadata {
 	public void setId(Integer id) {
 		departmentId = id;
 	}
+
+	public String getDepartmentType() {
+		return departmentType;
+	}
+
+	public void setDepartmentType(String departmentType) {
+		this.departmentType = departmentType;
+	}
+
 }
