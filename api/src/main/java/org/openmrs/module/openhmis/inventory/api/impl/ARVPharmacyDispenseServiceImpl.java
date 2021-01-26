@@ -98,8 +98,10 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				arvDispense.setDateOfDispensed(visitDate);
 				arvDispense.setUuid(uuid);
 				arvDispense.setPatientID(Utils.getPatientPEPFARId(enc.getPatient()));
+                                arvDispense.setPatientDBId(enc.getPatient().getId());
+                                arvDispense.setEncounterId(enc.getEncounterId());
 
-				Set<ARVDispensedItem> aRVDispensedItems = createRegimenType(enc.getPatient(), visitDate, obsPerVisit, uuid);
+				Set<ARVDispensedItem> aRVDispensedItems = createARVDispenseItems(enc.getPatient(), visitDate, obsPerVisit, uuid);
 				arvDispense.setItems(aRVDispensedItems);
 
 				aRVPharmacyDispenses.add(arvDispense);
@@ -113,7 +115,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 	}
 
-	public Set<ARVDispensedItem> createRegimenType(Patient patient, Date visitDate, List<Obs> obsListForAVisit, String uuid)
+	public Set<ARVDispensedItem> createARVDispenseItems(Patient patient, Date visitDate, List<Obs> obsListForAVisit, String uuid)
 	        throws DatatypeConfigurationException {
 
 		String visitID = "";
