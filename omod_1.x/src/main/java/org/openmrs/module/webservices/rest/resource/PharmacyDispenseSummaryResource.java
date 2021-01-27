@@ -49,6 +49,8 @@ public class PharmacyDispenseSummaryResource extends BaseRestMetadataResource<AR
 		description.addProperty("dateOfDispensed");
 		description.addProperty("uuid");
 		description.addProperty("patientID");
+		description.addProperty("patientDBId");
+		description.addProperty("encounterId");
 
 		return description;
 	}
