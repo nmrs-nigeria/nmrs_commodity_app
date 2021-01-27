@@ -94,7 +94,7 @@
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" onClick="viewARVDispensedItem({entity.items})" >
-                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>
+                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}} {{entity.patientDBId}} {{entity.encounterId}}</td>
                         <td ng-style="strikeThrough(entity.retired)">{{entity.patientCategory}}</td>
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.treatmentType}}

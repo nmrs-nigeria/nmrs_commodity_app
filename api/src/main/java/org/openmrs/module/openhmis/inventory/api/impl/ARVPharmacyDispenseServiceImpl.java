@@ -101,6 +101,9 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				arvDispense.setPatientDBId(enc.getPatient().getId());
 				arvDispense.setEncounterId(enc.getEncounterId());
 
+				System.out.println("Encounter ID: " + enc.getEncounterId());
+				System.out.println("Patient DB ID: " + enc.getPatient().getId());
+
 				Set<ARVDispensedItem> aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
 				    visitDate, obsPerVisit, uuid);
 				arvDispense.setItems(aRVDispensedItems);

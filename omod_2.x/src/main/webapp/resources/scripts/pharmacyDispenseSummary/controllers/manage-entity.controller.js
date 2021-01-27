@@ -89,6 +89,8 @@
         self.onLoadARVPharmacyDispenseSuccessful = self.onLoadARVPharmacyDispenseSuccessful || function (data) {
             $scope.fetchedEntities = data.results;
             $scope.totalNumOfResults = data.length;
+            console.log(data.results);
+            console.log(data.results[0]);
         }
 
       
