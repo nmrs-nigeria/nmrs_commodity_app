@@ -29,6 +29,7 @@
            // self.loadDepartments();
           // self.loadItems();
             $scope.searchDispenseSummarys = self.searchDispenseSummarys;
+        
             //	$scope.searchItemsByName = self.searchItemsByName;
             //	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
       //      $scope.department = CookiesService.get('department') || {};
@@ -57,6 +58,8 @@
         self.loadItems = self.loadItems || function () {
             ARVPharmacyDispenseyRestfulService.loadItems(self.onLoadItemsSuccessful);
         }
+
+      
 
         self.searchDispenseSummarys = self.searchDispenseSummarys || function (currentPage) {
                console.log('about to call pharm ARV Dispense controller');
