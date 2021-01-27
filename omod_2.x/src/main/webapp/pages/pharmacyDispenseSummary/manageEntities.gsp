@@ -93,8 +93,8 @@
                 </thead>
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
-                    total-items="totalNumOfResults" current-page="currentPage" onclick="viewARVDispensedItem({{entity.patientDBId}}, {{entity.encounterId}})" >  
-                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}} {{entity.patientDBId}} {{entity.encounterId}}</td>
+                    total-items="totalNumOfResults" current-page="currentPage" id="{{entity.patientDBId}}_{{entity.encounterId}}" onclick="viewARVDispensedItem(this.id)" >  
+                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>
                         <td ng-style="strikeThrough(entity.retired)">{{entity.patientCategory}}</td>
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.treatmentType}}
@@ -139,51 +139,11 @@
 
 <script type="application/javascript">
     var jq = jQuery;
-    
-     function viewARVDispensedItem(pid, encid) {
-    	console.log("pid: " + pid);
-    	console.log("encid: " + encid);
-    	
+    function viewARVDispensedItem(id) {
+    	var res = id.split("_");
+    	var pid = res[0];
+    	var encid = res[1];    	
     	var urlToForm = '${ui.pageLink("htmlformentryui","htmlform/editHtmlFormWithStandardUi",[patientId: "patientIdElement", encounterId: "encouterIdElement"])}'.replace("patientIdElement", pid).replace("encouterIdElement", encid);
-        
     	location.href = 'urlToForm'.replace("urlToForm", urlToForm);        
-    
     }
-    
-     // function showOperationActionsDialog(selectorId) {
-        //     var conts = "";
-        //     var counter = 1;
-        //     conts += "<table>";
-        //     conts += "<tr><th>S/N</th><th>Item Name</th><th>Quantity Prescribed</th><th>Quantity Dispensed</th><th>Duration</th>";
-        //     for (i = 0; i < items.length; i++) {
-        //         var item = items[i];
-        //         conts += "<tr>";
-        //         conts += "<td>" + counter + "</td>";
-        //         conts += "<td>" + item.itemName + "</td>";
-        //         conts += "<td>" + item.quantityPrescribed + "</td>";
-        //         conts += "<td>" + item.quantityDispensed + "</td>";
-        //         conts += "<td>" + item.duration + "</td>";
-        //         conts += "</tr>";
-        //         counter++;
-        //     }        
-        //     conts += "</table>";
-        //     conts += "<br>";
-        //     conts += "<div class='detail-section-border-top'>";
-        //     conts += "<br>";
-        //     conts += "<input type=\"button\" class=\"cancel\" value=\"Close\" ng-click=\"closeThisDialog('Cancel')\">";
-        //     conts += "</div>";
-        //     var element = document.getElementById("item-dispense-details");
-        //     element.innerHTML = conts;
-    
-        //     var dialog = emr.setupConfirmationDialog({
-        //         selector: '#' + selectorId,
-        //         actions: {
-        //             cancel: function () {
-        //                 dialog.close();
-        //             }
-        //         }
-        //     });
-    
-        //     dialog.show();
-        // }
 </script>
