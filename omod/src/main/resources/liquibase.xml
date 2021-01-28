@@ -4477,5 +4477,130 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
     </changeSet>
 
 
+<changeSet id="openhmis.inventory-v2.0.9" author="Morrison Idiasirue">
+      
+  <createTable tableName="inv_custom_pharmacy_dispense_arv">
+            <column name="dispensary_id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="department_id" type="int">
+                <constraints nullable="false" />
+            </column>          
+
+            <column name="dispense_date" type="datetime">
+                <constraints nullable="false" />
+            </column>          
+
+            <column name="patient_category" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="treatment_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="visit_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="pickup_reason" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="patient_id" type="int">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="creator" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="date_created" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="changed_by" type="int" />
+            <column name="date_changed" type="datetime" />
+            <column name="retired" type="boolean" defaultValueBoolean="false">
+                <constraints nullable="false" />
+            </column>
+            <column name="retired_by" type="int" />
+            <column name="date_retired" type="datetime" />
+            <column name="retire_reason" type="varchar(255)" defaultValue="null" />
+
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true" />
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="inv_custom_pharmacy_dispense_arv_department_fk"
+                                 baseTableName="inv_custom_pharmacy_dispense_arv" baseColumnNames="department_id"
+                                 referencedTableName="inv_department" referencedColumnNames="department_id"/>
+
+        <addForeignKeyConstraint constraintName="inv_custom_pharmacy_dispense_arv_item_id_fk"
+                                 baseTableName="inv_custom_pharmacy_dispense_arv" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
+
+        <addForeignKeyConstraint constraintName="inv_custom_pharmacy_dispense_arv_patient_fk"
+                                 baseTableName="inv_custom_pharmacy_dispense_arv" baseColumnNames="patient_id"
+                                 referencedTableName="patient" referencedColumnNames="patient_id"/>
+        
+        
+        
+            <createTable tableName="inv_custom_arv_dispensed_item">
+            <column name="stock_operation_item_id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="dispensary_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+                     
+               <column name="quantity_prescribed" type="int">
+                <constraints nullable="true" />
+            </column>
+
+             <column name="quantity_dispensed" type="int">
+                <constraints nullable="false" />
+            </column>
+            
+             <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+             <column name="duration" type="int">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="batch_operation_id" type="int"/>
+            <column name="calculated_batch" type="boolean" defaultValueBoolean="true" />
+
+            <column name="expiration" type="DATE"/>
+            <column name="calculated_expiration" type="boolean" defaultValueBoolean="true" />
+
+            <column name="uuid" type="char(38)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="inv_custom_arv_dispensed_item_stock_op_fk"
+                                 baseTableName="inv_custom_arv_dispensed_item" baseColumnNames="dispensary_id"
+                                 referencedTableName="inv_custom_pharmacy_dispense_arv" referencedColumnNames="dispensary_id"/>
+        <addForeignKeyConstraint constraintName="inv_custom_arv_dispensed_item_item_fk"
+                                 baseTableName="inv_custom_arv_dispensed_item" baseColumnNames="item_id"
+                                 referencedTableName="inv_item" referencedColumnNames="item_id"/>
+        <addForeignKeyConstraint constraintName="inv_custom_arv_dispensed_item_batch_fk"
+                                 baseTableName="inv_custom_arv_dispensed_item" baseColumnNames="batch_operation_id"
+                                 referencedTableName="inv_custom_arv_dispensed_item" referencedColumnNames="dispensary_id"/>
+        
+        
+        
+        
+    </changeSet>
 
 </databaseChangeLog>
