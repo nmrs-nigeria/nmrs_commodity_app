@@ -12,9 +12,9 @@
 		var service;
 
 		service = {
-			searchDispenseSummarys : searchDispenseSummarys,
-			loadDepartments : loadDepartments,
-            loadItems : loadItems
+			searchDispenseSummarys : searchDispenseSummarys
+		//	loadDepartments : loadDepartments,
+        //    loadItems : loadItems
 			// searchConcepts : searchConcepts
 			//  loadItemStock : loadItemStock,
 			// loadItemAttributeTypes : loadItemAttributeTypes,
@@ -53,19 +53,7 @@
 		 * Temporary Function: It will ONLY be used until the Department module is done.
 		 * @param onLoadDepartmentsSuccessful
 		 */
-		function loadDepartments(onLoadDepartmentsSuccessful) {
-			var requestParams = [];
-			requestParams['rest_entity_name'] = 'department';
-			EntityRestFactory.loadEntities(requestParams,
-					onLoadDepartmentsSuccessful, errorCallback);
-		}
-                
-        function loadItems(onLoadItemsSuccessful) {
-			var requestParams = [];
-			requestParams['rest_entity_name'] = 'item';
-			EntityRestFactory.loadEntities(requestParams,
-					onLoadItemsSuccessful, errorCallback);
-		}
+		
 
 		/**
 		 * An auto-complete function to search concepts given a query term.

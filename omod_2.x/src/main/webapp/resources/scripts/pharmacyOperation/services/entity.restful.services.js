@@ -78,6 +78,7 @@
 			setBaseUrl(module_name);
 			var requestParams = {};
 			requestParams['rest_entity_name'] = 'department';
+                         requestParams['departmentType'] = 'pharmacy';
 			requestParams['limit'] = 100;
 			EntityRestFactory.loadEntities(requestParams, successCallback, errorCallback);
 		}

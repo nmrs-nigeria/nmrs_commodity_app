@@ -26,9 +26,10 @@
                 }
 
         self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function () {
-            self.loadDepartments();
-            self.loadItems();
+           // self.loadDepartments();
+          // self.loadItems();
             $scope.searchDispenseSummarys = self.searchDispenseSummarys;
+        
             //	$scope.searchItemsByName = self.searchItemsByName;
             //	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
       //      $scope.department = CookiesService.get('department') || {};
@@ -57,6 +58,8 @@
         self.loadItems = self.loadItems || function () {
             ARVPharmacyDispenseyRestfulService.loadItems(self.onLoadItemsSuccessful);
         }
+
+      
 
         self.searchDispenseSummarys = self.searchDispenseSummarys || function (currentPage) {
                console.log('about to call pharm ARV Dispense controller');
@@ -89,16 +92,11 @@
         self.onLoadARVPharmacyDispenseSuccessful = self.onLoadARVPharmacyDispenseSuccessful || function (data) {
             $scope.fetchedEntities = data.results;
             $scope.totalNumOfResults = data.length;
+            console.log(data.results);
+            console.log(data.results[0]);
         }
 
-        self.onLoadDepartmentsSuccessful = self.onLoadDepartmentsSuccessful || function (data) {
-            $scope.departments = data.results;
-        }
-
-
-        self.onLoadItemsSuccessful = self.onLoadItemsSuccessful || function (data) {
-            $scope.items = data.results;
-        }
+      
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericManageController, self, {

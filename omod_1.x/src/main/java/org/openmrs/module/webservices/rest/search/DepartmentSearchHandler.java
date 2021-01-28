@@ -55,6 +55,7 @@ public class DepartmentSearchHandler implements SearchHandler {
 	@Override
 	public PageableResult search(RequestContext context) {
 		String query = context.getParameter("q");
+
 		IDepartmentDataService service = Context.getService(IDepartmentDataService.class);
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 

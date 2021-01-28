@@ -74,5 +74,6 @@ emr.loadMessages([
 	"openhmis.inventory.operations.error.itemQuantity",
 	"openhmis.inventory.operations.error.itemError",
         "openhmis.inventory.operations.disposedType",
-        "openhmis.inventory.operations.adjustmentKind"
+        "openhmis.inventory.operations.adjustmentKind",
+        "openhmis.inventory.operations.issueTo"
 ]);

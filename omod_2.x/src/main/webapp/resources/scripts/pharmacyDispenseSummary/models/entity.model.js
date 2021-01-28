@@ -15,7 +15,7 @@
 		// @Override
 		extended.getModelFields = function() {
 
-            var fields = ["patientID","patientCategory","treatmentType","visitType","pickupReason","dateOfDispensed","items"];
+            var fields = ["patientID","patientCategory","treatmentType","visitType","pickupReason","dateOfDispensed","items","patientDBId","encounterId"];
 
 		//	return fields.concat(defaultFields);
             return fields;
