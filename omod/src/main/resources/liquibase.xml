@@ -4597,10 +4597,27 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         <addForeignKeyConstraint constraintName="inv_custom_arv_dispensed_item_batch_fk"
                                  baseTableName="inv_custom_arv_dispensed_item" baseColumnNames="batch_operation_id"
                                  referencedTableName="inv_custom_arv_dispensed_item" referencedColumnNames="dispensary_id"/>
-        
-        
-        
-        
+       
+    </changeSet>
+    
+  <changeSet id="openhmis.inventory-v2.1.0" author="Morrison Idiasirue">
+      
+        <addColumn tableName="inv_pharmacy_consumption">
+           <column name="department_id" type="int">
+                <constraints nullable="true" />
+            </column> 
+
+        </addColumn>
+              
+   
+    </changeSet>
+    
+      <changeSet id="openhmis.inventory-v2.2.0" author="Morrison Idiasirue">
+                  
+           <addForeignKeyConstraint constraintName="inv_pharmacy_consumption_department_fk"
+                                 baseTableName="inv_pharmacy_consumption" baseColumnNames="department_id"
+                                 referencedTableName="inv_department" referencedColumnNames="department_id"/>              
+   
     </changeSet>
 
 </databaseChangeLog>

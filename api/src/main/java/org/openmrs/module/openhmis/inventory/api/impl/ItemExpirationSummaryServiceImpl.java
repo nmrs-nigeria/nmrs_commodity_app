@@ -117,23 +117,16 @@ public class ItemExpirationSummaryServiceImpl
 		// We cannot use a normal Criteria query here because criteria does not support a group by with a having statement
 		// so HQL it is!
 		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
-			// Load the record count (for paging)
-			//			String  = "SELECT 1 "
-			//			        + "FROM StockOperation AS a "
-			//			        + "INNER JOIN a.items AS b "
-			//			        + "LEFT JOIN b.itemBatch AS c "
-			//			        + "WITH c.department.id= " + department.getId() + " "
-			//			        + "WHERE a.department.id= " + department.getId();
 
-			String query = "SELECT 1 "
-			        + "FROM inv_stock_operation a "
-			        + "INNER JOIN inv_stock_operation_item b "
-			        + "ON a.stock_operation_id=b.operation_id "
-			        + "LEFT JOIN inv_consumption c "
-			        + "ON b.item_batch = c.batch_number "
-			        + "AND c.department_id= " + department.getId() + " "
-			        + "WHERE a.department_id= " + department.getId() + " "
-			        + "GROUP BY b.item_batch ";
+						String query = "SELECT 1 "
+						        + "FROM StockOperation a "
+						        + "INNER JOIN StockOperationItem b "
+						        + "ON a.id=b.operation "
+						        + "LEFT JOIN Consumption c "
+						        + "ON b.itemBatch = c.batchNumber "
+						        + "AND c.department= " + department.getId() + " "
+						        + "WHERE a.department= " + department.getId() + " "
+						        + "GROUP BY b.itemBatch ";			
 
 			Query countQuery = getRepository().createQuery(query);
 
@@ -149,7 +142,7 @@ public class ItemExpirationSummaryServiceImpl
 		String hql = "SELECT b.item, b.expiration, b.quantity - coalesce(SUM(c.quantity + c.wastage), 0) as sumQty "
 		        + "FROM StockOperation AS a "
 		        + "INNER JOIN StockOperationItem AS b "
-		        + "ON a.id=b.id "
+		        + "ON a.id=b.operation "
 		        + "LEFT JOIN Consumption AS c "
 		        + "ON b.itemBatch = c.batchNumber "
 		        + "AND c.department.id= " + department.getId() + " "

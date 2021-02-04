@@ -82,11 +82,12 @@
         <!-- Associations -->
 		
         <many-to-one name="item" class="Item" column="item_id" />
+        <many-to-one name="department" class="Department" column="department_id" />
                 
     </class>
     
     
-     <class name="CustomARVPharmacyDispense" table="inv_custom_pharmacy_dispense_arv">
+    <class name="CustomARVPharmacyDispense" table="inv_custom_pharmacy_dispense_arv">
         <cache usage="read-write"/>
 
         <id name="id" type="int" column="dispensary_id">
@@ -133,7 +134,7 @@
 		
        
         <many-to-one name="department" class="Department" column="department_id" />
-       <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" access="field" />
+        <many-to-one name="patient" class="org.openmrs.Patient" column="patient_id" access="field" />
                 
     </class>
     <class name="CustomARVDispensedItem" table="inv_custom_arv_dispensed_item">

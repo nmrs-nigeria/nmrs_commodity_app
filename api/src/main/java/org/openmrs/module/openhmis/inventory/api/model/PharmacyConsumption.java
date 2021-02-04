@@ -17,7 +17,7 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 	public static final long serialVersionUID = 1L;
 
 	private Integer consumptionId;
-	// private Department department;
+	private Department department;
 	private Item item;
 	private Date consumptionDate;
 	private Integer quantity;
@@ -47,13 +47,13 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 		this.wastage = wastage;
 	}
 
-	//	public Department getDepartment() {
-	//		return department;
-	//	}
-	//
-	//	public void setDepartment(Department department) {
-	//		this.department = department;
-	//	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
 	public Item getItem() {
 		return item;
@@ -97,10 +97,12 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 
 	@Override
 	public String toString() {
-		return "PharmacyConsumption{" + "consumptionId=" + consumptionId + ", "
-		        + ", item=" + item + ", "
-		        + "consumptionDate=" + consumptionDate + ", quantity=" + quantity + ", "
-		        + "wastage=" + wastage + ", batchNumber=" + batchNumber + '}';
+		return "PharmacyConsumption{" + "consumptionId=" + consumptionId
+		        + ", department=" + department + ", item="
+		        + item + ", consumptionDate=" + consumptionDate
+		        + ", quantity=" + quantity + ", wastage="
+		        + wastage + ", batchNumber="
+		        + batchNumber + '}';
 	}
 
 }
