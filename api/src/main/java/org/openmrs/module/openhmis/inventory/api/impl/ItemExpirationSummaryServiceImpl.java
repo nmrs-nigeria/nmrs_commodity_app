@@ -142,8 +142,6 @@ public class ItemExpirationSummaryServiceImpl
 		query = this.createPagingQuery(pagingInfo, query);
 
 		List list = query.list();
-		System.out.println("HQL list Size " + list.size());
-		System.out.println("HQL list " + list.toString());
 
 		// Parse the aggregate query into an ItemStockSummary object
 		List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
@@ -153,9 +151,6 @@ public class ItemExpirationSummaryServiceImpl
 			ItemExpirationSummary summary = new ItemExpirationSummary();
 			summary.setItem((Item)row[0]);
 
-			System.out.println("Row[0] " + row[0].toString());
-			System.out.println("Row[1] " + row[1].toString());
-			System.out.println("Row[2] " + row[2].toString());
 			// If the expiration column is null it does not appear to be included in the row array
 			if (row.length == 2) {
 				summary.setExpiration(null);
@@ -168,7 +163,6 @@ public class ItemExpirationSummaryServiceImpl
 				}
 			} else {
 				summary.setExpiration((Date)row[1]);
-				//Integer quantity = Ints.checkedCast((Long)row[2]);
 				Integer quantity = (int)row[2];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);

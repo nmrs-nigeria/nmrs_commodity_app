@@ -16,7 +16,7 @@
 		extended.getModelFields = function() {
 
                         var fields = ["totalQuantityReceived",
-					"totalQuantityConsumed",
+					"totalQuantityConsumed","department",
 					"item","stockBalance","totalQuantityWasted"
 					];
 

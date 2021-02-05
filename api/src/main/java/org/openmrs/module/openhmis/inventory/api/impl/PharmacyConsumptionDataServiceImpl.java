@@ -193,9 +193,9 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 		System.out.println("stock consumptions result: " + consumptions.size());
 
 		//filter out the Department
-		//	        consumptions = consumptions.stream().filter(a -> a.getDepartment()
-		//	.equals(searchConsumptionSummary.getDepartment()))
-		//	                .collect(Collectors.toList());
+			        consumptions = consumptions.stream().filter(a -> a.getDepartment()
+			.equals(searchConsumptionSummary.getDepartment()))
+			                .collect(Collectors.toList());
 		fromConsumption = getSummaryFromConsumption(consumptions, searchConsumptionSummary
 		        .getDepartment(), distinctItems);
 
@@ -221,7 +221,7 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 		for (PharmacyConsumptionSummary summary : consumptionSummarys) {
 			PharmacyConsumptionSummary each = new PharmacyConsumptionSummary();
 			each.setItem(summary.getItem());
-			// each.setDepartment(summary.getDepartment());
+			each.setDepartment(summary.getDepartment());
 			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
 			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
 			each.setTotalQuantityWasted(summary.getTotalQuantityWasted());
@@ -250,7 +250,7 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
             int sumReceived = fromReceived.stream().filter(b -> b.getItem().equals(a))
                     .map(PharmacyConsumptionSummary::getTotalQuantityReceived).findFirst().get();
             each.setTotalQuantityReceived(sumReceived);
-           // each.setDepartment(department);
+            each.setDepartment(department);
             int sumConsumed = fromConsumption.stream().filter(b -> b.getItem().equals(a))
                     .map(PharmacyConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
             each.setTotalQuantityConsumed(sumConsumed);
@@ -283,10 +283,11 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 	            int totalQuantityWastated = 0;
 	
 	            List<PharmacyConsumption> filteredConsumptions = null;
-	
+                   
+                    
 	            filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
 	                    .collect(Collectors.toList());
-	          //  consumptionSummary.setDepartment(department);
+	          consumptionSummary.setDepartment(department);
 	            consumptionSummary.setItem(a);
 	
 	            for (PharmacyConsumption c : filteredConsumptions) {
@@ -339,7 +340,7 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
         distinctItems.forEach(a -> {
             // assume a department would be selected at all time
             PharmacyConsumptionSummary consumptionSummary = new PharmacyConsumptionSummary();
-           // consumptionSummary.setDepartment(department);
+            consumptionSummary.setDepartment(department);
             consumptionSummary.setItem(a);
             long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
                     .map(PharmacyConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();
@@ -361,7 +362,7 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
         items.stream().forEach(a -> {
             PharmacyConsumptionSummary consumptionSummary = new PharmacyConsumptionSummary();
-          //  consumptionSummary.setDepartment(stockOperation.getDepartment());
+          consumptionSummary.setDepartment(stockOperation.getDepartment());
             consumptionSummary.setItem(a.getItem());
             consumptionSummary.setTotalQuantityReceived(a.getQuantity());
             rConsumptions.add(consumptionSummary);

@@ -39,14 +39,23 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 	public PharmacyConsumption() {}
 
 	//private String testType;
-	public Integer getWastage() {
-		return wastage;
-	}
 
-	public void setWastage(Integer wastage) {
-		this.wastage = wastage;
-	}
+    public Integer getQuantity() {
+        return quantity;
+    }
 
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public Integer getWastage() {
+        return wastage;
+    }
+
+    public void setWastage(Integer wastage) {
+        this.wastage = wastage;
+    }
+		
 	public Department getDepartment() {
 		return department;
 	}
@@ -69,14 +78,6 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 
 	public void setConsumptionDate(Date consumptionDate) {
 		this.consumptionDate = consumptionDate;
-	}
-
-	public Integer getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(Integer quantity) {
-		this.quantity = quantity;
 	}
 
 	@Override
