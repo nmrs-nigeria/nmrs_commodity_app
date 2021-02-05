@@ -118,17 +118,11 @@ public class ItemExpirationSummaryServiceImpl
 		// so HQL it is!
 		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
 
-						String query = "SELECT 1 "
-						        + "FROM StockOperation a "
-						        + "INNER JOIN StockOperationItem b "
-						        + "ON a.id=b.operation "
-						        + "LEFT JOIN Consumption c "
-						        + "ON b.itemBatch = c.batchNumber "
-						        + "AND c.department= " + department.getId() + " "
-						        + "WHERE a.department= " + department.getId() + " "
-						        + "GROUP BY b.itemBatch ";			
+			String countHql = "select 1 "
+			        + "from ViewItemExpirationByDept as detail "
+			        + "where department.id = " + department.getId();
 
-			Query countQuery = getRepository().createQuery(query);
+			Query countQuery = getRepository().createQuery(countHql);
 
 			Integer count = countQuery.list().size();
 			System.out.println("HQL Count " + count);
@@ -139,21 +133,17 @@ public class ItemExpirationSummaryServiceImpl
 		}
 
 		// Create the query and optionally add paging	
-		String hql = "SELECT b.item, b.expiration, b.quantity - coalesce(SUM(c.quantity + c.wastage), 0) as sumQty "
-		        + "FROM StockOperation AS a "
-		        + "INNER JOIN StockOperationItem AS b "
-		        + "ON a.id=b.operation "
-		        + "LEFT JOIN Consumption AS c "
-		        + "ON b.itemBatch = c.batchNumber "
-		        + "AND c.department.id= " + department.getId() + " "
-		        + "WHERE a.department.id= " + department.getId() + " "
-		        + "GROUP BY b.itemBatch";
+		String hql = "select i, detail.expiration, detail.quantity as sumQty "
+		        + "from ViewItemExpirationByDept as detail inner join detail.item as i "
+		        + "where detail.department.id = " + department.getId() + " "
+		        + "order by i.name asc, detail.expiration asc";
 
 		Query query = getRepository().createQuery(hql);
 		query = this.createPagingQuery(pagingInfo, query);
 
 		List list = query.list();
 		System.out.println("HQL list Size " + list.size());
+		System.out.println("HQL list " + list.toString());
 
 		// Parse the aggregate query into an ItemStockSummary object
 		List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
@@ -163,10 +153,13 @@ public class ItemExpirationSummaryServiceImpl
 			ItemExpirationSummary summary = new ItemExpirationSummary();
 			summary.setItem((Item)row[0]);
 
+			System.out.println("Row[0] " + row[0].toString());
+			System.out.println("Row[1] " + row[1].toString());
+			System.out.println("Row[2] " + row[2].toString());
 			// If the expiration column is null it does not appear to be included in the row array
 			if (row.length == 2) {
 				summary.setExpiration(null);
-				Integer quantity = Ints.checkedCast((Long)row[1]);
+				Integer quantity = (int)row[1];
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
@@ -175,7 +168,8 @@ public class ItemExpirationSummaryServiceImpl
 				}
 			} else {
 				summary.setExpiration((Date)row[1]);
-				Integer quantity = Ints.checkedCast((Long)row[2]);
+				//Integer quantity = Ints.checkedCast((Long)row[2]);
+				Integer quantity = (int)row[2];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 				} else {
