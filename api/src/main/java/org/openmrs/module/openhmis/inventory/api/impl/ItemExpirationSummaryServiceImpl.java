@@ -118,15 +118,15 @@ public class ItemExpirationSummaryServiceImpl
 		// so HQL it is!
 		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
 
-						String query = "SELECT 1 "
-						        + "FROM StockOperation a "
-						        + "INNER JOIN StockOperationItem b "
-						        + "ON a.id=b.operation "
-						        + "LEFT JOIN Consumption c "
-						        + "ON b.itemBatch = c.batchNumber "
-						        + "AND c.department= " + department.getId() + " "
-						        + "WHERE a.department= " + department.getId() + " "
-						        + "GROUP BY b.itemBatch ";			
+			String query = "SELECT 1 "
+			        + "FROM StockOperation a "
+			        + "INNER JOIN StockOperationItem b "
+			        + "ON a.id=b.operation "
+			        + "LEFT JOIN Consumption c "
+			        + "ON b.itemBatch = c.batchNumber "
+			        + "AND c.department= " + department.getId() + " "
+			        + "WHERE a.department= " + department.getId() + " "
+			        + "GROUP BY b.itemBatch ";
 
 			Query countQuery = getRepository().createQuery(query);
 
