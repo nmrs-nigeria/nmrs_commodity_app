@@ -40,22 +40,22 @@ public class PharmacyConsumption extends BaseSerializableOpenmrsMetadata {
 
 	//private String testType;
 
-    public Integer getQuantity() {
-        return quantity;
-    }
+	public Integer getQuantity() {
+		return quantity;
+	}
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
-    }
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
 
-    public Integer getWastage() {
-        return wastage;
-    }
+	public Integer getWastage() {
+		return wastage;
+	}
 
-    public void setWastage(Integer wastage) {
-        this.wastage = wastage;
-    }
-		
+	public void setWastage(Integer wastage) {
+		this.wastage = wastage;
+	}
+
 	public Department getDepartment() {
 		return department;
 	}

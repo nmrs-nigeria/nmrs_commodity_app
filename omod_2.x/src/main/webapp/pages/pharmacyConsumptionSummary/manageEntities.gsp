@@ -76,16 +76,10 @@
                        
     <tr>
         <td>
-            <span> 
-             <fieldset class="format">
-        <span>            
-<!--               <button type="button" data-action="load" ng-click="searchConsumptionSummarys(currentPage)">${ ui.message('openhmis.inventory.search') }</button>-->           
-        </span>
-    </fieldset>
-            </span>
+          
         </td>
                      <td>
-                        ${ ui.message('openhmis.inventory.department.name') }:
+                       Dispensary:
                         <ul>
                             <li>
                                 <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
@@ -108,7 +102,7 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
-                       <th>${ui.message('openhmis.inventory.department.name')}</th>
+                       <th>Dispensary</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
                         <th>${ui.message('openhmis.inventory.summary.totalWastage')}</th>

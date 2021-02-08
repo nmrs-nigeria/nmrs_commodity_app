@@ -23,5 +23,8 @@ public class ConstantUtils {
 	public static final String PATIENT_STRING = "patient";
 	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
 	public static final String LAB_COMMIDITY_TYPE = "lab";
+        
+        //reportId
+        public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
 
 }

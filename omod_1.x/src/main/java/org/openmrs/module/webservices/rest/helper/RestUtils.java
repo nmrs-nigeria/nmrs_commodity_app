@@ -72,6 +72,18 @@ public class RestUtils {
 		return result;
 	}
 
+        
+        public static String ensureReportDownloadFolderExist(HttpServletRequest request) {
+		String folder = Paths.get(
+		    new File(request.getSession().getServletContext().getRealPath(request.getContextPath())).getParentFile()
+		            .toString(), "CMReports").toString();
+
+		File dir = new File(folder);
+		Boolean b = dir.mkdir();
+		System.out.println("Creating download folder : " + folder + "was successful : " + b);
+		return folder;
+	}
+        
 	public static String ensureDownloadFolderExist(HttpServletRequest request) {
 		String folder = Paths.get(
 		    new File(request.getSession().getServletContext().getRealPath(request.getContextPath())).getParentFile()

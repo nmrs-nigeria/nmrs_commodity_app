@@ -221,6 +221,15 @@
                 "url": "openhmis.inventory/pharmacyDispenseSummary/entities.page",
                 "icon": "icon-list",
                 "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+             {
+                "id": "openhmis.inventory.inventoryPharmacyReport",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.pharmacyReports",
+                "url": "openhmis.inventory/pharmacyReports/entities.page",
+                "icon": "icon-share-alt",
+                "requiredPrivilege": "Task: Access Inventory Reports"
             }
         ]
     }
