@@ -14,8 +14,9 @@
 		service = {
 			searchConsumptions : searchConsumptions,
 			loadDepartments : loadDepartments,
-                        loadItems : loadItems,
-                        getItemBatch : getItemBatch
+            loadItems : loadItems,
+            getItemBatch : getItemBatch,
+            deleteConsumption : deleteConsumption
 			// searchConcepts : searchConcepts
 			//  loadItemStock : loadItemStock,
 			// loadItemAttributeTypes : loadItemAttributeTypes,
@@ -34,16 +35,6 @@
                         if(angular.isDefined(item_uuid)){
 				requestParams['item_uuid'] = item_uuid;
 			}
-
-//			if(angular.isDefined(q) && q !== '' && q !== null && q !== undefined){
-//				requestParams['q'] = q;
-//			}
-//			else if(angular.isDefined('department_uuid') && department_uuid !== undefined){
-//				requestParams['q'] = q;
-//			}
-//                        else if(angular.isDefined('item_uuid') && item_uuid !== undefined){
-//				requestParams['q'] = q;
-//			}
 
 			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
 		}
@@ -101,6 +92,15 @@
                 function setBaseUrl(module_name) {
 			EntityRestFactory.setBaseUrl(module_name);
 		}
+		
+		
+		function deleteConsumption(deleteParam, onLoadSuccessfulCallback){    
+				var requestParams = [];           
+                requestParams['rest_entity_name'] = 'consumption';
+                requestParams['consumption_uuid'] = deleteParam;
+                console.log("Consumption UUID: " + deleteParam);
+                EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
+            }
                 
 	}
 })();

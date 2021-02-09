@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -420,6 +421,24 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	@Override
 	public List<Consumption> getByNameFragment(String nameFragment, boolean includeRetired) {
 		return getByNameFragment(nameFragment, includeRetired, null);
+	}
+
+	@Override
+	public int deleteConsumption(Consumption consumption) {
+		int query = 0;
+		System.out.println("about to execute delete query for consumption: " + consumption.getId());
+
+		try {
+			String hql = "delete "
+			        + "from Consumption as detail "
+			        + "where detail.id = " + consumption.getId();
+
+			query = getRepository().createQuery(hql).executeUpdate();
+			System.out.println("Delete Successful? : " + consumption.getId());
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return query;
 	}
 
 	@Override

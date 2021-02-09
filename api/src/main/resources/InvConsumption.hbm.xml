@@ -166,5 +166,5 @@
         <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
     </class>
     
-     
+   
 </hibernate-mapping>
