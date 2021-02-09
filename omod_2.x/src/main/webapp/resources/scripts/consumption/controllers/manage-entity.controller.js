@@ -26,13 +26,17 @@
 				}
 
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function() {
+				
 				self.loadDepartments();
                                 self.loadItems();
 				$scope.searchConsumptions = self.searchConsumptions;
 			//	$scope.searchItemsByName = self.searchItemsByName;
 			//	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
 				$scope.department = CookiesService.get('department') || {};
-                                $scope.item = CookiesService.get('item') || {};
+                $scope.item = CookiesService.get('item') || {};
+                $scope.deletePopupDialog = self.deletePopupDialog;
+                $scope.selectedEntity = '';
+                $scope.deleteConsumption = self.deleteConsumption;                
 			}
 
 		self.loadDepartments = self.loadDepartments || function(){
@@ -93,6 +97,41 @@
 				$scope.items = data.results;
 			}
 
+		 self.deletePopupDialog = self.deletePopupDialog || function (popupid, entuuid) {
+                console.log("in manage controller");
+				console.log('popup id: ' + popupid);
+                console.log('entity uuid: ' + entuuid);      
+                var dialog = emr.setupConfirmationDialog({
+                	selector: '#' + popupid,
+                	actions: {
+                		confirm: function ($scope) {	     
+                            console.log("after confirm");
+                            var deleteParam = entuuid;
+                            console.log(deleteParam);
+                            ConsumptionRestfulService.deleteConsumption(deleteParam, self.deleteConsumptionSuccessful);
+                           // ConsumptionRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);   
+	                        dialog.close();
+	                    },                      		
+                    	cancel: function () {
+                        	dialog.close();
+                    	}
+                	}
+            	});
+            	dialog.show();
+            }
+            
+            self.deleteConsumption = self.deleteConsumption || function (selectEnt) {
+				console.log("in manage controller");
+				var deleteParam = selectEnt;
+				console.log(deleteParam);
+				ConsumptionRestfulService.deleteConsumption(deleteParam,self.deleteConsumptionSuccessful);
+				ConsumptionRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);
+			}
+
+            self.deleteConsumptionSuccessful = self.deleteConsumptionSuccessful || function(data){
+                console.log(data.results);
+            }
+            
 		/* ENTRY POINT: Instantiate the base controller which loads the page */
 		$injector.invoke(base.GenericManageController, self, {
 			$scope : $scope,

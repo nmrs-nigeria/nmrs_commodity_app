@@ -67,4 +67,8 @@ public interface IConsumptionDataService extends IMetadataDataService<Consumptio
 	List<ConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
 	        SearchConsumptionSummary searchConsumptionSummary, PagingInfo pagingInfo, List<Item> distinctItems);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	int deleteConsumption(Consumption consumption);
+
 }

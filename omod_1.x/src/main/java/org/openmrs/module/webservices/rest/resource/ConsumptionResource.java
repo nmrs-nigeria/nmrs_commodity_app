@@ -44,11 +44,13 @@ public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 
 	private IItemDataService itemDataService;
 	private IDepartmentDataService departmentService;
+	private IConsumptionDataService consumptionService;
 
 	//	private IConsumptionDataService iConsumptionDataService;
 	public ConsumptionResource() {
 		this.itemDataService = Context.getService(IItemDataService.class);
 		this.departmentService = Context.getService(IDepartmentDataService.class);
+		this.consumptionService = Context.getService(IConsumptionDataService.class);
 	}
 
 	@Override
@@ -111,10 +113,16 @@ public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 
 		String item_uuid = context.getParameter("item_uuid");
 		String department_uuid = context.getParameter("department_uuid");
+		String consumption_uuid = context.getParameter("consumption_uuid");
 
-		System.out.println("STARTED CONSUMPTION SEARCH");
+		if (consumption_uuid != null) {
+			System.out.println("Consumption UUID IsNot Null: " + consumption_uuid);
+			int rest = deleteConsumptionByUUID(context);
+			result = super.doSearch(context);
+		} else if (item_uuid != null || department_uuid != null) {
 
-		if (item_uuid != null || department_uuid != null) {
+			System.out.println("STARTED CONSUMPTION SEARCH");
+
 			System.out.println("STARTED A SEARCH WITH A PARAM");
 			result = getOperationsByContextParams(context);
 
@@ -124,6 +132,23 @@ public class ConsumptionResource extends BaseRestMetadataResource<Consumption> {
 		}
 
 		return result;
+	}
+
+	protected int deleteConsumptionByUUID(RequestContext context) {
+
+		Consumption consumption = null;
+		String consumptionUUID = context.getParameter("consumption_uuid");
+		if (StringUtils.isNotEmpty(consumptionUUID)) {
+			consumption = consumptionService.getByUuid(consumptionUUID);
+			if (consumption == null) {
+				LOG.warn("Could not parse Consumption '" + consumptionUUID + "'");
+				throw new IllegalArgumentException("The Consumption '" + consumptionUUID
+				        + "' is not a valid operation type.");
+			}
+		}
+
+		int res = ((IConsumptionDataService)getService()).deleteConsumption(consumption);
+		return res;
 	}
 
 	protected PageableResult getOperationsByContextParams(RequestContext context) {

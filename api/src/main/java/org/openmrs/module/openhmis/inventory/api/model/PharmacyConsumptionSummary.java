@@ -21,6 +21,15 @@ public class PharmacyConsumptionSummary extends BaseSerializableOpenmrsMetadata 
 	private String uuid;
 	private Integer consumptionSummaryId;
 	private Integer stockBalance;
+	private Department department;
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
 	public Integer getStockBalance() {
 		return stockBalance;

@@ -310,6 +310,8 @@
 
         self.selectPatient = self.selectPatient || function (patient) {
             $scope.selectedPatient = patient;
+            console.log("Selected Patient : " + patient.visit);
+            console.log("Selected Patient UUID : " + patient.uuid);
             CommonsRestfulFunctions.loadVisit(INVENTORY_MODULE_NAME, patient.uuid, $scope);
         }
 

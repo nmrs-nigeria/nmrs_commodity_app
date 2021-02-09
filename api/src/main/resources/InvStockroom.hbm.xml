@@ -262,7 +262,8 @@
 		</property>
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
-                 <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+        <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+
 	</class>
 	<class name="ReservedTransaction" table="inv_reserved_transaction">
 		<cache usage="read-write"/>
@@ -336,4 +337,17 @@
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
                  <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
 	</class>
+	
+	<class name="ViewItemExpirationByDept" table="inv_view_item_expiration_by_dept">
+		<cache usage="read-write"/>	
+		<id name="id" type="int" column="consumption_id">
+	        <generator class="native" />
+	    </id>
+		<many-to-one name="item" class="Item" not-null="true" column="item_id" />
+		<property name="quantity" type="int" not-null="true" column="quantity" />
+		<property name="expiration" type="java.util.Date" column="expiration" />
+		<many-to-one name="department" class="Department" column="department_id" />
+	</class>
+	
+	
 </hibernate-mapping>

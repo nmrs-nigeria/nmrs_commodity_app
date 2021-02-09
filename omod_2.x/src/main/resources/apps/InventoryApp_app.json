@@ -187,6 +187,15 @@
                 "requiredPrivilege": "Task: Pharmacy Menu"
             },
             {
+                "id": "openhmis.inventory.createPharmacyDispense",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.create.pharmacy.dispense",
+                "url": "openhmis.inventory/pharmacyDispense/entities.page",
+                "icon": "icon-medkit",
+                "requiredPrivilege": "Task: Pharmacy Menu"
+            },
+            {
                 "id": "openhmis.inventory.viewPharmacyConsumptionSummary",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
