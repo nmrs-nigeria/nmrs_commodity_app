@@ -7,7 +7,7 @@ var INVENTORY_TASK_DASHBOARD_PAGE_URL = ROOT_URL + 'openhmis.inventory/inventory
 var PHARMACY_INVENTORY_TASK_DASHBOARD_PAGE_URL = ROOT_URL + 'openhmis.inventory/inventory/pharmacyInventoryDashboard.page';
 var INVENTORY_REPORTS_PAGE_URL = ROOT_URL + 'module/openhmis/inventory/jasperReport.form?';
 var INVENTORY_MODULE_ITEMS_UTILITY_URL = 'module/openhmis/inventory/itemUtility.page';
-var INVENTORY_MODULE_ITEMS_NDREXTRACTION_URL = 'module/openhmis/inventory/ndrExtraction.page';
+var INVENTORY_MODULE_ITEMS_NDREXTRACTION_URL = 'module/openhmis/inventory/pharmacyReports.page';
 var INVENTORY_MODULE_INSTITUTION_URL = 'module/openhmis/inventory/institutionUtility.page';
 var INVENTORY_MODULE_ITEMS_UTILITY_TWO_URL = 'module/openhmis/inventory/itemUtilityTwo.page';
 
