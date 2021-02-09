@@ -11,11 +11,11 @@ import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 
 /**
- *
  * @author MORRISON.I
  */
-public interface IPharmacyReports {
-    
-    List<PharmacyConsumptionSummary> getPharmacyConsumptionByDate(Date startDate, Date endDate);
-    
+public interface IPharmacyReportsService {
+
+	String getPharmacyConsumptionByDate(String reportId,
+	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
+
 }

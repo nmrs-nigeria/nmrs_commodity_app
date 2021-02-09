@@ -16,17 +16,17 @@
     'use strict';
 
     var base = angular.module('app.genericEntityController');
-    base.controller("NdrExtractionController", NdrExtractionController);
-    NdrExtractionController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'NdrExtractionModel', 'NdrExtractionRestfulService',
-        'NdrExtractionFunctions', 'EntityRestFactory', 'CommonsRestfulFunctions'];
+    base.controller("PharmacyReportsController", PharmacyReportsController);
+    PharmacyReportsController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'PharmacyReportsModel', 'PharmacyReportsRestfulService',
+        'PharmacyReportsFunctions', 'EntityRestFactory', 'CommonsRestfulFunctions'];
 
-    function NdrExtractionController($stateParams, $injector, $scope, $filter, NdrExtractionModel, NdrExtractionRestfulService,
-            NdrExtractionFunctions, EntityRestFactory, CommonsRestfulFunctions) {
+    function PharmacyReportsController($stateParams, $injector, $scope, $filter, PharmacyReportsModel, PharmacyReportsRestfulService,
+            PharmacyReportsFunctions, EntityRestFactory, CommonsRestfulFunctions) {
 
         var self = this;
 
         var entity_name_message_key = "openhmis.inventory.report.name";
-        var REST_ENTITY_NAME = "ndrextraction";
+        var REST_ENTITY_NAME = "pharmacyReports";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
@@ -47,19 +47,13 @@
 
             $scope.searchReportItems = self.searchReportItems;
 
-            // Load in the 5 reports from their string names in
-            // ModuleSettings.java
+           
 
-
-
-            // Set change listeners for all datepickers used in
-            // reports/entity.page
-
-            NdrExtractionFunctions.onChangeDatePicker('startDate-display', function (value) {
+            PharmacyReportsFunctions.onChangeDatePicker('startDate-display', function (value) {
                 $scope.startDate = value;
             });
 
-            NdrExtractionFunctions.onChangeDatePicker('endDate-display', function (value) {
+            PharmacyReportsFunctions.onChangeDatePicker('endDate-display', function (value) {
                 $scope.endDate = value;
             });
         }
@@ -101,7 +95,7 @@
 
 
 
-        $scope.generateReport_ExpiringStock = function () {
+        $scope.generateReport_DispensaryConsumption = function () {
             //   var stockroom = $scope.expiringStock_stockroom;
             var startDate = $scope.startDate;
             var endDate = $scope.endDate;
@@ -118,8 +112,8 @@
                 
                  $scope.loading = true;
 
-                NdrExtractionRestfulService.getReport(NdrExtractionFunctions.formatDate(startDate), 
-                NdrExtractionFunctions.formatDate(endDate), function (data) {
+                PharmacyReportsRestfulService.getReport("dispensary_consumption",PharmacyReportsFunctions.formatDate(startDate), 
+                PharmacyReportsFunctions.formatDate(endDate), function (data) {
                     //	$scope.expiringStockReport = data;
                     console.log('logging error data');
                     console.log(data.error);
@@ -148,9 +142,9 @@
             $scope: $scope,
             $filter: $filter,
             $stateParams: $stateParams,
-            NdrExtractionRestfulService: NdrExtractionRestfulService,
+            PharmacyReportsRestfulService: PharmacyReportsRestfulService,
             EntityRestFactory: EntityRestFactory,
-            GenericMetadataModel: NdrExtractionModel
+            GenericMetadataModel: PharmacyReportsModel
         });
     }
 })();

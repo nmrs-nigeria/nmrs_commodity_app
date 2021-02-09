@@ -23,8 +23,27 @@ public class ConstantUtils {
 	public static final String PATIENT_STRING = "patient";
 	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
 	public static final String LAB_COMMIDITY_TYPE = "lab";
-        
-        //reportId
-        public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
 
+	//reportId
+	public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
+
+	//report header
+	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";
+	public static final String DCR_ITEM_HEADER = "Item";
+	public static final String DCR_TOTAL_QUANTITY_RECEIVED_HEADER = "Total Quantity Received";
+	public static final String DCR_TOTAL_QUANTITY_CONSUMED_HEADER = "Total Quantity Consumed";
+	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
+	public static final String DCR_STOCK_BALANCE_HEADER = "Stock balance";
+
+	//integer constant
+	public static final int ZERO_INTEGER = 0;
+	public static final int ONE_INTEGER = 1;
+	public static final int TWO_INTEGER = 2;
+	public static final int THREE_INTEGER = 3;
+	public static final int FOUR_INTEGER = 4;
+	public static final int FIVE_INTEGER = 5;
+	public static final int SIX_INTEGER = 6;
+	public static final int SEVEN_INTEGER = 7;
+	public static final int EIGHT_INTEGER = 8;
+	public static final int NINE_INTEGER = 9;
 }

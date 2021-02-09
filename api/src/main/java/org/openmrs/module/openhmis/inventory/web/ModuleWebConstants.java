@@ -114,8 +114,8 @@ public class ModuleWebConstants extends WebConstants {
 
 	public static final String MODULE_ITEM_UTILITY_TWO_ROOT = MODULE_ROOT + "itemUtilityTwo";
 	public static final String PHARMACY_DISPENSE_SUMMARY_ROOT = MODULE_ROOT + "pharmacyDispenseSummary";
-        
-        public static final String PHARMACY_REPORT_ROOT = MODULE_ROOT + "pharmacyReports";
+
+	public static final String PHARMACY_REPORT_ROOT = MODULE_ROOT + "pharmacyReports";
 	public static final String PHARMACY_REPORT_PAGE = PHARMACY_REPORT_ROOT + ".form";
 
 	protected ModuleWebConstants() {}

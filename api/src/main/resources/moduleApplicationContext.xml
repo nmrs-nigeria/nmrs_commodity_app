@@ -22,6 +22,15 @@
 
     <!-- Services accessible via Context.getService() -->
         
+               <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService</value>
+                <ref bean="iPharmacyReportsServiceService" />
+            </list>
+        </property>
+    </bean> 
+        
         <bean parent="serviceContext">
         <property name="moduleService">
             <list merge="true">
@@ -197,6 +206,16 @@
 
     <!-- Service Bean Definitions -->
        
+         <bean id="iPharmacyReportsServiceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.PharmacyReportsServiceImpl">
+                
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean>
         <bean id="iARVPharmacyDispenseServiceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">

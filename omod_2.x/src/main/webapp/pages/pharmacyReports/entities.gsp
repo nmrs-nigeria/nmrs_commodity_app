@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.ndrextraction") ])
+    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.pharmacyReports") ])
 
 
     /* load stylesheets */
@@ -21,14 +21,14 @@
     ui.includeFragment("openhmis.commons", "loadReusableModules")
 
     /* load reports modules */
-    ui.includeJavascript("openhmis.inventory", "ndrExtraction/models/entity.model.js")
-    ui.includeJavascript("openhmis.inventory", "ndrExtraction/services/entity.restful.services.js")
-    ui.includeJavascript("openhmis.inventory", "ndrExtraction/services/entity.functions.js")
-    ui.includeJavascript("openhmis.inventory", "ndrExtraction/controllers/entity.controller.js")
+    ui.includeJavascript("openhmis.inventory", "pharmacyReports/models/entity.model.js")
+    ui.includeJavascript("openhmis.inventory", "pharmacyReports/services/entity.restful.services.js")
+    ui.includeJavascript("openhmis.inventory", "pharmacyReports/services/entity.functions.js")
+    ui.includeJavascript("openhmis.inventory", "pharmacyReports/controllers/entity.controller.js")
     ui.includeJavascript("openhmis.inventory", "constants.js")
 %>
 
-<script data-main="ndrExtraction/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
+<script data-main="pharmacyReports/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
 
 <div id="entitiesApp">
     <div ui-view></div>

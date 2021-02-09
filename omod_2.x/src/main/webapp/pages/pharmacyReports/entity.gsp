@@ -7,10 +7,10 @@
         },
         {
             label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
         {
-            label: "${ ui.message("openhmis.inventory.admin.ndrextraction")}",
+            label: "${ ui.message("openhmis.inventory.admin.pharmacyReports")}",
             link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/ndrExtraction/entities.page#/'
         }
     ];
@@ -20,7 +20,7 @@
 
 <div id="reportPage">
 
-<h2>{{ ui.message("openhmis.inventory.admin.ndrextraction")}}</h2>
+<h2>{{ ui.message("openhmis.inventory.admin.pharmacyReports")}}</h2>
 
 <hr>
 
@@ -36,7 +36,7 @@
     <fieldset>
         <legend>
             <i class="icon-list-alt"></i>
-            <span>Commodity Report</span>
+            <span>Dispensary Consumption Report</span>
         </legend>
         <small>select date range</small>
          <ul class="table-layout">
@@ -65,7 +65,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_ExpiringStock()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryConsumption()">Generate Report</a></li>
         </ul>
     </fieldset>
 </div>

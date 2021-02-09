@@ -28,7 +28,7 @@
 			$stateProvider.state('/', {
 				url : '/',
 				templateUrl : 'entity.page',
-				controller : 'NdrExtractionController'
+				controller : 'PharmacyReportsController'
 			});
 			
 			$provide.factory('$exceptionHandler', function($injector) {

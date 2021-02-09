@@ -14,7 +14,7 @@
  */
 
 /* initialize and bootstrap application */
-requirejs([ 'ndrExtraction/configs/entity.module' ], function() {
+requirejs([ 'pharmacyReports/configs/entity.module' ], function() {
 	angular.bootstrap(document, [ 'entitiesApp' ]);
 });
 
@@ -22,4 +22,4 @@ emr.loadMessages([ "openhmis.inventory.report.rest_name", "openhmis.inventory.it
 		"openhmis.inventory.item.name", "openhmis.inventory.admin.reports",
 		"openhmis.inventory.report.error.stockroomRequired", "openhmis.inventory.report.error.itemRequired",
 		"openhmis.inventory.report.error.beginDateRequired", "openhmis.inventory.report.error.endDateRequired",
-		"openhmis.inventory.report.error.expiryDateRequired","openhmis.inventory.admin.ndrextraction", ]);
+		"openhmis.inventory.report.error.expiryDateRequired","openhmis.inventory.admin.pharmacyReports", ]);

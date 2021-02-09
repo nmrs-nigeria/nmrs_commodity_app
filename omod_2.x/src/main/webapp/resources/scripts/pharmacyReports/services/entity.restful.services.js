@@ -16,22 +16,23 @@
 (function() {
 	'use strict';
 
-	angular.module('app.restfulServices').service('NdrExtractionRestfulService', NdrExtractionRestfulService);
+	angular.module('app.restfulServices').service('PharmacyReportsRestfulService', PharmacyReportsRestfulService);
 
-	NdrExtractionRestfulService.$inject = [ 'EntityRestFactory' ];
+	PharmacyReportsRestfulService.$inject = [ 'EntityRestFactory' ];
 
-	function NdrExtractionRestfulService(EntityRestFactory) {
+	function PharmacyReportsRestfulService(EntityRestFactory) {
 		var service;
 		service = {
 			getReport : getReport
 		};
 		return service;
  
-		function getReport(startDate,endDate, successCallback) {
+		function getReport(reportId,startDate,endDate, successCallback) {
 			var requestParams = [];
 			requestParams['resource'] = INVENTORY_MODULE_ITEMS_NDREXTRACTION_URL;
 			requestParams['startDate'] = startDate;
                         requestParams['endDate'] = endDate;
+                        requestParams['reportId'] = reportId;
 
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {

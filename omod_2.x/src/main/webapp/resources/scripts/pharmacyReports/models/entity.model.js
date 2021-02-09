@@ -18,7 +18,7 @@
 	var baseModel = angular.module('app.genericMetadataModel');
 
 	/* Define model fields */
-	function NdrExtractionModel(GenericMetadataModel) {
+	function PharmacyReportsModel(GenericMetadataModel) {
 		var extended = angular.extend(GenericMetadataModel, {});
 		var defaultFields = extended.getModelFields();
 
@@ -31,6 +31,6 @@
 		return extended;
 	}
 
-	baseModel.factory("NdrExtractionModel", NdrExtractionModel);
-	NdrExtractionModel.$inject = [ 'GenericMetadataModel' ];
+	baseModel.factory("PharmacyReportsModel", PharmacyReportsModel);
+	PharmacyReportsModel.$inject = [ 'GenericMetadataModel' ];
 })();

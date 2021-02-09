@@ -8,40 +8,36 @@ package org.openmrs.module.openhmis.inventory.api.model;
 import java.util.Date;
 
 /**
- *
  * @author MORRISON.I
  */
 public class PharmacyReports {
-    
-    private Date startDate;
-    private Date endDate;
-    private String stockroom;
 
-    public Date getStartDate() {
-        return startDate;
-    }
+	private Date startDate;
+	private Date endDate;
+	private String stockroom;
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+	public Date getStartDate() {
+		return startDate;
+	}
 
-    public Date getEndDate() {
-        return endDate;
-    }
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+	public Date getEndDate() {
+		return endDate;
+	}
 
-    public String getStockroom() {
-        return stockroom;
-    }
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 
-    public void setStockroom(String stockroom) {
-        this.stockroom = stockroom;
-    }
-    
-    
-    
-    
+	public String getStockroom() {
+		return stockroom;
+	}
+
+	public void setStockroom(String stockroom) {
+		this.stockroom = stockroom;
+	}
+
 }

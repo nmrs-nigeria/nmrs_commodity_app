@@ -17,11 +17,11 @@
 	'use strict';
 
 	var app = angular.module('app.reportsFunctionsFactory', []);
-	app.service('NdrExtractionFunctions', NdrExtractionFunctions);
+	app.service('PharmacyReportsFunctions', PharmacyReportsFunctions);
 
-	NdrExtractionFunctions.$inject = [ '$filter' ];
+	PharmacyReportsFunctions.$inject = [ '$filter' ];
 
-	function NdrExtractionFunctions($filter) {
+	function PharmacyReportsFunctions($filter) {
 		var service;
 		service = {
 			formatDate : formatDate,
