@@ -26,7 +26,7 @@ import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
  */
 public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
-    @Override
+	@Override
     public String getPharmacyConsumptionByDate(String reportId, List<PharmacyConsumptionSummary> reportData,
             String reportFolder) {
         AtomicInteger rowCount = new AtomicInteger(0);

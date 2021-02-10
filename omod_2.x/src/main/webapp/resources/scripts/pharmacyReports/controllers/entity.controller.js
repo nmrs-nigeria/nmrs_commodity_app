@@ -91,10 +91,6 @@
             return true;
         }
 
-
-
-
-
         $scope.generateReport_DispensaryConsumption = function () {
             //   var stockroom = $scope.expiringStock_stockroom;
             var startDate = $scope.startDate;
@@ -136,6 +132,52 @@
             }
 
         };
+
+        $scope.generateReport_StockOnHand = function () {
+            //   var stockroom = $scope.expiringStock_stockroom;
+            var startDate = $scope.startDate;
+            var endDate = $scope.endDate;
+
+            var parametersAreValid = checkParameters({
+                "startDate": startDate,
+                "endDate": endDate
+            });
+
+            console.log('parametersvalid output');
+            console.log(parametersAreValid);
+
+            if (parametersAreValid) {
+                
+                 $scope.loading = true;
+
+                PharmacyReportsRestfulService.getReport("stockonhand_report",PharmacyReportsFunctions.formatDate(startDate), 
+                PharmacyReportsFunctions.formatDate(endDate), function (data) {
+                    //	$scope.expiringStockReport = data;
+                    console.log('logging error data');
+                    console.log(data.error);
+                    if(data.error !== undefined){
+                         $scope.loading = false;
+                      alert('error occurred\n'+data.error);  
+                    }else{
+                         $scope.loading = false;
+                        return printReport(data.results); 
+                    }
+                   
+                });
+
+
+            } else {
+                 $scope.loading = false;
+                console.log("The start date is " + startDate);
+                console.log("The end date is " + endDate);
+                alert('select a start and end date to continue');
+            }
+
+        };
+
+
+
+
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericEntityController, self, {

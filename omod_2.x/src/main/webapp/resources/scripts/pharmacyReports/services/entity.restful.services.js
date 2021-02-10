@@ -31,13 +31,24 @@
 			var requestParams = [];
 			requestParams['resource'] = INVENTORY_MODULE_ITEMS_NDREXTRACTION_URL;
 			requestParams['startDate'] = startDate;
-                        requestParams['endDate'] = endDate;
-                        requestParams['reportId'] = reportId;
+            requestParams['endDate'] = endDate;
+            requestParams['reportId'] = reportId;
 
 			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
 			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
 				console.log(error)
 			});
 		}
+
+
+
+
+
+
+
+
+
+
+
 	}
 })();
