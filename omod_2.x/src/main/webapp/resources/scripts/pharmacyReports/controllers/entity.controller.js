@@ -62,8 +62,8 @@
 
         function printReport(reportFile) {
             //	var url = INVENTORY_REPORTS_PAGE_URL + "reportId=" + reportId + "&" + parameters;
-            window.open(reportFile, "pdfDownload");
-         //  window.location = reportFile;
+            window.open("file:///"+reportFile, "reportDownload");
+         ///  window.location = reportFile;
 
             return false;
         }
