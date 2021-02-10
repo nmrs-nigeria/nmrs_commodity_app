@@ -26,9 +26,17 @@ import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
  */
 public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
-    @Override
+	@Override
     public String getPharmacyConsumptionByDate(String reportId, List<PharmacyConsumptionSummary> reportData,
             String reportFolder) {
+
+// System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
+// System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
+// System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
+// 
+ 
+ 
+
         AtomicInteger rowCount = new AtomicInteger(0);
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet(Utils.DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME);
