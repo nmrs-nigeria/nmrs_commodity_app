@@ -5,25 +5,13 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.math.BigInteger;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
@@ -33,7 +21,6 @@ import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
@@ -110,8 +97,13 @@ public class PharmacyReportsController {
 
         if (reportId.equalsIgnoreCase(ConstantUtils.DISPENSARY_CONSUMPTION_REPORT)) {
             consumptionSummaryAtDispensary(reportId);
-            String filename = reportId + ".csv";
-            return Paths.get(request.getContextPath(), "CMReports", filename).toString();
+            return returnURL(reportId);
+
+        }
+
+        if (reportId.equalsIgnoreCase(ConstantUtils.STOCK_ROOM_CONSUMPTION_REPORT)) {
+            consumptionSummaryAtStockroom(reportId);
+            return returnURL(reportId);
 
         }
 
@@ -151,5 +143,49 @@ public class PharmacyReportsController {
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
 		return iPharmacyReports.getPharmacyConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
+	}
+
+	private String consumptionSummaryAtStockroom(String reportId) {
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String distributeOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		String receiptOperationTypeUuid = ConstantUtils.RECEIPT_TYPE_UUID;
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<PharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+
+		//searchConsumptionSummary.setDepartment(d);
+		//  searchConsumptionSummary.setItem(searchItem);
+		searchConsumptionSummary.setStartDate(startDate);
+		searchConsumptionSummary.setEndDate(endDate);
+		searchConsumptionSummary.setOperationStatus(status);
+		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(receiptOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(stockOperationType);
+
+		List<StockOperation> receiptStockOps = null;
+		List<StockOperation> distributeStockOps = null;
+
+		receiptStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+		IStockOperationType distributeStockOperationType =
+		        stockOperationTypeDataService.getByUuid(distributeOperationTypeUuid);
+
+		searchConsumptionSummary.setOperationType(distributeStockOperationType);
+
+		distributeStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+		finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
+		    distributeStockOps, null, distinctItems));
+
+		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return iPharmacyReports.getPharmacyStockroomConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
+	}
+
+	private String returnURL(String reportId) {
+		String filename = reportId + ".csv";
+		return Paths.get(request.getContextPath(), "CMReports", filename).toString();
 	}
 }

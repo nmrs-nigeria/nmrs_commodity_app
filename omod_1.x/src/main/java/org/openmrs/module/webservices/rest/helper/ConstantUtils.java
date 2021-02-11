@@ -26,6 +26,7 @@ public class ConstantUtils {
 
 	//reportId
 	public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
+	public static final String STOCK_ROOM_CONSUMPTION_REPORT = "stockroom_consumption";
 
 	//report header
 	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";

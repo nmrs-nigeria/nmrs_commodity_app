@@ -18,4 +18,7 @@ public interface IPharmacyReportsService {
 	String getPharmacyConsumptionByDate(String reportId,
 	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
 
+	String getPharmacyStockroomConsumptionByDate(String reportId,
+	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
+
 }
