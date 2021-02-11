@@ -133,7 +133,7 @@
 
         };
 
-        $scope.generateReport_StockOnHand = function () {
+        $scope.generateReport_DispensaryStockOnHand = function () {
             //   var stockroom = $scope.expiringStock_stockroom;
             var startDate = $scope.startDate;
             var endDate = $scope.endDate;
@@ -148,7 +148,7 @@
 
             if (parametersAreValid) {
 
-                PharmacyReportsRestfulService.getReport("stockonhand_report",PharmacyReportsFunctions.formatDate(startDate), 
+                PharmacyReportsRestfulService.getReport("dispensary_stockonhand",PharmacyReportsFunctions.formatDate(startDate), 
                 PharmacyReportsFunctions.formatDate(endDate), function (data) {
                     //	$scope.expiringStockReport = data;
                     console.log('logging error data');
