@@ -75,7 +75,7 @@
      <fieldset>
         <legend>
             <i class="icon-list-alt"></i>
-            <span>Stock on Hand Report</span>
+            <span>Dispensary Stock on Hand Report</span>
         </legend>
         <small>select date range</small>
          <ul class="table-layout">

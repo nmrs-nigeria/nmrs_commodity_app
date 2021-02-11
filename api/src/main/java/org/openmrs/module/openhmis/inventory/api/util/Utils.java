@@ -127,6 +127,7 @@ public class Utils {
 	//report header
 	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";
 	public static final String DCR_ITEM_HEADER = "Item";
+	public static final String DCR_DISPENSARY_HEADER = "Dispensary";
 	public static final String DCR_TOTAL_QUANTITY_RECEIVED_HEADER = "Total Quantity Received";
 	public static final String DCR_TOTAL_QUANTITY_CONSUMED_HEADER = "Total Quantity Consumed";
 	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
