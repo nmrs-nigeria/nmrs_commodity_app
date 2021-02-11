@@ -68,5 +68,40 @@
             <li><a class="btn btn-grey" ng-click="generateReport_DispensaryConsumption()">Generate Report</a></li>
         </ul>
     </fieldset>
+     <fieldset>
+        <legend>
+            <i class="icon-list-alt"></i>
+            <span>Stockroom Consumption Report</span>
+        </legend>
+        <small>select date range</small>
+         <ul class="table-layout">
+            <li><label>Start Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "startDate",
+                        id: "startDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li><label>End Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "endDate",
+                        id: "endDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li></li>
+            <li><a class="btn btn-grey" ng-click="">Generate Report</a></li>
+        </ul>
+    </fieldset>
 </div>
 </div>

@@ -109,7 +109,9 @@ public class PharmacyReportsController {
                 .collect(Collectors.toList());
 
         if (reportId.equalsIgnoreCase(ConstantUtils.DISPENSARY_CONSUMPTION_REPORT)) {
-            return consumptionSummaryAtDispensary(reportId);
+            consumptionSummaryAtDispensary(reportId);
+            String filename = reportId + ".csv";
+            return Paths.get(request.getContextPath(), "CMReports", filename).toString();
 
         }
 
