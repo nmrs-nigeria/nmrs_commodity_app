@@ -72,4 +72,9 @@ public interface IPharmacyConsumptionDataService extends IMetadataDataService<Ph
 	        SearchConsumptionSummary searchConsumptionSummary,
 	        PagingInfo pagingInfo, List<Item> distinctItems);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	List<PharmacyConsumptionSummary> retrieveConsumptionSummaryForStockroom(List<StockOperation> receiptStockOperations,
+	        List<StockOperation> distributeStockOperations, PagingInfo pagingInfo, List<Item> distinctItems);
+
 }

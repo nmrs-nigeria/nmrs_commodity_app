@@ -29,7 +29,7 @@
  
 		function getReport(reportId,startDate,endDate, successCallback) {
 			var requestParams = [];
-			requestParams['resource'] = INVENTORY_MODULE_ITEMS_NDREXTRACTION_URL;
+			requestParams['resource'] = INVENTORY_MODULE_PHARMACY_REPORTS_URL;
 			requestParams['startDate'] = startDate;
                         requestParams['endDate'] = endDate;
                         requestParams['reportId'] = reportId;

@@ -47,7 +47,7 @@
 
             $scope.searchReportItems = self.searchReportItems;
 
-           
+
 
             PharmacyReportsFunctions.onChangeDatePicker('startDate-display', function (value) {
                 $scope.startDate = value;
@@ -56,18 +56,26 @@
             PharmacyReportsFunctions.onChangeDatePicker('endDate-display', function (value) {
                 $scope.endDate = value;
             });
+            
+            PharmacyReportsFunctions.onChangeDatePicker('startDate_stc-display', function (value) {
+                $scope.startDate_stc = value;
+            });
+
+            PharmacyReportsFunctions.onChangeDatePicker('endDate_stc-display', function (value) {
+                $scope.endDate_stc = value;
+            });
         }
 
 
 
         function printReport(reportFile) {
             //	var url = INVENTORY_REPORTS_PAGE_URL + "reportId=" + reportId + "&" + parameters;
-            window.open(reportFile, "pdfDownload");
-         //  window.location = reportFile;
+            window.open(reportFile, "reportDownload");
+            ///  window.location = reportFile;
 
             return false;
         }
-
+     
         function checkParameters(parameterObject) {
             var objectKeys = Object.keys(parameterObject);
             for (var i = 0; i < objectKeys.length; i++) {
@@ -109,33 +117,79 @@
             console.log(parametersAreValid);
 
             if (parametersAreValid) {
-                
-                 $scope.loading = true;
 
-                PharmacyReportsRestfulService.getReport("dispensary_consumption",PharmacyReportsFunctions.formatDate(startDate), 
-                PharmacyReportsFunctions.formatDate(endDate), function (data) {
+                $scope.loading = true;
+
+                PharmacyReportsRestfulService.getReport("dispensary_consumption", PharmacyReportsFunctions.formatDate(startDate),
+                        PharmacyReportsFunctions.formatDate(endDate), function (data) {
                     //	$scope.expiringStockReport = data;
                     console.log('logging error data');
                     console.log(data.error);
-                    if(data.error !== undefined){
-                         $scope.loading = false;
-                      alert('error occurred\n'+data.error);  
-                    }else{
-                         $scope.loading = false;
-                        return printReport(data.results); 
+                    if (data.error !== undefined) {
+                        $scope.loading = false;
+                        alert('error occurred\n' + data.error);
+                    } else {
+                        $scope.loading = false;
+                        return printReport(data.results);
                     }
-                   
+
                 });
 
 
             } else {
-                 $scope.loading = false;
+                $scope.loading = false;
                 console.log("The start date is " + startDate);
                 console.log("The end date is " + endDate);
                 alert('select a start and end date to continue');
             }
 
         };
+        
+        
+        
+        $scope.generateReport_StockroomConsumption = function () {
+            //   var stockroom = $scope.expiringStock_stockroom;
+            var startDate = $scope.startDate_stc;
+            var endDate = $scope.endDate_stc;
+
+            var parametersAreValid = checkParameters({
+                "startDate": startDate,
+                "endDate": endDate
+            });
+
+            console.log('parametersvalid output');
+            console.log(parametersAreValid);
+
+            if (parametersAreValid) {
+
+                $scope.loading = true;
+
+                PharmacyReportsRestfulService.getReport("stockroom_consumption", PharmacyReportsFunctions.formatDate(startDate),
+                        PharmacyReportsFunctions.formatDate(endDate), function (data) {
+                    //	$scope.expiringStockReport = data;
+                    console.log('logging error data');
+                    console.log(data.error);
+                    if (data.error !== undefined) {
+                        $scope.loading = false;
+                        alert('error occurred\n' + data.error);
+                    } else {
+                        $scope.loading = false;
+                        return printReport(data.results);
+                    }
+
+                });
+
+
+            } else {
+                $scope.loading = false;
+                console.log("The start date is " + startDate);
+                console.log("The end date is " + endDate);
+                alert('select a start and end date to continue');
+            }
+
+        };
+
+        
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericEntityController, self, {
