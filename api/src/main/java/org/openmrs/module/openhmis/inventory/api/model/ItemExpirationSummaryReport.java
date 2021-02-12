@@ -24,6 +24,15 @@ public class ItemExpirationSummaryReport implements OpenmrsObject {
 	private String itemBatch;
 	private String uuid;
 	private Integer consumptionId;
+	private String exp;
+
+	public String getExp() {
+		return exp;
+	}
+
+	public void setExp(String exp) {
+		this.exp = exp;
+	}
 
 	public Item getItem() {
 		return item;

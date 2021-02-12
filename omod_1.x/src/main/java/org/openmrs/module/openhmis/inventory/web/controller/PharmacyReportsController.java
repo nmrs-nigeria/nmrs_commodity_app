@@ -180,8 +180,6 @@ public class PharmacyReportsController {
 
 	private String stockonhandSummaryAtDispensary(String reportId) {
 
-		System.out.println("Report ID: " + reportId);
-
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
 		String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
 		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
@@ -197,13 +195,11 @@ public class PharmacyReportsController {
 		itemExpirationSummaryReport = itemExpirationSummaryService.getItemStockSummaryByDate(
 		    searchStockOnHandSummary, null);
 
-		System.out.println("itemExpirationSummaryReport: " + itemExpirationSummaryReport.toString());
-
 		finalStockOnHandSummarys.addAll(itemExpirationSummaryReport);
 
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
-		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, itemExpirationSummaryReport, reportFolder);
+		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, finalStockOnHandSummarys, reportFolder);
 
 	}
 
@@ -226,13 +222,11 @@ public class PharmacyReportsController {
 		itemExpirationSummaryReport = itemExpirationSummaryService.getItemStockRoomStockOnHandByDate(
 		    searchStockOnHandSummary, null);
 
-		System.out.println("itemExpirationSummaryReport: " + itemExpirationSummaryReport.toString());
-
 		finalStockOnHandSummarys.addAll(itemExpirationSummaryReport);
 
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
-		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, itemExpirationSummaryReport, reportFolder);
+		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, finalStockOnHandSummarys, reportFolder);
 
 	}
 

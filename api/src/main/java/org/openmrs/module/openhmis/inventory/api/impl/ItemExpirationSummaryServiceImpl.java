@@ -189,25 +189,12 @@ public class ItemExpirationSummaryServiceImpl
 	public List<ItemExpirationSummaryReport> getItemStockSummaryByDate(SearchStockOnHandSummary searchStockOnHandSummary,
 	        PagingInfo pagingInfo) {
 
-		// Create the query and optionally add paging	
-		//		String hql =
-		//		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch "
-		//		                + "from ViewItemExpirationByDeptPharm as detail inner join detail.item as i "
-		//		                + "where detail.commodityType = " + searchStockOnHandSummary.getCommodityType() + " "
-		//		                + "and DATE_FORMAT(detail.dateCreated, '%Y-%m-%d') between "
-		//		                + searchStockOnHandSummary.getStartDate() + " "
-		//		                + "and " + searchStockOnHandSummary.getEndDate() + " "
-		//		                + "order by i.name asc, detail.department.name asc, detail.expiration asc";
-
-		System.out.println("Start Date: " + searchStockOnHandSummary.getStartDate());
-		System.out.println("End Date: " + searchStockOnHandSummary.getEndDate());
-
 		String hql =
-		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch "
+		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch, detail.department "
 		                + "from ViewItemExpirationByDeptPharm as detail inner join detail.item as i "
-		                + "where DATE_FORMAT(detail.dateCreated, '%Y-%m-%d') between "
-		                + searchStockOnHandSummary.getStartDate() + " "
-		                + "and " + searchStockOnHandSummary.getEndDate() + " "
+		                + "where detail.dateCreated between '"
+		                + searchStockOnHandSummary.getStartDate() + "' "
+		                + "and '" + searchStockOnHandSummary.getEndDate() + "' "
 		                + "order by i.name asc, detail.department.name asc, detail.expiration asc";
 
 		Query query = getRepository().createQuery(hql);
@@ -220,17 +207,20 @@ public class ItemExpirationSummaryServiceImpl
 		List<ItemExpirationSummaryReport> results = new ArrayList<ItemExpirationSummaryReport>(list.size());
 		//List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
 		String max = "3";
+		String four = "4";
 		for (Object obj : list) {
 			Object[] row = (Object[])obj;
 
 			ItemExpirationSummaryReport summary = new ItemExpirationSummaryReport();
 
 			summary.setItem((Item)row[0]);
-			summary.setDepartment(searchStockOnHandSummary.getDepartment());
+
 			// If the expiration column is null it does not appear to be included in the row array
-			if (row.length == Integer.parseInt(max)) {
+			if (row.length == Integer.parseInt(four)) {
 				summary.setExpiration(null);
+				summary.setExp(null);
 				summary.setItemBatch((String)row[2]);
+				summary.setDepartment((Department)row[Integer.parseInt(max)]);
 				Integer quantity = (int)row[1];
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
@@ -240,7 +230,9 @@ public class ItemExpirationSummaryServiceImpl
 				}
 			} else {
 				summary.setExpiration((Date)row[1]);
+				summary.setExp(formatStringToSQLDateString(summary.getExpiration().toString()));
 				summary.setItemBatch((String)row[Integer.parseInt(max)]);
+				summary.setDepartment((Department)row[Integer.parseInt(four)]);
 				Integer quantity = (int)row[2];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
@@ -263,23 +255,15 @@ public class ItemExpirationSummaryServiceImpl
 		System.out.println("Start Date: " + searchStockOnHandSummary.getStartDate());
 		System.out.println("End Date: " + searchStockOnHandSummary.getEndDate());
 
-		// Create the query and optionally add paging	
-		//		String hql =
-		//		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch "
-		//		                + "from ViewItemExpirationByDeptPharm as detail inner join detail.item as i "
-		//		                + "where detail.commodityType = " + searchStockOnHandSummary.getCommodityType() + " "
-		//		                + "and DATE_FORMAT(detail.dateCreated, '%Y-%m-%d') between "
-		//		                + searchStockOnHandSummary.getStartDate() + " "
-		//		                + "and " + searchStockOnHandSummary.getEndDate() + " "
-		//		                + "order by i.name asc, detail.department.name asc, detail.expiration asc";
-
 		String hql =
-		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch "
+		        "select i, detail.expiration, detail.quantity as sumQty, detail.itemBatch, detail.department "
 		                + "from ViewStockroomStockOnHand as detail inner join detail.item as i "
-		                + "where DATE_FORMAT(detail.dateCreated, '%Y-%m-%d') between "
-		                + searchStockOnHandSummary.getStartDate() + " "
-		                + "and " + searchStockOnHandSummary.getEndDate() + " "
-		                + "order by i.name asc, detail.expiration asc";
+		                + "where detail.dateCreated between '"
+		                + searchStockOnHandSummary.getStartDate() + "' "
+		                + "and '" + searchStockOnHandSummary.getEndDate() + "' "
+		                + "order by i.name asc, detail.department.name asc, detail.expiration asc";
+
+		System.out.println(hql);
 
 		Query query = getRepository().createQuery(hql);
 
@@ -289,19 +273,21 @@ public class ItemExpirationSummaryServiceImpl
 
 		// Parse the aggregate query into an ItemStockSummary object
 		List<ItemExpirationSummaryReport> results = new ArrayList<ItemExpirationSummaryReport>(list.size());
-		//List<ItemExpirationSummary> results = new ArrayList<ItemExpirationSummary>(list.size());
 		String max = "3";
+		String four = "4";
 		for (Object obj : list) {
 			Object[] row = (Object[])obj;
 
 			ItemExpirationSummaryReport summary = new ItemExpirationSummaryReport();
 
 			summary.setItem((Item)row[0]);
-			summary.setDepartment(searchStockOnHandSummary.getDepartment());
+
 			// If the expiration column is null it does not appear to be included in the row array
-			if (row.length == Integer.parseInt(max)) {
+			if (row.length == Integer.parseInt(four)) {
 				summary.setExpiration(null);
+				summary.setExp(null);
 				summary.setItemBatch((String)row[2]);
+				summary.setDepartment((Department)row[Integer.parseInt(max)]);
 				Integer quantity = (int)row[1];
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
@@ -311,7 +297,9 @@ public class ItemExpirationSummaryServiceImpl
 				}
 			} else {
 				summary.setExpiration((Date)row[1]);
+				summary.setExp(formatStringToSQLDateString(summary.getExpiration().toString()));
 				summary.setItemBatch((String)row[Integer.parseInt(max)]);
+				summary.setDepartment((Department)row[Integer.parseInt(four)]);
 				Integer quantity = (int)row[2];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
@@ -325,6 +313,12 @@ public class ItemExpirationSummaryServiceImpl
 
 		// We done.
 		return results;
+	}
+
+	private static String formatStringToSQLDateString(String itemExpir) {
+		String[] res = itemExpir.split(" ", 0);
+		String itemExpr = res[0];
+		return itemExpr;
 	}
 
 	@Override

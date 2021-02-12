@@ -125,7 +125,18 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
             String reportFolder) {
  
+		System.out.println("Report Data ");
+		for (ItemExpirationSummaryReport irs : reportData){	
+			System.out.println(irs.getItemBatch());
+			System.out.println(irs.getDepartment().getName());
+			System.out.println(irs.getExpiration());
+			System.out.println(irs.getExp());
+			System.out.println(irs.getQuantity());
+			System.out.println(irs.getItem().getName());
+		}
+		
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+        System.out.println("File name: "+ fileName);
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
@@ -142,7 +153,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                         try {
                             csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
                                     con.getItemBatch(),
-                                    con.getExpiration(), con.getQuantity());
+                                    con.getExp(), con.getQuantity());
                         } catch (IOException ex) {
                             LOG.error(ex.getMessage());
                         }
