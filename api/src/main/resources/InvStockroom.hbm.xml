@@ -349,5 +349,34 @@
 		<many-to-one name="department" class="Department" column="department_id" />
 	</class>
 	
+	<class name="ViewItemExpirationByDeptPharm" table="inv_view_item_expiration_by_dept_pharm">
+		<cache usage="read-write"/>	
+		<id name="id" type="int" column="consumption_id">
+	        <generator class="native" />
+	    </id>
+		<many-to-one name="item" class="Item" not-null="true" column="item_id" />
+		<property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+		 <property name="commodityType" type="java.lang.String" column="commodity_type" not-null="false" />
+		 <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<property name="quantity" type="int" not-null="true" column="quantity" />
+		<property name="expiration" type="java.util.Date" column="expiration" />		
+		<many-to-one name="department" class="Department" column="department_id" />
+	</class>
+	
+	<class name="ViewStockroomStockOnHand" table="inv_view_stockroom_stockonhand">
+		<cache usage="read-write"/>	
+		<id name="id" type="int" column="stock_operation_id">
+	        <generator class="native" />
+	    </id>
+		<many-to-one name="item" class="Item" not-null="true" column="item_id" />
+		<property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+		 <property name="commodityType" type="java.lang.String" column="commodity_type" not-null="false" />
+		 <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		<property name="quantity" type="int" not-null="true" column="quantity" />
+		<property name="quantityReceived" type="int" not-null="true" column="qtyReceived" />
+		<property name="quantityDistributed" type="int" not-null="true" column="qtyDistribute" />
+		<property name="expiration" type="java.util.Date" column="expiration" />		
+		<many-to-one name="department" class="Department" column="department_id" />
+	</class>
 	
 </hibernate-mapping>

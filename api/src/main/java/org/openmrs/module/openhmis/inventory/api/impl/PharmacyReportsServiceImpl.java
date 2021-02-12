@@ -20,6 +20,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.util.LoggerFactory;
+import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
@@ -106,4 +107,43 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
         return fileName;
     }
+
+	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
+            String reportFolder) {
+		
+        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
+
+            String[] HEADERS = {Utils.SSR_ITEM_HEADER,Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
+                Utils.SSR_EXPIRATION_HEADER, Utils.SSR_QUANTITY_HEADER};
+ 
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader(HEADERS));
+
+            reportData.stream()
+                    .forEach(con -> {
+
+                        try {
+
+                            csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
+                                    con.getItemBatch(),
+                                    con.getExp(), con.getQuantity());
+
+                        } catch (IOException ex) {
+                            LOG.error(ex.getMessage());
+                        }
+
+                    });
+            csvPrinter.flush();
+
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+
+        return fileName;
+    }
+
+
 }

@@ -6,6 +6,8 @@
 package org.openmrs.module.openhmis.inventory.web.controller;
 
 import java.nio.file.Paths;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,14 +17,18 @@ import javax.servlet.http.HttpServletResponse;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.SearchStockOnHandSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationStatus;
 import org.openmrs.module.openhmis.inventory.web.ModuleWebConstants;
@@ -49,9 +55,12 @@ public class PharmacyReportsController {
 	private IStockOperationDataService stockOperationDataService;
 	private IItemDataService itemDataService;
 	private IPharmacyReportsService iPharmacyReports;
+	private IItemExpirationSummaryService itemExpirationSummaryService;
 
 	private Date startDate;
 	private Date endDate;
+	private String startDateStringVal;
+	private String endDateStringVal;
 	private List<Item> distinctItems = null;
 	List<Department> dispensarys = null;
 	HttpServletRequest request = null;
@@ -68,9 +77,12 @@ public class PharmacyReportsController {
 		this.consumptionDataService = Context.getService(IPharmacyConsumptionDataService.class);
 		this.stockOperationDataService = Context.getService(IStockOperationDataService.class);
 		this.itemDataService = Context.getService(IItemDataService.class);
+		this.itemExpirationSummaryService = Context.getService(IItemExpirationSummaryService.class);
 
 		this.startDate = RestUtils.parseCustomOpenhmisDateString(startDateString);
 		this.endDate = RestUtils.parseCustomOpenhmisDateString(endDateString);
+		this.startDateStringVal = startDateString;
+		this.endDateStringVal = endDateString;
 		this.iPharmacyReports = Context.getService(IPharmacyReportsService.class);
 
 		SimpleObject result = new SimpleObject();
@@ -104,6 +116,20 @@ public class PharmacyReportsController {
         if (reportId.equalsIgnoreCase(ConstantUtils.STOCK_ROOM_CONSUMPTION_REPORT)) {
             consumptionSummaryAtStockroom(reportId);
             return returnURL(reportId);
+
+        }
+        
+        if (reportId.equalsIgnoreCase(ConstantUtils.DISPENSARY_STOCKONHAND_REPORT)) {
+            stockonhandSummaryAtDispensary(reportId);
+            String filename = reportId + ".csv";
+            return Paths.get(request.getContextPath(), "CMReports", filename).toString();
+
+        }
+        
+        if (reportId.equalsIgnoreCase(ConstantUtils.STORE_STOCKONHAND_REPORT)) {
+            stockonhandSummaryAtStockroom(reportId);
+            String filename = reportId + ".csv";
+            return Paths.get(request.getContextPath(), "CMReports", filename).toString();
 
         }
 
@@ -148,6 +174,58 @@ public class PharmacyReportsController {
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
 		return iPharmacyReports.getPharmacyConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
+	}
+
+	private String stockonhandSummaryAtDispensary(String reportId) {
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
+
+		SearchStockOnHandSummary searchStockOnHandSummary = new SearchStockOnHandSummary();
+		List<ItemExpirationSummaryReport> finalStockOnHandSummarys = new ArrayList<>();
+
+		searchStockOnHandSummary.setStartDate(startDateStringVal);
+		searchStockOnHandSummary.setEndDate(endDateStringVal);
+		searchStockOnHandSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		List<ItemExpirationSummaryReport> itemExpirationSummaryReport = null;
+		itemExpirationSummaryReport = itemExpirationSummaryService.getItemStockSummaryByDate(
+		    searchStockOnHandSummary, null);
+
+		finalStockOnHandSummarys.addAll(itemExpirationSummaryReport);
+
+		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, finalStockOnHandSummarys, reportFolder);
+
+	}
+
+	private String stockonhandSummaryAtStockroom(String reportId) {
+
+		System.out.println("Report ID: " + reportId);
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String stockOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
+
+		SearchStockOnHandSummary searchStockOnHandSummary = new SearchStockOnHandSummary();
+		List<ItemExpirationSummaryReport> finalStockOnHandSummarys = new ArrayList<>();
+
+		searchStockOnHandSummary.setStartDate(startDateStringVal);
+		searchStockOnHandSummary.setEndDate(endDateStringVal);
+		searchStockOnHandSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		List<ItemExpirationSummaryReport> itemExpirationSummaryReport = null;
+		itemExpirationSummaryReport = itemExpirationSummaryService.getItemStockRoomStockOnHandByDate(
+		    searchStockOnHandSummary, null);
+
+		finalStockOnHandSummarys.addAll(itemExpirationSummaryReport);
+
+		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return iPharmacyReports.getDispensaryStockOnHandByDate(reportId, finalStockOnHandSummarys, reportFolder);
+
 	}
 
 	private String consumptionSummaryAtStockroom(String reportId) {

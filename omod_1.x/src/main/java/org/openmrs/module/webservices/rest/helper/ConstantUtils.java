@@ -25,8 +25,11 @@ public class ConstantUtils {
 	public static final String LAB_COMMIDITY_TYPE = "lab";
 
 	//reportId
-	public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
+	public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";	
 	public static final String STOCK_ROOM_CONSUMPTION_REPORT = "stockroom_consumption";
+	public static final String STORE_STOCKONHAND_REPORT = "stockroom_stockonhand";
+	public static final String DISPENSARY_STOCKONHAND_REPORT = "dispensary_stockonhand";
+
 
 	//report header
 	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";
@@ -35,6 +38,13 @@ public class ConstantUtils {
 	public static final String DCR_TOTAL_QUANTITY_CONSUMED_HEADER = "Total Quantity Consumed";
 	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
 	public static final String DCR_STOCK_BALANCE_HEADER = "Stock balance";
+
+	public static final String DISPENSARY_STOCKONHAND_REPORT_SHEET_NAME = "Dispensary Stock on Hand Report";
+	public static final String SSR_DEPARTMENT_HEADER = "Department";
+	public static final String SSR_ITEM_HEADER = "Item";
+	public static final String SSR_BATCH_HEADER = "Batch";
+	public static final String SSR_EXPIRATION_HEADER = "Expiration";
+	public static final String SSR_QUANTITY_HEADER = "Quantity";
 
 	//integer constant
 	public static final int ZERO_INTEGER = 0;

@@ -33,6 +33,8 @@
 </div>
     
 <div class="report">
+
+
     <fieldset>
         <legend>
             <i class="icon-list-alt"></i>
@@ -68,7 +70,9 @@
             <li><a class="btn btn-grey" ng-click="generateReport_DispensaryConsumption()">Generate Report</a></li>
         </ul>
     </fieldset>
-     <fieldset>
+    
+    <br><br>
+    <fieldset>
         <legend>
             <i class="icon-list-alt"></i>
             <span>Stockroom Consumption Report</span>
@@ -103,5 +107,80 @@
             <li><a class="btn btn-grey" ng-click="generateReport_StockroomConsumption()">Generate Report</a></li>
         </ul>
     </fieldset>
+
+     <br><br>
+     <fieldset>
+        <legend>
+            <i class="icon-list-alt"></i>
+            <span>Dispensary Stock on Hand Report</span>
+        </legend>
+        <small>select date range</small>
+         <ul class="table-layout">
+            <li><label>Start Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "stockonhandDispensary_startDate",
+                        id: "stockonhandDispensary_startDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li><label>End Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "stockonhandDispensary_endDate",
+                        id: "stockonhandDispensary_endDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryStockOnHand()">Generate Report</a></li>
+        </ul>
+    </fieldset>
+
+     <br><br>
+     <fieldset>
+        <legend>
+            <i class="icon-list-alt"></i>
+            <span>Stockroom Stock on Hand Report</span>
+        </legend>
+        <small>select date range</small>
+         <ul class="table-layout">
+            <li><label>Start Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "stockonhandStockroom_startDate",
+                        id: "stockonhandStockroom_startDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li><label>End Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "stockonhandStockroom_endDate",
+                        id: "stockonhandStockroom_endDate",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_StockroomStockOnHand()">Generate Report</a></li>
+        </ul>
+    </fieldset>
+    
 </div>
 </div>
