@@ -24,11 +24,8 @@ import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
-<<<<<<< HEAD
 import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
-=======
->>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchStockOnHandSummary;
@@ -174,7 +171,6 @@ public class PharmacyReportsController {
 		return iPharmacyReports.getPharmacyConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
 	}
 
-<<<<<<< HEAD
 	private String stockonhandSummaryAtDispensary(String reportId) {
 
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
@@ -227,7 +223,6 @@ public class PharmacyReportsController {
 
 	}
 
-=======
 	private String consumptionSummaryAtStockroom(String reportId) {
 
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
@@ -271,5 +266,4 @@ public class PharmacyReportsController {
 		String filename = reportId + ".csv";
 		return Paths.get(request.getContextPath(), "CMReports", filename).toString();
 	}
->>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 }

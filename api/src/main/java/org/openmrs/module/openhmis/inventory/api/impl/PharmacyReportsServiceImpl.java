@@ -74,23 +74,6 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
-<<<<<<< HEAD
-	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
-            String reportFolder) {
- 
-		System.out.println("Report Data ");
-		for (ItemExpirationSummaryReport irs : reportData){	
-			System.out.println(irs.getItemBatch());
-			System.out.println(irs.getDepartment().getName());
-			System.out.println(irs.getExpiration());
-			System.out.println(irs.getExp());
-			System.out.println(irs.getQuantity());
-			System.out.println(irs.getItem().getName());
-		}
-		
-        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
-        System.out.println("File name: "+ fileName);
-=======
 	@Override
     public String getPharmacyStockroomConsumptionByDate(String reportId, 
             List<PharmacyConsumptionSummary> reportData, String reportFolder) {
@@ -98,18 +81,12 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
 
->>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
-<<<<<<< HEAD
-            String[] HEADERS = {Utils.SSR_ITEM_HEADER,Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
-                Utils.SSR_EXPIRATION_HEADER, Utils.SSR_QUANTITY_HEADER};
-=======
             String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
                 Utils.DCR_TOTAL_QUANTITY_ISSUED_HEADER, Utils.DCR_STOCK_BALANCE_HEADER};
->>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader(HEADERS));
@@ -118,15 +95,9 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                     .forEach(con -> {
 
                         try {
-<<<<<<< HEAD
-                            csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
-                                    con.getItemBatch(),
-                                    con.getExp(), con.getQuantity());
-=======
                             csvPrinter.printRecord(con.getItem().getName(), 
                                     con.getTotalQuantityReceived(),
                                     con.getTotalQuantityConsumed(), con.getStockBalance());
->>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
                         } catch (IOException ex) {
                             LOG.error(ex.getMessage());
                         }
@@ -140,4 +111,43 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
         return fileName;
     }
+
+	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
+            String reportFolder) {
+		
+        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
+
+            String[] HEADERS = {Utils.SSR_ITEM_HEADER,Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
+                Utils.SSR_EXPIRATION_HEADER, Utils.SSR_QUANTITY_HEADER};
+ 
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader(HEADERS));
+
+            reportData.stream()
+                    .forEach(con -> {
+
+                        try {
+
+                            csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
+                                    con.getItemBatch(),
+                                    con.getExp(), con.getQuantity());
+
+                        } catch (IOException ex) {
+                            LOG.error(ex.getMessage());
+                        }
+
+                    });
+            csvPrinter.flush();
+
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+
+        return fileName;
+    }
+
+
 }
