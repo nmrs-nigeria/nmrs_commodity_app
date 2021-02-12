@@ -40,57 +40,9 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
     public String getPharmacyConsumptionByDate(String reportId, List<PharmacyConsumptionSummary> reportData,
             String reportFolder) {
 
-// System.setProperty("org.apache.poi.javax.xml.stream.XMLInputFactory", "com.fasterxml.aalto.stax.InputFactoryImpl");
-// System.setProperty("org.apache.poi.javax.xml.stream.XMLOutputFactory", "com.fasterxml.aalto.stax.OutputFactoryImpl");
-// System.setProperty("org.apache.poi.javax.xml.stream.XMLEventFactory", "com.fasterxml.aalto.stax.EventFactoryImpl");
-// 
-//        AtomicInteger rowCount = new AtomicInteger(0);
-//        XSSFWorkbook workbook = new XSSFWorkbook();
-//        XSSFSheet sheet = workbook.createSheet(Utils.DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME);
-//        Row header = sheet.createRow(rowCount.get());
-//        Cell headerCell = header.createCell(Utils.ZERO_INTEGER);
-//        headerCell.setCellValue(Utils.DCR_ITEM_HEADER);
-//        headerCell = header.createCell(Utils.ONE_INTEGER);
-//        headerCell.setCellValue(Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER);
-//        headerCell = header.createCell(Utils.TWO_INTEGER);
-//        headerCell.setCellValue(Utils.DCR_TOTAL_QUANTITY_CONSUMED_HEADER);
-//        headerCell = header.createCell(Utils.THREE_INTEGER);
-//        headerCell.setCellValue(Utils.DCR_TOTAL_WASTAGE_HEADER);
-//        headerCell = header.createCell(Utils.FOUR_INTEGER);
-//        headerCell.setCellValue(Utils.DCR_STOCK_BALANCE_HEADER);
-//
-//        reportData.stream()
-//                .forEach(con -> {
-//
-//                    Row row = sheet.createRow(rowCount.incrementAndGet());
-//                    Cell cell = row.createCell(Utils.ZERO_INTEGER);
-//                    cell.setCellValue(con.getItem().getName());
-//
-//                    cell = row.createCell(Utils.ONE_INTEGER);
-//                    cell.setCellValue(con.getTotalQuantityReceived());
-//
-//                    cell = row.createCell(Utils.TWO_INTEGER);
-//                    cell.setCellValue(con.getTotalQuantityConsumed());
-//
-//                    cell = row.createCell(Utils.THREE_INTEGER);
-//                    cell.setCellValue(con.getTotalQuantityWasted());
-//
-//                    cell = row.createCell(Utils.FOUR_INTEGER);
-//                    cell.setCellValue(con.getStockBalance());
-//
-//                });
 
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
-//        try {
-//
-//            FileOutputStream outputStream = new FileOutputStream(fileName);
-//            workbook.write(outputStream);
-//
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(PharmacyReportsServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(PharmacyReportsServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
@@ -122,6 +74,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
+<<<<<<< HEAD
 	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
             String reportFolder) {
  
@@ -137,12 +90,26 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 		
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
         System.out.println("File name: "+ fileName);
+=======
+	@Override
+    public String getPharmacyStockroomConsumptionByDate(String reportId, 
+            List<PharmacyConsumptionSummary> reportData, String reportFolder) {
+      
+
+        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+
+>>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
+<<<<<<< HEAD
             String[] HEADERS = {Utils.SSR_ITEM_HEADER,Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
                 Utils.SSR_EXPIRATION_HEADER, Utils.SSR_QUANTITY_HEADER};
+=======
+            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
+                Utils.DCR_TOTAL_QUANTITY_ISSUED_HEADER, Utils.DCR_STOCK_BALANCE_HEADER};
+>>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader(HEADERS));
@@ -151,9 +118,15 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                     .forEach(con -> {
 
                         try {
+<<<<<<< HEAD
                             csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
                                     con.getItemBatch(),
                                     con.getExp(), con.getQuantity());
+=======
+                            csvPrinter.printRecord(con.getItem().getName(), 
+                                    con.getTotalQuantityReceived(),
+                                    con.getTotalQuantityConsumed(), con.getStockBalance());
+>>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
                         } catch (IOException ex) {
                             LOG.error(ex.getMessage());
                         }

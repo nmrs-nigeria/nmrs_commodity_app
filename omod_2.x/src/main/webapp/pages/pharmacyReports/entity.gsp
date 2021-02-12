@@ -82,8 +82,8 @@
             <li><label>Start Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "stockroomConsumption_startDate",
-                        id: "stockroomConsumption_startDate",
+                        formFieldName: "startDate_stc",
+                        id: "startDate_stc",
                         label: "",
                         useTime: false
                 ])}
@@ -94,8 +94,8 @@
             <li><label>End Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "stockroomConsumption_endDate",
-                        id: "stockroomConsumption_endDate",
+                        formFieldName: "endDate_stc",
+                        id: "endDate_stc",
                         label: "",
                         useTime: false
                 ])}
@@ -104,7 +104,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_StockroomConsumption()">Generate Report</a></li>
         </ul>
     </fieldset>
 

@@ -20,7 +20,12 @@ public interface IPharmacyReportsService {
 	String getPharmacyConsumptionByDate(String reportId,
 	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
 
+<<<<<<< HEAD
 	String getDispensaryStockOnHandByDate(String reportId,
 	        List<ItemExpirationSummaryReport> reportData, String reportFolder);
+=======
+	String getPharmacyStockroomConsumptionByDate(String reportId,
+	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
+>>>>>>> a9031794e93461fed669b7133471ebddfa02dddd
 
 }
