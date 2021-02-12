@@ -56,6 +56,23 @@
             PharmacyReportsFunctions.onChangeDatePicker('endDate-display', function (value) {
                 $scope.endDate = value;
             });
+
+            PharmacyReportsFunctions.onChangeDatePicker('stockonhandDispensary_startDate-display', function (value) {
+                $scope.stockonhandDispensary_startDate = value;
+            });
+
+            PharmacyReportsFunctions.onChangeDatePicker('stockonhandDispensary_endDate-display', function (value) {
+                $scope.stockonhandDispensary_endDate = value;
+            });
+
+            PharmacyReportsFunctions.onChangeDatePicker('stockonhandStockroom_startDate-display', function (value) {
+                $scope.stockonhandStockroom_startDate = value;
+            });
+
+            PharmacyReportsFunctions.onChangeDatePicker('stockonhandStockroom_endDate-display', function (value) {
+                $scope.stockonhandStockroom_endDate = value;
+            });
+
         }
 
 
@@ -95,7 +112,10 @@
             //   var stockroom = $scope.expiringStock_stockroom;
             var startDate = $scope.startDate;
             var endDate = $scope.endDate;
-
+            
+            console.log("Start Date: " + startDate);
+			console.log("End Date: " + endDate);
+			
             var parametersAreValid = checkParameters({
                 "startDate": startDate,
                 "endDate": endDate
@@ -135,9 +155,12 @@
 
         $scope.generateReport_DispensaryStockOnHand = function () {
             //   var stockroom = $scope.expiringStock_stockroom;
-            var startDate = $scope.startDate;
-            var endDate = $scope.endDate;
-
+            var startDate = $scope.stockonhandDispensary_startDate;
+            var endDate = $scope.stockonhandDispensary_endDate;
+   
+            console.log("Start Date: " + startDate);
+			console.log("End Date: " + endDate);
+			
             var parametersAreValid = checkParameters({
                 "startDate": startDate,
                 "endDate": endDate
@@ -173,9 +196,50 @@
 
         };
 
+        $scope.generateReport_StockroomStockOnHand = function () {
+            //   var stockroom = $scope.expiringStock_stockroom;
+            var startDate = $scope.stockonhandStockroom_startDate;
+            var endDate = $scope.stockonhandStockroom_endDate;
+   
+            console.log("Start Date: " + startDate);
+			console.log("End Date: " + endDate);
+			
+            var parametersAreValid = checkParameters({
+                "startDate": startDate,
+                "endDate": endDate
+            });
+
+            console.log('parametersvalid output');
+            console.log(parametersAreValid);
+
+            if (parametersAreValid) {
+
+                PharmacyReportsRestfulService.getReport("stockroom_stockonhand",PharmacyReportsFunctions.formatDate(startDate), 
+                PharmacyReportsFunctions.formatDate(endDate), function (data) {
+                    //	$scope.expiringStockReport = data;
+                    console.log('logging error data');
+                    console.log(data.error);
+                    if (data.error !== undefined) {
+                        $scope.loading = false;
+                        alert('error occurred\n' + data.error);
+                    } else {
+                        $scope.loading = false;
+                        return printReport(data.results);
+                    }
+
+                });
 
 
+            } else {
+                $scope.loading = false;
+                console.log("The start date is " + startDate);
+                console.log("The end date is " + endDate);
+                alert('select a start and end date to continue');
+            }
 
+        };
+
+        
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericEntityController, self, {

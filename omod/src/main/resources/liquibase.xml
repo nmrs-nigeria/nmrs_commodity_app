@@ -4635,5 +4635,44 @@ and a.department_id=c.department_id
 GROUP BY b.item_batch, b.expiration, a.department_id					
 		</createView>  
 	</changeSet>
+	
+	  <changeSet  id="openhmis.inventory-v2.2.2" author="Toyeeb Abdulfatai">  
+	    <createView 
+	    	replaceIfExists="true" 
+	    	viewName="inv_view_item_expiration_by_dept_pharm">
+SELECT c.consumption_id, b.item_id, b.item_batch, a.commodity_type, a.date_created, b.expiration, b.quantity - coalesce(SUM(c.quantity + c.wastage), 0) as quantity, a.department_id
+FROM inv_stock_operation a 
+INNER JOIN inv_stock_operation_item b 
+ON a.stock_operation_id=b.operation_id
+AND a.department_id is not null
+LEFT JOIN inv_pharmacy_consumption c
+ON b.item_batch = c.batch_number
+and a.department_id=c.department_id
+where commodity_type='pharmacy'
+GROUP BY b.item_batch, b.expiration, a.department_id, a.commodity_type, a.date_created				
+		</createView>  
+	</changeSet>
+    
+      <changeSet  id="openhmis.inventory-v2.2.3" author="Toyeeb Abdulfatai">  
+	    <createView 
+	    	replaceIfExists="true" 
+	    	viewName="inv_view_stockroom_stockonhand">
+select tb1.stock_operation_id, tb2.item_batch, tb2.expiration, tb1.department_id, tb1.commodity_type, tb1.date_created, tb1.qtyReceived, tb2.qtyDistribute, (tb1.qtyReceived - qtyDistribute) as quantity, tb2.item_id 
+from (select a.stock_operation_id, b.item_batch, b.expiration, a.department_id, a.commodity_type, a.date_created, sum(b.quantity) as qtyReceived, b.item_id
+from inv_stock_operation a
+inner join inv_stock_operation_item b 
+ON a.stock_operation_id=b.operation_id
+where a.operation_type_id=4 and a.commodity_type='pharmacy' 
+group by b.item_id 
+order by b.item_id) as tb1 INNER JOIN (select a.stock_operation_id, b.item_batch, b.expiration, a.department_id, a.commodity_type, a.date_created, sum(b.quantity) as qtyDistribute, b.item_id
+from inv_stock_operation a
+inner join inv_stock_operation_item b 
+ON a.stock_operation_id=b.operation_id
+where a.operation_type_id=3 and a.commodity_type='pharmacy'
+group by b.item_id
+order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id	
+		</createView>  
+	</changeSet>
+    
     
 </databaseChangeLog>

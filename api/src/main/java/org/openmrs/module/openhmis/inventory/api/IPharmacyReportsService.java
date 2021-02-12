@@ -7,6 +7,8 @@ package org.openmrs.module.openhmis.inventory.api;
 
 import java.util.Date;
 import java.util.List;
+
+import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 
@@ -17,5 +19,8 @@ public interface IPharmacyReportsService {
 
 	String getPharmacyConsumptionByDate(String reportId,
 	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
+
+	String getDispensaryStockOnHandByDate(String reportId,
+	        List<ItemExpirationSummaryReport> reportData, String reportFolder);
 
 }

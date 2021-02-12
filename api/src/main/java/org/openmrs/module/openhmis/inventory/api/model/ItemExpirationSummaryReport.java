@@ -6,28 +6,24 @@
 package org.openmrs.module.openhmis.inventory.api.model;
 
 import java.util.Date;
+import java.util.List;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 
 /**
  * @author MORRISON.I
  */
-public class ItemExpirationSummary implements OpenmrsObject {
+public class ItemExpirationSummaryReport implements OpenmrsObject {
 
 	private Item item;
 	private Department department;
 	private Integer quantity;
 	private Date expiration;
-	//private Integer itemExpirationId;
 	private String itemBatch;
-
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+	private String uuid;
+	private Integer consumptionId;
 
 	public Item getItem() {
 		return item;
@@ -35,6 +31,14 @@ public class ItemExpirationSummary implements OpenmrsObject {
 
 	public void setItem(Item item) {
 		this.item = item;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
 	public Integer getQuantity() {
@@ -61,24 +65,22 @@ public class ItemExpirationSummary implements OpenmrsObject {
 		this.itemBatch = itemBatch;
 	}
 
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	@Override
 	public Integer getId() {
-		return null;
+		return this.consumptionId;
 	}
 
 	@Override
 	public void setId(Integer intgr) {
-
-	}
-
-	@Override
-	public String getUuid() {
-		return null;
-	}
-
-	@Override
-	public void setUuid(String string) {
-
+		this.consumptionId = intgr;
 	}
 
 }

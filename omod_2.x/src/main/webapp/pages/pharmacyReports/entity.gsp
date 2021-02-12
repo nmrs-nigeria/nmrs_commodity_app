@@ -82,8 +82,8 @@
             <li><label>Start Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "startDate",
-                        id: "startDate",
+                        formFieldName: "stockroomConsumption_startDate",
+                        id: "stockroomConsumption_startDate",
                         label: "",
                         useTime: false
                 ])}
@@ -94,8 +94,8 @@
             <li><label>End Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "endDate",
-                        id: "endDate",
+                        formFieldName: "stockroomConsumption_endDate",
+                        id: "stockroomConsumption_endDate",
                         label: "",
                         useTime: false
                 ])}
@@ -119,8 +119,8 @@
             <li><label>Start Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "startDate",
-                        id: "startDate",
+                        formFieldName: "stockonhandDispensary_startDate",
+                        id: "stockonhandDispensary_startDate",
                         label: "",
                         useTime: false
                 ])}
@@ -131,8 +131,8 @@
             <li><label>End Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "endDate",
-                        id: "endDate",
+                        formFieldName: "stockonhandDispensary_endDate",
+                        id: "stockonhandDispensary_endDate",
                         label: "",
                         useTime: false
                 ])}
@@ -156,8 +156,8 @@
             <li><label>Start Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "startDate",
-                        id: "startDate",
+                        formFieldName: "stockonhandStockroom_startDate",
+                        id: "stockonhandStockroom_startDate",
                         label: "",
                         useTime: false
                 ])}
@@ -168,8 +168,8 @@
             <li><label>End Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "endDate",
-                        id: "endDate",
+                        formFieldName: "stockonhandStockroom_endDate",
+                        id: "stockonhandStockroom_endDate",
                         label: "",
                         useTime: false
                 ])}

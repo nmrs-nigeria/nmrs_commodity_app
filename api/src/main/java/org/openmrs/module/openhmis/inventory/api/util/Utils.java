@@ -133,6 +133,13 @@ public class Utils {
 	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
 	public static final String DCR_STOCK_BALANCE_HEADER = "Stock balance";
 
+	public static final String DISPENSARY_STOCKONHAND_REPORT_SHEET_NAME = "Dispensary Stock on Hand Report";
+	public static final String SSR_DEPARTMENT_HEADER = "Department";
+	public static final String SSR_ITEM_HEADER = "Item";
+	public static final String SSR_BATCH_HEADER = "Batch";
+	public static final String SSR_EXPIRATION_HEADER = "Expiration";
+	public static final String SSR_QUANTITY_HEADER = "Quantity";
+
 	//integer constant
 	public static final int ZERO_INTEGER = 0;
 	public static final int ONE_INTEGER = 1;
