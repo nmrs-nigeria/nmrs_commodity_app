@@ -222,11 +222,20 @@
                 "icon": "icon-list",
                 "requiredPrivilege": "Task: Pharmacy Menu"
             },
+               {
+                "id": "openhmis.inventory.pharmacyViewStockOperationLink",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.operations",
+                "url": "openhmis.inventory/pharmacyStockOperations/entities.page",
+                "icon": "icon-list",
+                "requiredPrivilege": "Task: View Stock Operations"
+            },
              {
                 "id": "openhmis.inventory.inventoryPharmacyReport",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
-                "label": "openhmis.inventory.admin.pharmacyReports",
+                "label": "openhmis.inventory.admin.operations",
                 "url": "openhmis.inventory/pharmacyReports/entities.page",
                 "icon": "icon-share-alt",
                 "requiredPrivilege": "Task: Access Inventory Reports"
