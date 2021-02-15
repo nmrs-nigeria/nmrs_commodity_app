@@ -148,21 +148,26 @@ public class PharmacyReportsController {
 
 		for (Department d : dispensarys) {
 
-			searchConsumptionSummary.setDepartment(d);
-			//  searchConsumptionSummary.setItem(searchItem);
-			searchConsumptionSummary.setStartDate(startDate);
-			searchConsumptionSummary.setEndDate(endDate);
-			searchConsumptionSummary.setOperationStatus(status);
-			searchConsumptionSummary.setOperationType(stockOperationType);
+			try {
+				searchConsumptionSummary.setDepartment(d);
+				//  searchConsumptionSummary.setItem(searchItem);
+				searchConsumptionSummary.setStartDate(startDate);
+				searchConsumptionSummary.setEndDate(endDate);
+				searchConsumptionSummary.setOperationStatus(status);
+				searchConsumptionSummary.setOperationType(stockOperationType);
 
-			List<StockOperation> stockOps = null;
+				List<StockOperation> stockOps = null;
 
-			stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+				stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
 
-			System.out.println("stock operations result: " + stockOps.size());
+				System.out.println("stock operations result: " + stockOps.size());
 
-			finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummary(stockOps,
-			    searchConsumptionSummary, null, distinctItems));
+				finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummary(stockOps,
+				    searchConsumptionSummary, null, distinctItems));
+
+			} catch (Exception ex) {
+				System.out.println(ex.getMessage());
+			}
 
 		}
 
