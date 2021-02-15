@@ -55,6 +55,8 @@ public class DictionaryMaps {
 		this.departmentMappings.put("7d4b8a26-9cf8-4d7a-8767-aaac21aca521", 16); //TB
 		this.departmentMappings.put("1f2ac9f2-d2db-4933-b04d-0b85455a141b", 17); //VCT
 		this.departmentMappings.put("36ccbd54-ab90-4bab-88b9-eb7bd7e1df1a", 18); //EID
+		this.departmentMappings.put("9e059670-5576-4e8a-b770-10f8cee9f36e", 19); //dispensary
+		this.departmentMappings.put("4e72896f-f8d4-493d-bf2c-11afd0c32da3", 20); //com-pharmacy
 
 	}
 

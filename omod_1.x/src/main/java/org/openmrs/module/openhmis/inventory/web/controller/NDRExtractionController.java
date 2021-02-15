@@ -534,6 +534,8 @@ public class NDRExtractionController {
                 NewConsumptionType newConsumptionType = new NewConsumptionType();
                 newConsumptionType.setConsumptionDate(dateFormat.format(con.getConsumptionDate()));
                 newConsumptionType.setConsumptionUUID(con.getUuid());
+                newConsumptionType.setTestingPointCode(dictionaryMaps
+                        .getDepartmentMappings().get(con.getDepartment().getUuid()));
                 newConsumptionType.setItemBatch(con.getBatchNumber());
                 newConsumptionType.setItemCode(dictionaryMaps.getItemMappings().get(con.getItem().getUuid()));
                 newConsumptionType.setTotalUsed(BigInteger.valueOf(con.getQuantity()));
@@ -585,8 +587,8 @@ public class NDRExtractionController {
             try {
                 if (a.getTotalQuantityReceived() > 0 || a.getTotalQuantityConsumed() > 0) {
                     ConsumptionSummaryType consumptionSummaryType = new ConsumptionSummaryType();
-//                    consumptionSummaryType.setDepartmentCode(dictionaryMaps.getDepartmentMappings().
-//                            get(a.getDepartment().getUuid()));
+                    consumptionSummaryType.setDepartmentCode(dictionaryMaps.getDepartmentMappings().
+                            get(a.getDepartment().getUuid()));
                     consumptionSummaryType.setItemCode(dictionaryMaps.getItemMappings().get(a.getItem().getUuid()));
                     consumptionSummaryType.setStockBalance(BigInteger.valueOf(a.getStockBalance()));
                     consumptionSummaryType.setTotalQuantityConsumed(BigInteger.valueOf(a.getTotalQuantityConsumed()));
@@ -621,12 +623,12 @@ public class NDRExtractionController {
 					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
 					        .get(ConstantUtils.DEPARTMENT_STRING));
 				}
-				if (st.getPatient() != null) {
-					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
-					        .get(ConstantUtils.PATIENT_STRING));
-					distributionType.setPatientID(RestUtils.getPatientId(st.getPatient()));
-
-				}
+				//				if (st.getPatient() != null) {
+				//					distributionType.setDistributeTypeCode(dictionaryMaps.getDistributeToMappings()
+				//					        .get(ConstantUtils.PATIENT_STRING));
+				//					distributionType.setPatientID(RestUtils.getPatientId(st.getPatient()));
+				//
+				//				}
 				distributionType.setOperationDate(dateFormat.format(st.getDateCreated()));
 				distributionType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
