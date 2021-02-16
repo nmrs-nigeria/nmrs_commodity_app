@@ -17,14 +17,14 @@
     'use strict';
 
     var base = angular.module('app.genericEntityController');
-    base.controller("PharmacyStockOperationController", PharmacyStockOperationController);
-    PharmacyStockOperationController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory',
-        'PharmacyStockOperationModel', 'PharmacyStockOperationRestfulService', 'PaginationService', 'PharmacyStockOperationFunctions', 'CookiesService'];
+    base.controller("StockOperationController", StockOperationController);
+    StockOperationController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory',
+        'StockOperationModel', 'StockOperationRestfulService', 'PaginationService', 'StockOperationFunctions', 'CookiesService'];
 
-    function PharmacyStockOperationController($stateParams, $injector, $scope, $filter, EntityRestFactory, PharmacyStockOperationModel, PharmacyStockOperationRestfulService, PaginationService, PharmacyStockOperationFunctions, CookiesService) {
+    function StockOperationController($stateParams, $injector, $scope, $filter, EntityRestFactory, StockOperationModel, StockOperationRestfulService, PaginationService, StockOperationFunctions, CookiesService) {
         var self = this;
         var entity_name_message_key = "openhmis.inventory.stock.operation.name";
-        var REST_ENTITY_NAME = "pharmacyStockOperation";
+        var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
@@ -54,7 +54,7 @@
                 $scope.stockOperationItem = self.stockOperationItem;
                 $scope.stockOperationTransaction = self.stockOperationTransaction;
                 $scope.invokeOperation = self.invokeOperation;
-                $scope.showOperationActionsDialog = PharmacyStockOperationFunctions.showOperationActionsDialog;
+                $scope.showOperationActionsDialog = StockOperationFunctions.showOperationActionsDialog;
 
                 self.stockOperation(uuid, REST_ENTITY_NAME);
                 self.stockOperationItem(uuid, $scope.stockOperationItemCurrentPage);
@@ -63,14 +63,14 @@
             }
 
         self.invokeOperation = self.invokeOperation || function(status, uuid){
-                PharmacyStockOperationRestfulService.invokeOperation(status, uuid, REST_ENTITY_NAME, self.onLoadInvokeOperationSuccessful);
+                StockOperationRestfulService.invokeOperation(status, uuid, REST_ENTITY_NAME, self.onLoadInvokeOperationSuccessful);
             }
 
         /**
          * @type {Function}
          */
         self.stockOperation = self.stockOperation || function(uuid, rest_entity_name){
-                PharmacyStockOperationRestfulService.stockOperation(uuid, rest_entity_name, self.onLoadStockOperationSuccessful);
+                StockOperationRestfulService.stockOperation(uuid, rest_entity_name, self.onLoadStockOperationSuccessful);
             }
 
         self.stockOperationItem = self.stockOperationItem || function(uuid, stockOperationItemCurrentPage){
@@ -118,7 +118,7 @@
 
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function(){
-                return PharmacyStockOperationFunctions.addMessageLabels();
+                return StockOperationFunctions.addMessageLabels();
             }
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
@@ -127,7 +127,7 @@
             $filter: $filter,
             $stateParams: $stateParams,
             EntityRestFactory: EntityRestFactory,
-            GenericMetadataModel: PharmacyStockOperationModel
+            GenericMetadataModel: StockOperationModel
         });
     }
 })();

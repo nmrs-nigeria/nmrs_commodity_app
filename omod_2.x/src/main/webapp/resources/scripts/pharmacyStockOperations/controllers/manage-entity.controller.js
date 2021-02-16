@@ -18,14 +18,14 @@
 
     var base = angular.module('app.genericManageController');
     base.controller("ManageStockOperationsController", ManageStockOperationsController);
-    ManagePharmacyStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
-        'PaginationService', 'PharmacyStockOperationModel', 'CookiesService', 'PharmacyStockOperationRestfulService'];
+    ManageStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
+        'PaginationService', 'StockOperationModel', 'CookiesService', 'StockOperationRestfulService'];
 
-    function ManagePharmacyStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
-                                             PharmacyStockOperationModel, CookiesService, PharmacyStockOperationRestfulService) {
+    function ManageStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
+                                             StockOperationModel, CookiesService, StockOperationRestfulService) {
         var self = this;
         var entity_name = emr.message("openhmis.inventory.stock.operation.name");
-        var REST_ENTITY_NAME = "pharmacyStockOperation";
+        var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
@@ -86,7 +86,7 @@
 
         self.searchItems = self.searchItems || function(search){
                 $scope.operationItem = {};
-                return PharmacyStockOperationRestfulService.searchStockOperationItems(INVENTORY_MODULE_NAME, search);
+                return StockOperationRestfulService.searchStockOperationItems(INVENTORY_MODULE_NAME, search);
             }
 
         self.selectItem = self.selectItem || function(item){
@@ -94,11 +94,11 @@
             }
 
         self.loadStockOperationTypes = self.loadStockOperationTypes || function(){
-                PharmacyStockOperationRestfulService.loadStockOperationTypes("stockOperationType", self.onLoadStockOperationTypesSuccessful);
+                StockOperationRestfulService.loadStockOperationTypes("stockOperationType", self.onLoadStockOperationTypesSuccessful);
             }
 
         self.loadStockRooms = self.loadStockRooms || function(){
-                PharmacyStockOperationRestfulService.loadStockRooms("stockroom", self.onLoadStockRoomSuccessful);
+                StockOperationRestfulService.loadStockRooms("stockroom", self.onLoadStockRoomSuccessful);
             }
 
 
@@ -122,7 +122,7 @@
             EntityRestFactory: EntityRestFactory,
             PaginationService: PaginationService,
             CssStylesFactory: CssStylesFactory,
-            GenericMetadataModel: PharmacyStockOperationModel,
+            GenericMetadataModel: StockOperationModel,
             CookiesService: CookiesService
         });
     }

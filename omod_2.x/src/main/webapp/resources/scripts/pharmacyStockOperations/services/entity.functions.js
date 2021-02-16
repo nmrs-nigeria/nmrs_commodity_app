@@ -17,11 +17,11 @@
     'use strict';
 
     var app = angular.module('app.stockOperationFunctionsFactory', []);
-    app.service('PharmacyStockOperationFunctions', PharmacyStockOperationFunctions);
+    app.service('StockOperationFunctions', StockOperationFunctions);
 
-    PharmacyStockOperationFunctions.$inject = ['EntityFunctions'];
+    StockOperationFunctions.$inject = ['EntityFunctions'];
 
-    function PharmacyStockOperationFunctions(EntityFunctions) {
+    function StockOperationFunctions(EntityFunctions) {
         var service;
 
         service = {

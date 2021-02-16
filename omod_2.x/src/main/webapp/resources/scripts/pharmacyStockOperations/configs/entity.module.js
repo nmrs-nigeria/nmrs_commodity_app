@@ -38,13 +38,13 @@
             $stateProvider.state('/', {
                 url: '/',
                 templateUrl: 'manageEntities.page',
-                controller: 'ManagePharmacyStockOperationsController'
+                controller: 'ManageStockOperationsController'
             }).state('edit', {
                 url: '/:uuid',
                 views: {
                     '': {
                         templateUrl: 'entity.page',
-                        controller: 'PharmacyStockOperationController'
+                        controller: 'StockOperationController'
                     }
                 }
             }).state('new', {
@@ -52,7 +52,7 @@
                 views: {
                     '': {
                         templateUrl: 'entity.page',
-                        controller: 'PharmacyStockOperationController'
+                        controller: 'StockOperationController'
                     }
                 }
             });
