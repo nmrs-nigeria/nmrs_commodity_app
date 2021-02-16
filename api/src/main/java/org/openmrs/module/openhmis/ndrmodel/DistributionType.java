@@ -60,7 +60,7 @@ import javax.xml.bind.annotation.XmlType;
         "sourceStockroomCode",
         "distributeTypeCode",
         "departmentCode",
-        "patientID",
+        //      "patientID",
         "operationItem"
 })
 public class DistributionType {
@@ -76,8 +76,8 @@ public class DistributionType {
 	@XmlElement(name = "DepartmentCode")
 	@XmlSchemaType(name = "positiveInteger")
 	protected int departmentCode;
-	@XmlElement(name = "PatientID", required = true)
-	protected String patientID;
+	//	@XmlElement(name = "PatientID", required = true)
+	//	protected String patientID;
 	@XmlElement(name = "OperationItem")
 	protected List<OperationItemType> operationItem;
 
@@ -163,17 +163,17 @@ public class DistributionType {
 	 * Gets the value of the patientID property.
 	 * @return possible object is {@link String }
 	 */
-	public String getPatientID() {
-		return patientID;
-	}
-
-	/**
-	 * Sets the value of the patientID property.
-	 * @param value allowed object is {@link String }
-	 */
-	public void setPatientID(String value) {
-		this.patientID = value;
-	}
+	//	public String getPatientID() {
+	//		return patientID;
+	//	}
+	//
+	//	/**
+	//	 * Sets the value of the patientID property.
+	//	 * @param value allowed object is {@link String }
+	//	 */
+	//	public void setPatientID(String value) {
+	//		this.patientID = value;
+	//	}
 
 	/**
 	 * Gets the value of the operationItem property.
