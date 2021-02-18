@@ -23,8 +23,8 @@
 
     function PharmacyStockOperationController($stateParams, $injector, $scope, $filter, EntityRestFactory, PharmacyStockOperationModel, PharmacyStockOperationRestfulService, PaginationService, PharmacyStockOperationFunctions, CookiesService) {
         var self = this;
-        var entity_name_message_key = "openhmis.inventory.stock.operation.name";
-        var REST_ENTITY_NAME = "pharmacyStockOperation";
+        var entity_name_message_key = "openhmis.inventory.stock.operation.name.pharmacy";
+        var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function() {
@@ -78,7 +78,7 @@
                 CookiesService.set(uuid + 'stockOperationItemCurrentPage', stockOperationItemCurrentPage);
                 CookiesService.set(uuid + 'stockOperationItemLimit', $scope.stockOperationItemLimit);
 
-                StockOperationRestfulService.stockOperationItem(
+                PharmacyStockOperationRestfulService.stockOperationItem(
                     uuid, CookiesService.get(uuid + 'stockOperationItemCurrentPage'),
                     CookiesService.get(uuid + 'stockOperationItemLimit'),
                     self.onLoadStockOperationItemSuccessful
@@ -90,7 +90,7 @@
                 CookiesService.set(uuid + 'stockOperationTransactionCurrentPage', stockOperationTransactionCurrentPage);
                 CookiesService.set(uuid + 'stockOperationTransactionLimit', $scope.stockOperationTransactionLimit);
 
-                StockOperationRestfulService.stockOperationTransaction(
+                PharmacyStockOperationRestfulService.stockOperationTransaction(
                     uuid, CookiesService.get(uuid + 'stockOperationTransactionCurrentPage'),
                     CookiesService.get(uuid + 'stockOperationTransactionLimit'),
                     self.onLoadStockOperationTransactionSuccessful

@@ -13,7 +13,7 @@
 			label: "${ ui.message("openhmis.inventory.admin.operations")}",
 			link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/pharmacyStockOperations/entities.page##/'
 		},
-		{label: "${ui.message("openhmis.inventory.stock.operation.name")}"}
+		{label: "${ui.message("openhmis.inventory.stock.operation.name.pharmacy")}"}
 	];
 
 	jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));

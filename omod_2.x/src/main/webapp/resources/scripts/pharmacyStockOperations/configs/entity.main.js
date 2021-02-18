@@ -81,5 +81,8 @@ emr.loadMessages([
     "openhmis.commons.general.postSearchMessage",
     "openhmis.commons.general.status",
     "openhmis.inventory.operations.adjustmentKind",
-    "openhmis.inventory.operations.disposedType"
+    "openhmis.inventory.operations.disposedType",
+    "openhmis.inventory.stock.operation.name.pharmacy",
+    "openhmis.inventory.admin.operations.pharmacy",
+    "openhmis.inventory.operations.pharmacyOperation"
 ]);

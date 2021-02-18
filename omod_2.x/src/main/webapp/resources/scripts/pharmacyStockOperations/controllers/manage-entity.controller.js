@@ -17,15 +17,15 @@
     'use strict';
 
     var base = angular.module('app.genericManageController');
-    base.controller("ManageStockOperationsController", ManageStockOperationsController);
+    base.controller("ManagePharmacyStockOperationsController", ManagePharmacyStockOperationsController);
     ManagePharmacyStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
         'PaginationService', 'PharmacyStockOperationModel', 'CookiesService', 'PharmacyStockOperationRestfulService'];
 
     function ManagePharmacyStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
                                              PharmacyStockOperationModel, CookiesService, PharmacyStockOperationRestfulService) {
         var self = this;
-        var entity_name = emr.message("openhmis.inventory.stock.operation.name");
-        var REST_ENTITY_NAME = "pharmacyStockOperation";
+        var entity_name = emr.message("openhmis.inventory.stock.operation.name.pharmacy");
+        var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName || function() {
@@ -76,7 +76,7 @@
                     operationItem_uuid = $scope.operationItem.uuid;
                 }
 
-                StockOperationRestfulService.searchStockOperation(
+                PharmacyStockOperationRestfulService.searchStockOperation(
                     REST_ENTITY_NAME, currentPage, $scope.limit,
                     operationItem_uuid, $scope.operation_status,
                     operationType_uuid, stockroom_uuid,
