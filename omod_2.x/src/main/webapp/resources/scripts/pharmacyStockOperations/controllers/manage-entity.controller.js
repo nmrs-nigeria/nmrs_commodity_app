@@ -17,14 +17,14 @@
     'use strict';
 
     var base = angular.module('app.genericManageController');
-    base.controller("ManageStockOperationsController", ManageStockOperationsController);
-    ManageStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
-        'PaginationService', 'StockOperationModel', 'CookiesService', 'StockOperationRestfulService'];
+    base.controller("ManagePharmacyStockOperationsController", ManagePharmacyStockOperationsController);
+    ManagePharmacyStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
+        'PaginationService', 'PharmacyStockOperationModel', 'CookiesService', 'PharmacyStockOperationRestfulService'];
 
-    function ManageStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
-                                             StockOperationModel, CookiesService, StockOperationRestfulService) {
+    function ManagePharmacyStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
+                                             PharmacyStockOperationModel, CookiesService, PharmacyStockOperationRestfulService) {
         var self = this;
-        var entity_name = emr.message("openhmis.inventory.stock.operation.name");
+        var entity_name = emr.message("openhmis.inventory.stock.operation.name.pharmacy");
         var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
@@ -76,7 +76,7 @@
                     operationItem_uuid = $scope.operationItem.uuid;
                 }
 
-                StockOperationRestfulService.searchStockOperation(
+                PharmacyStockOperationRestfulService.searchStockOperation(
                     REST_ENTITY_NAME, currentPage, $scope.limit,
                     operationItem_uuid, $scope.operation_status,
                     operationType_uuid, stockroom_uuid,
@@ -86,7 +86,7 @@
 
         self.searchItems = self.searchItems || function(search){
                 $scope.operationItem = {};
-                return StockOperationRestfulService.searchStockOperationItems(INVENTORY_MODULE_NAME, search);
+                return PharmacyStockOperationRestfulService.searchStockOperationItems(INVENTORY_MODULE_NAME, search);
             }
 
         self.selectItem = self.selectItem || function(item){
@@ -94,11 +94,11 @@
             }
 
         self.loadStockOperationTypes = self.loadStockOperationTypes || function(){
-                StockOperationRestfulService.loadStockOperationTypes("stockOperationType", self.onLoadStockOperationTypesSuccessful);
+                PharmacyStockOperationRestfulService.loadStockOperationTypes("stockOperationType", self.onLoadStockOperationTypesSuccessful);
             }
 
         self.loadStockRooms = self.loadStockRooms || function(){
-                StockOperationRestfulService.loadStockRooms("stockroom", self.onLoadStockRoomSuccessful);
+                PharmacyStockOperationRestfulService.loadStockRooms("stockroom", self.onLoadStockRoomSuccessful);
             }
 
 
@@ -122,7 +122,7 @@
             EntityRestFactory: EntityRestFactory,
             PaginationService: PaginationService,
             CssStylesFactory: CssStylesFactory,
-            GenericMetadataModel: StockOperationModel,
+            GenericMetadataModel: PharmacyStockOperationModel,
             CookiesService: CookiesService
         });
     }

@@ -226,7 +226,7 @@
                 "id": "openhmis.inventory.pharmacyViewStockOperationLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
-                "label": "openhmis.inventory.admin.operations",
+                "label": "openhmis.inventory.admin.operations.pharmacy",
                 "url": "openhmis.inventory/pharmacyStockOperations/entities.page",
                 "icon": "icon-list",
                 "requiredPrivilege": "Task: View Stock Operations"

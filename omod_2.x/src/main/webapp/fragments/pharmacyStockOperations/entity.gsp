@@ -1,7 +1,7 @@
 <table class="header-title">
     <tr>
         <td>
-            <h1>${ui.message('openhmis.inventory.stock.operation.name')}</h1>
+            <h1>${ui.message('openhmis.inventory.stock.operation.name.pharmacy')}</h1>
         </td>
         <td>
             <span style="float:right;">

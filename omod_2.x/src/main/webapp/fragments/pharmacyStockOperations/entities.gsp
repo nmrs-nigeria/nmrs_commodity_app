@@ -12,13 +12,13 @@
                     <% }
                 }
                 else{ %>
-                    ${ui.message('openhmis.inventory.admin.operations')}
+                    ${ui.message('openhmis.inventory.admin.operations.pharmacy')}
             <%  } %>
         </span>
         <span style="float:right;">
-            <a class="button confirm" href="/${ ui.contextPath() }/openhmis.inventory/createOperation/entities.page">
+            <a class="button confirm" href="/${ ui.contextPath() }/openhmis.inventory/pharmacyOperation/entities.page">
                 <i class="icon-plus"></i>
-                ${ui.message('openhmis.inventory.operations.createOperation')}
+                ${ui.message('openhmis.inventory.operations.pharmacyOperation')}
             </a>
         </span>
 

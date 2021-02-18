@@ -16,11 +16,11 @@
 (function() {
     'use strict';
 
-    angular.module('app.restfulServices').service('StockOperationRestfulService', StockOperationRestfulService);
+    angular.module('app.restfulServices').service('PharmacyStockOperationRestfulService', PharmacyStockOperationRestfulService);
 
-    StockOperationRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
+    PharmacyStockOperationRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
 
-    function StockOperationRestfulService(EntityRestFactory, PaginationService) {
+    function PharmacyStockOperationRestfulService(EntityRestFactory, PaginationService) {
         var service;
 
         service = {

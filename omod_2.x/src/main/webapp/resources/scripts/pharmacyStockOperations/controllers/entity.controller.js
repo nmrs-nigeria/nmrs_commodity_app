@@ -17,13 +17,13 @@
     'use strict';
 
     var base = angular.module('app.genericEntityController');
-    base.controller("StockOperationController", StockOperationController);
-    StockOperationController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory',
-        'StockOperationModel', 'StockOperationRestfulService', 'PaginationService', 'StockOperationFunctions', 'CookiesService'];
+    base.controller("PharmacyStockOperationController", PharmacyStockOperationController);
+    PharmacyStockOperationController.$inject = ['$stateParams', '$injector', '$scope', '$filter', 'EntityRestFactory',
+        'PharmacyStockOperationModel', 'PharmacyStockOperationRestfulService', 'PaginationService', 'PharmacyStockOperationFunctions', 'CookiesService'];
 
-    function StockOperationController($stateParams, $injector, $scope, $filter, EntityRestFactory, StockOperationModel, StockOperationRestfulService, PaginationService, StockOperationFunctions, CookiesService) {
+    function PharmacyStockOperationController($stateParams, $injector, $scope, $filter, EntityRestFactory, PharmacyStockOperationModel, PharmacyStockOperationRestfulService, PaginationService, PharmacyStockOperationFunctions, CookiesService) {
         var self = this;
-        var entity_name_message_key = "openhmis.inventory.stock.operation.name";
+        var entity_name_message_key = "openhmis.inventory.stock.operation.name.pharmacy";
         var REST_ENTITY_NAME = "stockOperation";
 
         // @Override
@@ -54,7 +54,7 @@
                 $scope.stockOperationItem = self.stockOperationItem;
                 $scope.stockOperationTransaction = self.stockOperationTransaction;
                 $scope.invokeOperation = self.invokeOperation;
-                $scope.showOperationActionsDialog = StockOperationFunctions.showOperationActionsDialog;
+                $scope.showOperationActionsDialog = PharmacyStockOperationFunctions.showOperationActionsDialog;
 
                 self.stockOperation(uuid, REST_ENTITY_NAME);
                 self.stockOperationItem(uuid, $scope.stockOperationItemCurrentPage);
@@ -63,14 +63,14 @@
             }
 
         self.invokeOperation = self.invokeOperation || function(status, uuid){
-                StockOperationRestfulService.invokeOperation(status, uuid, REST_ENTITY_NAME, self.onLoadInvokeOperationSuccessful);
+                PharmacyStockOperationRestfulService.invokeOperation(status, uuid, REST_ENTITY_NAME, self.onLoadInvokeOperationSuccessful);
             }
 
         /**
          * @type {Function}
          */
         self.stockOperation = self.stockOperation || function(uuid, rest_entity_name){
-                StockOperationRestfulService.stockOperation(uuid, rest_entity_name, self.onLoadStockOperationSuccessful);
+                PharmacyStockOperationRestfulService.stockOperation(uuid, rest_entity_name, self.onLoadStockOperationSuccessful);
             }
 
         self.stockOperationItem = self.stockOperationItem || function(uuid, stockOperationItemCurrentPage){
@@ -78,7 +78,7 @@
                 CookiesService.set(uuid + 'stockOperationItemCurrentPage', stockOperationItemCurrentPage);
                 CookiesService.set(uuid + 'stockOperationItemLimit', $scope.stockOperationItemLimit);
 
-                StockOperationRestfulService.stockOperationItem(
+                PharmacyStockOperationRestfulService.stockOperationItem(
                     uuid, CookiesService.get(uuid + 'stockOperationItemCurrentPage'),
                     CookiesService.get(uuid + 'stockOperationItemLimit'),
                     self.onLoadStockOperationItemSuccessful
@@ -90,7 +90,7 @@
                 CookiesService.set(uuid + 'stockOperationTransactionCurrentPage', stockOperationTransactionCurrentPage);
                 CookiesService.set(uuid + 'stockOperationTransactionLimit', $scope.stockOperationTransactionLimit);
 
-                StockOperationRestfulService.stockOperationTransaction(
+                PharmacyStockOperationRestfulService.stockOperationTransaction(
                     uuid, CookiesService.get(uuid + 'stockOperationTransactionCurrentPage'),
                     CookiesService.get(uuid + 'stockOperationTransactionLimit'),
                     self.onLoadStockOperationTransactionSuccessful
@@ -118,7 +118,7 @@
 
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function(){
-                return StockOperationFunctions.addMessageLabels();
+                return PharmacyStockOperationFunctions.addMessageLabels();
             }
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
@@ -127,7 +127,7 @@
             $filter: $filter,
             $stateParams: $stateParams,
             EntityRestFactory: EntityRestFactory,
-            GenericMetadataModel: StockOperationModel
+            GenericMetadataModel: PharmacyStockOperationModel
         });
     }
 })();

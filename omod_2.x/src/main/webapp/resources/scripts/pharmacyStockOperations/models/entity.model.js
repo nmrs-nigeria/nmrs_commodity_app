@@ -19,7 +19,7 @@
     var baseModel = angular.module('app.genericMetadataModel');
 
     /* Define model fields */
-    function StockOperationModel(GenericMetadataModel) {
+    function PharmacyStockOperationModel(GenericMetadataModel) {
 
         var extended = angular.extend(GenericMetadataModel, {});
 
@@ -34,8 +34,8 @@
         return extended;
     }
 
-    baseModel.factory("StockOperationModel", StockOperationModel);
+    baseModel.factory("PharmacyStockOperationModel", PharmacyStockOperationModel);
 
-    StockOperationModel.$inject = ['GenericMetadataModel'];
+    PharmacyStockOperationModel.$inject = ['GenericMetadataModel'];
 
 })();
