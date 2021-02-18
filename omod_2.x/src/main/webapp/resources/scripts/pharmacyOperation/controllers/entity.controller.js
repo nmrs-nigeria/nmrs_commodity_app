@@ -29,7 +29,7 @@
         var entity_name_message_key = emr.message("openhmis.inventory.stock.operation.name");
         var REST_ENTITY_NAME = "stockOperation";
         var notDefined = {name: ' - Not Defined - '};
-        var VIEW_STOCK_OPERATIONS = ROOT_URL + 'openhmis.inventory/stockOperations/entities.page#/';
+        var VIEW_STOCK_OPERATIONS = ROOT_URL + 'openhmis.inventory/pharmacyStockOperations/entities.page#/';
         var GENERATE_OPERATION_NUMBER = "WILL BE GENERATED";
 
         // @Override
