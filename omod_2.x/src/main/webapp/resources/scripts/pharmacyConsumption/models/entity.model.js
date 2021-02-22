@@ -10,7 +10,7 @@
 
 		var extended = angular.extend(GenericMetadataModel, {});
 
-	//	var defaultFields = extended.getModelFields();
+		var defaultFields = extended.getModelFields();
 
 		// @Override
 		extended.getModelFields = function() {
@@ -20,7 +20,7 @@
 					"quantity","department", "wastage","batchNumber"
 					];
 
-		//	return fields.concat(defaultFields);
+			return fields.concat(defaultFields);
                 return fields;
 		};
 
