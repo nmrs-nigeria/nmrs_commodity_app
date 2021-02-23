@@ -106,6 +106,7 @@
                     $scope.changeItemQuantity = self.changeItemQuantity;
                     $scope.changeItemBatch = self.changeItemBatch;
                     $scope.changeExpiration = self.changeExpiration;
+                    $scope.changeItemDrugType = self.changeItemDrugType;
                     CreateOperationFunctions.onChangeDatePicker(
                             self.onOperationDateSuccessfulCallback,
                             'operationDateId-display');
@@ -119,6 +120,9 @@
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
                     $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
+                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI"];
+                   // $scope.lineItem.itemDrugType = $scope.itemDrugTypes[0];
+                    
                //     $scope.commodityType = "pharmacy";
                 }
 
@@ -251,6 +255,11 @@
         self.changeItemBatch = self.changeItemBatch || function (lineItem) {
             var itemBatch = lineItem.itemStockBatch;
             lineItem.setItemStockBatch(itemBatch);
+        }
+        
+         self.changeItemDrugType = self.changeItemDrugType || function (lineItem) {
+            var itemDrugType = lineItem.itemDrugType;
+            lineItem.setItemDrugType(itemDrugType);
         }
 
         self.loadStockOperations = self.loadStockOperations || function (date) {
@@ -539,6 +548,9 @@
                         CreateOperationFunctions.calculateSumItemStockDetailQuantities(itemStocks[0].details));
                 self.changeItemQuantity($scope.lineItem);
             }
+            
+            //set drug type
+            self.changeItemDrugType($scope.lineItem);
         }
 
         self.onLoadStockOperationsSuccessful = self.onLoadStockOperationsSuccessful || function (data) {

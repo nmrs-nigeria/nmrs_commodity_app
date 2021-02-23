@@ -77,6 +77,7 @@
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
                 <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+                 <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
 		<property name="reasonForChange" type="java.lang.String" column="reason_for_change" length="255" />
 
 	</class>
@@ -263,6 +264,7 @@
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
         <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+      <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
 
 	</class>
 	<class name="ReservedTransaction" table="inv_reserved_transaction">
@@ -299,6 +301,7 @@
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
                  <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+                  <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
 	</class>
 	<class name="StockOperationTransaction" table="inv_transaction">
 		<cache usage="read-write"/>
@@ -336,6 +339,7 @@
 
 		<property name="uuid" type="java.lang.String" column="uuid" length="38" unique="true" />
                  <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+                  <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
 	</class>
 	
 	<class name="ViewItemExpirationByDept" table="inv_view_item_expiration_by_dept">
