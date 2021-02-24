@@ -4675,4 +4675,825 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
 	</changeSet>
     
     
+        <changeSet id="openhmis.inventory-v2.2.4" author="Toyeeb Abdulfatai">
+
+            <insert tableName="inv_item">
+                <column name="name">Tenofovir/Lamivudine/Dolutegravir(180)(300/300/50mg)</column>
+                <column name="description">Tenofovir/Lamivudine/Dolutegravir 300/300/50mg for 180 bottles per pack size</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">180</column>
+                <column name="strength">300/300/50mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">ee39626c-7678-11eb-9439-0242ac130002</column>
+            </insert>
+            
+            <insert tableName="inv_item">
+                <column name="name">Tenofovir/Lamivudine/Efavirenz(90)(300/300/400mg)</column>
+                <column name="description">Tenofovir/Lamivudine/Efavirenz 300/300/400mg for 90 bottles per pack size</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">90</column>
+                <column name="strength">300/300/400mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">ee39626c-7678-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Atazanavir/Ritonavir(30)(300/100mg)</column>
+                <column name="description">Atazanavir/Ritonavir 300/100mg for 30 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">30</column>
+                <column name="strength">300/100mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">aef13f86-767c-11eb-9439-0242ac130002</column>
+            </insert>
+
+
+            <insert tableName="inv_item">
+                <column name="name">Darunavir/Ritonavir(400/50mg)</column>
+                <column name="description">Darunavir/Ritonavir</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">400/50mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">c0cdb086-767c-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Tenofovir/emtricitabine(30)(300/200mg)</column>
+                <column name="description">Darunavir/Ritonavir 300/200mg for 30 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">30</column>
+                <column name="strength">300/200mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">c0cdb086-767c-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <!-- pediatric starts -->
+
+            <insert tableName="inv_item">
+                <column name="name">Abacavir(60)(60mg)</column>
+                <column name="description">Abacavir 60mg for 60 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">60</column>
+                <column name="strength">60mg</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">cecd47f0-767c-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Lopinavir/Ritonavir (60)(100/25mg)</column>
+                <column name="description">Lopinavir/Ritonavir  for 60 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">60</column>
+                <column name="strength">100/25mg</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">cecd47f0-767c-11eb-9439-0242ac130002</column>
+            </insert>
+
+
+            <insert tableName="inv_item">
+                <column name="name">Lopinavir/Ritonavir(80/20mg/ml)</column>
+                <column name="description">Lopinavir/Ritonavir </column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">80/20mg/ml</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">0df10d0e-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+
+            <insert tableName="inv_item">
+                <column name="name">Lopinavir/Ritonavir(120)(40/10mg)</column>
+                <column name="description">Lopinavir/Ritonavir for 120 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">120</column>
+                <column name="strength">40/10mg</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">1741f544-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Raltegravir(60)(25mg)</column>
+                <column name="description">Raltegravir 25mg for 60 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">60</column>
+                <column name="strength">25mg</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">3a50c164-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Zidovudine(10mg/ml)</column>
+                <column name="description">Zidovudine</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">10mg/ml</column>
+                <column name="regimen_line">pediatric</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">43804d68-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+        
+            <!-- oi drugs -->
+
+            <insert tableName="inv_item">
+                <column name="name">Fluconazole(7)(100mg)</column>
+                <column name="description">Fluconazole for 7 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">7</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">51524eaa-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Fluconazole(10)(100mg)</column>
+                <column name="description">Fluconazole for 10 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">10</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">5c5bb76e-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+
+            <insert tableName="inv_item">
+                <column name="name">Isoniazid(20)(300mg)</column>
+                <column name="description">Isoniazid 300mg for 20 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">20</column>
+                <column name="strength">300mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">7ac77300-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Nystatin Oral Suspension(30)(100,000 IU/ml)</column>
+                <column name="description">Nystatin Oral Suspension(100,000 IU/ml) for 30 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">30</column>
+                <column name="strength">100,000 IU/ml</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">83aac7a6-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Co-trimoxazole/Isoniazid/Pyridoxine(960/300/25mg)</column>
+                <column name="description">Co-trimoxazole/Isoniazid/Pyridoxine</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">960/300/25mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">8e346146-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Fluconazole(50mg)</column>
+                <column name="description">Fluconazole</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">caps</column>
+                <column name="strength">50mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">9729a86a-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Fluconazole Oral Suspension(35)(50mg/5ml)</column>
+                <column name="description">Fluconazole Oral Suspension 50mg/5ml for 35 bottles per pack</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">35</column>
+                <column name="strength">50mg/5ml</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">a53009cc-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Fluconazole(100mg)</column>
+                <column name="description">Fluconazole</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">ae45d352-767d-11eb-9439-0242ac130002</column>
+                
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Pyridoxine(50mg)</column>
+                <column name="description">Pyridoxine</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">50mg</column>
+                <column name="regimen_line">OI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">b8118f84-767d-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <!-- advanced HIV disease drugs -->
+
+    <insert tableName="inv_item">
+                <column name="name">Flucytosine(500mg)</column>
+                <column name="description">Flucytosine</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">advancehiv</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">99a516e8-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Liposomal Amphotericin B(50mg)</column>
+                <column name="description">Liposomal Amphotericin B 50mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">50mg</column>
+                <column name="regimen_line">advancehiv</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">9379181e-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+            <insert tableName="inv_item">
+                <column name="name">Amphotericin Deoxycholate(50mg)</column>
+                <column name="description">Amphotericin Deoxycholate 50mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">50mg</column>
+                <column name="regimen_line">advancehiv</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">890bda88-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <!-- tb/hiv inh prophylaxis -->
+    <insert tableName="inv_item">
+                <column name="name">Co-trimoxazole/Isoniazid/Pyridoxine(960/300/25mg)</column>
+                <column name="description">Co-trimoxazole/Isoniazid/Pyridoxine </column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">960/300/25mg</column>
+                <column name="regimen_line">TB</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">82a07e06-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Isoniazid (INH)(300mg)</column>
+                <column name="description">Isoniazid (INH) 300mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">300mg</column>
+                <column name="regimen_line">TB</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">715300f6-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Isoniazid (INH)(100mg)</column>
+                <column name="description">Isoniazid (INH) 100mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">TB</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">6a3516a6-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <!-- opportunistic infection drugs (STI) -->
+    <insert tableName="inv_item">
+                <column name="name">Acyclovir(200mg)</column>
+                <column name="description">Acyclovir 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">59494880-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Acyclovir(400mg)</column>
+                <column name="description">Acyclovir 400mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">400mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">522ff756-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Albendazole(200mg)</column>
+                <column name="description">Albendazole 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">pack</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">4738a0aa-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Amitryptyline (25mg)</column>
+                <column name="description">Amitryptyline 25mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">25mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">3fbbb56a-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Amoxycillin (500mg)</column>
+                <column name="description">Amoxycillin 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">caps</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">324698f0-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Amoxycillin (250mg/5ml)</column>
+                <column name="description">Amoxycillin 250mg/5ml</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">250mg/5ml</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">2a889406-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Azithromycin(500mg)</column>
+                <column name="description">Azithromycin 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">1d8ba658-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Azithromycin(250mg)</column>
+                <column name="description">Azithromycin 250mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">250mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">15d689a0-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Benzathine Peniciline G(2.4MIU)</column>
+                <column name="description">Benzathine Peniciline G 2.4MIU</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">2.4MIU</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">06e5463e-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Ceftriazone(1g Injection)</column>
+                <column name="description">Ceftriazone 1g Injection</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">1g Injection</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">00db558a-769f-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Cefixime(200mg)</column>
+                <column name="description">Cefixime 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">f6522990-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Cefixime(400mg)</column>
+                <column name="description">Cefixime 400mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">400mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">efc9a24c-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Ciprofloxacin(500mg)</column>
+                <column name="description">Ciprofloxacin 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">e44b779c-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Clotrimazole Vaginal Pessaries(100mg)</column>
+                <column name="description">Clotrimazole Vaginal Pessaries 100mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">dd6d84c4-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Clotrimazole Vaginal Pessaries(200mg)</column>
+                <column name="description">Clotrimazole Vaginal Pessaries 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">cfe69e58-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Doxycycline(100mg)</column>
+                <column name="description">Doxycycline 100mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">caps</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">c9385146-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Epinephrine Injection BP(1mg/ml)</column>
+                <column name="description">Epinephrine Injection BP (1mg/ml)</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">1mg/ml</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">bf10cd06-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Erythromycin(500mg)</column>
+                <column name="description">Erythromycin 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">b82f5c0a-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Ferrous Sulphate(200mg)</column>
+                <column name="description">Ferrous Sulphate 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">a518de70-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Hydrocortisone(100mg)inj</column>
+                <column name="description">Hydrocortisone 100mg inj</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">100mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">9ea69dca-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Ibuprofen(200mg)</column>
+                <column name="description">Ibuprofen 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">92a49612-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Ibuprofen(400mg)</column>
+                <column name="description">Ibuprofen 400mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">400mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">8a8abf9c-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Loperamide HCl(2mg)</column>
+                <column name="description">Loperamide HCl 2mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">2mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">78541b34-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Metronidazole (200mg)</column>
+                <column name="description">Metronidazole 200mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">200mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">71a7f968-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Metronidazole (400mg)</column>
+                <column name="description">Metronidazole 400mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">400mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">64d874a6-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Podophylin (10ml 0.5%)</column>
+                <column name="description">Podophylin 10ml 0.5%</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="strength">10ml</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">5bdffaf4-769e-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Paracetamol(500mg)</column>
+                <column name="description">Paracetamol 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">57da5ab8-7698-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Tinidazole (500mg)</column>
+                <column name="description">Tinidazole 500mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">tabs</column>
+                <column name="strength">500mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">325c5192-7698-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Water for Injection(10ml)</column>
+                <column name="description">Water for Injection 10ml</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">vials</column>
+                <column name="strength">10ml</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">1e4dd50e-7698-11eb-9439-0242ac130002</column>
+            </insert>
+
+    <insert tableName="inv_item">
+                <column name="name">Zinc Sulphate Dispersible Tabs/ORS(20.5mg)</column>
+                <column name="description">Zinc Sulphate Dispersible Tabs/ORS 20.5mg</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">sachet</column>
+                <column name="strength">20.5mg</column>
+                <column name="regimen_line">STI</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">990d766a-7697-11eb-9439-0242ac130002</column>
+            </insert>
+
+        </changeSet>
+    
+    
+    
+    
+    
+    
+    
 </databaseChangeLog>
