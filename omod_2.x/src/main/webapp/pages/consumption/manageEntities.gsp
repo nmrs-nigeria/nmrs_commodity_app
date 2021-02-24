@@ -77,12 +77,11 @@
                         <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
-						<th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
-                    total-items="totalNumOfResults" current-page="currentPage">
+                    total-items="totalNumOfResults" current-page="currentPage"  ui-sref="edit({uuid: entity.uuid})">
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.batchNumber}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
@@ -94,10 +93,7 @@
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.consumptionDate | date: 'dd-MM-yyyy, h:mma' }}
-                </td>
-                 <td ng-style="strikeThrough(entity.retired)">
-                    <i class="icon-trash show-cursor" style="font-size: 25px;" ng-click="deletePopupDialog('deletePopup', entity.uuid)" title="Delete"></i>
-                </td>
+                </td>                
                 </tr>
                 </tbody>
             </table>
