@@ -196,6 +196,15 @@
                 "requiredPrivilege": "Task: Pharmacy Menu"
             },
             {
+                "id": "openhmis.inventory.stockTake.pharmacy",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.stockTake.pharmacy",
+                "url": "openhmis.inventory/pharmacyStockTake/entities.page",
+                 "icon": "icon-list-alt",
+                "requiredPrivilege": "Task: Pharmacy Menu"                
+            },
+            {
                 "id": "openhmis.inventory.viewPharmacyConsumptionSummary",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
