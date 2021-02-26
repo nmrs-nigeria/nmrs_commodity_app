@@ -4673,9 +4673,43 @@ group by b.item_id
 order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id	
 		</createView>  
 	</changeSet>
+        
+        
+  <changeSet id="openhmis.inventory-v2.2.4" author="Morrison Idiasirue" >
+
+        <addColumn tableName="inv_stock_operation_item">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+
+        <addColumn tableName="inv_item_stock_detail">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+        
+        <addColumn tableName="inv_transaction">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+
+        <addColumn tableName="inv_reserved_transaction">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+        
+
+    </changeSet>
+ 
     
-    
-        <changeSet id="openhmis.inventory-v2.2.4" author="Toyeeb Abdulfatai">
+    <changeSet id="openhmis.inventory-v2.2.5" author="Toyeeb Abdulfatai">
 
             <insert tableName="inv_item">
                 <column name="name">Tenofovir/Lamivudine/Dolutegravir(180)(300/300/50mg)</column>
@@ -4704,7 +4738,7 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
                 <column name="item_type">pharmacy</column>
                 <column name="creator">1</column>
                 <column name="date_created">2021-02-23</column>
-                <column name="uuid">ee39626c-7678-11eb-9439-0242ac130002</column>
+                <column name="uuid">2b88c424-775e-11eb-9439-0242ac130002</column>
             </insert>
 
             <insert tableName="inv_item">
@@ -4749,7 +4783,7 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
                 <column name="item_type">pharmacy</column>
                 <column name="creator">1</column>
                 <column name="date_created">2021-02-23</column>
-                <column name="uuid">c0cdb086-767c-11eb-9439-0242ac130002</column>
+                <column name="uuid">ff3d8ada-775d-11eb-9439-0242ac130002</column>
             </insert>
 
             <!-- pediatric starts -->
@@ -4781,7 +4815,7 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
                 <column name="item_type">pharmacy</column>
                 <column name="creator">1</column>
                 <column name="date_created">2021-02-23</column>
-                <column name="uuid">cecd47f0-767c-11eb-9439-0242ac130002</column>
+                <column name="uuid">dd60b338-775d-11eb-9439-0242ac130002</column>
             </insert>
 
 
@@ -5491,9 +5525,5 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
         </changeSet>
     
     
-    
-    
-    
-    
-    
+  
 </databaseChangeLog>
