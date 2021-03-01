@@ -5523,5 +5523,28 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
             </insert>
 
         </changeSet>
-    
+        
+ 
+<changeSet id="openhmis.inventory-v2.2.6" author="Morrison Idiasirue" >
+
+        <addColumn tableName="inv_stockroom">
+            <column name="stockroom_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+        
+        <update tableName="inv_stockroom">
+            <column name="stockroom_type" value="lab"/>          
+            <where>uuid='2741bae2-c5de-43ef-891f-7ec2fd58f442'</where>
+        </update>
+        
+         <update tableName="inv_stockroom">
+            <column name="stockroom_type" value="pharmacy"/>          
+            <where>uuid='5452ec3e-2fe1-46de-8a6e-28c6442e4cc0'</where>
+        </update>
+        
+        
+    </changeSet>               
+            
 </databaseChangeLog>
