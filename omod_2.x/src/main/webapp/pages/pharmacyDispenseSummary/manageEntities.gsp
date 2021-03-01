@@ -113,14 +113,23 @@
                 </tbody>
             </table>
 
-            <div ng-show="fetchedEntities.length == 0">
+            <div class="not-found" ng-show="fetchedEntities.length == 0 && searchField == ''">
+                ${ui.message('openhmis.inventory.operations.noStocksFound')}
+            </div>
+        
+            <div ng-show="fetchedEntities.length == 0 && searchField != ''">
                 <br/>
+                ${ui.message('openhmis.commons.general.preSearchMessage')} - <b> {{searchField}} </b> - {{postSearchMessage}}
                 <br/><br/>
                 <span><input type="checkbox" ng-checked="includeRetired" ng-model="includeRetired"
-                    ng-change="searchDispenseSummarys(currentPage)"></span>
+                             ng-change="searchDispenseSummarys(currentPage)"></span>
                 <span>${ui.message('openhmis.commons.general.includeRetired')}</span>
             </div>
-            ${ui.includeFragment("openhmis.commons", "paginationFragment", [onPageChange: "searchDispenseSummarys(currentPage)", onChange: "searchDispenseSummarys(currentPage)"])}
+            ${ui.includeFragment("openhmis.commons", "paginationFragment", [
+                    showRetiredSection  : "false",
+                    onPageChange : "searchDispenseSummarys(currentPage)",
+                    onChange : "searchDispenseSummarys(currentPage)"
+            ])}
         </div>
     </div>
 </div>
