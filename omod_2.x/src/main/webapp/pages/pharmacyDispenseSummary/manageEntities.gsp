@@ -114,7 +114,7 @@
             </table>
 
             <div class="not-found" ng-show="fetchedEntities.length == 0 && searchField == ''">
-                ${ui.message('openhmis.inventory.operations.noStocksFound')}
+                ${ui.message('openhmis.inventory.operations.noDispenseFound')}
             </div>
         
             <div ng-show="fetchedEntities.length == 0 && searchField != ''">
