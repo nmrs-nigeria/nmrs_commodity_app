@@ -4709,7 +4709,7 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
     </changeSet>
  
     
-    <changeSet id="openhmis.inventory-v2.2.5" author="Toyeeb Abdulfatai">
+       <changeSet id="openhmis.inventory-v2.2.5" author="Toyeeb Abdulfatai">
 
             <insert tableName="inv_item">
                 <column name="name">Tenofovir/Lamivudine/Dolutegravir(180)(300/300/50mg)</column>
@@ -5524,6 +5524,4 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
 
         </changeSet>
     
-    
-  
 </databaseChangeLog>
