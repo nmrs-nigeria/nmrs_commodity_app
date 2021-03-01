@@ -344,6 +344,7 @@
                                 item: lineItem.itemStock.uuid,
                                 quantity: lineItem.itemStockQuantity,
                                 itemBatch: lineItem.itemStockBatch,
+                                itemDrugType:lineItem.itemDrugType,
                             };
 
                             if (expiration !== undefined) {

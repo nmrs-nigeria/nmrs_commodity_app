@@ -23,7 +23,7 @@
 		function LineItemModel(itemStockDepartment, itemStock,
 		                       itemStockQuantity, itemStockExpirationDate,
 		                       itemStockHasExpiration, expirationDates, existingQuantity,
-                                       itemStockBatch,itemBatchs,itemStockHasBatch) {
+                                       itemStockBatch,itemBatchs,itemStockHasBatch,itemDrugType) {
 			this.itemStockDepartment = itemStockDepartment;
 			this.itemStock = itemStock;
 			this.itemStockQuantity = itemStockQuantity;
@@ -40,6 +40,7 @@
                         this.itemStockBatch = itemStockBatch;
                         this.itemBatchs = itemBatchs;
                         this.itemStockHasBatch = itemStockHasBatch;
+                        this.itemDrugType = itemDrugType;
 		}
 
 		LineItemModel.prototype = {
@@ -163,7 +164,12 @@
                          setItemStockHasBatch: function(itemStockHasBatch) {
 				this.itemStockHasBatch = itemStockHasBatch;
 			},
-
+                        setItemDrugType : function(itemDrugType){
+                            this.itemDrugType = itemDrugType;
+                        },
+                        getItemDrugType : function (){
+                            return this.itemDrugType;
+                        },
 			getItemStockHasBatch: function() {
 				return this.itemStockHasBatch;
 			},

@@ -35,6 +35,7 @@ public abstract class ItemStockDetailBaseResource<T extends ItemStockDetailBase>
 		description.addProperty("batchOperation", Representation.REF);
 		description.addProperty("calculatedExpiration", Representation.DEFAULT);
 		description.addProperty("calculatedBatch", Representation.DEFAULT);
+		description.addProperty("itemDrugType", Representation.DEFAULT);
 
 		return description;
 	}

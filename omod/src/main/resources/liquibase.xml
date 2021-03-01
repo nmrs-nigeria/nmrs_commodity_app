@@ -4673,7 +4673,41 @@ group by b.item_id
 order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id	
 		</createView>  
 	</changeSet>
-    
+        
+        
+  <changeSet id="openhmis.inventory-v2.2.4" author="Morrison Idiasirue" >
+
+        <addColumn tableName="inv_stock_operation_item">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+
+        <addColumn tableName="inv_item_stock_detail">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+        
+        <addColumn tableName="inv_transaction">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+
+        <addColumn tableName="inv_reserved_transaction">
+            <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+        </addColumn>
+        
+
+    </changeSet>
+ 
     
        <changeSet id="openhmis.inventory-v2.2.5" author="Toyeeb Abdulfatai">
 
@@ -5489,10 +5523,5 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
             </insert>
 
         </changeSet>
-    
-    
-    
-    
-    
     
 </databaseChangeLog>

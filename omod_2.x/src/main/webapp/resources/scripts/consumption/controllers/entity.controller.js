@@ -60,7 +60,7 @@
                         console.log(value);
                     });
 
-                    //   $scope.retireUnretire = self.retireUnretire;
+                  $scope.retireUnretire = self.retireUnretire;
                     $scope.delete = self.delete;
 
                     // call functions..
@@ -182,6 +182,10 @@
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function () {
             return ConsumptionFunctions.addMessageLabels();
+        }
+        
+           self.retireUnretire = self.retireUnretire || function(){         
+            $scope.retireOrUnretireCall();
         }
 
         /* call-back functions. */
