@@ -206,4 +206,9 @@ public interface IStockroomDataService extends IMetadataDataService<Stockroom> {
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_STOCKROOMS })
 	List<Stockroom> getStockrooms(Location location, String name, boolean includeRetired, PagingInfo pagingInfo);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_STOCKROOMS })
+	List<Stockroom> getByNameFragment(final String nameFragment, final String stockroomType,
+	        PagingInfo pagingInfo);
 }

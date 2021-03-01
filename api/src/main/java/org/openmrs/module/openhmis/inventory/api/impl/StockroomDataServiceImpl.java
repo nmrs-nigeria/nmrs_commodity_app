@@ -26,11 +26,14 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.annotation.Authorized;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
+import org.openmrs.module.openhmis.commons.api.util.PrivilegeUtil;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStock;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
@@ -48,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 public class StockroomDataServiceImpl extends BaseMetadataDataServiceImpl<Stockroom>
         implements IStockroomDataService, IMetadataAuthorizationPrivileges {
+
 	private static final int MAX_STOCKROOM_CODE_LENGTH = 255;
 
 	@Override
@@ -66,6 +70,32 @@ public class StockroomDataServiceImpl extends BaseMetadataDataServiceImpl<Stockr
 		results.addAll(entity.getItems());
 
 		return results;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Stockroom> getByNameFragment(final String nameFragment, final String stockroomType,
+	        PagingInfo pagingInfo) {
+		IMetadataAuthorizationPrivileges privileges = getPrivileges();
+		if (privileges != null && !org.apache.commons.lang3.StringUtils.isEmpty(privileges.getGetPrivilege())) {
+			PrivilegeUtil.requirePrivileges(Context.getAuthenticatedUser(), privileges.getGetPrivilege());
+		}
+
+		return executeCriteria(getEntityClass(), pagingInfo, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+				if (nameFragment != null) {
+					criteria.add(Restrictions.ilike("name", nameFragment, MatchMode.START));
+				}
+
+				if (stockroomType != null) {
+					criteria.add(Restrictions.eq("stockroomType", stockroomType));
+				}
+
+				criteria.add(Restrictions.eq("retired", false));
+
+			}
+		}, getDefaultSort());
 	}
 
 	@Override

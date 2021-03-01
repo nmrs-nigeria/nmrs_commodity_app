@@ -84,7 +84,6 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.patient.id')}</th>
-                        <th>${ui.message('openhmis.inventory.patient.category')}</th>
                         <th>${ui.message('openhmis.inventory.treatment.type')}</th>
                         <th>${ui.message('openhmis.inventory.visit.type')}</th>
                         <th>${ui.message('openhmis.inventory.pickupreason')}</th>
@@ -94,8 +93,7 @@
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" id="{{entity.patientDBId}}_{{entity.encounterId}}" onclick="viewARVDispensedItem(this.id)" >  
-                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>
-                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientCategory}}</td>
+                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>                       
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.treatmentType}}
                         </td>
