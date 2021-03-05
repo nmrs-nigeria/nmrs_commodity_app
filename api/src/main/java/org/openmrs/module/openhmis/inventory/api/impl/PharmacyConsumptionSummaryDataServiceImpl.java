@@ -12,6 +12,7 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionSummaryDataService;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * @author MORRISON.I
  */
-public class PharmacyConsumptionSummaryDataServiceImpl extends BaseMetadataDataServiceImpl<PharmacyConsumptionSummary>
+public class PharmacyConsumptionSummaryDataServiceImpl extends BaseMetadataDataServiceImpl<NewPharmacyConsumptionSummary>
         implements IPharmacyConsumptionSummaryDataService, IMetadataAuthorizationPrivileges {
 
 	@Transactional(readOnly = true)
@@ -43,13 +44,13 @@ public class PharmacyConsumptionSummaryDataServiceImpl extends BaseMetadataDataS
 	}
 
 	@Override
-	public List<PharmacyConsumptionSummary> getByNameFragment(String nameFragment, boolean includeRetired,
+	public List<NewPharmacyConsumptionSummary> getByNameFragment(String nameFragment, boolean includeRetired,
 	        PagingInfo pagingInfo) {
 		return super.getAll(includeRetired, pagingInfo);
 	}
 
 	@Override
-	public List<PharmacyConsumptionSummary> getByNameFragment(String nameFragment, boolean includeRetired) {
+	public List<NewPharmacyConsumptionSummary> getByNameFragment(String nameFragment, boolean includeRetired) {
 		return getByNameFragment(nameFragment, includeRetired, null);
 	}
 
@@ -74,7 +75,7 @@ public class PharmacyConsumptionSummaryDataServiceImpl extends BaseMetadataDataS
 	}
 
 	@Override
-	protected void validate(PharmacyConsumptionSummary object) {
+	protected void validate(NewPharmacyConsumptionSummary object) {
 		throw new UnsupportedOperationException("Not supported yet.");
 	}
 

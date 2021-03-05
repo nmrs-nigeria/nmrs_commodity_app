@@ -111,9 +111,8 @@
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
 <!--                        <th>${ui.message('openhmis.inventory.department.name')}</th>-->
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.totalWastage')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.stockBalance')}</th>
+                        <th>Drug Category</th>
+                        
 
 
                     </tr>
@@ -127,14 +126,8 @@
                     {{entity.totalQuantityReceived}}
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.totalQuantityConsumed}}
-                </td>
-                <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.totalQuantityWasted}}
-                </td>
-                <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.stockBalance}}
-                </td>
+                    {{entity.drugCategory}}
+                </td>             
 
                 </tr>
                 </tbody>

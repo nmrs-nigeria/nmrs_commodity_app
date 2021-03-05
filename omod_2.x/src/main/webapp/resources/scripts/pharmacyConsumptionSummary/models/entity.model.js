@@ -16,8 +16,8 @@
 		extended.getModelFields = function() {
 
                         var fields = ["totalQuantityReceived",
-					"totalQuantityConsumed",
-					"item","stockBalance","totalQuantityWasted"
+					"uuid",
+					"item","groupUuid","drugCategory"
 					];
 
 		//	return fields.concat(defaultFields);

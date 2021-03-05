@@ -20,6 +20,7 @@ public class ARVDispensedItem implements Serializable {
 	private String itemName;
 	private String drugStrength;
 	private String arvPharmacyDispenseUuid;
+	private String drugCategory;
 
 	public Integer getQuantityPrescribed() {
 		return quantityPrescribed;
@@ -67,6 +68,14 @@ public class ARVDispensedItem implements Serializable {
 
 	public void setDrugStrength(String drugStrength) {
 		this.drugStrength = drugStrength;
+	}
+
+	public String getDrugCategory() {
+		return drugCategory;
+	}
+
+	public void setDrugCategory(String drugCategory) {
+		this.drugCategory = drugCategory;
 	}
 
 }
