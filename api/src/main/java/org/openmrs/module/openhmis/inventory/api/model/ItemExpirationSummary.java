@@ -15,11 +15,19 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpen
 public class ItemExpirationSummary implements OpenmrsObject {
 
 	private Item item;
-	//private Department department;
+	private Department department;
 	private Integer quantity;
 	private Date expiration;
 	//private Integer itemExpirationId;
 	private String itemBatch;
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
 	public Item getItem() {
 		return item;

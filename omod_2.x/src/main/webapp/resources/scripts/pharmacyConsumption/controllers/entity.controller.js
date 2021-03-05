@@ -60,11 +60,11 @@
                         console.log(value);
                     });
 
-                    //   $scope.retireUnretire = self.retireUnretire;
+                    $scope.retireUnretire = self.retireUnretire;
                     $scope.delete = self.delete;
 
                     // call functions..
-                 //   ConsumptionRestfulService.loadDepartments(self.onLoadDepartmentsSuccessful);
+                   ConsumptionRestfulService.loadDepartments(self.onLoadDepartmentsSuccessful);
                     ConsumptionRestfulService.loadItems(self.onLoadItemsSuccessful);
                     // ItemRestfulService.loadItemStock($scope.uuid, self.onLoadItemStockSuccessful);
 
@@ -141,12 +141,12 @@
 
 
 
-//            // bind department uuid
-//            var department = $scope.department;
-//            if (angular.isDefined(department)) {
-//                $scope.entity.department = department.uuid;
-//                //  $scope.entity.department = department.departmentId;
-//            }
+            // bind department uuid
+            var department = $scope.department;
+            if (angular.isDefined(department)) {
+                $scope.entity.department = department.uuid;
+                //  $scope.entity.department = department.departmentId;
+            }
 
             //bind item uuid
             var item = $scope.item;
@@ -182,6 +182,10 @@
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function () {
             return ConsumptionFunctions.addMessageLabels();
+        }
+        
+          self.retireUnretire = self.retireUnretire || function(){         
+            $scope.retireOrUnretireCall();
         }
 
         /* call-back functions. */

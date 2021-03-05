@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.openmrs.module</groupId>
         <artifactId>openhmis.inventory</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.0.1-SNAPSHOT</version>
     </parent>
 
     <artifactId>openhmis.inventory-api</artifactId>
@@ -98,6 +98,17 @@
             <version>1.0</version>
             <type>jar</type>
         </dependency>
+        
+       
+        
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.8</version>
+        </dependency>
+        
+        
+        
     </dependencies>
 
     <build>

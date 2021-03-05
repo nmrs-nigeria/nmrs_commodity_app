@@ -53,18 +53,18 @@ public class PharmacyConsumptionSearch extends CustomBaseMetadataTemplateSearch<
 			criteria.add(Restrictions.eq("consumptionDate", consumption.getConsumptionDate()));
 		}
 
-		//		if (consumption.getDepartment() != null) {
-		//			criteria.add(Restrictions.eq("department", consumption.getDepartment()));
-		//		}
+		if (consumption.getDepartment() != null) {
+			criteria.add(Restrictions.eq("department", consumption.getDepartment()));
+		}
 
 		if (consumption.getItem() != null) {
 			criteria.add(Restrictions.eq("item", consumption.getItem()));
 		}
 
-		if (consumption.getQuantity() != null) {
+		if (consumption.getQuantity() != -1) {
 			criteria.add(Restrictions.eq("quantity", consumption.getQuantity()));
 		}
-		if (consumption.getWastage() != null) {
+		if (consumption.getWastage() != -1) {
 			criteria.add(Restrictions.eq("wastage", consumption.getWastage()));
 		}
 

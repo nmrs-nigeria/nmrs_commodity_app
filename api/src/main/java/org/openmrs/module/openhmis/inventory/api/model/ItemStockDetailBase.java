@@ -34,6 +34,7 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	private Boolean calculatedBatch;
 	private String itemBatch;
 	private String reasonForChange;
+	private String itemDrugType;
 
 	/**
 	 * Gets the unique database record identifier.
@@ -182,4 +183,13 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	public void setReasonForChange(String reasonForChange) {
 		this.reasonForChange = reasonForChange;
 	}
+
+	public String getItemDrugType() {
+		return itemDrugType;
+	}
+
+	public void setItemDrugType(String itemDrugType) {
+		this.itemDrugType = itemDrugType;
+	}
+
 }

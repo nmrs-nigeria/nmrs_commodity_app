@@ -109,6 +109,7 @@
         function loadStockRooms(rest_entity_name, successCallback){
             var requestParams = {};
             requestParams['rest_entity_name'] = rest_entity_name;
+            requestParams['stockroomType'] = 'lab';
             EntityRestFactory.loadEntities(requestParams, successCallback, errorCallback);
         }
 

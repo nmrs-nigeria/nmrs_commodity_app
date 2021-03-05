@@ -80,7 +80,8 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		description.addProperty("item");
+		description.addProperty("item", Representation.REF);
+		description.addProperty("department", Representation.REF);
 		description.addProperty("totalQuantityReceived");
 		description.addProperty("uuid");
 		description.addProperty("groupUuid");
@@ -108,7 +109,7 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 		//                        .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
 		//                        .collect(Collectors.toList());
 
-		//	Department searchDepartment = getDepartment(context);
+		Department searchDepartment = getDepartment(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
 		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
@@ -143,7 +144,7 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
 		Item searchItem = getItem(context);
-		//	Department searchDepartment = getDepartment(context);
+		Department searchDepartment = getDepartment(context);
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
 		IStockOperationType stockOperationType = getStockOperationType(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
@@ -151,7 +152,7 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 
 		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
 
-		// searchConsumptionSummary.setDepartment(searchDepartment);
+		searchConsumptionSummary.setDepartment(searchDepartment);
 		searchConsumptionSummary.setItem(searchItem);
 		searchConsumptionSummary.setStartDate(startDate);
 		searchConsumptionSummary.setEndDate(endDate);
@@ -165,29 +166,6 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 
 		System.out.println("stock operations result: " + stockOps.size());
 
-		//        fromReceived = getSummaryFromStockOperation(stockOps,searchDepartment);
-		//        
-		//            System.out.println("After stock summary: "+fromReceived.size());
-		//
-		//        consumptions = consumptionDataService
-		// .getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(), 
-		//                searchConsumptionSummary.getEndDate(), pagingInfo);
-		//        
-		//         System.out.println("stock consumptions result: "+consumptions.size());
-		//        
-		//        //filter out the Department
-		//        consumptions = consumptions.stream().filter(a -> a.getDepartment().equals(searchDepartment))
-		//                .collect(Collectors.toList());
-		//        fromConsumption = getSummaryFromConsumption(consumptions, searchDepartment);
-		//        
-		//         System.out.println("stock consumptions aggregate result  : "+fromConsumption.size());
-		//
-		//         List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
-		//         
-		//        tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, searchDepartment);
-
-		//  finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
-
 		finalConsumptionSummarys = consumptionDataService.retrieveConsumptionSummary(stockOps,
 		    searchConsumptionSummary, pagingInfo, distinctItems);
 
@@ -198,67 +176,6 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 		        pagingInfo.getTotalRecordCount());
 
 	}
-
-	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
-	        Department department) {
-
-		List<ConsumptionSummary> rConsumptions = new ArrayList<>();
-		List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
-
-		for (StockOperation stockOperation : stockOperations) {
-
-			rConsumptions.addAll(fillUpItems(stockOperation.getItems(), stockOperation));
-
-		}
-
-		aggregateConsumption = aggregateItems(rConsumptions, department);
-
-		return aggregateConsumption;
-
-	}
-
-	private List<ConsumptionSummary> fillUpItems(Set<StockOperationItem> items, StockOperation stockOperation) {
-        List<ConsumptionSummary> rConsumptions = new ArrayList<>();
-
-        items.stream().forEach(a -> {
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-            consumptionSummary.setDepartment(stockOperation.getDepartment());
-            consumptionSummary.setItem(a.getItem());
-            consumptionSummary.setTotalQuantityReceived(a.getQuantity());
-            rConsumptions.add(consumptionSummary);
-        });
-
-        return rConsumptions;
-    }
-
-	private List<ConsumptionSummary> aggregateItems(List<ConsumptionSummary> consumptionSummarys, 
-            Department department) {
-//        distinctItems = consumptionSummarys.stream()
-//                .map(ConsumptionSummary::getItem).distinct().collect(Collectors.toList());
-        
-            System.out.println("The items count is "+distinctItems.size());
-
-        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
-
-        distinctItems.forEach(a -> {
-            // assume a department would be selected at all time
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-            consumptionSummary.setDepartment(department);
-            consumptionSummary.setItem(a);
-            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();
-            if (itemCount > 0) {
-                System.out.println("");
-                consumptionSummary.setTotalQuantityReceived((int) itemCount);
-            } else {
-                consumptionSummary.setTotalQuantityReceived(0);
-            }
-            aggregateConsumption.add(consumptionSummary);
-        });
-
-        return aggregateConsumption;
-
-    }
 
 	protected StockOperationStatus getStatus(RequestContext context) {
 		StockOperationStatus status = null;

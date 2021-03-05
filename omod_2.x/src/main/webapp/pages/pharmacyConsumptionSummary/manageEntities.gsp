@@ -76,17 +76,10 @@
                        
     <tr>
         <td>
-            <span> 
-             <fieldset class="format">
-        <span>            
-               <button type="button" data-action="load" ng-click="searchConsumptionSummarys(currentPage)">${ ui.message('openhmis.inventory.search') }</button>
-            
-        </span>
-    </fieldset>
-            </span>
+          
         </td>
-<!--                      <td>
-                        ${ ui.message('openhmis.inventory.department.name') }:
+                     <td>
+                       Dispensary:
                         <ul>
                             <li>
                                 <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
@@ -96,7 +89,7 @@
                             </li>
 
                         </ul>
-                    </td>-->
+                    </td>
                      </tr>
                   
                 </table>
@@ -109,7 +102,7 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
-<!--                        <th>${ui.message('openhmis.inventory.department.name')}</th>-->
+                       <th>Dispensary</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
                         <th>Drug Category</th>
                         
@@ -121,7 +114,7 @@
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" ui-sref="edit({uuid: entity.uuid})">
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
-<!--                <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>-->
+                <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.totalQuantityReceived}}
                 </td>
