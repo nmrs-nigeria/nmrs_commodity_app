@@ -77,12 +77,11 @@
                         <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.quantity')}</th>
                         <th>${ui.message('openhmis.inventory.consumption.consumptionDate')}</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
-                    total-items="totalNumOfResults" current-page="currentPage" ui-sref="edit({uuid: entity.uuid})">
+                    total-items="totalNumOfResults" current-page="currentPage"  ui-sref="edit({uuid: entity.uuid})">
                 <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.batchNumber}}</td>
                 <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
@@ -94,7 +93,7 @@
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.consumptionDate | date: 'dd-MM-yyyy, h:mma' }}
-                </td>
+                </td>                
                 </tr>
                 </tbody>
             </table>
@@ -109,5 +108,29 @@
             </div>
             ${ui.includeFragment("openhmis.commons", "paginationFragment", [onPageChange: "searchConsumptions(currentPage)", onChange: "searchConsumptions(currentPage)"])}
         </div>
+    </div>
+</div>
+
+<div id="deletePopup" class="dialog" style="display:none;">
+    <div class="dialog-header">
+        <span>
+            <i class="icon-remove" ></i>
+            <h3>Delete Consumption</h3>
+        </span>
+        <i class="icon-remove cancel show-cursor"  style="float:right;" ng-click="closeThisDialog()"></i>
+    </div>
+    <div class="dialog-content form">
+        <div>
+            <div>
+               Are you sure you want to delete this consumption?
+            </div>
+            <br />
+            <div class="detail-section-border-top">
+                <br />
+                <button class="confirm" ng-click="deleteConsumption(selectedEntity)">Yes</button>
+                <button  class="cancel" ng-click="closeThisDialog('Cancel')">No</button>
+            </div>
+        </div>
+        <br />
     </div>
 </div>

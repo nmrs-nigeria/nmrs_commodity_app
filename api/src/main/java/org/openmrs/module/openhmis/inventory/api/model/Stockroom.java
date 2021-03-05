@@ -29,6 +29,15 @@ public class Stockroom extends BaseSerializableOpenmrsMetadata {
 	private Location location;
 	private Set<ItemStock> items;
 	private Set<StockOperation> operations;
+	private String stockroomType;
+
+	public String getStockroomType() {
+		return stockroomType;
+	}
+
+	public void setStockroomType(String stockroomType) {
+		this.stockroomType = stockroomType;
+	}
 
 	/**
 	 * Gets the unique database record identifier.

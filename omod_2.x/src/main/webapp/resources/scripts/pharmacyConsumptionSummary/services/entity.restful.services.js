@@ -28,9 +28,9 @@
                         
                         console.log('about to call pharm consumption summary endpoint');
                         
-//			if(angular.isDefined(department_uuid)){
-//				requestParams['department_uuid'] = department_uuid;
-//			}
+			if(angular.isDefined(department_uuid)){
+				requestParams['department_uuid'] = department_uuid;
+			}
 //                        
 //                        if(angular.isDefined(item_uuid)){
 //				requestParams['item_uuid'] = item_uuid;
@@ -56,6 +56,7 @@
 		function loadDepartments(onLoadDepartmentsSuccessful) {
 			var requestParams = [];
 			requestParams['rest_entity_name'] = 'department';
+                          requestParams['departmentType'] = 'pharmacy';
 			EntityRestFactory.loadEntities(requestParams,
 					onLoadDepartmentsSuccessful, errorCallback);
 		}

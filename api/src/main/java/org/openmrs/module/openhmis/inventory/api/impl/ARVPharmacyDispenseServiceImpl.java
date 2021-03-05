@@ -121,7 +121,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 	@Override
     public List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate, PagingInfo pagingInfo) {
-          String queryString = "select  a from " + Encounter.class.getName() + " "
+        String queryString = "select  a from " + Encounter.class.getName() + " "
                 + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
                 + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
 
@@ -146,35 +146,43 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
         for (Encounter enc : encounters) {
             Obs obs = null;
-       
+
             String uuid = UUID.randomUUID().toString();
             try {
                 obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
                 Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
 
-             
+                Set<ARVDispensedItem> aRVDispensedItems = null;
 
-                Set<ARVDispensedItem> aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
                         visitDate, obsPerVisit, uuid);
-                
-             arvsuConsumptionSummarys.addAll(aRVDispensedItems.stream()
-                        .map(this::mapARVDispensedItem)
-                        .collect(Collectors.toList()));
-             
-             
-             aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
-              arvsuConsumptionSummarys.addAll(aRVDispensedItems.stream()
-                        .map(this::mapARVDispensedItem)
-                        .collect(Collectors.toList()));
-              
-              
-              aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
-               arvsuConsumptionSummarys.addAll(aRVDispensedItems.stream()
-                        .map(this::mapARVDispensedItem)
-                        .collect(Collectors.toList()));
-             
+                System.out.println("arv count " + aRVDispensedItems.size());
 
-               
+                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+                        .collect(Collectors.toList());
+
+                if (!collect.isEmpty()) {
+                    arvsuConsumptionSummarys.addAll(collect);
+                }
+
+                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+                        .collect(Collectors.toList());
+
+                if (!collect1.isEmpty()) {
+                    arvsuConsumptionSummarys.addAll(collect1);
+                }
+
+                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+                        .collect(Collectors.toList());
+
+                if (!collect2.isEmpty()) {
+                    arvsuConsumptionSummarys.addAll(collect2);
+                }
             } catch (DatatypeConfigurationException ex) {
                 Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -191,6 +199,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		String visitID = "";
 		Date stopDate = null;
 		DateTime stopDateTime = null, startDateTime = null;
+		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
 
 		//	PatientIdentifier pepfarIdentifier = patient.getPatientIdentifier(Utils.PEPFAR_IDENTIFIER_INDEX);
 		String pepfarID = "";
@@ -216,15 +225,14 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 					//    valueCoded = obs.getValueCoded().getConceptId();
 					//   ndrCode = getRegimenMapValue(valueCoded);  
 					//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
-					Set<ARVDispensedItem> aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
+					aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
 
-					return aRVDispensedItems;
 				}
 
 			}
 
 		}
-		return null;
+		return aRVDispensedItems;
 	}
 
 	private Set<ARVDispensedItem> retrieveARVMedicationItems(Date visitDate, List<Obs> obsList, String uuid) {
@@ -403,7 +411,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
     }
 
-	private NewPharmacyConsumptionSummary mapARVDispensedItem(ARVDispensedItem arvItem) {
+	private static NewPharmacyConsumptionSummary mapARVDispensedItem(ARVDispensedItem arvItem) {
 		NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
 		summary.setGroupUuid(arvItem.getArvPharmacyDispenseUuid());
 		summary.setItem(arvItem.getItemName());

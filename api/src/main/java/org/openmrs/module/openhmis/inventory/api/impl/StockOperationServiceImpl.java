@@ -323,6 +323,7 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 							long currentQuantity = detail.getQuantity();
 							detail.setQuantity(detail.getQuantity() + tx.getQuantity());
 							detail.setItemBatch(tx.getItemBatch());
+							detail.setItemDrugType(tx.getItemDrugType());
 
 							if (currentQuantity < 0 && detail.getQuantity() > 0) {
 								// The quantity was previously negative and is now positive so inherit the batch and
@@ -655,6 +656,7 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 			tx.setItem(null);
 			System.out.println("Got to Null batch line");
 			tx.setItemBatch(null);
+			tx.setItemDrugType(null);
 		} else {
 			// Set the tx fields that derive from the source detail
 			tx.setSourceCalculatedExpiration(detail.isCalculatedExpiration());
@@ -662,6 +664,7 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 			tx.setExpiration(detail.getExpiration());
 			tx.setBatchOperation(detail.getBatchOperation());
 			tx.setItemBatch(detail.getItemBatch());
+			tx.setItemDrugType(detail.getItemDrugType());
 
 			// get the cumulative total quantity for item stocks with the same expiration date.
 			int cumulativeQuantity = calculateTotalItemStockQuantity(stock, detail);
@@ -995,6 +998,7 @@ public class StockOperationServiceImpl extends BaseOpenmrsService implements ISt
 			newDetail.setCalculatedBatch(true);
 			newDetail.setQuantity(detail.getQuantity());
 			newDetail.setItemBatch(detail.getItemBatch());
+			newDetail.setItemDrugType(detail.getItemDrugType());
 		}
 
 		//delete the "old" detail that is responsible for reduction if this is not a nullBatch as well

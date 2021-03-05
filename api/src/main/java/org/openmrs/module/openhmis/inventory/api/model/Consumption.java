@@ -92,7 +92,7 @@ public class Consumption extends BaseSerializableOpenmrsMetadata {
 
 	@Override
 	public Integer getId() {
-		return this.consumptionId;
+		return consumptionId;
 	}
 
 	@Override

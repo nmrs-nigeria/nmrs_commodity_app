@@ -221,31 +221,31 @@
             <li> <span>State</span></li>
 
             <li>
-                  <select ng-model="state" class="form-control"
-                    ng-options="state for state in states"
-                    ng-change="onChangeStateSuccessful(state)">
-                    </select>
+                <select ng-model="state" class="form-control"
+                ng-options="state for state in states"
+                ng-change="onChangeStateSuccessful(state)">
+                </select>
             </li>
             </ul>
-            
+
             <ul class="table-layout"
             ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
-            
-              <li>
+
+            <li>
                 <span>LGA</span>
             </li>
             <li>
                 <select ng-model="lga" class="form-control"
-                    ng-options="lga for lga in lgas"
-                    ng-change="onChangeLgaSuccessful(lga)">
-                    </select>
+                ng-options="lga for lga in lgas"
+                ng-change="onChangeLgaSuccessful(lga)">
+                </select>
             </li>
-            
+
             </ul>
-            
+
             <ul class="table-layout"
             ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
-            
+
             <li class="required">
                 <span>${ui.message('openhmis.inventory.institution.name')}</span>
             </li>
@@ -297,6 +297,19 @@ showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && (
                 <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
 
                     <table class="item-details" ng-shdow="lineItem.selected">
+                        <tr>
+                            <td>
+                                <b>Drug Type</b>
+                            </td>
+                            <td>
+                                <select ng-model="lineItem.itemDrugType"                          
+                                class="right-justify form-control"
+                                ng-change="changeItemDrugType(lineItem)"
+                                ng-options="itemDrugType for itemDrugType in itemDrugTypes">
+                                </select>               
+                                <br />
+                            </td>
+                        </tr>
                         <tr>
                             <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource), 'not-valid': lineItem.invalidEntry === true}">
                                 ${ ui.includeFragment("openhmis.commons", "searchFragment", [
