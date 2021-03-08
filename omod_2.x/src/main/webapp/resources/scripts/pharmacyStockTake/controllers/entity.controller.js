@@ -43,6 +43,7 @@
 		self.bindExtraVariablesToScope = self.bindExtraVariablesToScope
 			|| function (uuid) {
 				self.loadStockrooms();
+				self.loadDepartments();
 				$scope.showNoStockroomSelected = true;
 				$scope.showNoStockSummaries = false;
 				$scope.showStockDetails = false;
@@ -58,6 +59,41 @@
 						self.stockroomChangeDialog(stockroomChange);
 					} else {
 						$scope.loadStockDetails(stockTakeCurrentPage);
+					}
+				}
+
+				$scope.departmentDialog = function (departmentChange, stockTakeCurrentPage) {
+					console.log("Department Has been selected");
+					console.log("departmentChange: " +  departmentChange);
+					console.log("stockTakeCurrentPage: " +  stockTakeCurrentPage);
+					if ($scope.stockTakeDetails.length != 0) {
+						$scope.stockTakeDetails = [];
+						console.log("stockTakeDetails Details is not equal 0: Calling departmentChangeDialog function");
+						self.departmentChangeDialog(departmentChange);
+					} else {
+						console.log("stockTakeDetails Details is equal 0: Calling loadStockDetailsDepartment function");					
+						$scope.loadStockDetailsDepartment(stockTakeCurrentPage);
+					}
+				}
+
+				$scope.loadStockDetailsDepartment = function (stockTakeCurrentPage) {
+					if ($scope.entity.department != null) {
+						var department_uuid = $scope.entity.department.uuid;
+						console.log("Inside loadStockDetailsDepartment (Department UUID): " + department_uuid);
+					
+						self.loadStockDetailsDepartment(department_uuid, stockTakeCurrentPage);
+						
+						$scope.stockTakeLimit = CookiesService.get(department_uuid + 'stockTakeLimit') || 5;
+						$scope.stockTakeCurrentPage = CookiesService.get(department_uuid + 'stockTakeCurrentPage') || 1;
+						$scope.stockTakePagingFrom = PaginationService.pagingFrom;
+						$scope.stockTakePagingTo = PaginationService.pagingTo;
+					} else {
+						$scope.showNoStockroomSelected = true;
+						$scope.showNoStockSummaries = false;
+						$scope.showStockChangeDetails = false;
+						$scope.stockTakeDetails = [];
+						$scope.showStockDetails = false;
+						$scope.showStockDetailsTable = false;
 					}
 				}
 				
@@ -131,6 +167,11 @@
 		self.loadStockrooms = self.loadStockrooms || function () {
 				PharmacyStockTakeRestfulService.loadStockrooms(INVENTORY_MODULE_NAME, self.onLoadStockroomsSuccessful);
 			}
+
+			self.loadDepartments = self.loadDepartments || function () {
+				console.log("loadDepartments restful service");			
+				PharmacyStockTakeRestfulService.loadDepartments(INVENTORY_MODULE_NAME, self.onLoadDepartmentsSuccessful);
+			}
 		
 		self.loadStockDetails = self.loadStockDetails || function (stockroomUuid, stockTakeCurrentPage) {
 				stockTakeCurrentPage = stockTakeCurrentPage || $scope.stockTakeCurrentPage;
@@ -141,10 +182,29 @@
 					CookiesService.get(stockroomUuid + 'stockTakeLimit'),
 					self.onLoadStockDetailsSuccessful);
 			}
+
+			self.loadStockDetailsDepartment = self.loadStockDetailsDepartment || function (departmentUuid, stockTakeCurrentPage) {
+				console.log("Inside loadStockDetailsDepartment 2: ");				
+				console.log("departmentUuid: " + departmentUuid);		
+				console.log("stockTakeCurrentPage: " + stockTakeCurrentPage);		
+				stockTakeCurrentPage = stockTakeCurrentPage || $scope.stockTakeCurrentPage;
+				CookiesService.set(departmentUuid + 'stockTakeCurrentPage', stockTakeCurrentPage);
+				CookiesService.set(departmentUuid + 'stockTakeLimit', $scope.stockTakeLimit);
+				
+				PharmacyStockTakeRestfulService.loadStockDetailsDepartment(departmentUuid, CookiesService.get(departmentUuid + 'stockTakeCurrentPage'),
+					CookiesService.get(departmentUuid + 'stockTakeLimit'),
+					self.onLoadStockDetailsSuccessful);
+			}
 		
 		//callback
 		self.onLoadStockroomsSuccessful = self.onLoadStockroomsSuccessful || function (data) {
 				$scope.stockrooms = data.results;
+			}
+
+			self.onLoadDepartmentsSuccessful = self.onLoadDepartmentsSuccessful || function (data) {
+				console.log("onLoadDepartmentsSuccessful: " + data.results);		
+				console.log("onLoadDepartmentsSuccessful: " + data.results[0]);						
+				$scope.departments = data.results;
 			}
 		
 		self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {

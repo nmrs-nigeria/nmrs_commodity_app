@@ -18,6 +18,7 @@ import java.util.List;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
@@ -53,4 +54,9 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_METADATA })
 	List<ItemStockSummary> getItemStockSummaryByStockroom(Stockroom stockroom, PagingInfo pagingInfo);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	List<ItemStockSummary> getItemStockSummaryByDepartment(Department department, PagingInfo pagingInfo);
+
 }

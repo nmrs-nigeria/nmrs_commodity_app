@@ -31,7 +31,7 @@
 	<div style="font-size:inherit">
 		<table class="header-title">
 			<span class="h1-substitue-left" style="float:left;">
-				${ui.message('openhmis.inventory.admin.stockTake')}
+				${ui.message('openhmis.inventory.admin.stockTake.pharmacy')}
 			</span>
 			<span style="float:right;">
 
@@ -61,6 +61,28 @@
 				</div>
 			</div>
 
+		</div>
+		 <div class="row" style="padding-top: 10px">
+			<div class="col-xs-9">
+				<div class="col-xs-2">
+					<strong>
+						${ui.message('openhmis.inventory.consumption.testingPoint')}:
+					</strong>
+				</div>
+
+				<div class="col-xs-6">
+					<select class="form-control" ng-model="entity.department"
+					        ng-options='department.name for department in departments track by department.uuid'
+					        ng-change="departmentDialog('departmentChange',stockTakeCurrentPage)">
+						<option value="" selected="selected">Any</option>
+					</select>
+				</div>
+
+				<div class="col-xs-2">
+					<input type="button" value="Search" class="confirm"
+					       ng-click="departmentDialog('departmentChange',stockTakeCurrentPage)">
+				</div>
+			</div>
 		</div>
 		<br/>
 	</div>

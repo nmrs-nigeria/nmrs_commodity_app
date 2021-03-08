@@ -54,6 +54,7 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 		description.removeProperty("description");
 		description.addProperty("operationNumber");
 		description.addProperty("stockroom");
+		description.addProperty("department");
 		description.addProperty("itemStockSummaryList");
 
 		return description;
