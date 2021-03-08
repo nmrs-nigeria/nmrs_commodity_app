@@ -16,6 +16,7 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionDataService;
 import org.openmrs.module.openhmis.inventory.api.IConsumptionSummaryDataService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
@@ -30,6 +31,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.IStockOperationType;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
@@ -52,7 +54,7 @@ import org.openmrs.module.webservices.rest.web.resource.impl.EmptySearchResult;
 @Resource(name = ModuleRestConstants.PHARMACY_CONSUMPTION_SUMMARY_RESOURCE,
         supportedClass = PharmacyConsumptionSummaryResource.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
-public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource<PharmacyConsumptionSummary> {
+public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource<NewPharmacyConsumptionSummary> {
 
 	private static final Log LOG = LogFactory.getLog(PharmacyConsumptionSummaryResource.class);
 
@@ -63,6 +65,7 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 	private IPharmacyConsumptionDataService consumptionDataService;
 	private IStockOperationTypeDataService stockOperationTypeDataService;
 	private List<Item> distinctItems = null;
+	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
 
 	public PharmacyConsumptionSummaryResource() {
 		this.itemDataService = Context.getService(IItemDataService.class);
@@ -71,57 +74,64 @@ public class PharmacyConsumptionSummaryResource extends BaseRestMetadataResource
 		this.stockOperationTransactionDataService = Context.getService(IStockOperationTransactionDataService.class);
 		this.consumptionDataService = Context.getService(IPharmacyConsumptionDataService.class);
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
+		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 	}
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		description.addProperty("item", Representation.REF);
-		description.addProperty("department", Representation.REF);
+		description.addProperty("item");
 		description.addProperty("totalQuantityReceived");
-		description.addProperty("totalQuantityConsumed");
-		description.addProperty("totalQuantityWasted");
-		description.addProperty("stockBalance");
-		//	description.addProperty("startDate", Representation.DEFAULT);
-		//	description.addProperty("endDate", Representation.DEFAULT);
+		description.addProperty("uuid");
+		description.addProperty("groupUuid");
+		description.addProperty("drugCategory");
+		description.addProperty("consumptionSummaryId");
 
 		return description;
 	}
 
 	@Override
-	public PharmacyConsumptionSummary newDelegate() {
-		return new PharmacyConsumptionSummary();
+	public NewPharmacyConsumptionSummary newDelegate() {
+		return new NewPharmacyConsumptionSummary();
 	}
 
 	@Override
-	public Class<? extends IMetadataDataService<PharmacyConsumptionSummary>> getServiceClass() {
+	public Class<? extends IMetadataDataService<NewPharmacyConsumptionSummary>> getServiceClass() {
 		return IPharmacyConsumptionSummaryDataService.class;
 	}
 
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 
-		distinctItems = itemDataService.getAll();
-                distinctItems = distinctItems.stream().filter(a->a.getItemType()
-                        .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
-                        .collect(Collectors.toList());
+		//		distinctItems = itemDataService.getAll();
+		//                distinctItems = distinctItems.stream().filter(a->a.getItemType()
+		//                        .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE))
+		//                        .collect(Collectors.toList());
 
-			Department searchDepartment = getDepartment(context);
+		Department searchDepartment = getDepartment(context);
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
 		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
+		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
-		System.out.println("Printing request params");
+		List<NewPharmacyConsumptionSummary> finalConsumptionSummarys =
+		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, pagingInfo);
 
-		//	System.out.println(searchDepartment.getName());
-		System.out.println(startDate);
-		System.out.println(endDate);
+		return new AlreadyPagedWithLength<NewPharmacyConsumptionSummary>(context, finalConsumptionSummarys,
+		        pagingInfo.hasMoreResults(),
+		        pagingInfo.getTotalRecordCount());
 
-		if (startDate == null || endDate == null) {
-			System.out.println("if statement returns null");
-			return new EmptySearchResult();
-		}
-
-		return searchConsumptionSummary(context);
+		//		System.out.println("Printing request params");
+		//
+		//		//	System.out.println(searchDepartment.getName());
+		//		System.out.println(startDate);
+		//		System.out.println(endDate);
+		//
+		//		if (startDate == null || endDate == null) {
+		//			System.out.println("if statement returns null");
+		//			return new EmptySearchResult();
+		//		}
+		//
+		//		return searchConsumptionSummary(context);
 	}
 
 	private PageableResult searchConsumptionSummary(RequestContext context) {

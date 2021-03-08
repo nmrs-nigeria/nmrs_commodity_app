@@ -102,11 +102,9 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
-                       <th>Dispensary</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.totalWastage')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.stockBalance')}</th>
+                        <th>Drug Category</th>
+                        
 
 
                     </tr>
@@ -114,20 +112,13 @@
                 <tbody>
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" ui-sref="edit({uuid: entity.uuid})">
-                <td ng-style="strikeThrough(entity.retired)">{{entity.item.name}}</td>
-                <td ng-style="strikeThrough(entity.retired)">{{entity.department.name}}</td>
+                <td ng-style="strikeThrough(entity.retired)">{{entity.item}}</td>
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.totalQuantityReceived}}
                 </td>
                 <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.totalQuantityConsumed}}
-                </td>
-                <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.totalQuantityWasted}}
-                </td>
-                <td ng-style="strikeThrough(entity.retired)">
-                    {{entity.stockBalance}}
-                </td>
+                    {{entity.drugCategory}}
+                </td>             
 
                 </tr>
                 </tbody>

@@ -21,6 +21,9 @@ import org.openmrs.PatientIdentifier;
  */
 public class Utils {
 
+	public static final int OI_DRUGS_GROUPING_CONCEPT_SET = 165726;//
+	public static final int TB_DRUGS_GROUPING_CONCEPT_SET = 165728;
+
 	public static final int CURRENT_REGIMEN_LINE_CONCEPT = 165708; // From Pharmacy Form
 	public static final int VISIT_TYPE_CONCEPT = 164181; // Visit Type concept from Pharmacy Forms
 	public static final int ARV_DRUGS_GROUPING_CONCEPT_SET = 162240;// 
@@ -49,6 +52,8 @@ public class Utils {
 	public static final int SERVICE_DELIVERY_MODEL_MULTIMONTH_SCRIPTING = 166149;
 	public static final int SERVICE_DELIVERY_MODEL_FAMILY_DRUG_PICKUP = 166150;
 
+	public static final int TB_DRUG = 165304;
+	public static final int OI_DRUG = 165727;
 	public static final int ARV_DRUG = 165724;
 	public static final int ARV_DRUG_STRENGHT = 165725;
 	public static final int ARV_QTY_PRESCRIBED = 160856;

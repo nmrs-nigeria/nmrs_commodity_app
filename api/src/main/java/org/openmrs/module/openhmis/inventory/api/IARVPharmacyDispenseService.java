@@ -10,6 +10,7 @@ import java.util.List;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
 import org.openmrs.module.openhmis.inventory.api.model.ARVPharmacyDispense;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 
 /**
  * @author MORRISON.I
@@ -17,5 +18,7 @@ import org.openmrs.module.openhmis.inventory.api.model.ARVPharmacyDispense;
 public interface IARVPharmacyDispenseService extends IMetadataDataService<ARVPharmacyDispense> {
 
 	List<ARVPharmacyDispense> getARVs(Date startDate, Date endDate, PagingInfo pagingInfo);
+
+	List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate, PagingInfo pagingInfo);
 
 }
