@@ -24,6 +24,9 @@ public class Utils {
 	public static final int OI_DRUGS_GROUPING_CONCEPT_SET = 165726;//
 	public static final int TB_DRUGS_GROUPING_CONCEPT_SET = 165728;
 
+	public static final int TREATMENT_CATEGORY_CONCEPT = 165720; // From Pharmacy Form
+	public static final int ADULT_TREATMENT_CATEGORY_CONCEPT = 165709; // From Pharmacy Form
+	public static final int PEDIATRIC_TREATMENT_CATEGORY_CONCEPT = 1528; // From Pharmacy Form
 	public static final int CURRENT_REGIMEN_LINE_CONCEPT = 165708; // From Pharmacy Form
 	public static final int VISIT_TYPE_CONCEPT = 164181; // Visit Type concept from Pharmacy Forms
 	public static final int ARV_DRUGS_GROUPING_CONCEPT_SET = 162240;// 

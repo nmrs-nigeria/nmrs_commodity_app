@@ -10,6 +10,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -133,14 +135,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
         System.out.println("found arv encounters");
         System.out.println(encounters.size());
 
-        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
-            Integer count = query.list().size();
-
-            pagingInfo.setTotalRecordCount(count.longValue());
-            pagingInfo.setLoadRecordCount(false);
-        }
-
-        //      query = this.createPagingQuery(pagingInfo, query);
+        //   query = this.createPagingQuery(pagingInfo, query);
         List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
         List<Obs> obsPerVisit = null;
 
@@ -183,13 +178,57 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
                 if (!collect2.isEmpty()) {
                     arvsuConsumptionSummarys.addAll(collect2);
                 }
+
             } catch (DatatypeConfigurationException ex) {
                 Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
 
         }
 
+        arvsuConsumptionSummarys = sortAndGroupConsumption(arvsuConsumptionSummarys);
+
+        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+            Integer count = arvsuConsumptionSummarys.size();
+
+            pagingInfo.setTotalRecordCount(count.longValue());
+            pagingInfo.setLoadRecordCount(false);
+        }
+
         return arvsuConsumptionSummarys;
+    }
+
+	private List<NewPharmacyConsumptionSummary>
+            sortAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
+
+        List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
+
+        arvsuConsumptionSummarys.stream().filter(Objects::nonNull)
+                .collect(Collectors.groupingBy(NewPharmacyConsumptionSummary::getDrugCategory,
+                        Collectors.groupingBy(NewPharmacyConsumptionSummary::getItem,
+                                Collectors.summingInt(NewPharmacyConsumptionSummary::getTotalQuantityReceived))
+                )).entrySet()
+                .stream()
+                .map((a) -> {
+                    return mapPharmacyConsumptionSummarys(a);
+                }).forEachOrdered((consumptions) -> {
+            summarys.addAll(consumptions);
+        });
+        return summarys;
+
+    }
+
+	private static List<NewPharmacyConsumptionSummary>
+            mapPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
+
+        return entry.getValue().entrySet().stream().map((a) -> {
+            NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
+            summary.setDrugCategory(entry.getKey());
+            summary.setItem(a.getKey());
+            summary.setTotalQuantityReceived(a.getValue());
+            summary.setUuid(UUID.randomUUID().toString());
+            return summary;
+        }).collect(Collectors.toList());
+
     }
 
 	public Set<ARVDispensedItem> createARVDispenseItems(Patient patient, Date visitDate, List<Obs> obsListForAVisit,
@@ -242,6 +281,28 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
         Obs obs = null;
         List<Obs> targetObsList = new ArrayList<Obs>();
         Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
+        String drugCategory = null;
+
+        obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
+        if (obs != null && obs.getValueCoded() != null) {
+            if (null == obs.getValueCoded().getConceptId()) {
+                //rare scenario
+                drugCategory = "Adult ART";
+            } else {
+                switch (obs.getValueCoded().getConceptId()) {
+                    case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
+                        drugCategory = "Adult ART";
+                        break;
+                    case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
+                        drugCategory = "Pediatric ART";
+                        break;
+                    default:
+                        //rare scenario
+                        drugCategory = "Adult ART";
+                        break;
+                }
+            }
+        }
 
         Obs obsGroup = Utils.extractObs(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
         if (obsGroup != null) {
@@ -284,7 +345,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
                 if (obs != null) {
                     aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
                 }
-                aRVDispensedItem.setDrugCategory("ART");
+                aRVDispensedItem.setDrugCategory(drugCategory);
 
                 aRVDispensedItems.add(aRVDispensedItem);
             }
@@ -412,12 +473,15 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private static NewPharmacyConsumptionSummary mapARVDispensedItem(ARVDispensedItem arvItem) {
-		NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
-		summary.setGroupUuid(arvItem.getArvPharmacyDispenseUuid());
-		summary.setItem(arvItem.getItemName());
-		summary.setTotalQuantityReceived(arvItem.getQuantityDispensed());
-		summary.setDrugCategory(arvItem.getDrugCategory());
-		summary.setUuid(UUID.randomUUID().toString());
+		NewPharmacyConsumptionSummary summary = null;
+		if (arvItem.getDrugCategory() != null && arvItem.getItemName() != null) {
+			summary = new NewPharmacyConsumptionSummary();
+			summary.setGroupUuid(arvItem.getArvPharmacyDispenseUuid());
+			summary.setItem(arvItem.getItemName());
+			summary.setTotalQuantityReceived(arvItem.getQuantityDispensed());
+			summary.setDrugCategory(arvItem.getDrugCategory());
+			summary.setUuid(UUID.randomUUID().toString());
+		}
 
 		return summary;
 	}

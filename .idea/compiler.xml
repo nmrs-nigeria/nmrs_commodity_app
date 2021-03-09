@@ -6,11 +6,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="openhmis.inventory-omod" />
-        <module name="openhmis.inventory-omod_2.x" />
         <module name="openhmis.inventory-api" />
         <module name="openhmis.inventory-omod_1.x" />
+        <module name="openhmis.inventory-omod" />
+        <module name="openhmis.inventory-omod_2.x" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="nmrs_commodity_app" target="1.8" />
+      <module name="openhmis.inventory-api" target="1.8" />
+      <module name="openhmis.inventory-omod" target="1.8" />
+      <module name="openhmis.inventory-omod_1.x" target="8" />
+      <module name="openhmis.inventory-omod_2.x" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
