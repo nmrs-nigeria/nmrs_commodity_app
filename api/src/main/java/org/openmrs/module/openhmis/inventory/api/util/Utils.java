@@ -141,6 +141,7 @@ public class Utils {
 	public static final String DCR_TOTAL_QUANTITY_ISSUED_HEADER = "Total Quantity Issued";
 	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
 	public static final String DCR_STOCK_BALANCE_HEADER = "Stock balance";
+	public static final String DCR_DRUG_CATEGORY_HEADER = "Drug Category";
 
 	public static final String DISPENSARY_STOCKONHAND_REPORT_SHEET_NAME = "Dispensary Stock on Hand Report";
 	public static final String SSR_DEPARTMENT_HEADER = "Department";

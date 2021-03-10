@@ -24,27 +24,26 @@ import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryRepo
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 
 /**
  * @author MORRISON.I
  */
 public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
-	private static final Log LOG = LogFactory.getLog(PharmacyReportsServiceImpl.class);
+    private static final Log LOG = LogFactory.getLog(PharmacyReportsServiceImpl.class);
 
-	@Override
-    public String getPharmacyConsumptionByDate(String reportId, List<PharmacyConsumptionSummary> reportData,
+    @Override
+    public String getPharmacyConsumptionByDate(String reportId, List<NewPharmacyConsumptionSummary> reportData,
             String reportFolder) {
 
-
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
-
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
-            String[] HEADERS = {Utils.DCR_ITEM_HEADER,Utils.DCR_DISPENSARY_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
-                Utils.DCR_TOTAL_QUANTITY_CONSUMED_HEADER, Utils.DCR_TOTAL_WASTAGE_HEADER, Utils.DCR_STOCK_BALANCE_HEADER};
+            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
+                Utils.DCR_DRUG_CATEGORY_HEADER};
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader(HEADERS));
@@ -53,9 +52,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                     .forEach(con -> {
 
                         try {
-                            csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
-                                    con.getTotalQuantityReceived(),
-                                    con.getTotalQuantityConsumed(), con.getTotalQuantityWasted(), con.getStockBalance());
+                            csvPrinter.printRecord(con.getItem(), con.getTotalQuantityReceived(), con.getDrugCategory());
                         } catch (IOException ex) {
                             LOG.error(ex.getMessage());
                         }
@@ -70,13 +67,11 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
-	@Override
-    public String getPharmacyStockroomConsumptionByDate(String reportId, 
+    @Override
+    public String getPharmacyStockroomConsumptionByDate(String reportId,
             List<PharmacyConsumptionSummary> reportData, String reportFolder) {
-      
 
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
-
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
@@ -91,7 +86,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                     .forEach(con -> {
 
                         try {
-                            csvPrinter.printRecord(con.getItem().getName(), 
+                            csvPrinter.printRecord(con.getItem().getName(),
                                     con.getTotalQuantityReceived(),
                                     con.getTotalQuantityConsumed(), con.getStockBalance());
                         } catch (IOException ex) {
@@ -108,17 +103,17 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
-	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
+    public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
             String reportFolder) {
-		
+
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
 
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
-            String[] HEADERS = {Utils.SSR_ITEM_HEADER,Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
+            String[] HEADERS = {Utils.SSR_ITEM_HEADER, Utils.SSR_DEPARTMENT_HEADER, Utils.SSR_BATCH_HEADER,
                 Utils.SSR_EXPIRATION_HEADER, Utils.SSR_QUANTITY_HEADER};
- 
+
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader(HEADERS));
 
@@ -127,7 +122,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
                         try {
 
-                            csvPrinter.printRecord(con.getItem().getName(),con.getDepartment().getName(), 
+                            csvPrinter.printRecord(con.getItem().getName(), con.getDepartment().getName(),
                                     con.getItemBatch(),
                                     con.getExp(), con.getQuantity());
 

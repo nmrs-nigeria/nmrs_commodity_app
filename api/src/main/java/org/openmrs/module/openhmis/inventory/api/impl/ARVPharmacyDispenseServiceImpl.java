@@ -185,7 +185,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
         }
 
-        arvsuConsumptionSummarys = sortAndGroupConsumption(arvsuConsumptionSummarys);
+        arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
 
         if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
             Integer count = arvsuConsumptionSummarys.size();
@@ -198,7 +198,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private List<NewPharmacyConsumptionSummary>
-            sortAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
+            sumAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
 
         List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
 

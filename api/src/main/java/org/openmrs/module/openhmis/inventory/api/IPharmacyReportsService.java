@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 
@@ -18,7 +19,7 @@ import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummar
 public interface IPharmacyReportsService {
 
 	String getPharmacyConsumptionByDate(String reportId,
-	        List<PharmacyConsumptionSummary> reportData, String reportFolder);
+	        List<NewPharmacyConsumptionSummary> reportData, String reportFolder);
 
 	String getPharmacyStockroomConsumptionByDate(String reportId,
 	        List<PharmacyConsumptionSummary> reportData, String reportFolder);

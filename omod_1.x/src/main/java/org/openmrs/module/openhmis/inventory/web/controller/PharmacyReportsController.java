@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemExpirationSummaryService;
@@ -41,6 +42,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 
 /**
  * @author MORRISON.I
@@ -56,6 +58,7 @@ public class PharmacyReportsController {
 	private IItemDataService itemDataService;
 	private IPharmacyReportsService iPharmacyReports;
 	private IItemExpirationSummaryService itemExpirationSummaryService;
+	private IARVPharmacyDispenseService aRVPharmacyDispenseService;
 
 	private Date startDate;
 	private Date endDate;
@@ -84,6 +87,7 @@ public class PharmacyReportsController {
 		this.startDateStringVal = startDateString;
 		this.endDateStringVal = endDateString;
 		this.iPharmacyReports = Context.getService(IPharmacyReportsService.class);
+		this.aRVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 
 		SimpleObject result = new SimpleObject();
 		this.request = request;
@@ -144,32 +148,33 @@ public class PharmacyReportsController {
 		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(stockOperationTypeUuid);
 
 		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
-		List<PharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+		List<NewPharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
 
-		for (Department d : dispensarys) {
-
-			try {
-				searchConsumptionSummary.setDepartment(d);
-				//  searchConsumptionSummary.setItem(searchItem);
-				searchConsumptionSummary.setStartDate(startDate);
-				searchConsumptionSummary.setEndDate(endDate);
-				searchConsumptionSummary.setOperationStatus(status);
-				searchConsumptionSummary.setOperationType(stockOperationType);
-
-				List<StockOperation> stockOps = null;
-
-				stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-
-				System.out.println("stock operations result: " + stockOps.size());
-
-				finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummary(stockOps,
-				    searchConsumptionSummary, null, distinctItems));
-
-			} catch (Exception ex) {
-				System.out.println(ex.getMessage());
-			}
-
-		}
+		//		for (Department d : dispensarys) {
+		//
+		//			try {
+		//				searchConsumptionSummary.setDepartment(d);
+		//				//  searchConsumptionSummary.setItem(searchItem);
+		//				searchConsumptionSummary.setStartDate(startDate);
+		//				searchConsumptionSummary.setEndDate(endDate);
+		//				searchConsumptionSummary.setOperationStatus(status);
+		//				searchConsumptionSummary.setOperationType(stockOperationType);
+		//
+		//				List<StockOperation> stockOps = null;
+		//
+		//				stockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+		//
+		//				System.out.println("stock operations result: " + stockOps.size());
+		//
+		//				finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummary(stockOps,
+		//				    searchConsumptionSummary, null, distinctItems));
+		//
+		//			} catch (Exception ex) {
+		//				System.out.println(ex.getMessage());
+		//			}
+		//
+		//		}
+		finalConsumptionSummarys = aRVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
 
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
