@@ -5,16 +5,24 @@
 			label: "${ ui.message("openhmis.inventory.page")}",
 			link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
-   {
+    {
             label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
-        },
+    link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
+    },
 		{label: "${ ui.message("openhmis.inventory.admin.pharmacyConsumptionSummarys")}",}
     ];
 
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
 
 </script>
+
+<div ng-show="loading" class="loading-msg">
+    <span>${ui.message("openhmis.inventory.admin.create.processing")}</span>
+    <br />
+    <span class="loading-img">
+        <img src="${ ui.resourceLink("uicommons", "images/spinner.gif") }"/>
+    </span>
+</div>
 
 <div id="entities-body">
     <br/>
@@ -29,73 +37,68 @@
 
     <div>
         <div id="entities">
-             <form style="" class="search">
-               <fieldset class="search">
-                <table class="search" >
-                     <tr>
-                       <td>
-                        ${ ui.message('openhmis.inventory.summary.startDate') }:
-                        <ul class="table-layout">
-                            <li>
-                                <span class="date">
-                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                      formFieldName: "startDate",
-                      id: "startDate",
-                      label: "",
-                      useTime: false
+            <form style="" class="search">
+                <fieldset class="search">
+                    <table class="search" >
+                        <tr>
+                            <td>
+                                ${ ui.message('openhmis.inventory.summary.startDate') }:
+                                <ul class="table-layout">
+                                    <li>
+                                        <span class="date">
+                                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+        formFieldName: "startDate",
+        id: "startDate",
+        label: "",
+        useTime: false
                                     
-])}
-                                </span>
-                            </li>
+        ])}
+                                        </span>
+                                    </li>
 
 
-                        </ul>
-                    </td>
-                     </tr>
-                  
-                     <tr>
-                      <td>
-                        ${ ui.message('openhmis.inventory.summary.endDate') }:
-                        <ul class="table-layout">
-                            <li>
-                                <span class="date">
-                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                      formFieldName: "endDate",
-                      id: "endDate",
-                      label: "",
-                      useTime: false
+                                </ul>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                ${ ui.message('openhmis.inventory.summary.endDate') }:
+                                <ul class="table-layout">
+                                    <li>
+                                        <span class="date">
+                                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+        formFieldName: "endDate",
+        id: "endDate",
+        label: "",
+        useTime: false
                                     
-])}
-                                </span>
-                            </li>
+        ])}
+                                        </span>
+                                    </li>
 
 
-                        </ul>
-                    </td>
-                     </tr>
-                       
-    <tr>
-        <td>
-          
-        </td>
-                     <td>
-                       Dispensary:
-                        <ul>
-                            <li>
-                                <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
-                                ng-options='department.name for department in departments track by department.uuid'>
-                            <option value="" selected="selected">Any</option>
-                            </select>
-                            </li>
+                                </ul>
+                            </td>
+                        </tr>
 
-                        </ul>
-                    </td>
-                     </tr>
-                  
-                </table>
-            </fieldset>   
-             </form>
-           
+                        <tr>
+                            <td>
+
+                            </td>
+                            <td>
+                                <ul class="table-layout">
+                                    <li></li>
+                                    <li><a class="btn btn-grey" ng-click="searchConsumptionSummarys(currentPage)">Search</a></li>
+                                </ul>
+
+                            </td>
+                        </tr>
+
+                    </table>
+                </fieldset>   
+            </form>
+
 
             <br/><br/>
             <table style="margin-bottom:5px;margin-bottom:5px;" class="manage-entities-table manage-stockOperations-table">
@@ -104,7 +107,7 @@
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
                         <th>Drug Category</th>
-                        
+
 
 
                     </tr>

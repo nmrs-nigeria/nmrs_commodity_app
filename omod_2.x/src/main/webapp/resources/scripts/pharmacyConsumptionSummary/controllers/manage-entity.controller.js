@@ -26,6 +26,7 @@
                 }
 
         self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function () {
+           
             self.loadDepartments();
             self.loadItems();
             $scope.searchConsumptionSummarys = self.searchConsumptionSummarys;
@@ -71,6 +72,7 @@
 
         self.searchConsumptionSummarys = self.searchConsumptionSummarys || function (currentPage) {
                console.log('about to call pharm consumption summary controller');
+               $scope.loading = true;
             //	CookiesService.set('searchField', $scope.searchField);
             CookiesService.set('startIndex', $scope.startIndex);
             CookiesService.set('limit', $scope.limit);
@@ -98,6 +100,7 @@
          //    ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
 
             ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
+             $scope.loading = false;
         }
 
         self.onLoadConsumptionSummarysSuccessful = self.onLoadConsumptionSummarysSuccessful || function (data) {
