@@ -69,8 +69,42 @@
 //				self.searchItems(currentPage);
 //			}
 
+
+
+function checkParameters(parameterObject) {
+            var objectKeys = Object.keys(parameterObject);
+            for (var i = 0; i < objectKeys.length; i++) {
+                var name = objectKeys[i];
+                var value = parameterObject[objectKeys[i]];
+                if (!value) {
+                    switch (name) {
+                        case "startDate":
+                            emr.errorAlert('openhmis.inventory.report.error.beginDateRequired');
+                            break;
+                        case "endDate":
+                            emr.errorAlert('openhmis.inventory.report.error.endDateRequired');
+                            break;
+                        default:
+                            break;
+                    }
+                    return false;
+                }
+            }
+            console.log('check paramaters was successful');
+            return true;
+        }
+
+
         self.searchConsumptionSummarys = self.searchConsumptionSummarys || function (currentPage) {
-            //	CookiesService.set('searchField', $scope.searchField);
+            
+             var parametersAreValid = checkParameters({
+                "startDate": $scope.startDate,
+                "endDate": $scope.endDate
+            });
+            
+            
+            if(parametersAreValid){
+                   //	CookiesService.set('searchField', $scope.searchField);
             CookiesService.set('startIndex', $scope.startIndex);
             CookiesService.set('limit', $scope.limit);
             CookiesService.set('includeRetired', $scope.includeRetired);
@@ -96,7 +130,14 @@
             
          //    ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
 
-            ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
+            ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful); 
+                
+            }else{
+                
+                alert('select a startDate and endDate to continue!');
+            }
+            
+        
         }
 
         self.onLoadConsumptionSummarysSuccessful = self.onLoadConsumptionSummarysSuccessful || function (data) {

@@ -38,7 +38,7 @@
 </div>
 
 <div ng-hide="loading">
-    <h1>${ui.message('openhmis.inventory.admin.create.pharmacy.dispense')}</h1>
+    <h1>${ui.message('openhmis.inventory.admin.create.pharmacy.dispensing')}</h1>
     <form name="entityForm" class="entity-form create-operation-content" ng-class="{'submitted': submitted}">
         <fieldset class="content pharmacyOperation">
            
@@ -52,7 +52,7 @@ showPatientSearchBox: "selectedPatient === ''"
          
 
 <span>            
-    <button type="button" class="btn success-button" id="{{selectedPatient.uuid}}_{{visit.uuid}}" onclick="dispenseDrug(this.id)">${ ui.message('openhmis.inventory.admin.create.pharmacy.dispense') }</button>
+    <button type="button" class="btn success-button" id="{{selectedPatient.uuid}}_{{visit.uuid}}" onclick="dispenseDrug(this.id)">${ ui.message('openhmis.inventory.admin.create.pharmacy.dispensing') }</button>
 </span>
 
         </fieldset>
