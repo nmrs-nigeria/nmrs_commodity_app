@@ -81,7 +81,6 @@
                             <li>
                                 <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
                                 ng-options='department.name for department in departments track by department.uuid'>
-                            <option value="" selected="selected">Any</option>
                             </select>
                             </li>
 

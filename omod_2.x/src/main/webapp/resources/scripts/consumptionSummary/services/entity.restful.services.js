@@ -54,6 +54,7 @@
 		function loadDepartments(onLoadDepartmentsSuccessful) {
 			var requestParams = [];
 			requestParams['rest_entity_name'] = 'department';
+                         requestParams['departmentType'] = 'lab';
 			EntityRestFactory.loadEntities(requestParams,
 					onLoadDepartmentsSuccessful, errorCallback);
 		}

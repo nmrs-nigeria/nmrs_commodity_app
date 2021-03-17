@@ -56,5 +56,7 @@ emr.loadMessages([
 	"openhmis.commons.general.add",
 	"openhmis.commons.general.enterSearchPhrase",
 	"openhmis.commons.general.edit",
-	"openhmis.commons.general.postSearchMessage"
+	"openhmis.commons.general.postSearchMessage",
+        "openhmis.inventory.report.error.beginDateRequired", 
+        "openhmis.inventory.report.error.endDateRequired"
 ]);

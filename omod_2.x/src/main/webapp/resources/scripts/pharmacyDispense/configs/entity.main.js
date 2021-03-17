@@ -76,5 +76,6 @@ emr.loadMessages([
         "openhmis.inventory.operations.disposedType",
         "openhmis.inventory.operations.adjustmentKind",
 		"openhmis.inventory.operations.issueTo",
-		"openhmis.inventory.admin.create.pharmacy.dispense"
+		"openhmis.inventory.admin.create.pharmacy.dispense",
+                "openhmis.inventory.admin.create.pharmacy.dispensing"
 ]);
