@@ -31,9 +31,9 @@ import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSum
  */
 public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
-    private static final Log LOG = LogFactory.getLog(PharmacyReportsServiceImpl.class);
+	private static final Log LOG = LogFactory.getLog(PharmacyReportsServiceImpl.class);
 
-    @Override
+	@Override
     public String getPharmacyConsumptionByDate(String reportId, List<NewPharmacyConsumptionSummary> reportData,
             String reportFolder) {
 
@@ -67,7 +67,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
-    @Override
+	@Override
     public String getPharmacyStockroomConsumptionByDate(String reportId,
             List<PharmacyConsumptionSummary> reportData, String reportFolder) {
 
@@ -103,7 +103,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         return fileName;
     }
 
-    public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
+	public String getDispensaryStockOnHandByDate(String reportId, List<ItemExpirationSummaryReport> reportData,
             String reportFolder) {
 
         String fileName = Paths.get(reportFolder, reportId + ".csv").toString();

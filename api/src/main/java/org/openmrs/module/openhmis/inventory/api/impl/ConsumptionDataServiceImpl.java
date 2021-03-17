@@ -295,8 +295,8 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
             consumptionSummary.setItem(a);
 
             for (Consumption c : filteredConsumptions) {
-                int tempTotalWasted = c.getWastage();
-                int tempTotalQuantityUsed = c.getQuantity();
+                int tempTotalWasted = c.getWastage() == null ? 0 : c.getWastage();
+                int tempTotalQuantityUsed = c.getQuantity() == null ? 0 : c.getQuantity();
                 totalQuantityUsed += tempTotalQuantityUsed;
                 totalQuantityWastated += tempTotalWasted;
                 

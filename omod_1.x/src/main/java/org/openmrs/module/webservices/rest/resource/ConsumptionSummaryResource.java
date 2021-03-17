@@ -117,7 +117,7 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 
 		System.out.println("Printing request params");
 
-		System.out.println(searchDepartment.getName());
+		
 		System.out.println(startDate);
 		System.out.println(endDate);
 
@@ -195,101 +195,6 @@ public class ConsumptionSummaryResource extends BaseRestMetadataResource<Consump
 		        pagingInfo.getTotalRecordCount());
 
 	}
-
-	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
-
-		List<ConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
-
-		for (ConsumptionSummary summary : consumptionSummarys) {
-			ConsumptionSummary each = new ConsumptionSummary();
-			each.setItem(summary.getItem());
-			each.setDepartment(summary.getDepartment());
-			each.setTotalQuantityConsumed(summary.getTotalQuantityConsumed());
-			each.setTotalQuantityReceived(summary.getTotalQuantityReceived());
-			each.setTotalQuantityWasted(summary.getTotalQuantityWasted());
-			if (each.getTotalQuantityReceived() > 0) {
-				each.setStockBalance(each.getTotalQuantityReceived()
-				        - (each.getTotalQuantityConsumed() + each.getTotalQuantityWasted()));
-			} else {
-				each.setStockBalance(0);
-			}
-
-			consumptionSummarysWithBalance.add(each);
-		}
-
-		return consumptionSummarysWithBalance;
-
-	}
-
-	private List<ConsumptionSummary> mergeSummary(List<ConsumptionSummary> fromConsumption, 
-            List<ConsumptionSummary> fromReceived, Department department) {
-
-        List<ConsumptionSummary> mergedConsumptionSummarys = new ArrayList<>();
-
-        distinctItems.forEach(a -> {
-            ConsumptionSummary each = new ConsumptionSummary();
-            //get sum from received
-            int sumReceived = fromReceived.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityReceived).findFirst().get();
-            each.setTotalQuantityReceived(sumReceived);
-            each.setDepartment(department);
-            int sumConsumed = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityConsumed).findFirst().get();
-            each.setTotalQuantityConsumed(sumConsumed);
-            
-            int sumWastage = fromConsumption.stream().filter(b -> b.getItem().equals(a))
-                    .map(ConsumptionSummary::getTotalQuantityWasted).findFirst().get();
-            
-            each.setTotalQuantityWasted(sumWastage);
-            
-            
-            each.setItem(a);
-            mergedConsumptionSummarys.add(each);
-
-        });
-        
-        return mergedConsumptionSummarys;
-
-    }
-
-	private List<ConsumptionSummary> getSummaryFromConsumption(List<Consumption> consumptions, 
-            Department department) {
-
-        List<ConsumptionSummary> aggregateConsumption = new ArrayList<>();
-
-        distinctItems.forEach(a -> {
-
-            ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-
-            int totalQuantityUsed = 0;
-            int totalQuantityWastated = 0;
-
-            List<Consumption> filteredConsumptions = null;
-
-            filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
-                    .collect(Collectors.toList());
-            consumptionSummary.setDepartment(department);
-            consumptionSummary.setItem(a);
-
-            for (Consumption c : filteredConsumptions) {
-                int tempTotalWasted = c.getWastage();
-                int tempTotalQuantityUsed = c.getQuantity();
-                totalQuantityUsed += tempTotalQuantityUsed;
-                totalQuantityWastated += tempTotalWasted;
-                
-
-            }
-           // System.out.println("Total consumption for item "+a.getName()+" is"+totalQuantityUsed);
-
-            consumptionSummary.setTotalQuantityConsumed(totalQuantityUsed);
-            consumptionSummary.setTotalQuantityWasted(totalQuantityWastated);
-
-            aggregateConsumption.add(consumptionSummary);
-        });
-
-        return aggregateConsumption;
-
-    }
 
 	protected List<ConsumptionSummary> getSummaryFromStockOperation(List<StockOperation> stockOperations,
 	        Department department) {
