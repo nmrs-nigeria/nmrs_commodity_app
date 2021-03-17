@@ -76,7 +76,7 @@ function checkParameters(parameterObject) {
             for (var i = 0; i < objectKeys.length; i++) {
                 var name = objectKeys[i];
                 var value = parameterObject[objectKeys[i]];
-                if (!value) {
+                if (!value || value === {} ) {
                     switch (name) {
                         case "startDate":
                             emr.errorAlert('openhmis.inventory.report.error.beginDateRequired');

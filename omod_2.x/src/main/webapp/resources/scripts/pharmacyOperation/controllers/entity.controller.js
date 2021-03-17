@@ -448,6 +448,7 @@
 
         self.onLoadOperationTypesSuccessful = self.onLoadOperationTypesSuccessful || function (data) {
             $scope.operationTypes = data.results;
+            $scope.operationTypes.unshift(notDefined);
             if ($scope.operationType === undefined) {
                 for (var i = 0; $scope.operationTypes.length; i++) {
                     var operationType = $scope.operationTypes[i];
@@ -460,6 +461,9 @@
 
             // load operation type attributes first time the page loads.
             self.loadOperationTypeAttributes();
+            
+            //make undefined the first
+            $scope.operationType = notDefined;
         }
 
         self.onLoadStockroomsSuccessful = self.onLoadStockroomsSuccessful || function (data) {
