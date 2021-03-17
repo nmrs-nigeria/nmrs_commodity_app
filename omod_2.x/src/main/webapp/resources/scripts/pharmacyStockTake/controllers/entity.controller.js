@@ -251,20 +251,19 @@
 					}
 
                     if (stockObject[i].reasonForChange == "" || stockObject[i].reasonForChange == null || stockObject[i].reasonForChange == undefined) {
-                        console.log(stockObject[i].reasonForChange);
-                        emr.errorAlert("Reason for change is required");
+                       emr.errorAlert("Reason for change is required");
                         return false;
                     }
 
 					stockObject[i].item = stockObject[i].item.uuid;
 				}
-				
+
 				if ($scope.stockTakeDetails.length != 0) {
-					$scope.entity = {
-						'itemStockSummaryList': stockObject,
-						"operationNumber": "",
-						"stockroom": $scope.entity.stockroom.uuid
-					};
+                    $scope.entity = {
+                        "itemStockSummaryList": stockObject,
+                        "operationNumber": "",
+                        "stockroom": "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0"
+                    };                 
 					$scope.loading = true;
 				} else {
 					emr.errorAlert("openhmis.inventory.stocktake.adjustment.empty.error");

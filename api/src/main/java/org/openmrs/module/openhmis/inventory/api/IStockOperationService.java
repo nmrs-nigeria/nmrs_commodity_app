@@ -14,11 +14,13 @@
 package org.openmrs.module.openhmis.inventory.api;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.openmrs.annotation.Authorized;
 import org.openmrs.api.OpenmrsService;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationTransaction;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,4 +103,5 @@ public interface IStockOperationService extends OpenmrsService {
 	@Transactional
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	void applyTransactions(StockOperationTransaction... transactions);
+
 }

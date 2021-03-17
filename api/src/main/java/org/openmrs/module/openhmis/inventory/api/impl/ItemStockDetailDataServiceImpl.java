@@ -31,6 +31,7 @@ import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +45,10 @@ import com.google.common.primitives.Ints;
 public class ItemStockDetailDataServiceImpl
         extends BaseObjectDataServiceImpl<ItemStockDetail, BasicObjectAuthorizationPrivileges>
         implements IItemStockDetailDataService {
+
+	private static final int THREE = 3;
+	private static final int TWO = 2;
+
 	@Override
 	protected BasicObjectAuthorizationPrivileges getPrivileges() {
 		return new BasicObjectAuthorizationPrivileges();
@@ -213,6 +218,94 @@ public class ItemStockDetailDataServiceImpl
 
 		// We done.
 		return results;
+	}
+
+	public List<ItemStockSummary> getItemStockSummaryByDepartmentPharmacy(final Department department,
+	        PagingInfo pagingInfo) {
+		if (department == null) {
+			throw new IllegalArgumentException("The department must be defined.");
+		}
+
+		// We cannot use a normal Criteria query here because criteria does not support a group by with a having statement
+		// so HQL it is!
+
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			// Load the record count (for paging)	
+			String countHql = "select 1 "
+			        + "from ViewInvStockonhandPharmacyDispensary as detail "
+			        + "where department.id = " + department.getId();
+
+			Query countQuery = getRepository().createQuery(countHql);
+
+			Integer count = countQuery.list().size();
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
+
+		// Create the query and optionally add paging	
+		String hql = "select i, detail.expiration, detail.updatableQuantity as sumQty, detail.id "
+		        + "from ViewInvStockonhandPharmacyDispensary as detail inner join detail.item as i "
+		        + "where detail.department.id = " + department.getId() + " "
+		        + "order by i.name asc, detail.expiration asc";
+
+		Query query = getRepository().createQuery(hql);
+		query = this.createPagingQuery(pagingInfo, query);
+
+		List list = query.list();
+
+		// Parse the aggregate query into an ItemStockSummary object
+		List<ItemStockSummary> results = new ArrayList<ItemStockSummary>(list.size());
+		for (Object obj : list) {
+			Object[] row = (Object[])obj;
+
+			ItemStockSummary summary = new ItemStockSummary();
+			summary.setItem((Item)row[0]);
+
+			// If the expiration column is null it does not appear to be included in the row array
+			if (row.length == THREE) {
+				summary.setExpiration(null);
+				Integer quantity = (int)row[1];
+				Integer pharmId = (int)row[2];
+				// skip record if the sum of item stock quantities == 0
+				if (quantity != 0) {
+					summary.setQuantity(quantity);
+					summary.setPharmStockOnHandId(pharmId);
+				} else {
+					continue;
+				}
+			} else {
+				summary.setExpiration((Date)row[1]);
+				Integer quantity = (int)row[2];
+				Integer pharmId = (int)row[THREE];
+				if (quantity != 0) {
+					summary.setQuantity(quantity);
+					summary.setPharmStockOnHandId(pharmId);
+				} else {
+					continue;
+				}
+			}
+
+			results.add(summary);
+		}
+
+		// We done.
+		return results;
+	}
+
+	@Override
+	public void updatePharmacyAtDispensary(List<ViewInvStockonhandPharmacyDispensary> viewInvStockonhandPharmacyDispensary) {
+
+		for (ViewInvStockonhandPharmacyDispensary obj : viewInvStockonhandPharmacyDispensary) {
+
+			String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+			        + "updatableQuantity = " + obj.getUpdatableQuantity() + " "
+			        + "where id = " + obj.getId();
+
+			Query query = getRepository().createQuery(hql);
+			int sql = query.executeUpdate();
+			System.out.println("Updated Executed: " + sql);
+		}
 	}
 
 }

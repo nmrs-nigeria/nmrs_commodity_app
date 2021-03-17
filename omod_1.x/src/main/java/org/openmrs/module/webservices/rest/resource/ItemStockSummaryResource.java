@@ -62,6 +62,7 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 		description.addProperty("actualQuantity", Representation.DEFAULT);
 		description.addProperty("itemBatch", Representation.DEFAULT);
 		description.addProperty("reasonForChange", Representation.DEFAULT);
+		description.addProperty("pharmStockOnHandId", Representation.DEFAULT);
 		return description;
 	}
 
@@ -97,7 +98,7 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 
 				Department department = departmentService.getByUuid(departmentUuid);
 				List<ItemStockSummary> itemStockSummaries =
-				        itemStockDetailDataService.getItemStockSummaryByDepartment(department, pagingInfo);
+				        itemStockDetailDataService.getItemStockSummaryByDepartmentPharmacy(department, pagingInfo);
 				result =
 				        new AlreadyPagedWithLength<ItemStockSummary>(context, itemStockSummaries,
 				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());

@@ -22,6 +22,7 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,5 +59,13 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_METADATA })
 	List<ItemStockSummary> getItemStockSummaryByDepartment(Department department, PagingInfo pagingInfo);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	List<ItemStockSummary> getItemStockSummaryByDepartmentPharmacy(Department department, PagingInfo pagingInfo);
+
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	void updatePharmacyAtDispensary(List<ViewInvStockonhandPharmacyDispensary> viewInvStockonhandPharmacyDispensary);
 
 }
