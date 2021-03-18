@@ -54,7 +54,6 @@ public class DistributionOperationType extends StockOperationTypeBase {
 	@Override
 	public void onCompleted(StockOperation operation) {
 		// Clear out the transactions for the operation
-		
 		operation.getReserved().clear();
 	}
 }

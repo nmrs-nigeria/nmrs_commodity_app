@@ -66,7 +66,7 @@
 			<div class="col-xs-9">
 				<div class="col-xs-2">
 					<strong>
-						${ui.message('openhmis.inventory.consumption.testingPoint')}:
+						${ui.message('openhmis.inventory.pharmacy.stockonhand.dispensary')}:
 					</strong>
 				</div>
 
