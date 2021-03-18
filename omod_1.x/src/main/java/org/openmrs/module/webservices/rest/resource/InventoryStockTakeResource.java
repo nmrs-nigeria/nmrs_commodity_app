@@ -13,19 +13,24 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.openmrs.api.APIException;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationService;
 import org.openmrs.module.openhmis.inventory.api.WellKnownOperationTypes;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.ReservedTransaction;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationStatus;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.model.InventoryStockTake;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.helper.IdgenHelper;
@@ -42,9 +47,11 @@ import org.springframework.web.client.RestClientException;
 public class InventoryStockTakeResource extends BaseRestObjectResource<InventoryStockTake> {
 
 	private IStockOperationService operationService;
+	private IItemStockDetailDataService itemStockDetailDataService;
 
 	public InventoryStockTakeResource() {
 		this.operationService = Context.getService(IStockOperationService.class);
+		this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
 	}
 
 	@Override
@@ -54,6 +61,7 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 		description.removeProperty("description");
 		description.addProperty("operationNumber");
 		description.addProperty("stockroom");
+		description.addProperty("department");
 		description.addProperty("itemStockSummaryList");
 
 		return description;
@@ -75,7 +83,30 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 			throw new RestClientException("The current user not authorized to process this operation.");
 		}
 		StockOperation operation = createOperation(delegate);
-		operationService.submitOperation(operation);
+		boolean update = false;
+		List<ViewInvStockonhandPharmacyDispensary> viewInvStockonhandPharmacyDispensary =
+		        new ArrayList<ViewInvStockonhandPharmacyDispensary>();
+		if (operation.getItems() != null && operation.getItems().size() > 0) {
+
+			for (StockOperationItem optitem : operation.getItems()) {
+
+				if (optitem.getPharmStockOnHandId() != null) {
+					ViewInvStockonhandPharmacyDispensary stockonhandPharmacyDispensary =
+					        new ViewInvStockonhandPharmacyDispensary();
+					stockonhandPharmacyDispensary.setUpdatableQuantity(optitem.getUpdatableQuantity());
+					stockonhandPharmacyDispensary.setId(optitem.getPharmStockOnHandId());
+					viewInvStockonhandPharmacyDispensary.add(stockonhandPharmacyDispensary);
+				} else {
+					update = true;
+					break;
+				}
+			}
+		}
+		if (update) {
+			operationService.submitOperation(operation);
+		} else {
+			itemStockDetailDataService.updatePharmacyAtDispensary(viewInvStockonhandPharmacyDispensary);
+		}
 
 		return newDelegate();
 	}
@@ -107,8 +138,11 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 			item.setItemBatch(invitem.getItemBatch());
 
 			int quantity = invitem.getActualQuantity() - invitem.getQuantity();
+			int updatableQuantity = invitem.getActualQuantity();
 			item.setQuantity(quantity);
 			item.setReasonForChange(invitem.getReasonForChange());
+			item.setPharmStockOnHandId(invitem.getPharmStockOnHandId());
+			item.setUpdatableQuantity(updatableQuantity);
 
 			if (quantity < 0 || invitem.getActualQuantity() == 0) {
 				item.setCalculatedBatch(true);

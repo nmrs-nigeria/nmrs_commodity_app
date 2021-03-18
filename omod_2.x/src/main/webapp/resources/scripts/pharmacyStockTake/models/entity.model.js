@@ -27,7 +27,7 @@
 		
 		// @Override
 		extended.getModelFields = function () {
-			var fields = ["item", "quantity", "actualQuantity", "expiration", "reasonForChange"];
+			var fields = ["item", "quantity", "actualQuantity", "expiration", "reasonForChange", "pharmStockOnHandId"];
 			return fields.concat(defaultFields);
 		};
 		

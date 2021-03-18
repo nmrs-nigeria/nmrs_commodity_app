@@ -5576,6 +5576,60 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
                 <column name="uuid">4ab7f97d-fbf8-40a3-82bd-30e84d5a30c9</column>
             </insert>
         
-    </changeSet>                                              
+    </changeSet>                                                  
+    
+    
+<changeSet id="openhmis.inventory-v2.2.8" author="Toyeeb Abdulfatai">
+        <createTable tableName="inv_stockonhand_pharmacy_dispensary">
+            <column name="pharm_stockonhand_id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="stock_operation_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="operation_type_id" type="int">
+                <constraints nullable="false" />
+            </column>
+             <column name="item_drug_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+             <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+               <column name="item_batch" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="commodity_type" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+             <column name="expiration" type="DATE"/>
+             <column name="quantity" type="int">
+                <constraints nullable="false"/>
+            </column>
+             <column name="updatable_quantity" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="department_id" type="int">
+                <constraints nullable="false" />
+            </column>             
+        </createTable>       
+    </changeSet>
+
+    <changeSet id="openhmis.inventory-v2.2.9" author="Toyeeb Abdulfatai">
+        <sql>
+            INSERT INTO inv_stockonhand_pharmacy_dispensary(stock_operation_id, operation_type_id, item_drug_type, item_id, item_batch, commodity_type, date_created, expiration, quantity, updatable_quantity, department_id)
+            SELECT a.stock_operation_id, a.operation_type_id, b.item_drug_type, b.item_id, b.item_batch, a.commodity_type, DATE_FORMAT(a.date_created, '%Y-%m-%d') as date_created, b.expiration, b.quantity, b.quantity, a.department_id
+FROM inv_stock_operation a 
+INNER JOIN inv_stock_operation_item b 
+ON a.stock_operation_id=b.operation_id
+AND a.department_id is not null
+where commodity_type='pharmacy' and a.operation_type_id=3
+GROUP BY b.item_batch, b.expiration, a.department_id, a.commodity_type, a.date_created	
+        </sql>
+    </changeSet>
+                                          
             
 </databaseChangeLog>

@@ -31,7 +31,7 @@
             $scope.searchDispenseSummarys = self.searchDispenseSummarys;
         
             //	$scope.searchItemsByName = self.searchItemsByName;
-            //	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
+            	$scope.searchField = CookiesService.get('searchField') || $scope.searchField || '';
       //      $scope.department = CookiesService.get('department') || {};
            // $scope.item = CookiesService.get('item') || {};
             $scope.startDate = CookiesService.get('startDate') || {};
@@ -63,7 +63,15 @@
 
         self.searchDispenseSummarys = self.searchDispenseSummarys || function (currentPage) {
                console.log('about to call pharm ARV Dispense controller');
-            CookiesService.set('startIndex', $scope.startIndex);
+            
+			if(currentPage === undefined){
+				currentPage = $scope.currentPage;
+			}
+			else{
+				$scope.currentPage = currentPage;
+			}
+			
+			CookiesService.set('startIndex', $scope.startIndex);
             CookiesService.set('limit', $scope.limit);
             CookiesService.set('includeRetired', $scope.includeRetired);
             CookiesService.set('currentPage', currentPage);
@@ -82,9 +90,9 @@
 //            }
 
 
-            //var searchField = $scope.searchField || '';
+            // var searchField = $scope.searchField || '';
             
-         //    ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
+         	// ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
 
             ARVPharmacyDispenseRestfulService.searchDispenseSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadARVPharmacyDispenseSuccessful)
         }
@@ -95,8 +103,6 @@
             console.log(data.results);
             console.log(data.results[0]);
         }
-
-      
 
         /* ENTRY POINT: Instantiate the base controller which loads the page */
         $injector.invoke(base.GenericManageController, self, {
