@@ -5548,35 +5548,7 @@ order by b.item_id, a.department_id) as tb2 ON tb1.item_id=tb2.item_id
     </changeSet>
     
                    
-    <changeSet id="openhmis.inventory-v2.2.7" author="Morrison Idiasirue">
-        
-          <insert tableName="inv_item">
-                <column name="name">Asante(100)</column>
-                <column name="description">Asante with pack size of 100</column>
-                <column name="has_expiration">1</column>
-                <column name="has_physical_inventory">1</column>
-                <column name="unit_of_measure">test</column>
-                <column name="pack_size">100</column>
-                <column name="item_type">lab</column>
-                <column name="creator">1</column>
-                <column name="date_created">2021-03-17</column>
-                <column name="uuid">742aa79f-46bb-4bf3-8326-c27484379810</column>
-            </insert>
-            
-              <insert tableName="inv_item">
-                <column name="name">Asante(20)</column>
-                <column name="description">Asante with pack size of 20</column>
-                <column name="has_expiration">1</column>
-                <column name="has_physical_inventory">1</column>
-                <column name="unit_of_measure">test</column>
-                <column name="pack_size">20</column>
-                <column name="item_type">lab</column>
-                <column name="creator">1</column>
-                <column name="date_created">2021-03-17</column>
-                <column name="uuid">4ab7f97d-fbf8-40a3-82bd-30e84d5a30c9</column>
-            </insert>
-        
-    </changeSet>                                                  
+                                                  
     
     <changeSet id="openhmis.inventory-v2.2.7" author="Morrison Idiasirue">
         

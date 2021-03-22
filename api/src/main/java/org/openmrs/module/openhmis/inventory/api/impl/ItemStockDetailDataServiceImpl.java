@@ -342,6 +342,7 @@ public class ItemStockDetailDataServiceImpl
 			throw new IllegalArgumentException("The opertion must be defined.");
 		}
 
+		System.out.println(operation.toString());
 		System.out.println("Operation ID: " + operation.getId());
 
 		String countHql = "select so from StockOperation so";
