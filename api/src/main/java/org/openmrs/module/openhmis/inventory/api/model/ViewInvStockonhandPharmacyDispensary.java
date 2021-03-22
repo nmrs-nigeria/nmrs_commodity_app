@@ -15,11 +15,13 @@ package org.openmrs.module.openhmis.inventory.api.model;
 
 import java.util.Date;
 
+import org.hibernate.annotations.Entity;
 import org.openmrs.BaseOpenmrsObject;
 
 /**
  * Base model class used by models that have item stock detail information.
  */
+@Entity
 public class ViewInvStockonhandPharmacyDispensary extends BaseOpenmrsObject {
 
 	public static final long serialVersionUID = 0L;

@@ -13,13 +13,19 @@
  */
 package org.openmrs.module.openhmis.inventory.api.model;
 
+import org.hibernate.Query;
 import org.openmrs.module.openhmis.commons.api.f.Action2;
+import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
+import org.openmrs.module.openhmis.inventory.api.impl.ItemStockDetailDataServiceImpl;
+import org.openmrs.module.openhmis.inventory.api.util.Utils;
 
 /**
  * Model class that represents a distribution stock operation type. Distribution operations remove item stock from the system
  * and record who received it.
  */
 public class DistributionOperationType extends StockOperationTypeBase {
+
+	private IItemStockDetailDataService itemStockDetailDataService;
 
 	@Override
 	public boolean isNegativeItemQuantityAllowed() {
@@ -53,7 +59,15 @@ public class DistributionOperationType extends StockOperationTypeBase {
 
 	@Override
 	public void onCompleted(StockOperation operation) {
-		// Clear out the transactions for the operation
+		// Clear out the transactions for the operation		
 		operation.getReserved().clear();
+		//update record for dispensary
+		System.out.println(operation.getCommodityType());
+		System.out.println(operation.getId());
+		if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)) {
+			ItemStockDetailDataServiceImpl disp = new ItemStockDetailDataServiceImpl();
+			disp.addNewDistributionDataPharmacyAtDispensary(operation);
+		}
 	}
+
 }

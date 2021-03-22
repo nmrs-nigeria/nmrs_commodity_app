@@ -5595,7 +5595,7 @@ FROM inv_stock_operation a
 INNER JOIN inv_stock_operation_item b 
 ON a.stock_operation_id=b.operation_id
 AND a.department_id is not null
-where commodity_type='pharmacy' and a.operation_type_id=3
+where commodity_type='pharmacy' and a.operation_type_id=3 and a.status='COMPLETED'
 GROUP BY b.item_batch, b.expiration, a.department_id, a.commodity_type, a.date_created	
         </sql>
     </changeSet>

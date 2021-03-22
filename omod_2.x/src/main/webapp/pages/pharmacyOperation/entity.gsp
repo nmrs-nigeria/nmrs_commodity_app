@@ -337,7 +337,7 @@ placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                 </td>
                 <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
                     <select ng-model="lineItem.itemStockExpirationDate"
-                    ng-change="changeExpiration(lineItem)"
+                    ng-change="changeExpirationByExp(lineItem)"
                     ng-show="!lineItem.expirationHasDatePicker && lineItem.expirationDates.length > 0"
                     class="right-justify form-control"
                     ng-options="itemStockExpirationDate for itemStockExpirationDate in lineItem.expirationDates">

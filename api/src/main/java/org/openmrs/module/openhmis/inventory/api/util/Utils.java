@@ -162,4 +162,5 @@ public class Utils {
 	public static final int EIGHT_INTEGER = 8;
 	public static final int NINE_INTEGER = 9;
 
+	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
 }

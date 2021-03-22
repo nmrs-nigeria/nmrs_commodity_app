@@ -30,6 +30,7 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
@@ -48,6 +49,10 @@ public class ItemStockDetailDataServiceImpl
 
 	private static final int THREE = 3;
 	private static final int TWO = 2;
+	private static final int FOUR = 4;
+	private static final int FIVE = 5;
+
+	public ItemStockDetailDataServiceImpl() {}
 
 	@Override
 	protected BasicObjectAuthorizationPrivileges getPrivileges() {
@@ -306,6 +311,90 @@ public class ItemStockDetailDataServiceImpl
 			int sql = query.executeUpdate();
 			System.out.println("Updated Executed: " + sql);
 		}
+	}
+
+	@Override
+	public void addNewDistributionDataPharmacyAtDispensary(StockOperation operation) {
+
+		//check that operation is not null
+		if (operation == null) {
+			throw new IllegalArgumentException("The operation must be defined.");
+		}
+		//get list of all stock operation items
+		List<ViewInvStockonhandPharmacyDispensary> stockOnHand =
+		        new ArrayList<ViewInvStockonhandPharmacyDispensary>();
+
+		stockOnHand = getOperationItemsList(operation);
+
+		//insert record to inv_stockonhand_pharmacy_dispensary		
+		for (ViewInvStockonhandPharmacyDispensary obj : stockOnHand) {
+
+			getRepository().save(obj);
+			System.out.println("Insert Executed: " + obj);
+
+		}
+
+	}
+
+	public List<ViewInvStockonhandPharmacyDispensary> getOperationItemsList(StockOperation operation) {
+
+		if (operation == null) {
+			throw new IllegalArgumentException("The opertion must be defined.");
+		}
+
+		System.out.println("Operation ID: " + operation.getId());
+
+		String countHql = "select so from StockOperation so";
+		//+ "where id = " + operation.getId();
+
+		String hql = "select i, detail.expiration, detail.quantity, detail.itemBatch, "
+		        + "detail.itemDrugType, detail.dateCreated "
+		        + "from StockOperation as detail inner join detail.operation as i "
+		        + "where detail.id = " + operation.getId() + " "
+		        + "order by detail.expiration asc";
+
+		Query querys = getRepository().createQuery(countHql);
+		Integer count = querys.list().size();
+		System.out.println("Query count: " + count);
+
+		Query query = getRepository().createQuery(hql);
+		List list = query.list();
+
+		// Parse the aggregate query into an ViewInvStockonhandPharmacyDispensary object
+		List<ViewInvStockonhandPharmacyDispensary> results =
+		        new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+
+		for (Object obj : list) {
+			Object[] row = (Object[])obj;
+			ViewInvStockonhandPharmacyDispensary vs = new ViewInvStockonhandPharmacyDispensary();
+			vs.setItem((Item)row[0]);
+			vs.setExpiration((Date)row[1]);
+			vs.setQuantity((int)row[2]);
+			vs.setItemBatch((String)row[THREE]);
+			vs.setStockOperationId(operation.getId());
+			vs.setOperationTypeId((int)THREE);
+			vs.setItemDrugType((String)row[FOUR]);
+			vs.setCommodityType(operation.getCommodityType());
+			vs.setUpdatableQuantity((int)row[2]);
+			vs.setDepartment(operation.getDepartment());
+			vs.setDateCreated((Date)row[FIVE]);
+
+			System.out.println((Item)row[0]);
+			System.out.println((Date)row[1]);
+			System.out.println(((String)row[THREE]));
+			System.out.println(operation.getId());
+			System.out.println((int)THREE);
+			System.out.println((String)row[FOUR]);
+			System.out.println(operation.getCommodityType());
+			System.out.println((int)row[2]);
+			System.out.println(operation.getDepartment());
+			System.out.println((Date)row[FIVE]);
+
+			results.add(vs);
+		}
+
+		// We done.
+		return results;
 	}
 
 }
