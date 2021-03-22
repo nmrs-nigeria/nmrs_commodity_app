@@ -35,6 +35,8 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 	private String itemBatch;
 	private String reasonForChange;
 	private String itemDrugType;
+	private Integer pharmStockOnHandId;
+	private Integer updatableQuantity;
 
 	/**
 	 * Gets the unique database record identifier.
@@ -190,6 +192,22 @@ public class ItemStockDetailBase extends BaseOpenmrsObject {
 
 	public void setItemDrugType(String itemDrugType) {
 		this.itemDrugType = itemDrugType;
+	}
+
+	public Integer getPharmStockOnHandId() {
+		return pharmStockOnHandId;
+	}
+
+	public void setPharmStockOnHandId(Integer pharmStockOnHandId) {
+		this.pharmStockOnHandId = pharmStockOnHandId;
+	}
+
+	public Integer getUpdatableQuantity() {
+		return updatableQuantity;
+	}
+
+	public void setUpdatableQuantity(Integer updatableQuantity) {
+		this.updatableQuantity = updatableQuantity;
 	}
 
 }

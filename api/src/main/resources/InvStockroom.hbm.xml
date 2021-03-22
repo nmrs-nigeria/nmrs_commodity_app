@@ -12,7 +12,7 @@
 			</generator>
 		</id>
 
-                <property name="stockroomType" type="java.lang.String" column="stockroom_type" not-null="true" length="255" />
+        <property name="stockroomType" type="java.lang.String" column="stockroom_type" not-null="true" length="255" />
                 
 		<property name="name" type="java.lang.String" column="name" not-null="true" length="255" />
 		<property name="description" type="java.lang.String" column="description" length="1024" />
@@ -383,6 +383,24 @@
 		<property name="quantityDistributed" type="int" not-null="true" column="qtyDistribute" />
 		<property name="expiration" type="java.util.Date" column="expiration" />		
 		<many-to-one name="department" class="Department" column="department_id" />
+	</class>
+	
+	<class name="ViewInvStockonhandPharmacyDispensary" table="inv_stockonhand_pharmacy_dispensary">
+		<cache usage="read-write"/>	
+		<id name="id" type="int" column="pharm_stockonhand_id">
+	        <generator class="native" />
+	    </id>
+		<property name="stockOperationId" type="int" not-null="true" column="stock_operation_id" />
+        <property name="operationTypeId" type="int" not-null="true" column="operation_type_id" />
+        <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
+        <many-to-one name="item" class="Item" not-null="true" column="item_id" />
+        <property name="itemBatch" type="java.lang.String" column="item_batch" length="255" />
+        <property name="commodityType" type="java.lang.String" column="commodity_type" not-null="false" />     
+        <property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+        <property name="expiration" type="java.util.Date" column="expiration" />	
+        <property name="quantity" type="int" not-null="true" column="quantity" />
+        <property name="updatableQuantity" type="int" not-null="true" column="updatable_quantity" />
+       	<many-to-one name="department" class="Department" column="department_id" />
 	</class>
 	
 </hibernate-mapping>

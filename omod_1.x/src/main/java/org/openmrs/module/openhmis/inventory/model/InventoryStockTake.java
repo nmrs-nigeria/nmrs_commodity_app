@@ -16,6 +16,7 @@ package org.openmrs.module.openhmis.inventory.model;
 import java.util.List;
 
 import org.openmrs.BaseOpenmrsObject;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 
@@ -28,6 +29,7 @@ public class InventoryStockTake extends BaseOpenmrsObject {
 	private String operationNumber;
 	private Stockroom stockroom;
 	private List<ItemStockSummary> itemStockSummaryList;
+	private Department department;
 
 	public String getOperationNumber() {
 		return operationNumber;
@@ -51,6 +53,14 @@ public class InventoryStockTake extends BaseOpenmrsObject {
 
 	public void setItemStockSummaryList(List<ItemStockSummary> itemStockSummaryList) {
 		this.itemStockSummaryList = itemStockSummaryList;
+	}
+
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 
 	@Override

@@ -30,6 +30,8 @@ public class ItemStockSummary implements OpenmrsObject {
 	private Integer actualQuantity;
 	private String itemBatch;
 	private String reasonForChange;
+	private Integer pharmStockOnHandId;
+	private Integer updatableQuantity;
 
 	// These are aggregate models and thus have no id or uuid.
 	@Override
@@ -99,4 +101,21 @@ public class ItemStockSummary implements OpenmrsObject {
 	public void setReasonForChange(String reasonForChange) {
 		this.reasonForChange = reasonForChange;
 	}
+
+	public Integer getPharmStockOnHandId() {
+		return pharmStockOnHandId;
+	}
+
+	public void setPharmStockOnHandId(Integer pharmStockOnHandId) {
+		this.pharmStockOnHandId = pharmStockOnHandId;
+	}
+
+	public Integer getUpdatableQuantity() {
+		return updatableQuantity;
+	}
+
+	public void setUpdatableQuantity(Integer updatableQuantity) {
+		this.updatableQuantity = updatableQuantity;
+	}
+
 }

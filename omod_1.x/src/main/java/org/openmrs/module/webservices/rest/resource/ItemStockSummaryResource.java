@@ -19,8 +19,10 @@ import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
+import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
@@ -43,10 +45,12 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 
 	private IStockroomDataService stockroomDataService;
 	private IItemStockDetailDataService itemStockDetailDataService;
+	private IDepartmentDataService departmentService;
 
 	public ItemStockSummaryResource() {
 		this.stockroomDataService = Context.getService(IStockroomDataService.class);
 		this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
+		this.departmentService = Context.getService(IDepartmentDataService.class);
 	}
 
 	@Override
@@ -58,6 +62,7 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 		description.addProperty("actualQuantity", Representation.DEFAULT);
 		description.addProperty("itemBatch", Representation.DEFAULT);
 		description.addProperty("reasonForChange", Representation.DEFAULT);
+		description.addProperty("pharmStockOnHandId", Representation.DEFAULT);
 		return description;
 	}
 
@@ -73,17 +78,32 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
-		PageableResult result;
+		PageableResult result = null;
 
 		String stockroomUuid = context.getParameter("stockroom_uuid");
-		if (StringUtils.isNotBlank(stockroomUuid)) {
+		String departmentUuid = context.getParameter("department_uuid");
+
+		if (StringUtils.isNotBlank(stockroomUuid) || StringUtils.isNotBlank(departmentUuid)) {
 			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-			Stockroom stockroom = stockroomDataService.getByUuid(stockroomUuid);
-			List<ItemStockSummary> itemStockSummaries =
-			        itemStockDetailDataService.getItemStockSummaryByStockroom(stockroom, pagingInfo);
-			result =
-			        new AlreadyPagedWithLength<ItemStockSummary>(context, itemStockSummaries, pagingInfo.hasMoreResults(),
-			                pagingInfo.getTotalRecordCount());
+
+			if (stockroomUuid != null && !stockroomUuid.isEmpty()) {
+				Stockroom stockroom = stockroomDataService.getByUuid(stockroomUuid);
+				List<ItemStockSummary> itemStockSummaries =
+				        itemStockDetailDataService.getItemStockSummaryByStockroom(stockroom, pagingInfo);
+				result =
+				        new AlreadyPagedWithLength<ItemStockSummary>(context, itemStockSummaries,
+				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
+
+			} else if (departmentUuid != null && !departmentUuid.isEmpty()) {
+
+				Department department = departmentService.getByUuid(departmentUuid);
+				List<ItemStockSummary> itemStockSummaries =
+				        itemStockDetailDataService.getItemStockSummaryByDepartmentPharmacy(department, pagingInfo);
+				result =
+				        new AlreadyPagedWithLength<ItemStockSummary>(context, itemStockSummaries,
+				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
+
+			}
 		} else {
 			result = super.doSearch(context);
 		}

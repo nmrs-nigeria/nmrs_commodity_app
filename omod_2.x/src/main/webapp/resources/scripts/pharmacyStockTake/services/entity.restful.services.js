@@ -25,6 +25,8 @@
 		
 		service = {
 			loadStockrooms: loadStockrooms,
+			loadDepartments: loadDepartments,
+			loadStockDetailsDepartment: loadStockDetailsDepartment,
 			loadStockDetails: loadStockDetails
 		};
 		
@@ -33,6 +35,7 @@
 		/**
 		 * Retrieve all Stockrooms
 		 * @param onLoadStockroomsSuccessful
+		 * @param onLoadDepartmentsSuccessful
 		 * @param module_name
 		 */
 		function loadStockrooms(module_name, onLoadStockroomsSuccessful) {
@@ -44,7 +47,18 @@
 				errorCallback
 			);
 		}
-		
+				/**
+		 * Retrieve all departments
+		 */
+		function loadDepartments(module_name, onLoadDepartmentsSuccessful) {
+			var requestParams = [];
+			requestParams['rest_entity_name'] = 'department';
+                       requestParams['departmentType'] = 'pharmacy';
+			EntityRestFactory.loadEntities(requestParams,
+				onLoadDepartmentsSuccessful,
+				errorCallback
+			);
+		}
 		/**
 		 * Retrieve all the stock in the selected stockroom
 		 * @param stockroomUuid
@@ -59,6 +73,20 @@
 				var requestParams = PaginationService.paginateParams(currentPage, limit, false);
 				requestParams['rest_entity_name'] = 'inventoryStockTakeSummary';
 				requestParams['stockroom_uuid'] = stockroomUuid;
+				EntityRestFactory.loadEntities(requestParams,
+					onLoadStockDetailsSuccessful,
+					errorCallback
+				);
+			}
+		}
+
+		function loadStockDetailsDepartment(departmentUuid, currentPage, limit, onLoadStockDetailsSuccessful) {
+			console.log("inside loadStockDetailsDepartment entity.restful.service");
+			currentPage = currentPage || 1;
+			if (angular.isDefined(departmentUuid) && departmentUuid !== '' && departmentUuid !== undefined) {
+				var requestParams = PaginationService.paginateParams(currentPage, limit, false);
+				requestParams['rest_entity_name'] = 'inventoryStockTakeSummary';
+				requestParams['department_uuid'] = departmentUuid;
 				EntityRestFactory.loadEntities(requestParams,
 					onLoadStockDetailsSuccessful,
 					errorCallback
