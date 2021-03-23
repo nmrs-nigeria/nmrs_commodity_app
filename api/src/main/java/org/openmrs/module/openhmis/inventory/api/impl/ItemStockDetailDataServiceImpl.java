@@ -352,13 +352,21 @@ public class ItemStockDetailDataServiceImpl
 		        + "from StockOperation as detail inner join detail.operation as i "
 		        + "where detail.id = " + operation.getId() + " "
 		        + "order by detail.expiration asc";
+		
+		String hqls = "select stockOperationItem.item, stockOperationItem.expiration, "
+				+ "stockOperationItem.quantity, stockOperationItem.itemBatch, "
+		        + "stockOperationItem.itemDrugType, stockOperation.dateCreated "
+		        + "from StockOperation stockOperation, StockOperationItem stockOperationItem  "
+		        + "where stockOperation.id=stockOperationItem.operation "
+		        + "and stockOperation.id = " + operation.getId() + " "
+		        + "order by detail.expiration asc";		
 
-		Query querys = getRepository().createQuery(countHql);
+		Query querys = getRepository().createQuery(hqls);
 		Integer count = querys.list().size();
 		System.out.println("Query count: " + count);
 
-		Query query = getRepository().createQuery(hql);
-		List list = query.list();
+		// query = getRepository().createQuery(hql);
+		List list = querys.list();
 
 		// Parse the aggregate query into an ViewInvStockonhandPharmacyDispensary object
 		List<ViewInvStockonhandPharmacyDispensary> results =
