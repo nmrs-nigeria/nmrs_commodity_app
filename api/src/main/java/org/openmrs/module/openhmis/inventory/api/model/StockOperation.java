@@ -410,17 +410,6 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		this.commodityType = commodityType;
 	}
 
-	@Override
-	public String toString() {
-		return "StockOperation{" + "id=" + id + ", status=" + status + ", items=" + items + ", reserved=" + reserved
-		        + ", transactions=" + transactions
-		        + ", operationNumber=" + operationNumber + ", operationDate=" + operationDate
-		        + ", operationOrder=" + operationOrder + ", source=" + source
-		        + ", destination=" + destination + ", patient=" + patient + ", institution=" + institution
-		        + ", department=" + department
-		        + ", cancelReason=" + cancelReason + ", adjustmentKind=" + adjustmentKind
-		        + ", disposedType=" + disposedType + ", commoditySource=" + commoditySource
-		        + ", commodityType=" + commodityType + '}';
-	}
+	
 
 }
