@@ -410,6 +410,4 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		this.commodityType = commodityType;
 	}
 
-	
-
 }

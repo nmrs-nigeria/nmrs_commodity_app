@@ -314,6 +314,49 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
                     .map(Obs::getEncounter)
                     .collect(Collectors.toSet());
 
+            
+//        for(Obs b: targetObsList){
+//            List<Obs> filteredObs = b.getEncounter()
+//                    .getAllObs().stream()
+//                    .filter(a -> Objects.equals(a.getValueGroupId(), b.getId()))
+//                    .collect(Collectors.toList());
+//            
+//            System.out.println("after filtering found "+filteredObs.size()+" obs");
+//                   
+//              obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+//                if (obs != null) {
+//                    durationDays = (int) obs.getValueNumeric().doubleValue();
+//                    aRVDispensedItem.setDuration(durationDays);
+//
+//                }
+//
+//                obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
+//                if (obs != null) {
+//                    aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+//                }
+//
+//                obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+//                if (obs != null) {
+//                    aRVDispensedItem.setQuantityPrescribed((int) obs.getValueNumeric().doubleValue());
+//                }
+//
+//                obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+//                if (obs != null) {
+//                    aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
+//                }
+//
+//                obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+//                if (obs != null) {
+//                    aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+//                }
+//                aRVDispensedItem.setDrugCategory(drugCategory);
+//
+//                aRVDispensedItems.add(aRVDispensedItem);
+//
+//        }    
+            
+            
+            
             for (Encounter e : distinctObsGroupEncounter) {
                 List<Obs> filteredObs = targetObsList.stream()
                         .filter(a -> a.getEncounter().equals(e))

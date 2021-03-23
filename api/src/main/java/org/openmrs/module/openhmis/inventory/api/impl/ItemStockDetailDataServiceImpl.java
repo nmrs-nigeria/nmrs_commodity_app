@@ -320,7 +320,7 @@ public class ItemStockDetailDataServiceImpl
 		if (operation == null) {
 			throw new IllegalArgumentException("The operation must be defined.");
 		}
-                
+
 		//get list of all stock operation items
 		List<ViewInvStockonhandPharmacyDispensary> stockOnHand =
 		        new ArrayList<ViewInvStockonhandPharmacyDispensary>();
