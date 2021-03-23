@@ -14,6 +14,7 @@
 package org.openmrs.module.openhmis.inventory.api.model;
 
 import org.hibernate.Query;
+import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.f.Action2;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.impl.ItemStockDetailDataServiceImpl;
@@ -65,8 +66,9 @@ public class DistributionOperationType extends StockOperationTypeBase {
 		System.out.println(operation.getCommodityType());
 		System.out.println(operation.getId());
 		if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)) {
-			ItemStockDetailDataServiceImpl disp = new ItemStockDetailDataServiceImpl();
-			disp.addNewDistributionDataPharmacyAtDispensary(operation);
+			this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
+			// ItemStockDetailDataServiceImpl disp = new ItemStockDetailDataServiceImpl();
+			itemStockDetailDataService.addNewDistributionDataPharmacyAtDispensary(operation);
 		}
 	}
 

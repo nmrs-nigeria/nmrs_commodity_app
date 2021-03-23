@@ -320,6 +320,7 @@ public class ItemStockDetailDataServiceImpl
 		if (operation == null) {
 			throw new IllegalArgumentException("The operation must be defined.");
 		}
+                
 		//get list of all stock operation items
 		List<ViewInvStockonhandPharmacyDispensary> stockOnHand =
 		        new ArrayList<ViewInvStockonhandPharmacyDispensary>();
@@ -342,6 +343,7 @@ public class ItemStockDetailDataServiceImpl
 			throw new IllegalArgumentException("The opertion must be defined.");
 		}
 
+		System.out.println(operation.toString());
 		System.out.println("Operation ID: " + operation.getId());
 
 		String countHql = "select so from StockOperation so";
