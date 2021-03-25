@@ -9,6 +9,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
 import javax.xml.datatype.XMLGregorianCalendar;
@@ -112,6 +114,15 @@ public class Utils {
             return null;
         }
         return obsList.stream().filter(ele -> ele.getConcept().getConceptId() == conceptID).findFirst().orElse(null);
+    }
+
+	public static Set<Obs> extractObsList(int conceptID, List<Obs> obsList) {
+
+        if (obsList == null) {
+            return null;
+        }
+        return obsList.stream().filter(ele -> ele.getConcept().getConceptId() == conceptID)
+                .collect(Collectors.toSet());
     }
 
 	public static String getPatientPEPFARId(Patient patient) {

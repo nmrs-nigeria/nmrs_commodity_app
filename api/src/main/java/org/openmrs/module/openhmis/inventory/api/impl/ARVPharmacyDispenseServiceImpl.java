@@ -14,9 +14,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.xml.datatype.DatatypeConfigurationException;
 import org.apache.commons.lang.time.DateUtils;
 import org.hibernate.Query;
@@ -275,245 +277,194 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 	}
 
 	private Set<ARVDispensedItem> retrieveARVMedicationItems(Date visitDate, List<Obs> obsList, String uuid) {
-        DateTime stopDateTime = null;
-        DateTime startDateTime = null;
-        int durationDays = 0;
-        Obs obs = null;
-        List<Obs> targetObsList = new ArrayList<Obs>();
-        Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
-        String drugCategory = null;
+		DateTime stopDateTime = null;
+		DateTime startDateTime = null;
+		int durationDays = 0;
+		Obs obs = null;
+		List<Obs> targetObsList = new ArrayList<Obs>();
+		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
+		String drugCategory = null;
 
-        obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
-        if (obs != null && obs.getValueCoded() != null) {
-            if (null == obs.getValueCoded().getConceptId()) {
-                //rare scenario
-                drugCategory = "Adult ART";
-            } else {
-                switch (obs.getValueCoded().getConceptId()) {
-                    case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
-                        drugCategory = "Adult ART";
-                        break;
-                    case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
-                        drugCategory = "Pediatric ART";
-                        break;
-                    default:
-                        //rare scenario
-                        drugCategory = "Adult ART";
-                        break;
-                }
-            }
-        }
+		obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
+		if (obs != null && obs.getValueCoded() != null) {
+			if (null == obs.getValueCoded().getConceptId()) {
+				//rare scenario
+				drugCategory = "Adult ART";
+			} else {
+				switch (obs.getValueCoded().getConceptId()) {
+					case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
+						drugCategory = "Adult ART";
+						break;
+					case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
+						drugCategory = "Pediatric ART";
+						break;
+					default:
+						//rare scenario
+						drugCategory = "Adult ART";
+						break;
+				}
+			}
+		}
 
-        Obs obsGroup = Utils.extractObs(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
-        if (obsGroup != null) {
-            ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-            aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+		Set<Obs> obsGroup = Utils.extractObsList(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
+		if (!obsGroup.isEmpty()) {
 
-            targetObsList.addAll(obsGroup.getGroupMembers());
-            Set<Encounter> distinctObsGroupEncounter = targetObsList.stream()
-                    .map(Obs::getEncounter)
-                    .collect(Collectors.toSet());
+			//            obsGroup.stream()                 
+			//                .map((a) -> {
+			//                    return a.getGroupMembers();
+			//                }).forEachOrdered((groupMembers) -> {
+			//            targetObsList.addAll(groupMembers);
+			//        });
+			for (Obs b : obsGroup) {
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-            
-//        for(Obs b: targetObsList){
-//            List<Obs> filteredObs = b.getEncounter()
-//                    .getAllObs().stream()
-//                    .filter(a -> Objects.equals(a.getValueGroupId(), b.getId()))
-//                    .collect(Collectors.toList());
-//            
-//            System.out.println("after filtering found "+filteredObs.size()+" obs");
-//                   
-//              obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-//                if (obs != null) {
-//                    durationDays = (int) obs.getValueNumeric().doubleValue();
-//                    aRVDispensedItem.setDuration(durationDays);
-//
-//                }
-//
-//                obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
-//                if (obs != null) {
-//                    aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-//                }
-//
-//                obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-//                if (obs != null) {
-//                    aRVDispensedItem.setQuantityPrescribed((int) obs.getValueNumeric().doubleValue());
-//                }
-//
-//                obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-//                if (obs != null) {
-//                    aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
-//                }
-//
-//                obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-//                if (obs != null) {
-//                    aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-//                }
-//                aRVDispensedItem.setDrugCategory(drugCategory);
-//
-//                aRVDispensedItems.add(aRVDispensedItem);
-//
-//        }    
-            
-            
-            
-            for (Encounter e : distinctObsGroupEncounter) {
-                List<Obs> filteredObs = targetObsList.stream()
-                        .filter(a -> a.getEncounter().equals(e))
-                        .collect(Collectors.toList());
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
-                obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-                if (obs != null) {
-                    durationDays = (int) obs.getValueNumeric().doubleValue();
-                    aRVDispensedItem.setDuration(durationDays);
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
 
-                }
+				}
 
-                obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-                }
+				obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityPrescribed((int) obs.getValueNumeric().doubleValue());
-                }
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
-                }
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-                if (obs != null) {
-                    aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-                }
-                aRVDispensedItem.setDrugCategory(drugCategory);
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+				}
+				aRVDispensedItem.setDrugCategory(drugCategory);
 
-                aRVDispensedItems.add(aRVDispensedItem);
-            }
+				aRVDispensedItems.add(aRVDispensedItem);
 
-        }
+			}
 
-        return aRVDispensedItems;
+		}
 
-    }
+		return aRVDispensedItems;
+
+	}
 
 	private Set<ARVDispensedItem> retrieveOIMedicationItems(List<Obs> obsList, String uuid) {
-        int durationDays = 0;
-        Obs obs = null;
-        List<Obs> targetObsList = new ArrayList<Obs>();
-        Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
+		int durationDays = 0;
+		Obs obs = null;
+		List<Obs> targetObsList = new ArrayList<Obs>();
+		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
 
-        Obs obsGroup = Utils.extractObs(Utils.OI_DRUGS_GROUPING_CONCEPT_SET, obsList);
-        if (obsGroup != null) {
-            ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-            aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+		Set<Obs> obsGroup = Utils.extractObsList(Utils.OI_DRUGS_GROUPING_CONCEPT_SET, obsList);
 
-            targetObsList.addAll(obsGroup.getGroupMembers());
-            Set<Encounter> distinctObsGroupEncounter = targetObsList.stream()
-                    .map(Obs::getEncounter)
-                    .collect(Collectors.toSet());
+		if (!obsGroup.isEmpty()) {
 
-            for (Encounter e : distinctObsGroupEncounter) {
-                List<Obs> filteredObs = targetObsList.stream()
-                        .filter(a -> a.getEncounter().equals(e))
-                        .collect(Collectors.toList());
+			for (Obs b : obsGroup) {
 
-                obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-                if (obs != null) {
-                    durationDays = (int) obs.getValueNumeric().doubleValue();
-                    aRVDispensedItem.setDuration(durationDays);
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-                }
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
-                obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-                }
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
 
-                obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityPrescribed((int) obs.getValueNumeric().doubleValue());
-                }
+				}
 
-                obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
-                }
+				obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-                if (obs != null) {
-                    aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-                }
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
 
-                aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
-                aRVDispensedItems.add(aRVDispensedItem);
-            }
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
 
-        }
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+				}
 
-        return aRVDispensedItems;
+				aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
+				aRVDispensedItems.add(aRVDispensedItem);
+			}
 
-    }
+		}
+
+		return aRVDispensedItems;
+
+	}
 
 	private Set<ARVDispensedItem> retrieveTBMedicationItems(List<Obs> obsList, String uuid) {
-        int durationDays = 0;
-        Obs obs = null;
-        List<Obs> targetObsList = new ArrayList<Obs>();
-        Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
+		int durationDays = 0;
+		Obs obs = null;
+		List<Obs> targetObsList = new ArrayList<Obs>();
+		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
 
-        Obs obsGroup = Utils.extractObs(Utils.TB_DRUGS_GROUPING_CONCEPT_SET, obsList);
-        if (obsGroup != null) {
-            ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-            aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+		Set<Obs> obsGroup = Utils.extractObsList(Utils.TB_DRUGS_GROUPING_CONCEPT_SET, obsList);
+		if (obsGroup != null) {
 
-            targetObsList.addAll(obsGroup.getGroupMembers());
-            Set<Encounter> distinctObsGroupEncounter = targetObsList.stream()
-                    .map(Obs::getEncounter)
-                    .collect(Collectors.toSet());
+			for (Obs b : obsGroup) {
 
-            for (Encounter e : distinctObsGroupEncounter) {
-                List<Obs> filteredObs = targetObsList.stream()
-                        .filter(a -> a.getEncounter().equals(e))
-                        .collect(Collectors.toList());
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-                obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-                if (obs != null) {
-                    durationDays = (int) obs.getValueNumeric().doubleValue();
-                    aRVDispensedItem.setDuration(durationDays);
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
-                }
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
 
-                obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-                }
+				}
 
-                obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityPrescribed((int) obs.getValueNumeric().doubleValue());
-                }
+				obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-                if (obs != null) {
-                    aRVDispensedItem.setQuantityDispensed((int) obs.getValueNumeric().doubleValue());
-                }
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
 
-                obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-                if (obs != null) {
-                    aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-                }
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
 
-                aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
-                aRVDispensedItems.add(aRVDispensedItem);
-            }
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+				}
 
-        }
+				aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
+				aRVDispensedItems.add(aRVDispensedItem);
+			}
 
-        return aRVDispensedItems;
+		}
 
-    }
+		return aRVDispensedItems;
+
+	}
 
 	private static NewPharmacyConsumptionSummary mapARVDispensedItem(ARVDispensedItem arvItem) {
 		NewPharmacyConsumptionSummary summary = null;
