@@ -584,8 +584,8 @@ public class NDRExtractionController {
 
     }
 
-	private List<ConsumptionSummaryType> 
-        convertToPharmacyConsumptionSummaryType(List<PharmacyConsumptionSummary> consumptionSummarys) {
+	private List<ConsumptionSummaryType>
+            convertToPharmacyConsumptionSummaryType(List<PharmacyConsumptionSummary> consumptionSummarys) {
 
         List<ConsumptionSummaryType> consumptionSummaryTypes = new ArrayList<>();
         consumptionSummarys.stream().forEach(a -> {
@@ -638,7 +638,7 @@ public class NDRExtractionController {
 				distributionType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 
 				OperationItemType op = new OperationItemType();
 				if (!itemTypes.isEmpty()) {
@@ -685,7 +685,7 @@ public class NDRExtractionController {
 					System.out.println("exception on receipt stockroom " + ex.getMessage());
 				}
 
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 
 				OperationItemType op = new OperationItemType();
 				if (!itemTypes.isEmpty()) {
@@ -727,7 +727,7 @@ public class NDRExtractionController {
 				        .get(st.getSource().getUuid()));
 
 				OperationItemType op = new OperationItemType();
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 				if (!itemTypes.isEmpty()) {
 					op.getItem().addAll(itemTypes);
 					adjustmentType.getOperationItem().add(op);
@@ -775,7 +775,7 @@ public class NDRExtractionController {
 				        .get(st.getDestination().getUuid()));
 
 				OperationItemType op = new OperationItemType();
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 				if (!itemTypes.isEmpty()) {
 					op.getItem().addAll(itemTypes);
 					returnType.getOperationItem().add(op);
@@ -821,7 +821,7 @@ public class NDRExtractionController {
 				        .get(st.getSource().getUuid()));
 
 				OperationItemType op = new OperationItemType();
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 				if (!itemTypes.isEmpty()) {
 					op.getItem().addAll(itemTypes);
 					transferType.getOperationItem().add(op);
@@ -862,7 +862,7 @@ public class NDRExtractionController {
 				disposedType.setSourceStockroomCode(dictionaryMaps.getSourceStockRoomMappings()
 				        .get(st.getSource().getUuid()));
 
-				List<ItemType> itemTypes = extractOPerationItems(st.getItems());
+				List<ItemType> itemTypes = extractOPerationItems(st);
 
 				OperationItemType op = new OperationItemType();
 				if (!itemTypes.isEmpty()) {
@@ -884,19 +884,57 @@ public class NDRExtractionController {
 
 	}
 
-	private List<ItemType> extractOPerationItems(Set<StockOperationItem> stockOperationItems) {
+	private List<ItemType> extractOPerationItems(StockOperation stockOperation) {
+        Set<StockOperationItem> stockOperationItems = stockOperation.getItems();
         List<ItemType> itemTypes = new ArrayList<>();
+
+        List<Date> collect = stockOperation.getItems()
+                .stream()
+                .map(StockOperationItem::getExpiration)
+                .collect(Collectors.toList());
+        if (collect.contains(null)) {
+            System.out.println("stock ops with id: "+stockOperation.getId());
+            System.out.println("items exp. date is: "+collect.toString());
+            return extractTransactionItems(stockOperation);
+        }
+
         stockOperationItems.forEach(a -> {
 
             ItemType operationItemType = new ItemType();
             operationItemType.setBatch(a.getItemBatch());
             try {
+
                 operationItemType.setExpirationDate(dateFormat.format(a.getExpiration()));
             } catch (Exception ex) {
                 System.out.println("Error occured while pulling ITEM " + ex.getMessage());
             }
             operationItemType.setItemCode(dictionaryMaps.getItemMappings().get(a.getItem().getUuid()));
             operationItemType.setQuantity(a.getQuantity().shortValue());
+
+            //TODO: add checks for required feilds later
+            itemTypes.add(operationItemType);
+        });
+
+        return itemTypes;
+    }
+
+	private List<ItemType> extractTransactionItems(StockOperation stockOperation) {
+        System.out.println("using extractTransactionItems for items");
+        //   Set<StockOperationItem> stockOperationItems = stockOperation.getItems();
+        List<ItemType> itemTypes = new ArrayList<>();
+
+        stockOperation.getTransactions().forEach(a -> {
+
+            ItemType operationItemType = new ItemType();
+            operationItemType.setBatch(a.getItemBatch());
+            try {
+
+                operationItemType.setExpirationDate(dateFormat.format(a.getExpiration()));
+            } catch (Exception ex) {
+                System.out.println("Error occured while pulling ITEM " + ex.getMessage());
+            }
+            operationItemType.setItemCode(dictionaryMaps.getItemMappings().get(a.getItem().getUuid()));
+            operationItemType.setQuantity((short) Math.abs(a.getQuantity().shortValue()));
 
             //TODO: add checks for required feilds later
             itemTypes.add(operationItemType);
