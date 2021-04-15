@@ -6545,6 +6545,18 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 		]]></sql>
 
     </changeSet>
+    
+    
+     <changeSet id="openhmis.inventory-v3.1" author="Morrison Idiasirue" >
+        <comment>
+            rename Main stockroom
+        </comment>
+
+        <sql><![CDATA[
+            update inv_stockroom set name = 'Lab StockRoom' where uuid = '2741bae2-c5de-43ef-891f-7ec2fd58f442' ;
+		]]></sql>
+
+    </changeSet>
                                                                                                                                                                         
             
 </databaseChangeLog>
