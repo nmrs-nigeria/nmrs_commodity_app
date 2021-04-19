@@ -6557,6 +6557,55 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 		]]></sql>
 
     </changeSet>
-                                                                                                                                                                        
+                                
+    <changeSet author="toyeeb" id="openhmis.inventory-v3.2" runOnChange="true">
+        <delete tableName="inv_item">
+            <where>uuid='c04a2ff5-a0df-40e8-865c-174a4004d7b9'</where>
+        </delete>
+    </changeSet>                           
+                                
+    <changeSet author="toyeeb" id="openhmis.inventory-v3.3" runOnChange="true">
+        <delete tableName="inv_item">
+            <where>uuid='1741f544-767d-11eb-9439-0242ac130002'</where>
+        </delete>
+    </changeSet>                                                                                                                                                                  
+            
+     <changeSet author="toyeeb" id="openhmis.inventory-v3.4" runOnChange="true">
+        <delete tableName="inv_item">
+            <where>uuid='8ca997ff-b5f8-4386-bff4-6a98ce7377bf'</where>
+        </delete>
+    </changeSet>           
+            
+    <changeSet author="toyeeb" id="openhmis.inventory-v3.5" runOnChange="true">
+        <delete tableName="inv_item">
+            <where>uuid='aef13f86-767c-11eb-9439-0242ac130002'</where>
+        </delete>
+    </changeSet>           
+            
+    <changeSet author="toyeeb" id="openhmis.inventory-v3.6" runOnChange="true">
+        <delete tableName="inv_item">
+            <where>uuid='82a07e06-769f-11eb-9439-0242ac130002'</where>
+        </delete>
+    </changeSet>           
+            
+    <changeSet id="openhmis.inventory-v3.7" author="toyeeb" >
+
+        <insert tableName="inv_item">
+                <column name="name">Darunavir(DRV) 75mg (480)</column>
+                <column name="description">Darunavir for 75mg (480)</column>
+                <column name="has_expiration">1</column>
+                <column name="has_physical_inventory">1</column>
+                <column name="unit_of_measure">bottles</column>
+                <column name="pack_size">480</column>
+                <column name="strength">75mg</column>
+                <column name="regimen_line">adult</column>
+                <column name="item_type">pharmacy</column>
+                <column name="creator">1</column>
+                <column name="date_created">2021-02-23</column>
+                <column name="uuid">8ca90610-a0f3-11eb-bcbc-0242ac130002</column>
+         </insert>
+               
+    </changeSet>                    
+                        
             
 </databaseChangeLog>

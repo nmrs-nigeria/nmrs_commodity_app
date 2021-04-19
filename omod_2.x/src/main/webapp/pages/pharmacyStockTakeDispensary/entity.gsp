@@ -69,7 +69,7 @@
 	<div ng-show="showNoStockroomSelected == true" class="detail-section-border-top">
 		<br/>
 		<span>
-			${ui.message('openhmis.inventory.stocktake.no.stockroom.selected')}
+			${ui.message('openhmis.inventory.stocktake.no.dispensary.selected')}
 		</span>
 		<br/>
 		<br/>
@@ -101,7 +101,7 @@
 			    dir-paginate="entity in fetchedEntities | itemsPerPage: stockTakeLimit"
 			    total-items="totalNumOfResults" current-page="stockTakeCurrentPage">
 				<td>{{entity.item.name}}</td>
-				<td>{{entity.expiration | date: "yyyy-MM-dd"}} {{entity.pharmStockOnHandId}}</td>
+				<td>{{entity.expiration | date: "yyyy-MM-dd"}}</td>
 				<td>{{entity.quantity}}</td>
 				<td><input name="actualQuantity" min="0"
 				           id="{{'actualQuantity-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"
