@@ -60,5 +60,6 @@ emr.loadMessages([
 	"openhmis.inventory.stocktake.null.or.same.actual.quantity.error",
 	"openhmis.inventory.stocktake.negative.actual.quantity.error",
 	"openhmis.inventory.pharmacy.stockonhand.dispensary",
-	"openhmis.inventory.admin.operations.pharmacy.stock.mgt.dispensary"
+	"openhmis.inventory.admin.operations.pharmacy.stock.mgt.dispensary",
+	"openhmis.inventory.stocktake.no.dispensary.selected"
 ]);
