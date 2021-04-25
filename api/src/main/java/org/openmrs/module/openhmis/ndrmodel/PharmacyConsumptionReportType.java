@@ -16,17 +16,17 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Java class for ConsumptionReportType complex type.
+ * Java class for PharmacyConsumptionReportType complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ConsumptionReportType">
+ * &lt;complexType name="PharmacyConsumptionReportType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="NewConsumption" type="{}NewConsumptionType" maxOccurs="unbounded"/>
- *         &lt;element name="ConsumptionSummary" type="{}ConsumptionSummaryType" maxOccurs="unbounded"/>
+ *         &lt;element name="NewConsumption" type="{}PharmacyNewConsumptionType" maxOccurs="unbounded"/>
+ *         &lt;element name="ConsumptionSummary" type="{}PharmacyConsumptionSummaryType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -34,16 +34,16 @@ import javax.xml.bind.annotation.XmlType;
  * </pre>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ConsumptionReportType", propOrder = {
+@XmlType(name = "PharmacyConsumptionReportType", propOrder = {
         "newConsumption",
         "consumptionSummary"
 })
-public class ConsumptionReportType {
+public class PharmacyConsumptionReportType {
 
 	@XmlElement(name = "NewConsumption", required = true)
-	protected List<NewConsumptionType> newConsumption;
+	protected List<PharmacyNewConsumptionType> newConsumption;
 	@XmlElement(name = "ConsumptionSummary", required = true)
-	protected List<ConsumptionSummaryType> consumptionSummary;
+	protected List<PharmacyConsumptionSummaryType> consumptionSummary;
 
 	/**
 	 * Gets the value of the newConsumption property.
@@ -58,11 +58,11 @@ public class ConsumptionReportType {
      *    getNewConsumption().add(newItem);
      * </pre>
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link NewConsumptionType }
+	 * Objects of the following type(s) are allowed in the list {@link PharmacyNewConsumptionType }
 	 */
-	public List<NewConsumptionType> getNewConsumption() {
+	public List<PharmacyNewConsumptionType> getNewConsumption() {
 		if (newConsumption == null) {
-			newConsumption = new ArrayList<NewConsumptionType>();
+			newConsumption = new ArrayList<PharmacyNewConsumptionType>();
 		}
 		return this.newConsumption;
 	}
@@ -80,11 +80,11 @@ public class ConsumptionReportType {
      *    getConsumptionSummary().add(newItem);
      * </pre>
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link ConsumptionSummaryType }
+	 * Objects of the following type(s) are allowed in the list {@link PharmacyConsumptionSummaryType }
 	 */
-	public List<ConsumptionSummaryType> getConsumptionSummary() {
+	public List<PharmacyConsumptionSummaryType> getConsumptionSummary() {
 		if (consumptionSummary == null) {
-			consumptionSummary = new ArrayList<ConsumptionSummaryType>();
+			consumptionSummary = new ArrayList<PharmacyConsumptionSummaryType>();
 		}
 		return this.consumptionSummary;
 	}

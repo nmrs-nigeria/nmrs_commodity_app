@@ -16,16 +16,16 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
- * Java class for ReceiptOperationType complex type.
+ * Java class for DrugItemType complex type.
  * <p>
  * The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="ReceiptOperationType">
+ * &lt;complexType name="DrugItemType">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="Receipt" type="{}ReceiptType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="Drug" type="{}DrugType" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -33,34 +33,34 @@ import javax.xml.bind.annotation.XmlType;
  * </pre>
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "ReceiptOperationType", propOrder = {
-        "receipt"
+@XmlType(name = "DrugItemType", propOrder = {
+        "drug"
 })
-public class ReceiptOperationType {
+public class DrugItemType {
 
-	@XmlElement(name = "Receipt")
-	protected List<ReceiptType> receipt;
+	@XmlElement(name = "Drug", required = true)
+	protected List<DrugType> drug;
 
 	/**
-	 * Gets the value of the receipt property.
+	 * Gets the value of the drug property.
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a snapshot. Therefore any modification you make to the
-	 * returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for the
-	 * receipt property.
+	 * returned list will be present inside the JAXB object. This is why there is not a <CODE>set</CODE> method for the drug
+	 * property.
 	 * <p>
 	 * For example, to add a new item, do as follows:
 	 * 
 	 * <pre>
-     *    getReceipt().add(newItem);
+     *    getDrug().add(newItem);
      * </pre>
 	 * <p>
-	 * Objects of the following type(s) are allowed in the list {@link ReceiptType }
+	 * Objects of the following type(s) are allowed in the list {@link DrugType }
 	 */
-	public List<ReceiptType> getReceipt() {
-		if (receipt == null) {
-			receipt = new ArrayList<ReceiptType>();
+	public List<DrugType> getDrug() {
+		if (drug == null) {
+			drug = new ArrayList<DrugType>();
 		}
-		return this.receipt;
+		return this.drug;
 	}
 
 }
