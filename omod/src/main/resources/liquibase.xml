@@ -6605,7 +6605,66 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
                 <column name="uuid">8ca90610-a0f3-11eb-bcbc-0242ac130002</column>
          </insert>
                
-    </changeSet>                    
+    </changeSet>
+    
+                        
+      <changeSet id="openhmis.inventory-v3.8" author="Morrison Idiasirue" >
+       
+        <insert tableName="inv_department">
+            <column name="name">Private clinics</column>
+            <column name="description">Private clinics</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">1375cd62-c538-454f-ad91-fce98e67886d</column>
+        </insert>
+        
+         <insert tableName="inv_department">
+            <column name="name">Patent Medicine stores</column>
+            <column name="description">Patent Medicine stores</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">3c4a14fa-4b98-4722-8054-2a428c13d4fd</column>
+        </insert>
+        
+        <insert tableName="inv_department">
+            <column name="name">Community ART Groups</column>
+            <column name="description">Community ART Groups</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">1002b372-4ddc-41a7-9dc1-9afa966082fb</column>
+        </insert>
+        
+         <insert tableName="inv_department">
+            <column name="name">Courier delivery</column>
+            <column name="description">Courier delivery</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">0ad65f22-a7db-4fc5-b8fc-9b3f197d3830</column>
+        </insert>
+        
+        <insert tableName="inv_department">
+            <column name="name">ATM</column>
+            <column name="description">ATM</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">cf5a4a3a-4ba1-4a6e-a057-aa8bc852917d</column>
+        </insert>
+        
+         <insert tableName="inv_department">
+            <column name="name">Others</column>
+            <column name="description">Others</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-04-29</column>
+              <column name="department_type">pharmacy</column>
+            <column name="uuid">b5be4821-a349-453b-b51c-f50e61f6d47a</column>
+        </insert>
+        
+      </changeSet>                                                           
                         
             
 </databaseChangeLog>
