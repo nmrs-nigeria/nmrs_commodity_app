@@ -6664,7 +6664,17 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
             <column name="uuid">b5be4821-a349-453b-b51c-f50e61f6d47a</column>
         </insert>
         
-      </changeSet>                                                           
+      </changeSet> 
+      
+       
+      <changeSet id="openhmis.inventory-v3.9" author="Morrison Idiasirue" >
+              
+        <update tableName="inv_stockroom">
+            <column name="name" value="Bulk Store"/>          
+            <where>uuid='5452ec3e-2fe1-46de-8a6e-28c6442e4cc0'</where>
+        </update>
+        
+      </changeSet>                                                                                                                   
                         
             
 </databaseChangeLog>
