@@ -299,7 +299,7 @@ showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && (
                     <table class="item-details" ng-shdow="lineItem.selected">
                         <tr>
                             <td>
-                                <b>Drug Type</b>
+                                <b>Drug Category</b>
                             </td>
                             <td>
                                 <select ng-model="lineItem.itemDrugType"                          

@@ -105,7 +105,7 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.item.name')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
+                        <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
                         <th>Drug Category</th>
 
 

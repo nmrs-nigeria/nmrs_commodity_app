@@ -123,7 +123,7 @@
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
                     $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
-                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI"];
+                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI","Return to Care"];
                    // $scope.lineItem.itemDrugType = $scope.itemDrugTypes[0];
                     
                //     $scope.commodityType = "pharmacy";
