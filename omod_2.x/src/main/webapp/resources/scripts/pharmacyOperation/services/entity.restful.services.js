@@ -34,7 +34,8 @@
 			isOperationNumberGenerated: isOperationNumberGenerated,
 			isNegativeStockRestricted: isNegativeStockRestricted,
 			searchStockOperationItems: searchStockOperationItems,
-                        getInstitution: getInstitution,
+            getInstitution: getInstitution,
+			getItemBatch : getItemBatch,
 		};
 
 		return service
@@ -172,7 +173,24 @@
 			emr.errorAlert(error);
 		}
                 
-                
+        function getItemBatch(itemUUIDProperty, expirationProperty, successCallback) {
+			console.log("entity.restful.service getItemBatch itemUUid: " + itemUUIDProperty);
+			console.log("entity.restful.service getItemBatch itemExpiration: " + expirationProperty);
+			var requestParams = [];
+			requestParams['resource'] = INVENTORY_MODULE_ITEMS_UTILITY_TWO_URL;
+			requestParams['itemUUID'] = itemUUIDProperty;
+			requestParams['itemExpiration'] = expirationProperty;
+
+			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
+				console.log(error)
+			});
+
+            EntityRestFactory.setBaseUrl(INVENTORY_MODULE_NAME);
+
+            console.log('finished calling item batch');
+
+		}        
                 
                 
                 

@@ -15,6 +15,7 @@ package org.openmrs.module.openhmis.inventory.api.impl;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -30,6 +31,8 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
@@ -48,6 +51,10 @@ public class ItemStockDetailDataServiceImpl
 
 	private static final int THREE = 3;
 	private static final int TWO = 2;
+	private static final int FOUR = 4;
+	private static final int FIVE = 5;
+
+	public ItemStockDetailDataServiceImpl() {}
 
 	@Override
 	protected BasicObjectAuthorizationPrivileges getPrivileges() {
@@ -306,6 +313,41 @@ public class ItemStockDetailDataServiceImpl
 			int sql = query.executeUpdate();
 			System.out.println("Updated Executed: " + sql);
 		}
+	}
+
+	@Override
+	public void addNewDistributionDataPharmacyAtDispensary(StockOperation operation) {
+
+		//check that operation is not null
+		if (operation == null) {
+			throw new IllegalArgumentException("The operation must be defined.");
+		}
+
+		//get list of all stock operation items
+		Iterator<StockOperationItem> operationItems = operation.getItems().iterator();
+
+		while (operationItems.hasNext()) {
+
+			StockOperationItem opItem = operationItems.next();
+
+			ViewInvStockonhandPharmacyDispensary vs = new ViewInvStockonhandPharmacyDispensary();
+			vs.setItem(opItem.getItem());
+			vs.setExpiration(opItem.getExpiration());
+			vs.setQuantity(opItem.getQuantity());
+			vs.setItemBatch(opItem.getItemBatch());
+			vs.setStockOperationId(operation.getId());
+			vs.setOperationTypeId(operation.getInstanceType().getId());
+			vs.setItemDrugType(opItem.getItemDrugType());
+			vs.setCommodityType(operation.getCommodityType());
+			vs.setUpdatableQuantity(opItem.getQuantity());
+			vs.setDepartment(operation.getDepartment());
+			vs.setDateCreated(operation.getDateCreated());
+
+			//insert record to inv_stockonhand_pharmacy_dispensary		
+			getRepository().save(vs);
+
+		}
+
 	}
 
 }

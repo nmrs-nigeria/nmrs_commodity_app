@@ -49,6 +49,7 @@
                         CommonsRestfulFunctions.getSession(INVENTORY_MODULE_NAME, self.onLoadSessionLocationSuccessful);
                     }
 
+                    $scope.itemUUIDTobeUsed = 0;
                     $scope.count = 0;
                     $scope.isOperationNumberGenerated = false;
                     $scope.isNegativeStockRestricted = false;
@@ -105,7 +106,9 @@
                     $scope.showOperationItemsSection = self.showOperationItemsSection;
                     $scope.changeItemQuantity = self.changeItemQuantity;
                     $scope.changeItemBatch = self.changeItemBatch;
+                    $scope.changeItemBatchByExpDate = self.changeItemBatchByExpDate;
                     $scope.changeExpiration = self.changeExpiration;
+                    $scope.changeExpirationByExp = self.changeExpirationByExp;
                     $scope.changeItemDrugType = self.changeItemDrugType;
                     CreateOperationFunctions.onChangeDatePicker(
                             self.onOperationDateSuccessfulCallback,
@@ -120,7 +123,7 @@
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
                     $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
-                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI"];
+                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI","Return to Care"];
                    // $scope.lineItem.itemDrugType = $scope.itemDrugTypes[0];
                     
                //     $scope.commodityType = "pharmacy";
@@ -390,6 +393,7 @@
 
         self.searchItemStock = self.searchItemStock || function (stockOperationItem) {
             if ("uuid" in stockOperationItem && $scope.sourceStockroom !== undefined) {
+                $scope.itemUUIDTobeUsed = stockOperationItem.uuid;
                 CreateOperationRestfulService.searchItemStock(INVENTORY_MODULE_NAME, stockOperationItem.uuid, $scope.sourceStockroom.uuid,
                         self.onLoadItemStockSuccessful);
             }
@@ -596,6 +600,53 @@
             console.log('called lga change');
             CreateOperationRestfulService.getInstitution(INVENTORY_MODULE_NAME, $scope.state, lga, self.onLoadInstitutionsSuccessful);
         }
+
+        self.changeExpirationByExp = self.changeExpirationByExp || function (lineItem) {
+            var itemUUid = $scope.itemUUIDTobeUsed;
+
+            if (lineItem.itemStockExpirationDate !== 'Auto') {
+                var selectedExpiration = lineItem.itemStockExpirationDate;
+                var existingQuantity = 0;
+                if (selectedExpiration === 'None') {
+                    selectedExpiration = null;
+                }
+                for (var i = 0; i < lineItem.itemStockDetails.details.length; i++) {
+                    var detail = lineItem.itemStockDetails.details[i];
+                    var expiration = detail.expiration;
+                   if (expiration !== null) {
+                        expiration = expiration.split("T")[0];
+                        expiration = CreateOperationFunctions.formatDate(expiration);
+                   }
+
+                    if (expiration === selectedExpiration) {
+                        existingQuantity += detail.quantity;
+                    }
+                }
+                lineItem.existingQuantity = existingQuantity;
+            } else {
+                lineItem.existingQuantity = lineItem.itemStockDetails.quantity;
+            }
+            self.changeItemQuantity(lineItem);
+            self.changeItemBatchByExpDate(lineItem, itemUUid);
+        }
+
+        self.changeItemBatchByExpDate = self.changeItemBatchByExpDate || function (lineItem, itemUUid) {
+            var itemExpirationSelected = lineItem.itemStockExpirationDate;
+            CreateOperationRestfulService.getItemBatch(itemUUid, itemExpirationSelected, self.onLoadItemBatchSuccessful);
+            CreateOperationRestfulService.setBaseUrl(INVENTORY_MODULE_NAME);
+        }
+
+        self.onLoadItemBatchSuccessful = self.onLoadItemBatchSuccessful || function (data) {
+            console.log(data.results);
+            $scope.lineItem.setItemStockBatch(data.results[0]);
+            $scope.lineItem.setItemBatchs(data.results);
+        }
+
+
+
+
+
+
 
         // @Override
         self.setAdditionalMessageLabels = self.setAdditionalMessageLabels || function () {

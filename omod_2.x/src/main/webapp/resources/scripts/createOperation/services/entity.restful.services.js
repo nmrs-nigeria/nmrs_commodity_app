@@ -173,7 +173,7 @@
 			emr.errorAlert(error);
 		}
 
-		//added by Toyeeb
+	
 		function getItemBatch(itemUUIDProperty, expirationProperty, successCallback) {
 			console.log("entity.restful.service getItemBatch itemUUid: " + itemUUIDProperty);
 			console.log("entity.restful.service getItemBatch itemExpiration: " + expirationProperty);
@@ -192,7 +192,7 @@
             console.log('finished calling item batch');
 
 		}
-        //End
+      
 
 
 

@@ -390,7 +390,7 @@
 		<id name="id" type="int" column="pharm_stockonhand_id">
 	        <generator class="native" />
 	    </id>
-		<property name="stockOperationId" type="int" not-null="true" column="stock_operation_id" />
+	    <property name="stockOperationId" type="int" not-null="true" column="stock_operation_id" />
         <property name="operationTypeId" type="int" not-null="true" column="operation_type_id" />
         <property name="itemDrugType" type="java.lang.String" column="item_drug_type" length="255" />
         <many-to-one name="item" class="Item" not-null="true" column="item_id" />
