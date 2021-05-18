@@ -43,9 +43,11 @@
                 $scope.stockroom = $scope.stockroom || {};
                 $scope.operationItem = $scope.operationItem || {};
                 $scope.searchOperationItem = $scope.searchOperationItem || '';
-
+             
                 $scope.searchItems = self.searchItems;
                 $scope.selectItem = self.selectItem;
+
+                $scope.startDate = CookiesService.get('startDate') || {};
             }
 
         self.searchStockOperation = self.searchStockOperation || function(currentPage){

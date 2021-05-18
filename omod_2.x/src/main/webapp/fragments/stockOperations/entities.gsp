@@ -66,6 +66,7 @@
                                         ngEnterEvent: "searchStockOperation(1)"
                                 ])}
                             </td>
+						
                         </tr>
                     </table></fieldset>
             </form>
