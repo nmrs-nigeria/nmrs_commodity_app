@@ -110,7 +110,7 @@ public class ItemStockDetailDataServiceImpl
 		}
 
 		// Create the query and optionally add paging
-		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty "
+		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty, detail.itemBatch "
 		        + "from ItemStockDetail as detail inner join detail.item as i "
 		        + "where detail.stockroom.id = " + stockroom.getId() + " "
 		        + "group by i, detail.expiration "
@@ -130,9 +130,11 @@ public class ItemStockDetailDataServiceImpl
 			summary.setItem((Item)row[0]);
 
 			// If the expiration column is null it does not appear to be included in the row array
-			if (row.length == 2) {
+			if (row.length == THREE) {
 				summary.setExpiration(null);
 				Integer quantity = Ints.checkedCast((Long)row[1]);
+				String batch = (String)row[2];
+				summary.setItemBatch(batch);
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
@@ -142,6 +144,8 @@ public class ItemStockDetailDataServiceImpl
 			} else {
 				summary.setExpiration((Date)row[1]);
 				Integer quantity = Ints.checkedCast((Long)row[2]);
+				String batch = (String)row[THREE];
+				summary.setItemBatch(batch);
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 				} else {
@@ -251,7 +255,7 @@ public class ItemStockDetailDataServiceImpl
 		}
 
 		// Create the query and optionally add paging	
-		String hql = "select i, detail.expiration, detail.updatableQuantity as sumQty, detail.id "
+		String hql = "select i, detail.expiration, detail.updatableQuantity as sumQty, detail.id, detail.itemBatch "
 		        + "from ViewInvStockonhandPharmacyDispensary as detail inner join detail.item as i "
 		        + "where detail.department.id = " + department.getId() + " "
 		        + "order by i.name asc, detail.expiration asc";
@@ -270,14 +274,16 @@ public class ItemStockDetailDataServiceImpl
 			summary.setItem((Item)row[0]);
 
 			// If the expiration column is null it does not appear to be included in the row array
-			if (row.length == THREE) {
+			if (row.length == FOUR) {
 				summary.setExpiration(null);
 				Integer quantity = (int)row[1];
 				Integer pharmId = (int)row[2];
+				String batch = (String)row[THREE];
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 					summary.setPharmStockOnHandId(pharmId);
+					summary.setItemBatch(batch);
 				} else {
 					continue;
 				}
@@ -285,9 +291,11 @@ public class ItemStockDetailDataServiceImpl
 				summary.setExpiration((Date)row[1]);
 				Integer quantity = (int)row[2];
 				Integer pharmId = (int)row[THREE];
+				String batch = (String)row[FOUR];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 					summary.setPharmStockOnHandId(pharmId);
+					summary.setItemBatch(batch);
 				} else {
 					continue;
 				}

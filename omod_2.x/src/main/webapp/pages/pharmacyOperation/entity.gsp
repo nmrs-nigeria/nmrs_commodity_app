@@ -296,20 +296,7 @@ showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && (
                 </td>
                 <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
 
-                    <table class="item-details" ng-shdow="lineItem.selected">
-                        <tr>
-                            <td>
-                                <b>Drug Category</b>
-                            </td>
-                            <td>
-                                <select ng-model="lineItem.itemDrugType"                          
-                                class="right-justify form-control"
-                                ng-change="changeItemDrugType(lineItem)"
-                                ng-options="itemDrugType for itemDrugType in itemDrugTypes">
-                                </select>               
-                                <br />
-                            </td>
-                        </tr>
+                    <table class="item-details" ng-shdow="lineItem.selected">                       
                         <tr>
                             <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource), 'not-valid': lineItem.invalidEntry === true}">
                                 ${ ui.includeFragment("openhmis.commons", "searchFragment", [
@@ -388,6 +375,19 @@ startDate : new Date(),
                 <br />
             </td>
             </tr>
+			<tr>
+				<td>
+					<b>Drug Category</b>
+				</td>
+				<td>
+					<select ng-model="lineItem.itemDrugType"                          
+					class="right-justify form-control"
+					ng-change="changeItemDrugType(lineItem)"
+					ng-options="itemDrugType for itemDrugType in itemDrugTypes">
+					</select>               
+					<br />
+				</td>
+			</tr>
             </table>
             </td>
             </tr>
