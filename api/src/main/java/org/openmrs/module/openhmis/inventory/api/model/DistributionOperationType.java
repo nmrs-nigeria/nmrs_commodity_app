@@ -63,7 +63,8 @@ public class DistributionOperationType extends StockOperationTypeBase {
 		// Clear out the transactions for the operation		
 		operation.getReserved().clear();
 		//update record for dispensary
-		if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)) {
+		if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)
+		        || operation.getCommodityType().equalsIgnoreCase(Utils.LAB_COMMODITY_TYPE)) {
 			this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
 			itemStockDetailDataService.addNewDistributionDataPharmacyAtDispensary(operation);
 		}

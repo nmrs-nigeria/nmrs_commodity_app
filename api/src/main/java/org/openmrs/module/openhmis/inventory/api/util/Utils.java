@@ -174,4 +174,5 @@ public class Utils {
 	public static final int NINE_INTEGER = 9;
 
 	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
+	public static final String LAB_COMMODITY_TYPE = "lab";
 }
