@@ -6691,5 +6691,143 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
 		]]>           	
         </sql>
     </changeSet> 
+
+ <changeSet id="openhmis.inventory-v4.1" author="Morrison Idiasirue" >
+        <insert tableName="inv_institution">
+            <column name="name">Aliade Comprehensive Health Centre</column>
+            <column name="description">Aliade Comprehensive Health Centre</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">K4GfrZhCYcR</column>
+            <column name="state">Benue</column>
+            <column name="lga">Gwer East</column>
+        </insert>
+
+        <insert tableName="inv_institution">
+            <column name="name">Awajir Primary Health Center</column>
+            <column name="description">Awajir Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">LcmatEKK2mm</column>
+            <column name="state">Benue</column>
+            <column name="lga">Konshisha</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Ikpayongo Primary Health Center</column>
+            <column name="description">Ikpayongo Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">lkYAC6w1YrT</column>
+            <column name="state">Benue</column>
+            <column name="lga">Gwer East</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Jou Mbatyough Primary Health Center</column>
+            <column name="description">Jou Mbatyough Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">ZbriPIRKgkW</column>
+            <column name="state">Benue</column>
+            <column name="lga">Katsina-Ala</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">Mba Agbanaya Primary Health Center</column>
+            <column name="description">Mba Agbanaya Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">ucKq1EdGOxF</column>
+            <column name="state">Benue</column>
+            <column name="lga">Gboko</column>
+        </insert>
+        
+                                               
+        <insert tableName="inv_institution">
+            <column name="name">NKST Ikpa Primary Health Center</column>
+            <column name="description">NKST Ikpa Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">XBI5zRTPIDJ</column>
+            <column name="state">Benue</column>
+            <column name="lga">Gboko</column>
+        </insert>
+        
+        <insert tableName="inv_institution">
+            <column name="name">NKST Kuhe Primary Health Center</column>
+            <column name="description">NKST Kuhe Primary Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">pyxmAN33vlC</column>
+            <column name="state">Benue</column>
+            <column name="lga">Gboko</column>
+        </insert>
+        
+                                               
+        <insert tableName="inv_institution">
+            <column name="name">St. Elizabeth Hospital</column>
+            <column name="description">St. Elizabeth Hospital</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">DPFnexGxRAT</column>
+            <column name="state">Benue</column>
+            <column name="lga">Vandeikya</column>
+        </insert>
+        
+                                               
+      <insert tableName="inv_institution">
+            <column name="name">Township Comprehensive Health Center</column>
+            <column name="description">Township Comprehensive Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">X6NyY4AiCxp</column>
+            <column name="state">Benue</column>
+            <column name="lga">Katsina-Ala</column>
+        </insert>
+        
+        
+          <insert tableName="inv_institution">
+            <column name="name">Une Local Government Health Centre</column>
+            <column name="description">Une Local Government Health Centre</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">KLtclHppMIU</column>
+            <column name="state">Benue</column>
+            <column name="lga">Katsina-Ala</column>
+        </insert>
+        
+          <insert tableName="inv_institution">
+            <column name="name">Apo Primary Health Centre</column>
+            <column name="description">Apo Primary Health Centre</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">Rx0f9PLrpxt</column>
+            <column name="state">FCT</column>
+            <column name="lga">AMAC</column>
+        </insert>
+        
+                                             
+     <insert tableName="inv_institution">
+            <column name="name">Byazhin Primary Health Centre</column>
+            <column name="description">Byazhin Primary Health Centre</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">LYlPd52expn</column>
+            <column name="state">FCT</column>
+            <column name="lga">Bwari</column>
+        </insert>
+        
+          <insert tableName="inv_institution">
+            <column name="name">Lardang Comprehensive Health Center</column>
+            <column name="description">Lardang Comprehensive Health Center</column>
+            <column name="creator">1</column>
+            <column name="date_created">2021-05-20</column>
+            <column name="uuid">ryJ1gnzT3yb</column>
+            <column name="state">Plateau</column>
+            <column name="lga">Qua'an Pan</column>
+        </insert>
+            
+    </changeSet>
                           
 </databaseChangeLog>
