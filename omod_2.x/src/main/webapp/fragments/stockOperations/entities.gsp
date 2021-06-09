@@ -53,7 +53,9 @@
                                         ng-change="searchStockOperation(currentPage)">
                                     <option value="" selected="selected">${ui.message('openhmis.commons.general.any')}</option>
                                 </select>
-                            </td>
+                            </td>                           
+                        </tr>
+                         <tr>
                             <td>
                                 ${ui.message('openhmis.inventory.item.name')}:
                                 ${ ui.includeFragment("openhmis.commons", "searchFragment", [
@@ -65,9 +67,18 @@
                                         placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                                         ngEnterEvent: "searchStockOperation(1)"
                                 ])}
+                            </td>   
+                            <td>
+                                Operation Date:
+                                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "startDate",
+                                    id: "startDate",
+                                    label: "",
+                                    useTime: false                                                           
+                                ])}
                             </td>
-						
                         </tr>
+                        
                     </table></fieldset>
             </form>
             <br/><br/>

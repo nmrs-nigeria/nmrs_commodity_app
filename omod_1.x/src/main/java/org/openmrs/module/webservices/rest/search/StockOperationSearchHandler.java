@@ -13,6 +13,10 @@
  */
 package org.openmrs.module.webservices.rest.search;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -51,7 +55,7 @@ public class StockOperationSearchHandler implements SearchHandler {
 	        Arrays.asList("*"),
 	        Arrays.asList(
 	                new SearchQuery.Builder("Finds stock operations with an optional status and/or stockroom.")
-	                        .withOptionalParameters("status", "stockroom_uuid", "operation_date")
+	                        .withOptionalParameters("status", "stockroom_uuid", "operation_date", "operation_date_filter")
 	                        .build()
 
 	                )
@@ -77,6 +81,7 @@ public class StockOperationSearchHandler implements SearchHandler {
 		String operationDateText = context.getParameter("operation_date");
 		String statusText = context.getParameter("status");
 		String stockroomText = context.getParameter("stockroom_uuid");
+		String dateCreatedText = context.getParameter("operation_date_filter");
 
 		Date operationDate = null;
 		if (!StringUtils.isEmpty(operationDateText)) {
@@ -86,10 +91,22 @@ public class StockOperationSearchHandler implements SearchHandler {
 			}
 		}
 
+		Date dateCreated = null;
+		if (!StringUtils.isEmpty(dateCreatedText)) {
+			try {
+				dateCreated = new SimpleDateFormat("yyyy-MM-dd").parse(dateCreatedText);
+			} catch (ParseException e) {
+				LOG.warn("Could not parse date created '" + dateCreatedText + "'");
+			}
+			//dateCreated = Utility.parseOpenhmisDateString(dateCreatedText);
+			if (dateCreated == null) {
+				return new EmptySearchResult();
+			}
+		}
+
 		StockOperationStatus status = null;
 		if (!StringUtils.isEmpty(statusText)) {
 			status = StockOperationStatus.valueOf(statusText);
-
 			if (status == null) {
 				LOG.warn("Could not parse Stock Operation Status '" + statusText + "'");
 				return new EmptySearchResult();
@@ -99,7 +116,6 @@ public class StockOperationSearchHandler implements SearchHandler {
 		Stockroom stockroom = null;
 		if (!StringUtils.isEmpty(stockroomText)) {
 			stockroom = stockroomDataService.getByUuid(stockroomText);
-
 			if (stockroom == null) {
 				LOG.warn("Could not find stockroom '" + stockroomText + "'");
 				return new EmptySearchResult();
@@ -112,6 +128,7 @@ public class StockOperationSearchHandler implements SearchHandler {
 			operations = operationDataService.getOperationsByDate(operationDate, pagingInfo);
 		} else {
 			StockOperationSearch search = null;
+
 			if (status != null) {
 				search = new StockOperationSearch();
 				search.getTemplate().setStatus(status);
@@ -129,6 +146,11 @@ public class StockOperationSearchHandler implements SearchHandler {
 				// Return the operations for the specified stockroom and status
 				operations = stockroomDataService.getOperations(stockroom, search, pagingInfo);
 			}
+
+			if (dateCreated != null) {
+				operations = operationDataService.getOperationsByDate(dateCreated, pagingInfo);
+			}
+
 		}
 
 		if (operations == null || operations.size() == 0) {

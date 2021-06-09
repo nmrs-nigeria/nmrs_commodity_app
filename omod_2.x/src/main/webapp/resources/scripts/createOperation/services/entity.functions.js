@@ -29,6 +29,7 @@
 
         service = {
             formatDate: formatDate,
+            formatDateTwo: formatDateTwo,
             formatTime: formatTime,
             onChangeDatePicker: onChangeDatePicker,
             changeOperationDate: changeOperationDate,
@@ -45,6 +46,8 @@
             checkBatchItemExistSection: checkBatchItemExistSection,
             createItemBatches: createItemBatches,
             resolveLga: resolveLga,
+            onChangeDatePickerTwo: onChangeDatePickerTwo,
+            validateExpirationAndOperationDate: validateExpirationAndOperationDate,
         };
 
         return service;
@@ -57,9 +60,22 @@
             return ($filter('date')(new Date(date), format));
         }
 
+        function formatDateTwo(date) {
+            var format = 'yyyy-MM-dd';
+            return ($filter('date')(new Date(date), format));
+        }
+
         function formatTime(time) {
             var format = 'HH:mm';
             return ($filter('date')(new Date(time), format));
+        }
+
+        function onChangeDatePickerTwo(id, successfulCallback) {
+            var datePicker = angular.element(document.getElementById(id));
+            datePicker.bind('keyup change select checked', function () {
+                var input = this.value;
+                successfulCallback(input);
+            });
         }
 
         function onChangeDatePicker(successfulCallback, id, lineItem) {
@@ -229,14 +245,6 @@
             return itemBatches;
         }
 
-
-
-
-
-
-
-
-
         function showOperationItemsSection($scope) {
             var operationType = $scope.operationType;
             if (operationType === undefined) {
@@ -385,6 +393,34 @@
             }
 
             return false;
+        }
+
+        function validateExpirationAndOperationDate($scope) {
+            var lineItems = $scope.lineItems;
+            var operationDate = $scope.operationDate;
+            var failed = false;
+            if (lineItems !== undefined && operationDate !== undefined) {
+                var format = 'yyyy-MM-dd';               
+                for (var i = 0; i < lineItems.length; i++) {
+                    var lineItem = lineItems[i];
+                    if (lineItem.selected) {                    
+                        //format expiration and operation date to yyyy-mm-
+                        var exp = lineItem.itemStockExpirationDate;
+                        var expiration = $filter('date')(new Date(exp), format);
+                        var operatDate = $filter('date')(new Date(operationDate), format);
+                        if (expiration < operatDate) {
+                            var errorMessage = emr.message("The expiration date cannot be less than operation date.") + " - " + exp;
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }                        
+                    } 
+                }
+            }
+            if (failed) {
+                return false;
+            }          
+            return true;
         }
 
         function validateLineItems($scope) {

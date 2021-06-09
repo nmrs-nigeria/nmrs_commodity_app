@@ -218,6 +218,11 @@
             }
 
             // validate selected line items.
+            if (!CreateOperationFunctions.validateExpirationAndOperationDate($scope)) {
+                return false;
+            }
+
+            // validate selected line items.
             if (!CreateOperationFunctions.validateLineItems($scope)) {
 
                 return false;

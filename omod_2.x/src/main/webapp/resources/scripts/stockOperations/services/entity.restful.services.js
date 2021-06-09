@@ -56,10 +56,11 @@
          * @param operation_status
          * @param operationType_uuid
          * @param stockroom_uuid
+         * @param operation_date_filter
          * @param successCallback
          */
         function searchStockOperation(rest_entity_name, currentPage, limit, operationItem_uuid,
-                                      operation_status, operationType_uuid, stockroom_uuid,
+                                      operation_status, operationType_uuid, stockroom_uuid, operation_date_filter,
                                       successCallback, myOperation){
             var requestParams = PaginationService.paginateParams(currentPage, limit, false, '');
             requestParams['rest_entity_name'] = rest_entity_name;
@@ -78,6 +79,10 @@
 
             if(angular.isDefined(operationItem_uuid) && operationItem_uuid !== undefined && operationItem_uuid !== '') {
                 requestParams['operationItem_uuid'] = operationItem_uuid;
+            }
+            
+            if(angular.isDefined(operation_date_filter) && operation_date_filter !== undefined && operation_date_filter !== '') {
+                requestParams['operation_date_filter'] = operation_date_filter;
             }
 
             if(angular.isDefined(myOperation) && myOperation !== undefined){
