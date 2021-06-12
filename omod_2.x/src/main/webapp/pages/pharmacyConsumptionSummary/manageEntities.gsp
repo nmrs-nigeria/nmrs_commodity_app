@@ -47,12 +47,12 @@
                                     <li>
                                         <span class="date">
                                             ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-        formFieldName: "startDate",
-        id: "startDate",
-        label: "",
-        useTime: false
+formFieldName: "startDate",
+id: "startDate",
+label: "",
+useTime: false
                                     
-        ])}
+])}
                                         </span>
                                     </li>
 
@@ -68,12 +68,12 @@
                                     <li>
                                         <span class="date">
                                             ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-        formFieldName: "endDate",
-        id: "endDate",
-        label: "",
-        useTime: false
+formFieldName: "endDate",
+id: "endDate",
+label: "",
+useTime: false
                                     
-        ])}
+])}
                                         </span>
                                     </li>
 
@@ -108,8 +108,6 @@
                         <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
                         <th>Drug Category</th>
 
-
-
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +120,7 @@
                 <td ng-style="strikeThrough(entity.retired)">
                     {{entity.drugCategory}}
                 </td>             
-
+               
                 </tr>
                 </tbody>
             </table>

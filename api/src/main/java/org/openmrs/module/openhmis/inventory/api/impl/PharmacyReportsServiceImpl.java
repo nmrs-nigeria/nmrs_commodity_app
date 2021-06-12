@@ -43,7 +43,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
             String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
-                Utils.DCR_DRUG_CATEGORY_HEADER};
+                Utils.DCR_DRUG_CATEGORY_HEADER, Utils.DCR_SERVICE_DELIVERY_MODEL, Utils.DCR_DELIVERY_TYPE};
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
                     .withHeader(HEADERS));
@@ -52,7 +52,44 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
                     .forEach(con -> {
 
                         try {
-                            csvPrinter.printRecord(con.getItem(), con.getTotalQuantityReceived(), con.getDrugCategory());
+                            csvPrinter.printRecord(con.getItem(), con.getTotalQuantityReceived(), con.getDrugCategory(),
+                                    con.getServiceDeliveryModel(), con.getDeliveryType());
+                        } catch (IOException ex) {
+                            LOG.error(ex.getMessage());
+                        }
+
+                    });
+            csvPrinter.flush();
+
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+
+        return fileName;
+    }
+
+	@Override
+    public String getAdultModalitiesPharmacyConsumptionByDate(String reportId, 
+            List<NewPharmacyConsumptionSummary> reportData,
+            String reportFolder) {
+
+        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
+
+            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
+                Utils.DCR_DRUG_CATEGORY_HEADER, Utils.DCR_DELIVERY_TYPE};
+
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader(HEADERS));
+
+            reportData.stream()
+                    .forEach(con -> {
+
+                        try {
+                            csvPrinter.printRecord(con.getItem(), con.getTotalQuantityReceived(), con.getDrugCategory(),
+                                    con.getDeliveryType());
                         } catch (IOException ex) {
                             LOG.error(ex.getMessage());
                         }

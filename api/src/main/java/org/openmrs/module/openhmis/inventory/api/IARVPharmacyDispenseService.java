@@ -21,4 +21,8 @@ public interface IARVPharmacyDispenseService extends IMetadataDataService<ARVPha
 
 	List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate, PagingInfo pagingInfo);
 
+	List<NewPharmacyConsumptionSummary>
+	        getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate, PagingInfo pagingInfo,
+	                String treatmentCategory);
+
 }

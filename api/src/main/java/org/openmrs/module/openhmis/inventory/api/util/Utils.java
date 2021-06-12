@@ -50,10 +50,22 @@ public class Utils {
 	public static final int PICKUP_REASON_CONCEPT_NEW = 165773;
 
 	public static final int SERVICE_DELIVERY_MODEL = 166148;
-	public static final int SERVICE_DELIVERY_MODEL_NOT_DIFERENCIATED = 166153;
-	public static final int SERVICE_DELIVERY_MODEL_COMMUNITY_PHARMACY = 166134;
-	public static final int SERVICE_DELIVERY_MODEL_COMMUNITY_ART = 166135;
-	public static final int SERVICE_DELIVERY_MODEL_REFILL_FAST_TRACK = 166151;
+	public static final int FACILITY_DISPENSING = 166276;
+	public static final int DECENTRALIZED_DRUG_DELIVERY = 166363;
+
+	public static final int FACILITY_SDM_MODEL_NOT_DIFERENCIATED = 166153;
+	public static final int FACILITY_SDM_REFILL_FAST_TRACK = 166151;
+	public static final int FACILITY_SDM_ADOLECENT_CLINIC = 166279;
+
+	public static final int DECENTRALIZED_SDM_COMMUNITY_PHARMACY = 166134;
+	public static final int DECENTRALIZED_SDM_MODEL_COMMUNITY_ART = 166135;
+	public static final int DECENTRALIZED_SDM_HOME_DELIVERY = 166280;
+	public static final int DECENTRALIZED_SDM_PRIVATE_CLINICS = 166364;
+	public static final int DECENTRALIZED_SDM_PATENT_MEDICINE_STORES = 166365;
+	public static final int DECENTRALIZED_SDM_ATM = 166366;
+	public static final int DECENTRALIZED_SDM_OTHERS = 5622;
+	public static final int DECENTRALIZED_SDM_OTHERS_DISPENSARY_VALUE = 166367;
+
 	public static final int SERVICE_DELIVERY_MODEL_MULTIMONTH_SCRIPTING = 166149;
 	public static final int SERVICE_DELIVERY_MODEL_FAMILY_DRUG_PICKUP = 166150;
 
@@ -153,6 +165,8 @@ public class Utils {
 	public static final String DCR_TOTAL_WASTAGE_HEADER = "Total wastage";
 	public static final String DCR_STOCK_BALANCE_HEADER = "Stock balance";
 	public static final String DCR_DRUG_CATEGORY_HEADER = "Drug Category";
+	public static final String DCR_SERVICE_DELIVERY_MODEL = "Service Delivery Model";
+	public static final String DCR_DELIVERY_TYPE = "Delivery Type";
 
 	public static final String DISPENSARY_STOCKONHAND_REPORT_SHEET_NAME = "Dispensary Stock on Hand Report";
 	public static final String SSR_DEPARTMENT_HEADER = "Department";
@@ -175,4 +189,8 @@ public class Utils {
 
 	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
 	public static final String LAB_COMMODITY_TYPE = "lab";
+
+	public static final String ADULT_ART_TEXT = "Adult ART";
+	public static final String PEDIATRIC_ART_TEXT = "Pediatric ART";
+
 }

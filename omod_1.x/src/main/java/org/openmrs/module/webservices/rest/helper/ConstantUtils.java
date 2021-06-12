@@ -29,6 +29,7 @@ public class ConstantUtils {
 	public static final String STOCK_ROOM_CONSUMPTION_REPORT = "stockroom_consumption";
 	public static final String STORE_STOCKONHAND_REPORT = "stockroom_stockonhand";
 	public static final String DISPENSARY_STOCKONHAND_REPORT = "dispensary_stockonhand";
+	public static final String ADULT_DISPENSARY_MODALITIES_REPORT = "modalities_dispensary_consumption";
 
 	//report header
 	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";

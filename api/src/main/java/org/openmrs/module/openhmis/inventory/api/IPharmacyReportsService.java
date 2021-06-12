@@ -27,4 +27,7 @@ public interface IPharmacyReportsService {
 	String getDispensaryStockOnHandByDate(String reportId,
 	        List<ItemExpirationSummaryReport> reportData, String reportFolder);
 
+	String getAdultModalitiesPharmacyConsumptionByDate(String reportId, List<NewPharmacyConsumptionSummary> reportData,
+	        String reportFolder);
+
 }

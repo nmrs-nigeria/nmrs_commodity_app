@@ -13,35 +13,33 @@
  *
  */
 
-(function() {
-	'use strict';
+(function () {
+    'use strict';
 
-	angular.module('app.restfulServices').service('PharmacyReportsRestfulService', PharmacyReportsRestfulService);
+    angular.module('app.restfulServices').service('PharmacyReportsRestfulService', PharmacyReportsRestfulService);
 
-	PharmacyReportsRestfulService.$inject = [ 'EntityRestFactory' ];
+    PharmacyReportsRestfulService.$inject = ['EntityRestFactory'];
 
-	function PharmacyReportsRestfulService(EntityRestFactory) {
-		var service;
-		service = {
-			getReport : getReport
-		};
-		return service;
- 
-		function getReport(reportId,startDate,endDate, successCallback) {
-			var requestParams = [];
-			requestParams['resource'] = INVENTORY_MODULE_PHARMACY_REPORTS_URL;
-			requestParams['startDate'] = startDate;
+    function PharmacyReportsRestfulService(EntityRestFactory) {
+        var service;
+        service = {
+            getReport: getReport
+        };
+        return service;
+
+        function getReport(reportId, startDate, endDate, treatmentCategory, successCallback) {
+            var requestParams = [];
+            requestParams['resource'] = INVENTORY_MODULE_PHARMACY_REPORTS_URL;
+            requestParams['startDate'] = startDate;
             requestParams['endDate'] = endDate;
             requestParams['reportId'] = reportId;
+            requestParams['treatmentCategory'] = treatmentCategory;
 
-			EntityRestFactory.setCustomBaseUrl(ROOT_URL);
-			EntityRestFactory.loadResults(requestParams, successCallback, function(error) {
-				console.log(error)
-			});
-		}
-
-
-
+            EntityRestFactory.setCustomBaseUrl(ROOT_URL);
+            EntityRestFactory.loadResults(requestParams, successCallback, function (error) {
+                console.log(error)
+            });
+        }
 
 
 
@@ -50,5 +48,8 @@
 
 
 
-	}
+
+
+
+    }
 })();
