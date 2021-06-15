@@ -121,7 +121,8 @@
                     $scope.lgas = [];
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
-                    $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
+                    $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;                                              
+
                 }
 
         /**
@@ -213,10 +214,14 @@
             }
 
             // validate selected line items.
-            if (!CreateOperationFunctions.validateLineItems($scope)) {
-
+            if (!CreateOperationFunctions.validateExpirationAndOperationDate($scope)) {
                 return false;
             }
+
+            // validate selected line items.
+            if (!CreateOperationFunctions.validateLineItems($scope)) {
+                return false;
+            }           
 
             $scope.loading = true;
             return true;

@@ -45,6 +45,7 @@
             checkBatchItemExistSection: checkBatchItemExistSection,
             createItemBatches: createItemBatches,
             resolveLga: resolveLga,
+            validateExpirationAndOperationDate: validateExpirationAndOperationDate,
         };
 
         return service;
@@ -377,6 +378,35 @@
 
             return false;
         }
+
+        function validateExpirationAndOperationDate($scope) {
+            var lineItems = $scope.lineItems;
+            var operationDate = $scope.operationDate;
+            var failed = false;
+            if (lineItems !== undefined && operationDate !== undefined) {
+                var format = 'yyyy-MM-dd';               
+                for (var i = 0; i < lineItems.length; i++) {
+                    var lineItem = lineItems[i];
+                    if (lineItem.selected) {                    
+                        //format expiration and operation date to yyyy-mm-
+                        var exp = lineItem.itemStockExpirationDate;
+                        var expiration = $filter('date')(new Date(exp), format);
+                        var operatDate = $filter('date')(new Date(operationDate), format);
+                        if (expiration < operatDate) {
+                            var errorMessage = emr.message("The expiration date cannot be less than operation date.") + " - " + exp;
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }                        
+                    } 
+                }
+            }
+            if (failed) {
+                return false;
+            }          
+            return true;
+        }
+
 
         function validateLineItems($scope) {
             var validatedItems = [];

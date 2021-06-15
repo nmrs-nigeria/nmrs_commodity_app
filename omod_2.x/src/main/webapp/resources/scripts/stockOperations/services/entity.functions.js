@@ -1,3 +1,5 @@
+
+
 /*
  * The contents of this file are subject to the OpenMRS Public License
  * Version 2.0 (the "License"); you may not use this file except in
@@ -19,14 +21,16 @@
     var app = angular.module('app.stockOperationFunctionsFactory', []);
     app.service('StockOperationFunctions', StockOperationFunctions);
 
-    StockOperationFunctions.$inject = ['EntityFunctions'];
+    StockOperationFunctions.$inject = ['EntityFunctions','$filter'];
 
-    function StockOperationFunctions(EntityFunctions) {
+    function StockOperationFunctions(EntityFunctions, $filter) {
         var service;
 
         service = {
             showOperationActionsDialog: showOperationActionsDialog,
             addMessageLabels: addMessageLabels,
+            onChangeDatePicker: onChangeDatePicker,
+            formatDate: formatDate
         };
 
         return service;
@@ -96,5 +100,18 @@
 
             return messages;
         }
+
+        function onChangeDatePicker(id, successfulCallback) {
+            var datePicker = angular.element(document.getElementById(id));
+            datePicker.bind('keyup change select checked', function () {
+                var input = this.value;
+                successfulCallback(input);
+            });
+        }
+
+        function formatDate(date) {
+            return $filter('date')(new Date(date), "yyyy-MM-dd");
+        }
     }
 })();
+

@@ -27,6 +27,11 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="archetype" />
+      <option name="name" value="archetype" />
+      <option name="url" value="http://mavenrepo.openmrs.org/nexus/content/repositories/public" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="openmrs-repo" />
       <option name="name" value="OpenMRS Nexus Repository" />
       <option name="url" value="http://mavenrepo.openmrs.org/nexus/content/repositories/public" />
