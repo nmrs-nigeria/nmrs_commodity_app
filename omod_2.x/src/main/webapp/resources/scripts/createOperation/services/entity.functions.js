@@ -61,8 +61,15 @@
         }
 
         function formatDateTwo(date) {
-            var format = 'yyyy-MM-dd';
-            return ($filter('date')(new Date(date), format));
+            var dates = date.split("-");
+            var day = dates[0];
+            var month = dates[1];
+            var year = dates[2]; 
+            var splitYear = year.split(" ");
+            if(splitYear.length > 1){
+                year = splitYear[0];
+            }
+            return [year, month, day].join('-');
         }
 
         function formatTime(time) {
@@ -399,16 +406,15 @@
             var lineItems = $scope.lineItems;
             var operationDate = $scope.operationDate;
             var failed = false;
-            if (lineItems !== undefined && operationDate !== undefined) {
-                var format = 'yyyy-MM-dd';               
+            if (lineItems !== undefined && operationDate !== undefined) {             
                 for (var i = 0; i < lineItems.length; i++) {
                     var lineItem = lineItems[i];
                     if (lineItem.selected) {                    
-                        //format expiration and operation date to yyyy-mm-
+                        //format expiration and operation date
                         var exp = lineItem.itemStockExpirationDate;
-                        var expiration = $filter('date')(new Date(exp), format);
-                        var operatDate = $filter('date')(new Date(operationDate), format);
-                        if (expiration < operatDate) {
+                        var expiratn  = new Date(formatDateTwo(exp));
+                        var operatDate = new Date(formatDateTwo(operationDate));
+                        if (expiratn < operatDate) {
                             var errorMessage = emr.message("The expiration date cannot be less than operation date.") + " - " + exp;
                             emr.errorAlert(errorMessage);
                             failed = true;
