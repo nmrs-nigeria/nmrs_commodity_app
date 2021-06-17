@@ -53,9 +53,7 @@
                                         ng-change="searchStockOperation(currentPage)">
                                     <option value="" selected="selected">${ui.message('openhmis.commons.general.any')}</option>
                                 </select>
-                            </td>                          
-                        </tr>
-                         <tr>
+                            </td>       
                              <td>
                                 ${ui.message('openhmis.inventory.item.name')}:
                                 ${ ui.includeFragment("openhmis.commons", "searchFragment", [
@@ -67,9 +65,13 @@
                                         placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                                         ngEnterEvent: "searchStockOperation(1)"
                                 ])}
-                            </td>
+                            </td>                    
+                        </tr>                            
+                    </table>
+                    <table>
+                        <tr>                           
                             <td>
-                                Operation Date:
+                                Start Date:
                                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
                                     formFieldName: "startDate",
                                     id: "startDate",
@@ -77,9 +79,18 @@
                                     useTime: false                                                           
                                 ])}
                             </td>
-                        </tr>         
-
-                    </table></fieldset>
+                            <td>
+                                End Date:
+                                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "endDate",
+                                    id: "endDate",
+                                    label: "",
+                                    useTime: false                                                           
+                                ])}
+                            </td>
+                        </tr>                      
+                    </table>                       
+                </fieldset>
             </form>
             <br/><br/>
             <table style="margin-bottom:5px;margin-top:5%;" class="manage-entities-table manage-stockOperations-table">
