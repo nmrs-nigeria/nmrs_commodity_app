@@ -28,6 +28,7 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
+import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationStatus;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
@@ -55,7 +56,8 @@ public class StockOperationSearchHandler implements SearchHandler {
 	        Arrays.asList("*"),
 	        Arrays.asList(
 	                new SearchQuery.Builder("Finds stock operations with an optional status and/or stockroom.")
-	                        .withOptionalParameters("status", "stockroom_uuid", "operation_date", "operation_date_filter")
+	                        .withOptionalParameters("status", "stockroom_uuid", "operation_date", "operation_date_filter",
+	                            "operation_date_filter_end")
 	                        .build()
 
 	                )
@@ -82,6 +84,7 @@ public class StockOperationSearchHandler implements SearchHandler {
 		String statusText = context.getParameter("status");
 		String stockroomText = context.getParameter("stockroom_uuid");
 		String dateCreatedText = context.getParameter("operation_date_filter");
+		String dateCreatedTextEnd = context.getParameter("operation_date_filter_end");
 
 		Date operationDate = null;
 		if (!StringUtils.isEmpty(operationDateText)) {
@@ -98,9 +101,14 @@ public class StockOperationSearchHandler implements SearchHandler {
 			} catch (ParseException e) {
 				LOG.warn("Could not parse date created '" + dateCreatedText + "'");
 			}
-			//dateCreated = Utility.parseOpenhmisDateString(dateCreatedText);
-			if (dateCreated == null) {
-				return new EmptySearchResult();
+		}
+
+		Date dateCreatedEnd = null;
+		if (!StringUtils.isEmpty(dateCreatedTextEnd)) {
+			try {
+				dateCreatedEnd = new SimpleDateFormat("yyyy-MM-dd").parse(dateCreatedTextEnd);
+			} catch (ParseException e) {
+				LOG.warn("Could not parse date created end '" + dateCreatedTextEnd + "'");
 			}
 		}
 
@@ -149,6 +157,15 @@ public class StockOperationSearchHandler implements SearchHandler {
 
 			if (dateCreated != null) {
 				operations = operationDataService.getOperationsByDate(dateCreated, pagingInfo);
+			}
+
+			if (dateCreated != null) {
+				if (dateCreatedEnd != null) {
+					SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+					searchConsumptionSummary.setStartDate(dateCreated);
+					searchConsumptionSummary.setEndDate(dateCreatedEnd);
+					operations = operationDataService.getOperationsByDateDiff(searchConsumptionSummary, pagingInfo);
+				}
 			}
 
 		}

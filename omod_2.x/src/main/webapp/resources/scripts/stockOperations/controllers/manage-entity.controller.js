@@ -49,16 +49,24 @@
                 $scope.selectItem = self.selectItem;
 
                 $scope.startDate = CookiesService.get('startDate') || {};
+                $scope.endDate = CookiesService.get('endDate') || {};
 
-                console.log('Operation Date: '+ $scope.startDate);
+                console.log('Operation Start Date: '+ $scope.startDate);
+                console.log('Operation End Date: '+ $scope.endDate);
 
                 StockOperationFunctions.onChangeDatePicker('startDate-display', function (value) {
                     $scope.startDate = StockOperationFunctions.formatDate(value);
                     console.log('before format: '+value);
                     console.log('after format: '+$scope.startDate);
-                    self.searchStockOperation(1);
+                   // self.searchStockOperation(1);
                 });
 
+                StockOperationFunctions.onChangeDatePicker('endDate-display', function (value) {
+                    $scope.endDate = StockOperationFunctions.formatDate(value);
+                    console.log('before format: '+value);
+                    console.log('after format: '+$scope.endDate);
+                    self.searchStockOperation();
+                });
             }
 
         self.searchStockOperation = self.searchStockOperation || function(currentPage){
@@ -77,6 +85,7 @@
                 var stockroom_uuid;
                 var operationItem_uuid;
                 var operation_date_filter;
+                var operation_date_filter_end;
 
                 if($scope.operationType !== null){
                     operationType_uuid = $scope.operationType.uuid
@@ -94,6 +103,10 @@
                     operation_date_filter = $scope.startDate;
                 }
 
+                if($scope.endDate !== null){
+                    operation_date_filter_end = $scope.endDate;
+                }
+
                /* console.log("Operation Date In: "+ $scope.startDate);
                 console.log("Operation Date In2: "+ operation_date_filter);*/
 
@@ -102,7 +115,7 @@
                 StockOperationRestfulService.searchStockOperation(
                     REST_ENTITY_NAME, currentPage, $scope.limit,
                     operationItem_uuid, $scope.operation_status,
-                    operationType_uuid, stockroom_uuid, operation_date_filter,
+                    operationType_uuid, stockroom_uuid, operation_date_filter, operation_date_filter_end,
                     self.onLoadSearchStockOperationSuccessful
                 );
             }
