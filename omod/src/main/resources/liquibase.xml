@@ -6829,5 +6829,36 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
         </insert>
             
     </changeSet>
+    
+    <changeSet id="openhmis.inventory-v4.2" author="Toyeeb">
+    	 <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE inv_consumption SET item_id=1 WHERE item_id=4;
+			UPDATE inv_item_stock  SET item_id=1 WHERE item_id=4;
+			UPDATE inv_item_stock_detail SET item_id=1 WHERE item_id=4;
+			UPDATE inv_reserved_transaction SET item_id=1 WHERE item_id=4;
+			UPDATE inv_stock_operation_item SET item_id=1 WHERE item_id=4;
+			UPDATE inv_transaction SET item_id=1 WHERE item_id=4;
+			UPDATE inv_pharmacy_consumption SET item_id=1 WHERE item_id=4;
+			UPDATE inv_stockonhand_pharmacy_dispensary SET item_id=1 WHERE item_id=4;
+			UPDATE inv_custom_arv_dispensed_item SET item_id=1 WHERE item_id=4;
+			UPDATE inv_custom_pharmacy_dispense_arv SET item_id=1 WHERE item_id=4;
+			UPDATE inv_item_attribute SET item_id=1 WHERE item_id=4;
+			UPDATE inv_item_code SET item_id=1 WHERE item_id=4;
+			UPDATE inv_item_price SET item_id=1 WHERE item_id=4;
+            SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>
+    </changeSet>    
+    
+    <changeSet id="openhmis.inventory-v4.3" author="Toyeeb">
+     	<sql>SET FOREIGN_KEY_CHECKS=0;</sql>      
+        <delete tableName="inv_item">
+            <where>uuid='5f261815-f35c-4d34-914b-696a7b7f5eac'</where>
+        </delete>
+         <sql>SET FOREIGN_KEY_CHECKS=1;</sql>
+    </changeSet>
+    
                           
 </databaseChangeLog>
