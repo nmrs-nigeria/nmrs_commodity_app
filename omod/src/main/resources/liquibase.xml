@@ -6860,5 +6860,13 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
          <sql>SET FOREIGN_KEY_CHECKS=1;</sql>
     </changeSet>
     
+      <changeSet id="openhmis.inventory-v4.4" author="Toyeeb">
+     	<sql>SET FOREIGN_KEY_CHECKS=0;</sql>      
+        <delete tableName="inv_institution">
+            <where>uuid='rh5g32iNIXc'</where>
+        </delete>
+         <sql>SET FOREIGN_KEY_CHECKS=1;</sql>
+    </changeSet>
+    
                           
 </databaseChangeLog>
