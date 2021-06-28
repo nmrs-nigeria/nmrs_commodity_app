@@ -182,12 +182,14 @@ public class DictionaryMaps {
 		this.testPurpose.put("Confirmation", "C");
 		this.testPurpose.put("Controls", "CX");// 
 		this.testPurpose.put("Tie Breaker", "TB");
+		this.testPurpose.put("Recency", "R");
 	}
 
 	private void fillUpCommoditySource() {
 		this.commoditySource.put("PEPFAR", "P");
 		this.commoditySource.put("GF", "G");
 		this.commoditySource.put("other donors", "O");
+		this.commoditySource.put("GON", "GO");
 	}
 
 	public Map<String, Integer> getDepartmentMappings() {

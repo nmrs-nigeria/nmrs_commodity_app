@@ -43,6 +43,7 @@
             requestParams['q'] = q;
             requestParams['limit'] = 10;
             requestParams['startIndex'] = 1;
+            requestParams['commodityType'] = 'pharmacy';
 
             return EntityRestFactory.autocompleteSearch(requestParams, 'item', module_name);
         }
@@ -89,6 +90,8 @@
             if(angular.isDefined(operation_date_filter_end) && operation_date_filter_end !== undefined && operation_date_filter_end !== '') {
                 requestParams['operation_date_filter_end'] = operation_date_filter_end;
             }
+            
+            requestParams['commodityType'] = 'pharmacy';
 
             if(angular.isDefined(myOperation) && myOperation !== undefined){
                 requestParams['q'] = 'my'
@@ -144,6 +147,7 @@
         function stockOperation(operation_uuid, rest_entity_name, successCallback){
             if(angular.isDefined(operation_uuid) && operation_uuid !== '' && operation_uuid !== undefined){
                 var requestParams = {};
+                requestParams['commodityType'] = 'pharmacy';
                 requestParams['rest_entity_name'] = rest_entity_name + '/' + operation_uuid;
 
                 EntityRestFactory.loadEntities(requestParams,

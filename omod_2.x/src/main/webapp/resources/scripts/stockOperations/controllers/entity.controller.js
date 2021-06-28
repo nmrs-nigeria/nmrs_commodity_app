@@ -70,10 +70,12 @@
          * @type {Function}
          */
         self.stockOperation = self.stockOperation || function(uuid, rest_entity_name){
+            console.log('called stock ops');
                 StockOperationRestfulService.stockOperation(uuid, rest_entity_name, self.onLoadStockOperationSuccessful);
             }
 
         self.stockOperationItem = self.stockOperationItem || function(uuid, stockOperationItemCurrentPage){
+            console.log('called stock ops item');
                 stockOperationItemCurrentPage = stockOperationItemCurrentPage || $scope.stockOperationItemCurrentPage;
                 CookiesService.set(uuid + 'stockOperationItemCurrentPage', stockOperationItemCurrentPage);
                 CookiesService.set(uuid + 'stockOperationItemLimit', $scope.stockOperationItemLimit);
@@ -86,6 +88,7 @@
             }
 
         self.stockOperationTransaction = self.stockOperationTransaction || function(uuid, stockOperationTransactionCurrentPage){
+            console.log('called stock ops trans');
                 stockOperationTransactionCurrentPage = stockOperationTransactionCurrentPage || $scope.stockOperationTransactionCurrentPage;
                 CookiesService.set(uuid + 'stockOperationTransactionCurrentPage', stockOperationTransactionCurrentPage);
                 CookiesService.set(uuid + 'stockOperationTransactionLimit', $scope.stockOperationTransactionLimit);
