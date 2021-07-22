@@ -19,6 +19,8 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 	private String groupUuid;
 	private Integer consumptionSummaryId;
 	private String drugCategory;
+	private String serviceDeliveryModel;
+	private String deliveryType;
 
 	public Integer getTotalQuantityReceived() {
 		return totalQuantityReceived;
@@ -66,6 +68,22 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 
 	public void setGroupUuid(String groupUuid) {
 		this.groupUuid = groupUuid;
+	}
+
+	public String getServiceDeliveryModel() {
+		return serviceDeliveryModel;
+	}
+
+	public void setServiceDeliveryModel(String serviceDeliveryModel) {
+		this.serviceDeliveryModel = serviceDeliveryModel;
+	}
+
+	public String getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(String deliveryType) {
+		this.deliveryType = deliveryType;
 	}
 
 	@Override

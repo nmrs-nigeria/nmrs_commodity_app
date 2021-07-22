@@ -21,6 +21,8 @@ public class ARVDispensedItem implements Serializable {
 	private String drugStrength;
 	private String arvPharmacyDispenseUuid;
 	private String drugCategory;
+	private String serviceDeliveryModel;
+	private String deliveryType;
 
 	public Integer getQuantityPrescribed() {
 		return quantityPrescribed;
@@ -76,6 +78,22 @@ public class ARVDispensedItem implements Serializable {
 
 	public void setDrugCategory(String drugCategory) {
 		this.drugCategory = drugCategory;
+	}
+
+	public String getServiceDeliveryModel() {
+		return serviceDeliveryModel;
+	}
+
+	public void setServiceDeliveryModel(String serviceDeliveryModel) {
+		this.serviceDeliveryModel = serviceDeliveryModel;
+	}
+
+	public String getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(String deliveryType) {
+		this.deliveryType = deliveryType;
 	}
 
 }

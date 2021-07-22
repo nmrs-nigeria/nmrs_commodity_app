@@ -71,6 +71,53 @@
         </ul>
     </fieldset>
     
+        <fieldset>
+        <legend>
+            <i class="icon-list-alt"></i>
+            <span>Dispensary Consumption Report By Modalities</span>
+        </legend>
+        <small>select date range</small>
+         <ul class="table-layout">
+            <li><label>Start Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "startDate_amod",
+                        id: "startDate_amod",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+
+        <ul class="table-layout">
+            <li><label>End Date</label></li>
+            <li>
+                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                        formFieldName: "endDate_amod",
+                        id: "endDate_amod",
+                        label: "",
+                        useTime: false
+                ])}
+            </li>
+        </ul>
+        
+        
+         <ul class="table-layout">
+          <li> <span>Treatment Category</span></li>
+
+            <li>
+                  <select ng-model="category" class="form-control"
+                    ng-options="category for category in categories">
+                    </select>
+            </li>
+            </ul>
+
+        <ul class="table-layout">
+            <li></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryModalitiesConsumption()">Generate Report</a></li>
+        </ul>
+    </fieldset>
+    
     <br><br>
     <fieldset>
         <legend>

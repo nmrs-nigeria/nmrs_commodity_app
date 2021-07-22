@@ -19,10 +19,10 @@
     var base = angular.module('app.genericManageController');
     base.controller("ManagePharmacyStockOperationsController", ManagePharmacyStockOperationsController);
     ManagePharmacyStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
-        'PaginationService', 'PharmacyStockOperationModel', 'CookiesService', 'PharmacyStockOperationRestfulService'];
+        'PaginationService', 'PharmacyStockOperationModel', 'CookiesService', 'PharmacyStockOperationRestfulService', 'PharmacyStockOperationFunctions'];
 
     function ManagePharmacyStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
-                                             PharmacyStockOperationModel, CookiesService, PharmacyStockOperationRestfulService) {
+                                             PharmacyStockOperationModel, CookiesService, PharmacyStockOperationRestfulService, PharmacyStockOperationFunctions) {
         var self = this;
         var entity_name = emr.message("openhmis.inventory.stock.operation.name.pharmacy");
         var REST_ENTITY_NAME = "stockOperation";
@@ -46,6 +46,27 @@
 
                 $scope.searchItems = self.searchItems;
                 $scope.selectItem = self.selectItem;
+
+                $scope.startDate = CookiesService.get('startDate') || {};
+                $scope.endDate = CookiesService.get('endDate') || {};
+
+                console.log('Operation Date: '+ $scope.startDate);                
+                console.log('Operation End Date: '+ $scope.endDate);
+
+                PharmacyStockOperationFunctions.onChangeDatePicker('startDate-display', function (value) {
+                    $scope.startDate = PharmacyStockOperationFunctions.formatDate(value);
+                    console.log('before format: '+value);
+                    console.log('after format: '+$scope.startDate);
+                    // self.searchStockOperation(1);
+                });
+
+                PharmacyStockOperationFunctions.onChangeDatePicker('endDate-display', function (value) {
+                    $scope.endDate = PharmacyStockOperationFunctions.formatDate(value);
+                    console.log('before format: '+value);
+                    console.log('after format: '+$scope.endDate);
+                    self.searchStockOperation();
+                });
+
             }
 
         self.searchStockOperation = self.searchStockOperation || function(currentPage){
@@ -63,6 +84,8 @@
                 var operationType_uuid;
                 var stockroom_uuid;
                 var operationItem_uuid;
+                var operation_date_filter;                
+                var operation_date_filter_end;
 
                 if($scope.operationType !== null){
                     operationType_uuid = $scope.operationType.uuid
@@ -76,10 +99,18 @@
                     operationItem_uuid = $scope.operationItem.uuid;
                 }
 
+                if($scope.startDate !== null){
+                    operation_date_filter = $scope.startDate;
+                }
+
+                if($scope.endDate !== null){
+                    operation_date_filter_end = $scope.endDate;
+                }
+
                 PharmacyStockOperationRestfulService.searchStockOperation(
                     REST_ENTITY_NAME, currentPage, $scope.limit,
                     operationItem_uuid, $scope.operation_status,
-                    operationType_uuid, stockroom_uuid,
+                    operationType_uuid, stockroom_uuid, operation_date_filter, operation_date_filter_end,
                     self.onLoadSearchStockOperationSuccessful
                 );
             }

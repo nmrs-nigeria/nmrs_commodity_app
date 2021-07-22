@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
@@ -250,10 +251,11 @@ public class StockOperationResource
 	@Override
 	protected PageableResult doSearch(RequestContext context) {
 		PageableResult result;
-
+		System.out.println("SEARCH FROM DO SEARCH");
 		// TODO: Research if there is a better (more standard) way to do this.
 		// Check to see if this search is for 'my', which we're hardcoding to return the list for the current user
 		String query = context.getParameter("q");
+
 		if (query != null && query.equals("my")) {
 			result = getUserOperations(context);
 		} else {
@@ -273,63 +275,79 @@ public class StockOperationResource
 	}
 
 	protected PageableResult getUserOperations(RequestContext context) {
-		User user = Context.getAuthenticatedUser();
-		if (user == null) {
-			LOG.warn("Could not retrieve the current user to be able to find the current user operations.");
+        User user = Context.getAuthenticatedUser();
+        if (user == null) {
+            LOG.warn("Could not retrieve the current user to be able to find the current user operations.");
 
-			return new EmptySearchResult();
-		}
+            return new EmptySearchResult();
+        }
 
-		StockOperationStatus status = getStatus(context);
-		IStockOperationType stockOperationType = getStockOperationType(context);
-		Item item = getItem(context);
-		Stockroom stockroom = getStockroom(context);
-		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+        String commodityType = context.getParameter("commodityType");
+        StockOperationStatus status = getStatus(context);
+        IStockOperationType stockOperationType = getStockOperationType(context);
+        Item item = getItem(context);
+        Stockroom stockroom = getStockroom(context);
+        PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
-		List<StockOperation> results;
-		if (status == null && stockOperationType == null && item == null && stockroom == null) {
-			results = ((IStockOperationDataService)getService()).getUserOperations(user, pagingInfo);
-		} else {
-			results = ((IStockOperationDataService)getService()).getUserOperations(user, status, stockOperationType, item,
-			    stockroom, pagingInfo);
-		}
+        List<StockOperation> results;
+        if (status == null && stockOperationType == null && item == null && stockroom == null) {
+            results = ((IStockOperationDataService) getService())
+                    .getUserOperations(user, pagingInfo).stream()
+                    .filter(a -> a.getCommodityType().equals(commodityType))
+                    .collect(Collectors.toList());
+        } else {
+            results = ((IStockOperationDataService) getService())
+                    .getUserOperations(user, status, stockOperationType, item,
+                            stockroom, pagingInfo).stream()
+                    .filter(a -> a.getCommodityType().equals(commodityType))
+                    .collect(Collectors.toList());
+        }
 
-		return new AlreadyPagedWithLength<StockOperation>(context, results, pagingInfo.hasMoreResults(),
-		        pagingInfo.getTotalRecordCount());
-	}
+        return new AlreadyPagedWithLength<StockOperation>(context, results, pagingInfo.hasMoreResults(),
+                pagingInfo.getTotalRecordCount());
+    }
 
 	protected PageableResult getOperationsByContextParams(RequestContext context) {
-		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-		StockOperationStatus status = getStatus(context);
-		IStockOperationType stockOperationType = getStockOperationType(context);
-		Stockroom stockroom = getStockroom(context);
-		Item item = getItem(context);
+        PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
+        StockOperationStatus status = getStatus(context);
+        IStockOperationType stockOperationType = getStockOperationType(context);
+        Stockroom stockroom = getStockroom(context);
+        Item item = getItem(context);
+        String commodityType = context.getParameter("commodityType");
 
-		List<StockOperation> results;
-		if (status == null && stockOperationType == null && item == null) {
-			results = getService().getAll(context.getIncludeAll(), pagingInfo);
-		} else {
-			StockOperationSearch search = new StockOperationSearch();
-			StockOperationTemplate template = search.getTemplate();
-			if (status != null) {
-				template.setStatus(status);
-			}
-			if (stockOperationType != null) {
-				template.setInstanceType(stockOperationType);
-			}
-			if (stockroom != null) {
-				template.setStockroom(stockroom);
-			}
-			if (item != null) {
-				template.setItem(item);
-			}
+        List<StockOperation> results;
+        if (status == null && stockOperationType == null && item == null) {
+            results = getService()
+                    .getAll(context.getIncludeAll(), pagingInfo)
+                    .stream()
+                    .filter(a -> a.getCommodityType().equals(commodityType))
+                    .collect(Collectors.toList());;
+        } else {
+            StockOperationSearch search = new StockOperationSearch();
+            StockOperationTemplate template = search.getTemplate();
+            if (status != null) {
+                template.setStatus(status);
+            }
+            if (stockOperationType != null) {
+                template.setInstanceType(stockOperationType);
+            }
+            if (stockroom != null) {
+                template.setStockroom(stockroom);
+            }
+            if (item != null) {
+                template.setItem(item);
+            }
 
-			results = ((IStockOperationDataService)getService()).getOperations(search, pagingInfo);
-		}
+            results = ((IStockOperationDataService) getService())
+                    .getOperations(search, pagingInfo)
+                    .stream()
+                    .filter(a -> a.getCommodityType().equals(commodityType))
+                    .collect(Collectors.toList());;
+        }
 
-		return new AlreadyPagedWithLength<StockOperation>(context, results, pagingInfo.hasMoreResults(),
-		        pagingInfo.getTotalRecordCount());
-	}
+        return new AlreadyPagedWithLength<StockOperation>(context, results, pagingInfo.hasMoreResults(),
+                pagingInfo.getTotalRecordCount());
+    }
 
 	protected StockOperationStatus getStatus(RequestContext context) {
 		StockOperationStatus status = null;

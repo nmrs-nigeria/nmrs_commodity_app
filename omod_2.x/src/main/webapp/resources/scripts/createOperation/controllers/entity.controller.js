@@ -98,7 +98,7 @@
                     $scope.transferType = $scope.transferTypes[0];
                     $scope.returnOperationTypes = ["Department", "Institution", "Patient"];
                     $scope.returnOperationType = $scope.returnOperationTypes[0];
-                    $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors"];
+                    $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors","GON"];
                     $scope.commoditySource = $scope.stockSourceTypes[0];
                     $scope.disposedTypes = ["expired", "damaged", "others"];
                     $scope.adjustmentKinds = ["positive"];
@@ -121,7 +121,8 @@
                     $scope.lgas = [];
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
-                    $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
+                    $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;                                              
+
                 }
 
         /**
@@ -213,10 +214,14 @@
             }
 
             // validate selected line items.
-            if (!CreateOperationFunctions.validateLineItems($scope)) {
-
+            if (!CreateOperationFunctions.validateExpirationAndOperationDate($scope)) {
                 return false;
             }
+
+            // validate selected line items.
+            if (!CreateOperationFunctions.validateLineItems($scope)) {
+                return false;
+            }           
 
             $scope.loading = true;
             return true;

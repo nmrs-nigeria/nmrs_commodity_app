@@ -19,14 +19,16 @@
     var app = angular.module('app.stockOperationFunctionsFactory', []);
     app.service('PharmacyStockOperationFunctions', PharmacyStockOperationFunctions);
 
-    PharmacyStockOperationFunctions.$inject = ['EntityFunctions'];
+    PharmacyStockOperationFunctions.$inject = ['EntityFunctions','$filter'];
 
-    function PharmacyStockOperationFunctions(EntityFunctions) {
+    function PharmacyStockOperationFunctions(EntityFunctions, $filter) {
         var service;
 
         service = {
             showOperationActionsDialog: showOperationActionsDialog,
             addMessageLabels: addMessageLabels,
+            onChangeDatePicker: onChangeDatePicker,
+            formatDate: formatDate
         };
 
         return service;
@@ -96,5 +98,18 @@
 
             return messages;
         }
+
+        function onChangeDatePicker(id, successfulCallback) {
+            var datePicker = angular.element(document.getElementById(id));
+            datePicker.bind('keyup change select checked', function () {
+                var input = this.value;
+                successfulCallback(input);
+            });
+        }
+
+        function formatDate(date) {
+            return $filter('date')(new Date(date), "yyyy-MM-dd");
+        }
+
     }
 })();

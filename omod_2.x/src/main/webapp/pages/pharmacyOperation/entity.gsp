@@ -23,7 +23,6 @@
     pickerPosition : "bottom-left",
     todayHighlight : false,
     format: "dd M yyyy",
-    startDate : new Date(),
     });
     });
     });
@@ -335,7 +334,6 @@ placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
 formFieldName: "lineItemExpDate",
 label: "",
 useTime: false,
-startDate : new Date(),
 ])}
                     </span>
                     <br />

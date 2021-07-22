@@ -73,6 +73,7 @@ public class PharmacyReportsController {
 	public SimpleObject get(@RequestParam(value = "reportId", required = true) String reportId,
 	        @RequestParam(value = "startDate", required = true) String startDateString,
 	        @RequestParam(value = "endDate", required = true) String endDateString,
+	        @RequestParam(value = "treatmentCategory", required = false) String treatmentCategory,
 	        HttpServletRequest request, HttpServletResponse response) {
 
 		this.stockOperationTypeDataService = Context.getService(IStockOperationTypeDataService.class);
@@ -91,8 +92,8 @@ public class PharmacyReportsController {
 
 		SimpleObject result = new SimpleObject();
 		this.request = request;
-
-		String path = routeReport(reportId);
+		System.out.println("retreive data, about to route with category: " + treatmentCategory);
+		String path = routeReport(reportId, treatmentCategory);
 
 		result.put("results", path);
 
@@ -100,7 +101,7 @@ public class PharmacyReportsController {
 
 	}
 
-	private String routeReport(String reportId) {
+	private String routeReport(String reportId,String treatmentCategory) {
 
         this.dispensarys = this.departmentService.getAll().stream()
                 .filter(a -> a.getDepartmentType().equalsIgnoreCase(ConstantUtils.PHARMACY_COMMODITY_TYPE))
@@ -117,19 +118,25 @@ public class PharmacyReportsController {
 
         }
 
+        if (reportId.equalsIgnoreCase(ConstantUtils.ADULT_DISPENSARY_MODALITIES_REPORT)) {
+            adultConsumptionSummaryAtDispensaryByModalities(reportId,treatmentCategory);
+            return returnURL(reportId);
+
+        }
+
         if (reportId.equalsIgnoreCase(ConstantUtils.STOCK_ROOM_CONSUMPTION_REPORT)) {
             consumptionSummaryAtStockroom(reportId);
             return returnURL(reportId);
 
         }
-        
+
         if (reportId.equalsIgnoreCase(ConstantUtils.DISPENSARY_STOCKONHAND_REPORT)) {
             stockonhandSummaryAtDispensary(reportId);
             String filename = reportId + ".csv";
             return Paths.get(request.getContextPath(), "CMReports", filename).toString();
 
         }
-        
+
         if (reportId.equalsIgnoreCase(ConstantUtils.STORE_STOCKONHAND_REPORT)) {
             stockonhandSummaryAtStockroom(reportId);
             String filename = reportId + ".csv";
@@ -140,6 +147,20 @@ public class PharmacyReportsController {
         return null;
 
     }
+
+	private String adultConsumptionSummaryAtDispensaryByModalities(String reportId, String treatmentCategory) {
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<NewPharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+
+		finalConsumptionSummarys = aRVPharmacyDispenseService
+		        .getAdultDrugDispenseSummaryByModalities(startDate, endDate, null, treatmentCategory);
+
+		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return iPharmacyReports
+		        .getAdultModalitiesPharmacyConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
+	}
 
 	private String consumptionSummaryAtDispensary(String reportId) {
 

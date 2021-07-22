@@ -1,3 +1,4 @@
+
 /*
  * The contents of this file are subject to the OpenMRS Public License
  * Version 2.0 (the "License"); you may not use this file except in
@@ -19,10 +20,10 @@
     var base = angular.module('app.genericManageController');
     base.controller("ManageStockOperationsController", ManageStockOperationsController);
     ManageStockOperationsController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
-        'PaginationService', 'StockOperationModel', 'CookiesService', 'StockOperationRestfulService'];
+        'PaginationService', 'StockOperationModel', 'CookiesService', 'StockOperationRestfulService', 'StockOperationFunctions'];
 
     function ManageStockOperationsController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
-                                             StockOperationModel, CookiesService, StockOperationRestfulService) {
+                                             StockOperationModel, CookiesService, StockOperationRestfulService, StockOperationFunctions) {
         var self = this;
         var entity_name = emr.message("openhmis.inventory.stock.operation.name");
         var REST_ENTITY_NAME = "stockOperation";
@@ -48,6 +49,24 @@
                 $scope.selectItem = self.selectItem;
 
                 $scope.startDate = CookiesService.get('startDate') || {};
+                $scope.endDate = CookiesService.get('endDate') || {};
+
+                console.log('Operation Start Date: '+ $scope.startDate);
+                console.log('Operation End Date: '+ $scope.endDate);
+
+                StockOperationFunctions.onChangeDatePicker('startDate-display', function (value) {
+                    $scope.startDate = StockOperationFunctions.formatDate(value);
+                    console.log('before format: '+value);
+                    console.log('after format: '+$scope.startDate);
+                   // self.searchStockOperation(1);
+                });
+
+                StockOperationFunctions.onChangeDatePicker('endDate-display', function (value) {
+                    $scope.endDate = StockOperationFunctions.formatDate(value);
+                    console.log('before format: '+value);
+                    console.log('after format: '+$scope.endDate);
+                    self.searchStockOperation();
+                });
             }
 
         self.searchStockOperation = self.searchStockOperation || function(currentPage){
@@ -65,6 +84,8 @@
                 var operationType_uuid;
                 var stockroom_uuid;
                 var operationItem_uuid;
+                var operation_date_filter;
+                var operation_date_filter_end;
 
                 if($scope.operationType !== null){
                     operationType_uuid = $scope.operationType.uuid
@@ -78,10 +99,23 @@
                     operationItem_uuid = $scope.operationItem.uuid;
                 }
 
+                if($scope.startDate !== null){
+                    operation_date_filter = $scope.startDate;
+                }
+
+                if($scope.endDate !== null){
+                    operation_date_filter_end = $scope.endDate;
+                }
+
+               /* console.log("Operation Date In: "+ $scope.startDate);
+                console.log("Operation Date In2: "+ operation_date_filter);*/
+
+
+
                 StockOperationRestfulService.searchStockOperation(
                     REST_ENTITY_NAME, currentPage, $scope.limit,
                     operationItem_uuid, $scope.operation_status,
-                    operationType_uuid, stockroom_uuid,
+                    operationType_uuid, stockroom_uuid, operation_date_filter, operation_date_filter_end,
                     self.onLoadSearchStockOperationSuccessful
                 );
             }
