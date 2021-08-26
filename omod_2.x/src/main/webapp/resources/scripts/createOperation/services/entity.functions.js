@@ -336,6 +336,14 @@
                             failed = true;
                             continue;
                         }
+                        
+                        //validate item bactch required                     
+                        if (lineItem.itemStockBatch === undefined || lineItem.itemStockBatch === '' || lineItem.itemStockBatch === null) {
+                            var errorMessage = emr.message("The item batch is required.");
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }
 
                         var calculatedExpiration;
                         var dateNotRequired = true;
@@ -419,7 +427,20 @@
                             emr.errorAlert(errorMessage);
                             failed = true;
                             continue;                         
-                        }                        
+                        }
+                        //validate item bactch required
+                        var itemBatch = lineItem.itemStockBatch;                      
+                        if (itemBatch === undefined || itemBatch === '') {
+                            var errorMessage = emr.message("The item batch is required.");
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }
+
+
+
+
+
                     } 
                 }
             }
