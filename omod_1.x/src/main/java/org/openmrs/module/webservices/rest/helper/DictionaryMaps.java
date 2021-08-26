@@ -179,7 +179,7 @@ public class DictionaryMaps {
 	private void fillUpTestPurpose() {
 
 		this.testPurpose.put("Initial", "I");
-                this.testPurpose.put("Initial Screening", "I");
+		this.testPurpose.put("Initial Screening", "I");
 		this.testPurpose.put("Confirmation", "C");
 		this.testPurpose.put("Controls", "CX");// 
 		this.testPurpose.put("Tie Breaker", "TB");
