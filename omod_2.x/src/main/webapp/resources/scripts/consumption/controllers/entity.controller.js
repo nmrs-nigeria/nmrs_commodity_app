@@ -92,6 +92,8 @@
             $scope.submitted = false;
 
 
+             $scope.entity.dataSystem = 'emr';
+
             // validate quantity
 
             if (!angular.isDefined($scope.entity.quantity) || $scope.entity.quantity === '') {

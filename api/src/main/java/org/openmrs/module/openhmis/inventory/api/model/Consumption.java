@@ -26,6 +26,15 @@ public class Consumption extends BaseSerializableOpenmrsMetadata {
 	private Integer wastage;
 	private String batchNumber;
 	private String testPurpose;
+	private String dataSystem;
+
+	public String getDataSystem() {
+		return dataSystem;
+	}
+
+	public void setDataSystem(String dataSystem) {
+		this.dataSystem = dataSystem;
+	}
 
 	public String getTestPurpose() {
 		return testPurpose;
