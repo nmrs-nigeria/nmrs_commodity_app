@@ -431,4 +431,13 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 
 		super.purge(operation);
 	}
+
+	@Override
+	public StockOperation save(StockOperation object) {
+		if (!object.getDataSystem().equals("emr")) {
+			object.setDataSystem("mobile");
+		}
+		return super.save(object); //To change body of generated methods, choose Tools | Templates.
+	}
+
 }

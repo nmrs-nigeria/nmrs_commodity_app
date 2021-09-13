@@ -115,6 +115,7 @@ public class StockOperationResource
 			description.addProperty("adjustmentKind");
 			description.addProperty("commoditySource");
 			description.addProperty("commodityType");
+			description.addProperty("dataSystem");
 		}
 
 		return description;
