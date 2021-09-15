@@ -16,6 +16,7 @@ import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.search.ConsumptionSearch;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,5 +71,13 @@ public interface IConsumptionDataService extends IMetadataDataService<Consumptio
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	int deleteConsumption(Consumption consumption);
+
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	void updateStockOnHandAtDepartment(Consumption consumption);
+
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	ViewInvStockonhandPharmacyDispensary getUpdateableQuantity(Consumption consumption);
 
 }

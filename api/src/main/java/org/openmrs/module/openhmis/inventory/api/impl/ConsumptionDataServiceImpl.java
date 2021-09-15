@@ -29,9 +29,11 @@ import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.api.search.ConsumptionSearch;
 import org.openmrs.module.openhmis.inventory.api.util.HibernateCriteriaConstants;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
@@ -457,7 +459,47 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 		if (!object.getDataSystem().equals("emr")) {
 			object.setDataSystem("mobile");
 		}
+		//subtract quantity from updateable quantity on inv_stockonhand_pharmacy_dispensary table and update
+		updateStockOnHandAtDepartment(object);
 		return super.save(object); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void updateStockOnHandAtDepartment(Consumption consumption) {
+		ViewInvStockonhandPharmacyDispensary vispd = getUpdateableQuantity(consumption);
+		int updateableQuantity = vispd.getUpdatableQuantity() - consumption.getQuantity();
+
+		String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+		        + "updatableQuantity = " + updateableQuantity + " "
+		        + "where id = " + vispd.getId();
+
+		Query query = getRepository().createQuery(hql);
+		int sql = query.executeUpdate();
+		System.out.println("Updated Executed: " + sql);
+	}
+
+	@Override
+	public ViewInvStockonhandPharmacyDispensary getUpdateableQuantity(Consumption consumption) {
+		// Create the query
+		String hql = "select detail.updatableQuantity as sumQty, detail.id "
+		        + "from ViewInvStockonhandPharmacyDispensary as detail "
+		        + "where detail.department.id = " + consumption.getDepartment().getId() + " and "
+		        + "detail.itemBatch = '" + consumption.getBatchNumber() + "' and "
+		        + "detail.item.id = " + consumption.getItem().getId();
+
+		Query query = getRepository().createQuery(hql);
+		//List<ViewInvStockonhandPharmacyDispensary> vspd = new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+		ViewInvStockonhandPharmacyDispensary vspd = new ViewInvStockonhandPharmacyDispensary();
+
+		List list = query.list();
+
+		for (Object obj : list) {
+			//ViewInvStockonhandPharmacyDispensary> vspd = new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+			Object[] row = (Object[])obj;
+			vspd.setUpdatableQuantity((int)row[0]);
+			vspd.setId((int)row[1]);
+		}
+		return vspd;
 	}
 
 }

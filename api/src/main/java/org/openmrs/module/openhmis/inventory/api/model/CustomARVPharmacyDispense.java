@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 import org.openmrs.Patient;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseInstanceCustomizableMetadata;
+import org.openmrs.module.openhmis.commons.api.entity.model.IInstanceAttribute;
 
 /**
  * @author MORRISON.I
@@ -188,6 +189,16 @@ public class CustomARVPharmacyDispense extends BaseInstanceCustomizableMetadata
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	@Override
+	public void addAttribute(IInstanceAttribute arg0) {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void removeAttribute(IInstanceAttribute arg0) {
+		// TODO Auto-generated method stub
 	}
 
 }
