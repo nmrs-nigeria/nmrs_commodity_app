@@ -467,8 +467,12 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 	@Override
 	public void updateStockOnHandAtDepartment(Consumption consumption) {
 		ViewInvStockonhandPharmacyDispensary vispd = getUpdateableQuantity(consumption);
-		int updateableQuantity = vispd.getUpdatableQuantity() - consumption.getQuantity();
-
+		int updateableQuantity = 0;
+		if (consumption.getWastage() == null) {
+			updateableQuantity = vispd.getUpdatableQuantity() - consumption.getQuantity();
+		} else {
+			updateableQuantity = vispd.getUpdatableQuantity() - (consumption.getQuantity() + consumption.getWastage());
+		}
 		String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
 		        + "updatableQuantity = " + updateableQuantity + " "
 		        + "where id = " + vispd.getId();
