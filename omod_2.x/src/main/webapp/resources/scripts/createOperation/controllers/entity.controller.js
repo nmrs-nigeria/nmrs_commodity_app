@@ -140,6 +140,7 @@
 
             //fill constant value
             $scope.entity.commodityType = "lab";
+            $scope.entity.dataSystem = "emr";
 
 
             //for empty commodity source

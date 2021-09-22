@@ -98,7 +98,7 @@
                     $scope.transferType = $scope.transferTypes[0];
                     $scope.returnOperationTypes = ["Department", "Institution", "Patient"];
                     $scope.returnOperationType = $scope.returnOperationTypes[0];
-                    $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors","GON"];
+                    $scope.stockSourceTypes = ["PEPFAR", "GF", "other donors", "GON"];
                     $scope.commoditySource = $scope.stockSourceTypes[0];
                     $scope.disposedTypes = ["expired", "damaged", "others"];
                     $scope.adjustmentKinds = ["positive"];
@@ -123,10 +123,10 @@
                     $scope.lga;
                     $scope.onChangeStateSuccessful = self.onChangeStateSuccessful;
                     $scope.onChangeLgaSuccessful = self.onChangeLgaSuccessful;
-                    $scope.itemDrugTypes = ["Adult ART","Paediatric ART","OI Prophylaxis/Treatment","Advanced HIV Disease Drugs","Anti-TB Drugs","STI","Return to Care"];
-                   // $scope.lineItem.itemDrugType = $scope.itemDrugTypes[0];
-                    
-               //     $scope.commodityType = "pharmacy";
+                    $scope.itemDrugTypes = ["Adult ART", "Paediatric ART", "OI Prophylaxis/Treatment", "Advanced HIV Disease Drugs", "Anti-TB Drugs", "STI"];
+                    // $scope.lineItem.itemDrugType = $scope.itemDrugTypes[0];
+
+                    //     $scope.commodityType = "pharmacy";
                 }
 
         /**
@@ -145,6 +145,7 @@
 
             //fill constant value
             $scope.entity.commodityType = "pharmacy";
+            $scope.entity.dataSystem = "emr";
 
             //for empty commodity source
             if ($scope.commoditySource === undefined || $scope.commoditySource === '') {
@@ -264,8 +265,8 @@
             var itemBatch = lineItem.itemStockBatch;
             lineItem.setItemStockBatch(itemBatch);
         }
-        
-         self.changeItemDrugType = self.changeItemDrugType || function (lineItem) {
+
+        self.changeItemDrugType = self.changeItemDrugType || function (lineItem) {
             var itemDrugType = lineItem.itemDrugType;
             lineItem.setItemDrugType(itemDrugType);
         }
@@ -470,7 +471,7 @@
 
             // load operation type attributes first time the page loads.
             self.loadOperationTypeAttributes();
-            
+
             //make undefined the first
             $scope.operationType = notDefined;
         }
@@ -561,7 +562,7 @@
                         CreateOperationFunctions.calculateSumItemStockDetailQuantities(itemStocks[0].details));
                 self.changeItemQuantity($scope.lineItem);
             }
-            
+
             //set drug type
             self.changeItemDrugType($scope.lineItem);
         }
@@ -618,10 +619,10 @@
                 for (var i = 0; i < lineItem.itemStockDetails.details.length; i++) {
                     var detail = lineItem.itemStockDetails.details[i];
                     var expiration = detail.expiration;
-                   if (expiration !== null) {
+                    if (expiration !== null) {
                         expiration = expiration.split("T")[0];
                         expiration = CreateOperationFunctions.formatDate(expiration);
-                   }
+                    }
 
                     if (expiration === selectedExpiration) {
                         existingQuantity += detail.quantity;

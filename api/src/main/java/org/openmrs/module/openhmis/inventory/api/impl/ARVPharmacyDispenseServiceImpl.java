@@ -404,13 +404,18 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 			if (obs.getValueCoded().getConceptId() == Utils.FACILITY_DISPENSING) {
 				obs = Utils.extractObs(Utils.FACILITY_DISPENSING, obsList);
-				deliveryType = obs.getValueCoded().getName().getName();
-				System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
+				if (obs != null && obs.getValueCoded() != null) {
+					deliveryType = obs.getValueCoded().getName().getName();
+					System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
+				}
 
 			} else if (obs.getValueCoded().getConceptId() == Utils.DECENTRALIZED_DRUG_DELIVERY) {
 				obs = Utils.extractObs(Utils.DECENTRALIZED_DRUG_DELIVERY, obsList);
-				deliveryType = obs.getValueCoded().getName().getName();
-				System.out.println("ddd " + obs.getValueCoded().getName().getName());
+				if (obs != null && obs.getValueCoded() != null) {
+					deliveryType = obs.getValueCoded().getName().getName();
+					System.out.println("ddd " + obs.getValueCoded().getName().getName());
+				}
+
 			}
 		}
 

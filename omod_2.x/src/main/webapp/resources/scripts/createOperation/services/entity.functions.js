@@ -336,6 +336,14 @@
                             failed = true;
                             continue;
                         }
+                        
+                        //validate item bactch required                     
+                        if (lineItem.itemStockBatch === undefined || lineItem.itemStockBatch === '' || lineItem.itemStockBatch === null) {
+                            var errorMessage = emr.message("The item batch is required.");
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }
 
                         var calculatedExpiration;
                         var dateNotRequired = true;
@@ -419,7 +427,20 @@
                             emr.errorAlert(errorMessage);
                             failed = true;
                             continue;                         
-                        }                        
+                        }
+                        //validate item bactch required
+                        var itemBatch = lineItem.itemStockBatch;                      
+                        if (itemBatch === undefined || itemBatch === '') {
+                            var errorMessage = emr.message("The item batch is required.");
+                            emr.errorAlert(errorMessage);
+                            failed = true;
+                            continue;                         
+                        }
+
+
+
+
+
                     } 
                 }
             }
@@ -608,7 +629,7 @@
                     var data = ['Select item...', 'Agaie', 'Agwara', 'Bida', 'Borgu', 'Bosso', 'Chanchaga', 'Edati', 'Gbako', 'Gurara', 'Katcha', 'Kontagora', 'Lapai', 'Lavun', 'Magama', 'Mariga', 'Mashegu', 'Mokwa', 'Moya', 'Paikoro', 'Rafi', 'Rijau', 'Shiroro', 'Suleja', 'Tafa', 'Wushishi'];
                     break;
                 case "Ogun":
-                    var data = ['Select item...', 'Abeokuta North', 'Abeokuta South', 'Ado-Odo Ota', 'Egbado North', 'Egbado South', 'Ewekoro', 'Ifo', 'Ijebu East', 'Ijebu North', 'Ijebu North East', 'Ijebu Ode', 'Ikenne', 'Imeko Afon', 'Ipokia', 'Obafemi Owode', 'Odeda', 'Odogbolu', 'Ogun Waterside', 'Remo North', 'Shagamu'];
+                    var data = ['Select item...', 'Abeokuta North', 'Abeokuta South', 'Ado-Odo Ota', 'Egbado North', 'Egbado South', 'Ewekoro', 'Ifo', 'Ijebu East', 'Ijebu North', 'Ijebu North East', 'Ijebu Ode', 'Ikenne', 'Imeko Afon', 'Ipokia', 'Obafemi Owode', 'Odeda', 'Odogbolu', 'Ogun Waterside', 'Remo North', 'Sagamu','Yewa South','Yelwa North','Imeko-Afon'];
                     break;
                 case "Ondo":
                     var data = ['Select item...', 'Akoko North-East', 'Akoko North-West', 'Akoko South-West', 'Akoko South-East', 'Akure North', 'Akure South', 'Ese Odo', 'Idanre', 'Ifedore', 'Ilaje', 'Ile Oluji-Okeigbo', 'Irele', 'Odigbo', 'Okitipupa', 'Ondo East', 'Ondo West', 'Ose', 'Owo'];

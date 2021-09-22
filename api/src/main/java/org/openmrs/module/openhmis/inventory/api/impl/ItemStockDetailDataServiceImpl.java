@@ -27,6 +27,7 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
@@ -351,8 +352,88 @@ public class ItemStockDetailDataServiceImpl
 			vs.setDepartment(operation.getDepartment());
 			vs.setDateCreated(operation.getDateCreated());
 
-			//insert record to inv_stockonhand_pharmacy_dispensary		
-			getRepository().save(vs);
+			int updateAbleQuantity = 0;
+			int finalQuantity = 0;
+			int dispensaryId = 0;
+
+			//check if there is existing record with same itemID, itemBatch, commodityType, expiration, departmentID
+			String hql = "select detail.updatableQuantity as sumQty, detail.id, detail.quantity "
+			        + "from ViewInvStockonhandPharmacyDispensary as detail "
+			        + "where detail.department.id = " + vs.getDepartment().getId() + " and "
+			        + "detail.itemBatch = '" + vs.getItemBatch() + "' and "
+			        + "detail.commodityType = '" + vs.getCommodityType() + "' and "
+			        + "detail.expiration = '" + vs.getExpiration() + "' and "
+			        + "detail.item.id = " + vs.getItem().getId();
+
+			Query query = getRepository().createQuery(hql);
+			List list = query.list();
+
+			// Parse the aggregate query into an ViewInvStockonhandPharmacyDispensary object
+			List<ViewInvStockonhandPharmacyDispensary> results =
+			        new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+			for (Object obj : list) {
+				Object[] row = (Object[])obj;
+
+				ViewInvStockonhandPharmacyDispensary summary = new ViewInvStockonhandPharmacyDispensary();
+				summary.setUpdatableQuantity((Integer)row[0]);
+				summary.setId((Integer)row[1]);
+				summary.setQuantity((Integer)row[2]);
+
+				results.add(summary);
+			}
+
+			if (results.size() == 1) {
+				for (ViewInvStockonhandPharmacyDispensary viewInvStockonhandPharmacyDispensary : results) {
+					updateAbleQuantity += viewInvStockonhandPharmacyDispensary.getUpdatableQuantity();
+					finalQuantity += viewInvStockonhandPharmacyDispensary.getQuantity();
+					dispensaryId = viewInvStockonhandPharmacyDispensary.getId();
+				}
+				updateAbleQuantity += vs.getUpdatableQuantity();
+				finalQuantity += vs.getQuantity();
+				String hql2 = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+				        + "updatableQuantity = " + updateAbleQuantity + ", "
+				        + "quantity = " + finalQuantity + " "
+				        + "where id = " + dispensaryId;
+
+				Query query2 = getRepository().createQuery(hql2);
+				query2.executeUpdate();
+
+			} else if (results.size() > 1) {
+				int id[] = new int[results.size()];
+				int i = 0;
+				for (ViewInvStockonhandPharmacyDispensary viewInvStockonhandPharmacyDispensary : results) {
+					updateAbleQuantity += viewInvStockonhandPharmacyDispensary.getUpdatableQuantity();
+					finalQuantity += viewInvStockonhandPharmacyDispensary.getQuantity();
+					id[i] = viewInvStockonhandPharmacyDispensary.getId();
+					i++;
+				}
+				int counter = 1;
+				int index = 0;
+				while (counter < results.size()) {
+					dispensaryId = id[index];
+					String hql4 = "DELETE FROM ViewInvStockonhandPharmacyDispensary as v "
+					        + "where id = " + dispensaryId;
+
+					Query query4 = getRepository().createQuery(hql4);
+					query4.executeUpdate();
+					counter++;
+					index++;
+				}
+				updateAbleQuantity += vs.getUpdatableQuantity();
+				finalQuantity += vs.getQuantity();
+				dispensaryId = id[index];
+				String hql3 = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+				        + "updatableQuantity = " + updateAbleQuantity + ", "
+				        + "quantity = " + finalQuantity + " "
+				        + "where id = " + dispensaryId;
+
+				Query query3 = getRepository().createQuery(hql3);
+				query3.executeUpdate();
+
+			} else {
+				//insert record to inv_stockonhand_pharmacy_dispensary		
+				getRepository().save(vs);
+			}
 
 		}
 
