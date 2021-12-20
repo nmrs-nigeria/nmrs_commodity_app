@@ -101,7 +101,7 @@
                         <th>${ui.message('openhmis.inventory.department.name')}</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityReceived')}</th>
                         <th>${ui.message('openhmis.inventory.summary.quantityConsumed')}</th>
-                        <th>${ui.message('openhmis.inventory.summary.totalWastage')}</th>
+                        <th>${ui.message('openhmis.inventory.consumption.wastage')}</th>
                         <th>${ui.message('openhmis.inventory.summary.stockBalance')}</th>
 
 

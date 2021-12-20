@@ -69,6 +69,6 @@ emr.loadMessages([
 		"openhmis.inventory.dateofdispense",
 		"openhmis.inventory.pharmacyDispenseSummary.name",
 		"openhmis.inventory.admin.dispenseSummarys",
-		openhmis.inventory.operations.noDispenseFound
+		"openhmis.inventory.operations.noDispenseFound"
 
 ]);

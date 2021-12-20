@@ -6,11 +6,11 @@
             link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
     {
-            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+            label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}",
     link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
     },
     {
-            label: "${ ui.message("openhmis.inventory.admin.create")}",
+            label: "${ ui.message("openhmis.inventory.admin.create.pharmacy")}",
     },
     ];
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
@@ -37,7 +37,7 @@
 </div>
 
 <div ng-hide="loading">
-    <h1>${ui.message('openhmis.inventory.admin.create')}</h1>
+    <h1>${ui.message('openhmis.inventory.admin.create.pharmacy')}</h1>
     <form name="entityForm" class="entity-form create-operation-content" ng-class="{'submitted': submitted}">
         <fieldset class="content pharmacyOperation">
 <!--            <div class="action-container" ng-show="(operationType.name === 'Adjustment' ||operationType.name === 'Ajuste') && sourceStockroom.name !== ' - Not Defined - '">

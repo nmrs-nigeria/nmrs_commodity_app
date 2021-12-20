@@ -51,6 +51,8 @@ public class PharmacyDispenseSummaryResource extends BaseRestMetadataResource<AR
 		description.addProperty("patientID");
 		description.addProperty("patientDBId");
 		description.addProperty("encounterId");
+		description.addProperty("treatmentAge");
+		description.addProperty("currentLine");
 
 		return description;
 	}
@@ -59,16 +61,34 @@ public class PharmacyDispenseSummaryResource extends BaseRestMetadataResource<AR
 	protected PageableResult doSearch(RequestContext context) {
 		Date startDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("startDate"));
 		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
+		String encounterId = "";
+
+		System.out.println(context.getParameter("uuid"));
+
+		if (context.getParameter("uuid") != null) {
+			encounterId = context.getParameter("uuid");
+		}
 
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 
 		System.out.println("started calling ARVPharmacy");
-		List<ARVPharmacyDispense> aRVPharmacyDispenses =
-		        iARVPharmacyDispenseService.getARVs(startDate, endDate, pagingInfo);
+		List<ARVPharmacyDispense> aRVPharmacyDispenses = null;
+		ARVPharmacyDispense aRVPharmacyDispense = null;
 
-		return new AlreadyPagedWithLength<ARVPharmacyDispense>(context, aRVPharmacyDispenses,
-		        pagingInfo.hasMoreResults(),
-		        pagingInfo.getTotalRecordCount());
+		if (encounterId.isEmpty() || encounterId.equals("")) {
+
+			aRVPharmacyDispenses =
+			        iARVPharmacyDispenseService.getARVs(startDate, endDate, pagingInfo);
+
+			return new AlreadyPagedWithLength<ARVPharmacyDispense>(context, aRVPharmacyDispenses,
+			        pagingInfo.hasMoreResults(),
+			        pagingInfo.getTotalRecordCount());
+		}
+
+		aRVPharmacyDispense =
+		        iARVPharmacyDispenseService.getARVsByUuid(Integer.parseInt(encounterId));
+
+		return (PageableResult)aRVPharmacyDispense;
 
 		//  return super.doSearch(context); //To change body of generated methods, choose Tools | Templates.
 	}

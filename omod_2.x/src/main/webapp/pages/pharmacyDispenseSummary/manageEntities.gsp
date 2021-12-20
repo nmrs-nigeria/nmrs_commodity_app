@@ -6,7 +6,7 @@
 			link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
    {
-            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+            label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}",
             link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
 		{label: "${ ui.message("openhmis.inventory.admin.dispenseSummarys")}",}
@@ -84,16 +84,26 @@
                 <thead>
                     <tr>
                         <th>${ui.message('openhmis.inventory.patient.id')}</th>
+                        <th>Treatment Age</th>
+                        <th>Regimen Line</th>
                         <th>${ui.message('openhmis.inventory.treatment.type')}</th>
                         <th>${ui.message('openhmis.inventory.visit.type')}</th>
                         <th>${ui.message('openhmis.inventory.pickupreason')}</th>
                         <th>${ui.message('openhmis.inventory.dateofdispense')}</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody>                    
                     <tr class="clickable-tr" dir-paginate="entity in fetchedEntities | itemsPerPage: limit"
                     total-items="totalNumOfResults" current-page="currentPage" id="{{entity.patientDBId}}_{{entity.encounterId}}" onclick="viewARVDispensedItem(this.id)" >  
-                        <td ng-style="strikeThrough(entity.retired)">{{entity.patientID}}</td>                       
+                        <td ng-style="strikeThrough(entity.retired)">
+                            {{entity.patientID}}
+                        </td>         
+                         <td ng-style="strikeThrough(entity.retired)">
+                            {{entity.treatmentAge}}
+                        </td>   
+                         <td ng-style="strikeThrough(entity.retired)">
+                            {{entity.currentLine}}
+                        </td>                 
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.treatmentType}}
                         </td>

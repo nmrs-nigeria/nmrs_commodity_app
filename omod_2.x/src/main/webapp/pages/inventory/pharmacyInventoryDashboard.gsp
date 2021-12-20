@@ -10,13 +10,13 @@
 	var breadcrumbs = [
 		{ icon: "icon-home", link: '/' + OPENMRS_CONTEXT_PATH + '/index.htm' },
 		{ label: "${ ui.message("openhmis.inventory.page")}" , link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'},
-		{ label: "${ ui.message("openhmis.inventory.manage.pharmacy")}" }
+		{ label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}" }
 	];
 </script>
 
 <div id="home-container">
 
-	<h1>${ui.message("openhmis.inventory.manage.pharmacy")}</h1>
+	<h1>${ui.message("openhmis.inventory.manage.pharmacy.dashboard")}</h1>
 
 	<div id="apps">
 		<% extensions.each { ext -> %>

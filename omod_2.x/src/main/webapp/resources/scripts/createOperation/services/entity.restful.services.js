@@ -143,6 +143,7 @@
 			requestParams['q'] = q;
 			requestParams['limit'] = 10;
 			requestParams['startIndex'] = 1;
+			requestParams['itemType'] = 'lab';
 
 			return EntityRestFactory.autocompleteSearch(requestParams, 'item', module_name);
 		}

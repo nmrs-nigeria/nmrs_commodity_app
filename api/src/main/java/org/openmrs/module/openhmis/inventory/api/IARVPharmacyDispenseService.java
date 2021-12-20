@@ -25,4 +25,6 @@ public interface IARVPharmacyDispenseService extends IMetadataDataService<ARVPha
 	        getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate, PagingInfo pagingInfo,
 	                String treatmentCategory);
 
+	ARVPharmacyDispense getARVsByUuid(Integer encounterId);
+
 }

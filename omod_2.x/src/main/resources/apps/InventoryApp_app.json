@@ -122,15 +122,15 @@
                 "url": "openhmis.inventory/stockOperations/entities.page",
                 "icon": "icon-list",
                 "requiredPrivilege": "Task: View Stock Operations"
-            },
+            },            
             {
                 "id": "openhmis.inventory.stockTake",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
                 "type": "link",
-                "label": "openhmis.inventory.admin.stockTake",
-                "url": "openhmis.inventory/stockTake/entities.page",
-                "icon": "icon-list-alt",
-                "requiredPrivilege": "Task: Access Stock Take"
+                "label": "openhmis.inventory.admin.operations.lab.stock.mgt",
+                "url": "openhmis.inventory/stockTakeMgt/entities.page",
+                 "icon": "icon-list-alt",
+                "requiredPrivilege": "Task: Access Create Operation"                
             },
             {
                 "id": "openhmis.inventory.inventoryReports",
