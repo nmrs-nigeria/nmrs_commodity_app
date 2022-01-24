@@ -6912,6 +6912,23 @@ INSERT INTO inv_institution (name, description, creator, date_created, changed_b
    
                
     </changeSet>
+
+
+    <changeSet id="openhmis.inventory-v4.6" author="Tobechi Nnakwe">
+        <insert tableName="inv_item">
+            <column name="name">Dolutegravir (10ml/g)</column>
+            <column name="description">Dolutegravir (10ml/g) </column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">bottles</column>
+            <column name="strength">10ml/g</column>
+            <column name="regimen_line">pediatric</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2022-01-06</column>
+            <column name="uuid">7aadf603-14e9-4a18-988a-b008f07e85d5</column>
+        </insert>
+    </changeSet>
     
                           
 </databaseChangeLog>

@@ -93,6 +93,16 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 					arvDispense.setPatientCategory(obs.getValueCoded().getName().getName());
 				}
 
+				obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsPerVisit);
+				if (obs != null && obs.getValueCoded() != null) {
+					arvDispense.setTreatmentAge(obs.getValueCoded().getName().getName());
+				}
+
+				obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsPerVisit);
+				if (obs != null && obs.getValueCoded() != null) {
+					arvDispense.setCurrentLine(obs.getValueCoded().getName().getName());
+				}
+
 				arvDispense.setDateOfDispensed(visitDate);
 				arvDispense.setUuid(uuid);
 				arvDispense.setPatientID(Utils.getPatientPEPFARId(enc.getPatient()));
@@ -115,6 +125,80 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 		return aRVPharmacyDispenses;
 
+	}
+
+	@Override
+	public ARVPharmacyDispense getARVsByUuid(Integer encounterId) {
+
+		String queryString = "select  a from " + Encounter.class.getName() + " "
+		        + "a where a.encounterId = " + encounterId;
+
+		System.out.println("encounterId: " + encounterId);
+
+		Query query = getRepository().createQuery(queryString);
+
+		Encounter enc = (Encounter)query;
+
+		System.out.println("found arv encounters");
+		System.out.println(enc);
+
+		ARVPharmacyDispense arvDispense = new ARVPharmacyDispense();
+		List<Obs> obsPerVisit = null;
+		Obs obs = null;
+
+		String uuid = UUID.randomUUID().toString();
+		try {
+			obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+			Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+
+			obs = Utils.extractObs(Utils.TREATMENT_TYPE, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setTreatmentType(obs.getValueCoded().getName().getName());
+			}
+
+			obs = Utils.extractObs(Utils.VISIT_TYPE_CONCEPT, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setVisitType(obs.getValueCoded().getName().getName());
+			}
+
+			obs = Utils.extractObs(Utils.PICKUP_REASON_CONCEPT, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setPickupReason(obs.getValueCoded().getName().getName());
+			}
+
+			obs = Utils.extractObs(Utils.SERVICE_DELIVERY_MODEL, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setPatientCategory(obs.getValueCoded().getName().getName());
+			}
+
+			obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setTreatmentAge(obs.getValueCoded().getName().getName());
+			}
+
+			obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsPerVisit);
+			if (obs != null && obs.getValueCoded() != null) {
+				arvDispense.setCurrentLine(obs.getValueCoded().getName().getName());
+			}
+
+			arvDispense.setDateOfDispensed(visitDate);
+			arvDispense.setUuid(uuid);
+			arvDispense.setPatientID(Utils.getPatientPEPFARId(enc.getPatient()));
+			arvDispense.setPatientDBId(enc.getPatient().getId());
+			arvDispense.setEncounterId(enc.getEncounterId());
+
+			System.out.println("Encounter ID: " + enc.getEncounterId());
+			System.out.println("Patient DB ID: " + enc.getPatient().getId());
+
+			Set<ARVDispensedItem> aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+			    visitDate, obsPerVisit, uuid);
+			arvDispense.setItems(aRVDispensedItems);
+
+		} catch (DatatypeConfigurationException ex) {
+			Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}
+
+		return arvDispense;
 	}
 
 	@Override
@@ -195,7 +279,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 	@Override
     public List<NewPharmacyConsumptionSummary>
-            getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate,
+           getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate,
                     PagingInfo pagingInfo, String treatmentCategory) {
         String queryString = "select  a from " + Encounter.class.getName() + " "
                 + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
@@ -272,7 +356,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private List<NewPharmacyConsumptionSummary>
-            sumAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
+           sumAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
 
         List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
 
@@ -292,7 +376,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private List<NewPharmacyConsumptionSummary>
-            sumAndGroupConsumptionByModalities(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys,
+           sumAndGroupConsumptionByModalities(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys,
                     String treatmentCategory) {
 
         List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
@@ -315,7 +399,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private static List<NewPharmacyConsumptionSummary>
-            mapPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
+           mapPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
 
         return entry.getValue().entrySet().stream().map((a) -> {
             NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
@@ -329,7 +413,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
     }
 
 	private static List<NewPharmacyConsumptionSummary>
-            mapModalitiesPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
+           mapModalitiesPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
 
         return entry.getValue().entrySet().stream().map((a) -> {
             NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();

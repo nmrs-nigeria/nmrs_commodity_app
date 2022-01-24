@@ -6,7 +6,7 @@
 			link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
    {
-            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+            label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}",
             link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
 		{label: "${ ui.message("openhmis.inventory.admin.phamacyConsumptions")}",}

@@ -14,9 +14,6 @@
  */
 package org.openmrs.module.openhmis.inventory.page.controller.inventory;
 
-import java.io.IOException;
-import java.util.List;
-
 import org.openmrs.annotation.OpenmrsProfile;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.appframework.domain.Extension;
@@ -26,6 +23,9 @@ import org.openmrs.ui.framework.UiUtils;
 import org.openmrs.ui.framework.page.PageModel;
 import org.openmrs.ui.framework.page.PageRequest;
 import org.springframework.stereotype.Controller;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Controller for the inventory management landing page.

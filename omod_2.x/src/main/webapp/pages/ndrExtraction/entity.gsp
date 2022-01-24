@@ -65,7 +65,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_ExpiringStock()">Generate Report</a></li>
+            <li><a class="" style="background-color: #666; color: #fff; cursor: pointer;" ng-click="generateReport_ExpiringStock()">Generate Report</a></li>
         </ul>
     </fieldset>
 </div>

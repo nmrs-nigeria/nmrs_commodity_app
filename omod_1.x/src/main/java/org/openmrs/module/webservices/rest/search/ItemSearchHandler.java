@@ -50,7 +50,8 @@ public class ItemSearchHandler
 	                        new SearchQuery.Builder(
 	                                "Find an item by its name or code, optionally filtering by department")
 	                                .withRequiredParameters("q")
-	                                .withOptionalParameters("department_uuid", "has_physical_inventory")
+	                                .withOptionalParameters("department_uuid", "has_physical_inventory",
+	                                    "itemType")
 	                                .build()
 	                        )
 	        );
@@ -76,6 +77,8 @@ public class ItemSearchHandler
 		}
 
 		Department department = getOptionalEntityByUuid(departmentService, context.getParameter("department_uuid"));
+
+		String itemType = context.getParameter("itemType");
 
 		List<Item> items = null;
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
@@ -107,7 +110,8 @@ public class ItemSearchHandler
 			}
 		} else {
 			// Create the item search template with the specified parameters
-			ItemSearch search = createSearchTemplate(context, query, department, hasPhysicalInventory);
+			//ItemSearch search = createSearchTemplate(context, query, department, hasPhysicalInventory);
+			ItemSearch search = createSearchTemplate(context, query, department, hasPhysicalInventory, itemType);
 
 			items = service.getItemsByItemSearch(search, pagingInfo);
 		}
@@ -132,6 +136,31 @@ public class ItemSearchHandler
 
 		template.getTemplate().setDepartment(department);
 		template.getTemplate().setHasPhysicalInventory(hasPhysicalInventory);
+
+		if (!context.getIncludeAll()) {
+			template.getTemplate().setRetired(false);
+		}
+
+		return template;
+	}
+
+	private ItemSearch createSearchTemplate(RequestContext context, String name, Department department,
+	        Boolean hasPhysicalInventory, String itemType) {
+		ItemSearch template = new ItemSearch();
+
+		if (StringUtils.isNotEmpty(name)) {
+			template.setNameComparisonType(BaseObjectTemplateSearch.StringComparisonType.LIKE);
+			if (ModuleSettings.useWildcardItemSearch()) {
+				template.getTemplate().setName("%" + name + "%");
+			} else {
+				template.getTemplate().setName(name + "%");
+			}
+
+		}
+
+		template.getTemplate().setDepartment(department);
+		template.getTemplate().setHasPhysicalInventory(hasPhysicalInventory);
+		template.getTemplate().setItemType(itemType);
 
 		if (!context.getIncludeAll()) {
 			template.getTemplate().setRetired(false);

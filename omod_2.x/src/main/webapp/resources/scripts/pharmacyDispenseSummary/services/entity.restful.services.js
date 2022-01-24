@@ -44,6 +44,7 @@
                             requestParams['endDate'] = endDate;
                         }
 
+						requestParams['uuid'] = null;
 
 
 			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);

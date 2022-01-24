@@ -24,6 +24,8 @@ ui.includeJavascript("openhmis.inventory", "pharmacyDispenseSummary/services/ent
 ui.includeJavascript("openhmis.inventory", "pharmacyDispenseSummary/controllers/manage-entity.controller.js")
 ui.includeJavascript("openhmis.inventory", "pharmacyDispenseSummary/services/entity.functions.js")
 ui.includeJavascript("openhmis.inventory", "constants.js")
+
+ui.includeJavascript("openhmis.inventory", "pharmacyDispenseSummary/controllers/entity.controller.js")
 %>
 
 <script data-main="pharmacyDispenseSummary/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>

@@ -28,9 +28,12 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 	private Integer dispenseId;
 	private Integer patientDBId;
 	private Integer encounterId;
-
 	private Set<ARVDispensedItem> items;
 	private String patientID;
+	private String currentLine;
+	private String currentRegimen;
+	private String treatmentAge;
+	private Date lastPickupDate;
 
 	public String getBatchNumber() {
 		return batchNumber;
@@ -134,6 +137,38 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 
 	public void setEncounterId(Integer encounterId) {
 		this.encounterId = encounterId;
+	}
+
+	public String getCurrentLine() {
+		return currentLine;
+	}
+
+	public void setCurrentLine(String currentLine) {
+		this.currentLine = currentLine;
+	}
+
+	public String getCurrentRegimen() {
+		return currentRegimen;
+	}
+
+	public void setCurrentRegimen(String currentRegimen) {
+		this.currentRegimen = currentRegimen;
+	}
+
+	public String getTreatmentAge() {
+		return treatmentAge;
+	}
+
+	public void setTreatmentAge(String treatmentAge) {
+		this.treatmentAge = treatmentAge;
+	}
+
+	public Date getLastPickupDate() {
+		return lastPickupDate;
+	}
+
+	public void setLastPickupDate(Date lastPickupDate) {
+		this.lastPickupDate = lastPickupDate;
 	}
 
 }
