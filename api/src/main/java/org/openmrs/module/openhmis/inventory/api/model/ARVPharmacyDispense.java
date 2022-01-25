@@ -37,7 +37,6 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 
 	private String dateOfDrugDispensed;
 
-
 	public String getBatchNumber() {
 		return batchNumber;
 	}
@@ -181,6 +180,5 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 	public void setDateOfDrugDispensed(String dateOfDrugDispensed) {
 		this.dateOfDrugDispensed = dateOfDrugDispensed;
 	}
-
 
 }

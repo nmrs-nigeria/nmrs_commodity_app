@@ -5,7 +5,6 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,7 +14,6 @@ import java.util.List;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashSet;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -126,7 +124,6 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				if (obs != null && obs.getValueCoded() != null) {
 					arvDispense.setCurrentLine(obs.getValueCoded().getName().getName());
 				}
-
 
 				java.util.Date date = new Date(visitDate.toString().replaceAll("WAT", "GMT"));
 				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");

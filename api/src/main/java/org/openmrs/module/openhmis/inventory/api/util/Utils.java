@@ -83,7 +83,6 @@ public class Utils {
 	public static final int ARV_DRUG_SINGLE_DOSE = 166120;
 	public static final int ARV_DRUG_FREQUENCY = 165723;
 
-
 	/* Identifier IDs */
 	public static final int PEPFAR_IDENTIFIER_INDEX = 4;
 
