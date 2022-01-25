@@ -34,7 +34,9 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 	private String currentRegimen;
 	private String treatmentAge;
 	private Date lastPickupDate;
-	private String regimenName;
+
+	private String dateOfDrugDispensed;
+
 
 	public String getBatchNumber() {
 		return batchNumber;
@@ -172,11 +174,13 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 		this.lastPickupDate = lastPickupDate;
 	}
 
-	public String getRegimenName() {
-		return regimenName;
+	public String getDateOfDrugDispensed() {
+		return dateOfDrugDispensed;
 	}
 
-	public void setRegimenName(String regimenName) {
-		this.regimenName = regimenName;
+	public void setDateOfDrugDispensed(String dateOfDrugDispensed) {
+		this.dateOfDrugDispensed = dateOfDrugDispensed;
 	}
+
+
 }

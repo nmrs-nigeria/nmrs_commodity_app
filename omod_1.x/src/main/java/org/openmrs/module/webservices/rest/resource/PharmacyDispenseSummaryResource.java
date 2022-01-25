@@ -54,6 +54,7 @@ public class PharmacyDispenseSummaryResource extends BaseRestMetadataResource<AR
 		description.addProperty("treatmentAge");
 		description.addProperty("currentLine");
 		description.addProperty("currentRegimen");
+		description.addProperty("dateOfDrugDispensed");
 
 		return description;
 	}

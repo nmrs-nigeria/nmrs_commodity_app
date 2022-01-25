@@ -23,6 +23,8 @@ public class ARVDispensedItem implements Serializable {
 	private String drugCategory;
 	private String serviceDeliveryModel;
 	private String deliveryType;
+	private Integer singleDose;
+	private String frequency;
 
 	public Integer getQuantityPrescribed() {
 		return quantityPrescribed;
@@ -94,6 +96,22 @@ public class ARVDispensedItem implements Serializable {
 
 	public void setDeliveryType(String deliveryType) {
 		this.deliveryType = deliveryType;
+	}
+
+	public Integer getSingleDose() {
+		return singleDose;
+	}
+
+	public void setSingleDose(Integer singleDose) {
+		this.singleDose = singleDose;
+	}
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
 	}
 
 }

@@ -85,11 +85,12 @@
                     <tr>
                         <th>${ui.message('openhmis.inventory.patient.id')}</th>
                         <th>Treatment Age</th>
-                        <th>Regimen Line</th>
-                        <th>${ui.message('openhmis.inventory.treatment.type')}</th>
-                        <th>${ui.message('openhmis.inventory.visit.type')}</th>
+                        <th>Regimen Line</th>                       
                         <th>${ui.message('openhmis.inventory.pickupreason')}</th>
                         <th>${ui.message('openhmis.inventory.dateofdispense')}</th>
+                        <th>Dosage</th>
+                        <th>Duration</th>
+                        <th>Quantity Dispensed</th>
                     </tr>
                 </thead>
                 <tbody>                    
@@ -104,18 +105,24 @@
                          <td ng-style="strikeThrough(entity.retired)">
                             {{entity.currentRegimen}}
                         </td>                 
-                        <td ng-style="strikeThrough(entity.retired)">
-                            {{entity.treatmentType}}
-                        </td>
-                        <td ng-style="strikeThrough(entity.retired)">
-                            {{entity.visitType}}
-                        </td>
+                       
                         <td ng-style="strikeThrough(entity.retired)">
                             {{entity.pickupReason}}
                         </td>
                         <td ng-style="strikeThrough(entity.retired)">
-                            {{entity.dateOfDispensed}}
+                            {{entity.dateOfDrugDispensed}}
+                        </td>          
+                        
+                        <td ng-style="strikeThrough(entity.retired)">
+                            {{entity.items[0].singleDose}}  {{entity.items[0].frequency}}
                         </td>
+                        <td ng-style="strikeThrough(entity.retired)">
+                            {{entity.items[0].duration}}
+                        </td>                        
+                        <td ng-style="strikeThrough(entity.retired)">
+                           {{entity.items[0].quantityDispensed}}
+                        </td>
+                        
                     </tr>
                     
                 </tbody>
