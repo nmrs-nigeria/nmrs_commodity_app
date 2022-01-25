@@ -128,20 +128,8 @@
 			<artifactId>openmrs-test</artifactId>
 			<type>pom</type>
 			<scope>test</scope>
-		</dependency>
-        <dependency>
-            <groupId>org.openmrs.module</groupId>
-            <artifactId>openhmis.inventory-api</artifactId>
-            <version>4.0.3.3-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
-		<dependency>
-			<groupId>org.openmrs.module</groupId>
-			<artifactId>openhmis.inventory-api</artifactId>
-			<version>4.0.3.3-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
-
+		</dependency>        
+		
 		<!-- End OpenMRS core -->
 
 	</dependencies>

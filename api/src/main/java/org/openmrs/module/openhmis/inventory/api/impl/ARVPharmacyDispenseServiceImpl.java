@@ -5,6 +5,8 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -102,6 +104,12 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				if (obs != null && obs.getValueCoded() != null) {
 					arvDispense.setCurrentLine(obs.getValueCoded().getName().getName());
 				}
+
+				java.util.Date date = new Date(visitDate.toString().replaceAll("WAT", "GMT"));
+				SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+				String strDate = formatter.format(date);
+
+				arvDispense.setDateOfDrugDispensed(strDate);
 
 				arvDispense.setDateOfDispensed(visitDate);
 				arvDispense.setUuid(uuid);
@@ -564,6 +572,16 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
 				if (obs != null) {
 					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setSingleDose((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_FREQUENCY, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setFrequency(obs.getValueCoded().getName().getName());
 				}
 
 				aRVDispensedItem.setDrugCategory(drugCategory);
