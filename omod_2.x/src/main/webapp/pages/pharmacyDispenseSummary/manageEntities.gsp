@@ -103,7 +103,7 @@
                             {{entity.treatmentAge}}
                         </td>   
                          <td ng-style="strikeThrough(entity.retired)">
-                            {{entity.currentLine}}
+                            {{entity.currentRegimen}}
                         </td>                 
                        
                         <td ng-style="strikeThrough(entity.retired)">

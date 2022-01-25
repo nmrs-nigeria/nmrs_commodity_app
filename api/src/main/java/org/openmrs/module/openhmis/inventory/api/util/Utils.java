@@ -6,9 +6,13 @@
 package org.openmrs.module.openhmis.inventory.api.util;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Date;
+import java.util.Map;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -131,6 +135,36 @@ public class Utils {
         return obsList.stream().filter(ele -> ele.getConcept().getConceptId() == conceptID).findFirst().orElse(null);
     }
 
+	public static Map<Object, List<Obs>> groupedByConceptIdsOnly(List<Obs> obsList) {
+		Map<Object, List<Obs>> groupedByConceptIds = new HashMap<>();
+
+		if (obsList != null && obsList.size() > 0) {
+			for (Obs obs : obsList) {
+				// group by conceptId
+				if (obs.getConcept() != null && obs.getConcept().getConceptId() != null) {
+					if (groupedByConceptIds.get(obs.getConcept().getConceptId()) == null) {
+						List<Obs> obsChildList = new ArrayList<>();
+						obsChildList.add(obs);
+						groupedByConceptIds.put(obs.getConcept().getConceptId(), obsChildList);
+					} else {
+						List<Obs> groupedObs = groupedByConceptIds.get(obs.getConcept().getConceptId());
+						groupedObs.add(obs);
+						groupedByConceptIds.put(obs.getConcept().getConceptId(), groupedObs);
+					}
+				}
+			}
+		}
+		return groupedByConceptIds;
+	}
+
+	public static Obs extractObsMap(int conceptID, Map<Object, List<Obs>> obsList) {
+		List<Obs> obss = obsList.get(conceptID);
+		if (obss != null && obss.size() > 0) {
+			return obss.get(0);
+		}
+		return null;
+	}
+
 	public static Set<Obs> extractObsList(int conceptID, List<Obs> obsList) {
 
         if (obsList == null) {
@@ -153,6 +187,71 @@ public class Utils {
 			}
 			return "";
 		}
+	}
+
+	public static Map<Integer, String> getRegimenDescription() {
+		Map<Integer, String> regimenCodeDescTextMap = new HashMap<>();
+		regimenCodeDescTextMap.put(REGIMEN_166092, "ABC-3TC-ATV/r");
+		regimenCodeDescTextMap.put(REGIMEN_160124, "AZT-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_1652, "AZT-3TC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_160104, "D4T-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_166179, "ABC-FTC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_166181, "ABC-3TC-TDF");
+		regimenCodeDescTextMap.put(REGIMEN_166183, "D4T-3TC-ABC");
+		regimenCodeDescTextMap.put(REGIMEN_166185, "AZT-TDF-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_166186, "DDI-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_166187, "AZT-3TC-DTG");
+		regimenCodeDescTextMap.put(REGIMEN_162564, "ABC-AZT-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_166188, "DDI-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_162559, "ABC-DDI-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_164854, "TDF-FTC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_164505, "TDF-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_162565, "TDF-3TC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_165522, "AZT-3TC-TDF");
+		regimenCodeDescTextMap.put(REGIMEN_162563, "ABC-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_165681, "TDF-3TC-DTG");
+		regimenCodeDescTextMap.put(REGIMEN_165686, "TDF-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_165682, "TDF-FTC-DTG");
+		regimenCodeDescTextMap.put(REGIMEN_165687, "TDF-FTC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_165523, "TDF-FTC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_162201, "TDF-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165524, "TDF-FTC-ATV/r");
+		regimenCodeDescTextMap.put(REGIMEN_164512, "TDF-3TC-ATV/r");
+		regimenCodeDescTextMap.put(REGIMEN_162561, "AZT-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_164511, "AZT-3TC-ATV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165530, "AZT-TDF-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165537, "TDF-AZT-3TC-ATV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165688, "DRV/r-DTG + 1-2 NRTIs");
+		regimenCodeDescTextMap.put(REGIMEN_1652, "AZT-3TC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_162199, "ABC-3TC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_817, "AZT-3TC-ABC");
+		regimenCodeDescTextMap.put(REGIMEN_792, "d4T-3TC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_165691, "ABC-3TC-DTG");
+		regimenCodeDescTextMap.put(REGIMEN_165693, "ABC-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_162200, "ABC-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165692, "ABC-FTC-DTG");
+		regimenCodeDescTextMap.put(REGIMEN_165694, "ABC-FTC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_165690, "ABC-FTC-NVP");
+		regimenCodeDescTextMap.put(REGIMEN_162561, "AZT-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165695, "AZT-3TC-RAL");
+		regimenCodeDescTextMap.put(REGIMEN_165686, "TDF-3TC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_104565, "TDF-FTC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_165687, "TDF-FTC-EFV");
+		regimenCodeDescTextMap.put(REGIMEN_162561, "AZT-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_162560, "d4T-3TC-LPV/r");
+		regimenCodeDescTextMap.put(REGIMEN_165526, "ABC-3TC-ddi");
+		regimenCodeDescTextMap.put(REGIMEN_165696, "ABC-3TC-RAL");
+		regimenCodeDescTextMap.put(REGIMEN_165695, "AZT-3TC-RAL");
+		regimenCodeDescTextMap.put(REGIMEN_165698, "DRV/r + 2 NRTIs + 2 NNRTI");
+		regimenCodeDescTextMap.put(REGIMEN_165700, "DRV/r +2NRTIs");
+		regimenCodeDescTextMap.put(REGIMEN_165701, "DRV/r-RAL + 1-2 NRTIs");
+		regimenCodeDescTextMap.put(REGIMEN_165697, "DTG+2 NRTIs");
+		regimenCodeDescTextMap.put(REGIMEN_165699, "RAL + 2 NRTIs");
+		regimenCodeDescTextMap.put(REGIMEN_86663, "AZT");
+		regimenCodeDescTextMap.put(REGIMEN_78643, "3TC");
+		regimenCodeDescTextMap.put(REGIMEN_165544, "AZT-NVP");
+
+		return regimenCodeDescTextMap;
 	}
 
 	//reportId
@@ -196,4 +295,57 @@ public class Utils {
 	public static final String ADULT_ART_TEXT = "Adult ART";
 	public static final String PEDIATRIC_ART_TEXT = "Pediatric ART";
 
+	public static final int REGIMEN_166092 = 166092;
+	public static final int REGIMEN_160124 = 160124;
+	public static final int REGIMEN_1652 = 1652;
+	public static final int REGIMEN_160104 = 160104;
+	public static final int REGIMEN_166179 = 166179;
+	public static final int REGIMEN_166181 = 166181;
+	public static final int REGIMEN_166183 = 166183;
+	public static final int REGIMEN_166185 = 166185;
+	public static final int REGIMEN_166186 = 166186;
+	public static final int REGIMEN_166187 = 166187;
+	public static final int REGIMEN_162564 = 162564;
+	public static final int REGIMEN_166188 = 166188;
+	public static final int REGIMEN_162559 = 162559;
+	public static final int REGIMEN_164854 = 164854;
+	public static final int REGIMEN_164505 = 164505;
+	public static final int REGIMEN_162565 = 162565;
+	public static final int REGIMEN_165522 = 165522;
+	public static final int REGIMEN_162563 = 162563;
+	public static final int REGIMEN_165681 = 165681;
+	public static final int REGIMEN_165686 = 165686;
+	public static final int REGIMEN_165682 = 165682;
+	public static final int REGIMEN_165687 = 165687;
+	public static final int REGIMEN_165523 = 165523;
+	public static final int REGIMEN_162201 = 162201;
+	public static final int REGIMEN_165524 = 165524;
+	public static final int REGIMEN_164512 = 164512;
+	public static final int REGIMEN_162561 = 162561;
+	public static final int REGIMEN_164511 = 164511;
+	public static final int REGIMEN_165530 = 165530;
+	public static final int REGIMEN_165537 = 165537;
+	public static final int REGIMEN_165688 = 165688;
+	public static final int REGIMEN_162199 = 162199;
+	public static final int REGIMEN_817 = 817;
+	public static final int REGIMEN_792 = 792;
+	public static final int REGIMEN_165691 = 165691;
+	public static final int REGIMEN_165693 = 165693;
+	public static final int REGIMEN_162200 = 162200;
+	public static final int REGIMEN_165692 = 165692;
+	public static final int REGIMEN_165694 = 165694;
+	public static final int REGIMEN_165690 = 165690;
+	public static final int REGIMEN_165695 = 165695;
+	public static final int REGIMEN_104565 = 104565;
+	public static final int REGIMEN_162560 = 162560;
+	public static final int REGIMEN_165526 = 165526;
+	public static final int REGIMEN_165696 = 165696;
+	public static final int REGIMEN_165698 = 165698;
+	public static final int REGIMEN_165700 = 165700;
+	public static final int REGIMEN_165701 = 165701;
+	public static final int REGIMEN_165697 = 165697;
+	public static final int REGIMEN_165699 = 165699;
+	public static final int REGIMEN_86663 = 86663;
+	public static final int REGIMEN_78643 = 78643;
+	public static final int REGIMEN_165544 = 165544;
 }

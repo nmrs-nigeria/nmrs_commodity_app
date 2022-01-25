@@ -5,17 +5,16 @@
  */
 package org.openmrs.module.openhmis.inventory.api.impl;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.UUID;
+import java.util.List;
+import java.util.Date;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -69,11 +68,32 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 		for (Encounter enc : encounters) {
 			Obs obs = null;
+			Obs obsMap = null;
+			int valueCoded = 0;
+			String regimenCode = "";
 			ARVPharmacyDispense arvDispense = new ARVPharmacyDispense();
 			String uuid = UUID.randomUUID().toString();
 			try {
 				obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
 				Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+
+				Map<Object, List<Obs>> map = Utils.groupedByConceptIdsOnly(obsPerVisit);
+				obsMap = Utils.extractObsMap(Utils.CURRENT_REGIMEN_LINE_CONCEPT, map);
+				if (obsMap != null && obsMap.getValueCoded() != null) {
+
+					valueCoded = obsMap.getValueCoded().getConceptId();
+
+					Obs valueObs = Utils.extractObsMap(valueCoded, map);
+					if (valueObs != null) {
+						valueCoded = valueObs.getValueCoded().getConceptId();
+						if (valueCoded > 0) {
+							//regimenCode = getRegimenMapValueDesc(valueCoded);
+							arvDispense.setCurrentRegimen(getRegimenMapValueDesc(valueCoded));
+						}
+					}
+
+				}
+				System.out.println("Regimen Name - PHIS3 " + arvDispense.getCurrentRegimen());
 
 				obs = Utils.extractObs(Utils.TREATMENT_TYPE, obsPerVisit);
 				if (obs != null && obs.getValueCoded() != null) {
@@ -751,4 +771,11 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		return PrivilegeConstants.VIEW_CONSUMPTIONS;
 	}
 
+	public String getRegimenMapValueDesc(int valueCoded) {
+		//old implementation return regimenMap.get(value_coded);
+		if (Utils.getRegimenDescription().containsKey(valueCoded)) {
+			return Utils.getRegimenDescription().get(valueCoded);
+		}
+		return null;
+	}
 }

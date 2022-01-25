@@ -34,6 +34,7 @@ public class ARVPharmacyDispense extends BaseSerializableOpenmrsMetadata {
 	private String currentRegimen;
 	private String treatmentAge;
 	private Date lastPickupDate;
+
 	private String dateOfDrugDispensed;
 
 	public String getBatchNumber() {
