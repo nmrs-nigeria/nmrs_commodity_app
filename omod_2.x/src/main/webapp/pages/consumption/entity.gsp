@@ -65,7 +65,7 @@
             <li>
                 <select ng-model="item" required
                 ng-options='item.name for item in items track by item.uuid'
-                ng-change="changeItemBatch(item.uuid)">
+                ng-change="changeItemBatch(item.uuid)" >
                 </select>
             </li>
         </ul>
