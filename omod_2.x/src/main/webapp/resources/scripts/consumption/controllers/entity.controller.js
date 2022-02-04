@@ -103,7 +103,7 @@
             console.log("done with quantity");
 
             //validate item
-            if (!angular.isDefined($scope.item) || $scope.item === '') {
+            if (!angular.isDefined($scope.item) || $scope.item === '' || $scope.item === '=Select Item') {
                 $scope.submitted = true;
                 emr.errorAlert(emr.message("openhmis.commons.general.required.item"));
             }
@@ -195,7 +195,8 @@
         self.onLoadDepartmentsSuccessful = self.onLoadDepartmentsSuccessful || function (data) {
             if (angular.isDefined($scope.entity)) {
                 $scope.departments = data.results;
-                $scope.department = $scope.department || $scope.departments[0];
+                //$scope.department = $scope.department || $scope.departments[0];
+                $scope.department = "=Select Item";
             }
         }
 
@@ -204,7 +205,8 @@
         self.onLoadItemsSuccessful = self.onLoadItemsSuccessful || function (data) {
             if (angular.isDefined($scope.entity)) {
                 $scope.items = data.results;
-                $scope.item = $scope.item || $scope.items[0];
+                //$scope.item = $scope.item || $scope.items[0];
+                $scope.item = "=Select Item";
             }
         }
 

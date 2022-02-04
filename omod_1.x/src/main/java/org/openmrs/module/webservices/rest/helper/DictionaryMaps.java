@@ -174,6 +174,9 @@ public class DictionaryMaps {
 		this.itemMappings.put("325c5192-7698-11eb-9439-0242ac130002", 84);
 		this.itemMappings.put("1e4dd50e-7698-11eb-9439-0242ac130002", 85);
 		this.itemMappings.put("990d766a-7697-11eb-9439-0242ac130002", 86);
+
+		this.itemMappings.put("742aa79f-46bb-4bf3-8326-c27484379810", 87);
+		this.itemMappings.put("4ab7f97d-fbf8-40a3-82bd-30e84d5a30c9", 88);
 	}
 
 	private void fillUpTestPurpose() {
