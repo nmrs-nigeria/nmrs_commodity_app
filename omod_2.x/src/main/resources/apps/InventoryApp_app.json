@@ -232,6 +232,15 @@
                 "requiredPrivilege": "Task: Access Inventory Reports"
             },
             {
+                "id": "openhmis.inventory.inventoryPharmacyReport",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.crrfReports",
+                "url": "openhmis.inventory/crrfReports/entities.page",
+                "icon": "icon-list",
+                "requiredPrivilege": "Task: Access Inventory Reports"
+            },
+            {
                 "id": "openhmis.inventory.inventoryNDRExtraction.pharm",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",

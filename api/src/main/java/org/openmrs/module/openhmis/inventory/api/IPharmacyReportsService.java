@@ -8,10 +8,10 @@ package org.openmrs.module.openhmis.inventory.api;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
 import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfArvCotrim;
 
 /**
  * @author MORRISON.I
@@ -30,4 +30,6 @@ public interface IPharmacyReportsService {
 	String getAdultModalitiesPharmacyConsumptionByDate(String reportId, List<NewPharmacyConsumptionSummary> reportData,
 	        String reportFolder);
 
+	String getItemStockSummaryByPharmacyByDate(String reportId, List<CrrfArvCotrim> finalConsumptionSummarys,
+	        String reportFolder);
 }

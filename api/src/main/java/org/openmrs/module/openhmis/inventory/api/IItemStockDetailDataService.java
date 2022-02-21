@@ -13,17 +13,19 @@
  */
 package org.openmrs.module.openhmis.inventory.api;
 
+import java.util.Date;
 import java.util.List;
 
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
-import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfArvCotrim;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -73,4 +75,7 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	void addNewDistributionDataPharmacyAtDispensary(StockOperation operation);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	List<CrrfArvCotrim> getItemStockSummaryByPharmacy(Date startDate, Date endDate, PagingInfo pagingInfo);
 }

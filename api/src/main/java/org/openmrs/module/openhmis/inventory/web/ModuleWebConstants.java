@@ -118,5 +118,7 @@ public class ModuleWebConstants extends WebConstants {
 	public static final String PHARMACY_REPORT_ROOT = MODULE_ROOT + "pharmacyReports";
 	public static final String PHARMACY_REPORT_PAGE = PHARMACY_REPORT_ROOT + ".form";
 
+	public static final String CRRF_REPORT_ROOT = MODULE_ROOT + "crrfReports";
+
 	protected ModuleWebConstants() {}
 }
