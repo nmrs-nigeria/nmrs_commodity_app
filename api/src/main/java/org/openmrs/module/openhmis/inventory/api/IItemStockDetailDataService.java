@@ -61,8 +61,8 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 	@Authorized({ PrivilegeConstants.VIEW_METADATA })
 	List<ItemStockSummary> getItemStockSummaryByDepartment(Department department, PagingInfo pagingInfo);
 
-	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	@Transactional(readOnly = false)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	List<ItemStockSummary> getItemStockSummaryByDepartmentPharmacy(Department department, PagingInfo pagingInfo);
 
 	@Transactional
@@ -72,5 +72,9 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 	@Transactional
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	void addNewDistributionDataPharmacyAtDispensary(StockOperation operation);
+
+	@Transactional(readOnly = false)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	void updateStockBalanceAtDispensary(int stockBalance, int id);
 
 }

@@ -19,6 +19,7 @@ import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
+import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
@@ -46,11 +47,13 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 	private IStockroomDataService stockroomDataService;
 	private IItemStockDetailDataService itemStockDetailDataService;
 	private IDepartmentDataService departmentService;
+	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
 
 	public ItemStockSummaryResource() {
 		this.stockroomDataService = Context.getService(IStockroomDataService.class);
 		this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
 		this.departmentService = Context.getService(IDepartmentDataService.class);
+		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 	}
 
 	@Override

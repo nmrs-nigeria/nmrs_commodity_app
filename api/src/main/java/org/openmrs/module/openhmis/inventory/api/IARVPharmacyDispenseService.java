@@ -27,4 +27,6 @@ public interface IARVPharmacyDispenseService extends IMetadataDataService<ARVPha
 
 	ARVPharmacyDispense getARVsByUuid(Integer encounterId);
 
+	List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate);
+
 }

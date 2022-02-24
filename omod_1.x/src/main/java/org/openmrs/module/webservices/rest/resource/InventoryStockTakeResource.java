@@ -160,4 +160,10 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 	public Class<? extends IObjectDataService<InventoryStockTake>> getServiceClass() {
 		return null;
 	}
+
+	//update stock on hand at dispensary by deducting from quantity dispensed on pharmacy order form
+	public void updateStockOnHandAtDispensaryViaPharmacyOrderForm() {
+
+	}
+
 }

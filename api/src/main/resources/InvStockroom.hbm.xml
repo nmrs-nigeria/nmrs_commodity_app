@@ -402,6 +402,8 @@
         <property name="quantity" type="int" not-null="true" column="quantity" />
         <property name="updatableQuantity" type="int" not-null="true" column="updatable_quantity" />
        	<many-to-one name="department" class="Department" column="department_id" />
+       	<property name="conceptId" type="int" not-null="true" column="concept_id" />
+       	
 	</class>
 	
 </hibernate-mapping>

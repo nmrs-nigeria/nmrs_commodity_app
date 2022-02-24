@@ -21,6 +21,7 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 	private String drugCategory;
 	private String serviceDeliveryModel;
 	private String deliveryType;
+	private Integer itemConceptId;
 
 	public Integer getTotalQuantityReceived() {
 		return totalQuantityReceived;
@@ -84,6 +85,14 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 
 	public void setDeliveryType(String deliveryType) {
 		this.deliveryType = deliveryType;
+	}
+
+	public Integer getItemConceptId() {
+		return itemConceptId;
+	}
+
+	public void setItemConceptId(Integer itemConceptId) {
+		this.itemConceptId = itemConceptId;
 	}
 
 	@Override

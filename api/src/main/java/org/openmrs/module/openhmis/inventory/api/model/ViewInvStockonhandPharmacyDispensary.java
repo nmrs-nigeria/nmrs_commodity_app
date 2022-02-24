@@ -38,6 +38,7 @@ public class ViewInvStockonhandPharmacyDispensary extends BaseOpenmrsObject {
 	private String commodityType;
 	private Date dateCreated;
 	private Integer updatableQuantity;
+	private Integer conceptId;
 
 	public Integer getStockOperationId() {
 		return stockOperationId;
@@ -93,6 +94,14 @@ public class ViewInvStockonhandPharmacyDispensary extends BaseOpenmrsObject {
 
 	public void setUpdatableQuantity(Integer updatableQuantity) {
 		this.updatableQuantity = updatableQuantity;
+	}
+
+	public Integer getConceptId() {
+		return conceptId;
+	}
+
+	public void setConceptId(Integer conceptId) {
+		this.conceptId = conceptId;
 	}
 
 	/**
