@@ -20,6 +20,7 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.util.LoggerFactory;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
@@ -175,4 +176,11 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
         return fileName;
     }
+
+	@Override
+	public String getItemStockSummaryByPharmacyByDate(String reportId, List<CrrfDetails> finalConsumptionSummarys,
+	        String reportFolder) {
+
+		return null;
+	}
 }

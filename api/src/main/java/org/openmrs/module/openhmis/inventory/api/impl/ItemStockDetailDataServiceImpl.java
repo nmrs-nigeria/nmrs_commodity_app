@@ -43,14 +43,11 @@ import org.openmrs.Encounter;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.annotation.Authorized;
-import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
-import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.model.ARVDispensedItem;
-import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
@@ -64,6 +61,7 @@ import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizati
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.springframework.transaction.annotation.Transactional;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 
 import com.google.common.primitives.Ints;
 
@@ -79,12 +77,6 @@ public class ItemStockDetailDataServiceImpl
 	private static final int TWO = 2;
 	private static final int FOUR = 4;
 	private static final int FIVE = 5;
-
-	//private IItemStockDetailDataService itemStockDetailDataService;
-
-	public ItemStockDetailDataServiceImpl() {
-		//this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
-	}
 
 	@Override
 	protected BasicObjectAuthorizationPrivileges getPrivileges() {
@@ -816,7 +808,7 @@ public class ItemStockDetailDataServiceImpl
 		                + "a.expiration, a.quantity, a.updatableQuantity "
 		                + "from ViewInvStockonhandPharmacyDispensary as a "
 		                + "where a.department.id = " + department.getId() + " "
-		                + "and a.updatableQuantity != " + 0 + " "
+		                //+ "and a.updatableQuantity != " + 0 + " "
 		                + "and a.conceptId = " + newPharmacyConsumptionSummary.getItemConceptId() + " "
 		                + "order by a.expiration asc";
 
@@ -825,6 +817,8 @@ public class ItemStockDetailDataServiceImpl
 		int stockBalance = 0;
 		int totalQuantityConsumed = newPharmacyConsumptionSummary.getTotalQuantityReceived();
 
+		System.out.println("Item Concept: " + newPharmacyConsumptionSummary.getItemConceptId());
+		int me = 0;
 		for (Object obj : list) {
 			Object[] row = (Object[])obj;
 
@@ -832,15 +826,30 @@ public class ItemStockDetailDataServiceImpl
 			int qtty = (int)row[FIVE];
 
 			if (totalQuantityConsumed <= qtty) {
+				System.out.println("Me: ");
+
 				//subtract and update
 				stockBalance = qtty - totalQuantityConsumed;
+
+				System.out.println("totalQuantityConsumed: " + totalQuantityConsumed);
+				System.out.println("qtty: " + qtty);
+				System.out.println("stockBalance: " + stockBalance);
+
 				updateStockBalanceAtDispensary(stockBalance, id);
 				break;
 			} else {
+				System.out.println("You: ");
+
 				stockBalance = totalQuantityConsumed - qtty;
 				totalQuantityConsumed = stockBalance;
+
+				System.out.println("totalQuantityConsumed: " + totalQuantityConsumed);
+				System.out.println("qtty: " + qtty);
+				System.out.println("stockBalance: " + stockBalance);
+
 				updateStockBalanceAtDispensary(0, id);
 			}
+
 		}
 
 	}
@@ -900,6 +909,7 @@ public class ItemStockDetailDataServiceImpl
 			vs.setUpdatableQuantity(opItem.getQuantity());
 			vs.setDepartment(operation.getDepartment());
 			vs.setDateCreated(operation.getDateCreated());
+			vs.setConceptId(opItem.getItem().getConcept().getConceptId());
 
 			int updateAbleQuantity = 0;
 			int finalQuantity = 0;
@@ -986,6 +996,12 @@ public class ItemStockDetailDataServiceImpl
 
 		}
 
+	}
+
+	@Override
+	public List<CrrfDetails> getItemStockSummaryByPharmacy(Date startDate, Date endDate, PagingInfo pagingInfo) {
+		System.out.println("Stock CRRF Tobe");
+		return null;
 	}
 
 }

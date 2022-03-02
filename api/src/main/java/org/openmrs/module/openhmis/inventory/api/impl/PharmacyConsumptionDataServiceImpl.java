@@ -22,6 +22,7 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServi
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;

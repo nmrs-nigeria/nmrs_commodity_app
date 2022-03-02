@@ -14,6 +14,7 @@
 package org.openmrs.module.openhmis.inventory.api.impl;
 
 import java.util.List;
+
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServiceImpl;
@@ -53,6 +54,22 @@ public class InstitutionDataServiceImpl extends BaseMetadataDataServiceImpl<Inst
 			public void apply(Criteria parameter) {
 				parameter.add(Restrictions.eq(HibernateCriteriaConstants.FACILITY_STATE, state).ignoreCase())
 				        .add(Restrictions.eq(HibernateCriteriaConstants.FACILITY_LGA, lga).ignoreCase());
+			}
+		});
+
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<Institution> getInstitutionByUuid(String uuid) {
+		if (uuid == null) {
+			throw new IllegalArgumentException("The uuid must be defined.");
+		}
+
+		return executeCriteria(Institution.class, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria parameter) {
+				parameter.add(Restrictions.eq(HibernateCriteriaConstants.UUID, uuid).ignoreCase());
 			}
 		});
 

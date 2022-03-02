@@ -24,12 +24,25 @@ public class ConstantUtils {
 	public static final String PHARMACY_COMMODITY_TYPE = "pharmacy";
 	public static final String LAB_COMMIDITY_TYPE = "lab";
 
+	//regimen line
+	public static final String ADULT = "adult";
+	public static final String PEDITRIC = "pediatric";
+	public static final String OI = "OI";
+	public static final String ADVANCE_HIV = "advancehiv";
+	public static final String TB = "TB";
+	public static final String STI = "STI";
+
 	//reportId
 	public static final String DISPENSARY_CONSUMPTION_REPORT = "dispensary_consumption";
 	public static final String STOCK_ROOM_CONSUMPTION_REPORT = "stockroom_consumption";
 	public static final String STORE_STOCKONHAND_REPORT = "stockroom_stockonhand";
 	public static final String DISPENSARY_STOCKONHAND_REPORT = "dispensary_stockonhand";
 	public static final String ADULT_DISPENSARY_MODALITIES_REPORT = "modalities_dispensary_consumption";
+	public static final String CRRF_REPORT = "crrf_report";
+
+	public static final String ARV_COTRIM = "arv_cotrim";
+	public static final String HIV_RTKS_AND_DBS = "hiv_rtks_and_dbs";
+	public static final String OTHER_OIS = "other_ois";
 
 	//report header
 	public static final String DISPENSARY_CONSUMPTION_REPORT_SHEET_NAME = "Consumption Report";
