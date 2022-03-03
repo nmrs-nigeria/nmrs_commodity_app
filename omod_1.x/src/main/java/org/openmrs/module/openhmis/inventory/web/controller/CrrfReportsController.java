@@ -21,6 +21,7 @@ import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
+import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
 import org.openmrs.module.openhmis.inventory.api.model.Crrf;
 import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
@@ -274,19 +275,15 @@ public class CrrfReportsController {
 	  		
 	  		//get positive and negative adjustment
 	  		
+	  		
+	  		
 	  		i++;
 	  		System.out.println("Count: " + i);	
-	  		System.out.println("getTotalQuantityReceived: " + pcs.getTotalQuantityReceived());	
-		  	System.out.println("Item / ConceptID: " + pcs.getItem().getName() + " / " 
-		  	+ pcs.getItem().getConcept().getConceptId());
-		  	System.out.println("QuantityDispensed: " 
-		  	+ pcsConsumed.getTotalQuantityReceived() == null ? 0 : pcsConsumed.getTotalQuantityReceived());	
-		  	System.out.println("Concept id: " 
-		  	+ (pcsConsumed.getItemConceptId() == null ? 0 : pcsConsumed.getItemConceptId()) );	
-		  	
-		  	
-		  	
-	  		
+	  		System.out.println("Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("Basic Unit: " + crrfDetails.getBasicUnit());
+	  		System.out.println("getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+		  
 	  		crrfAdultRegimen.add(crrfDetails);
 	  	}
 
@@ -332,6 +329,57 @@ public class CrrfReportsController {
 
 		return finalConsumptionSummarys;
 	}
+	
+	
+	private List<PharmacyConsumptionSummary> positiveAndNegativeAdjustment(
+	        Date startDate, Date endDate, List<Item> distinctItems) {
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String adjustmentOperationTypeUuid = ConstantUtils.ADJUSTMENT_TYPE_UUID;
+		String transferOperationTypeUuid = ConstantUtils.TRANSFER_TYPE_UUID;
+		String disposedOperationTypeUuid = ConstantUtils.DISPOSED_TYPE_UUID;
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<CrffOperationsSummary> finalCrffOperationsSummary = new ArrayList<>();
+		List<StockOperation> adjustmentStockOps = null;
+		List<StockOperation> transferStockOps = null;
+		List<StockOperation> disposedStockOps = null;
+
+		searchConsumptionSummary.setStartDate(startDate);
+		searchConsumptionSummary.setEndDate(endDate);
+		searchConsumptionSummary.setOperationStatus(status);
+		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		//for adjustment
+		IStockOperationType adjustmentStockOperationType = 
+				stockOperationTypeDataService.getByUuid(adjustmentOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(adjustmentStockOperationType);
+		adjustmentStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+		//for transfer
+		IStockOperationType transferStockOperationType =
+		        stockOperationTypeDataService.getByUuid(transferOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(transferStockOperationType);
+		transferStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+		
+		//for transfer
+		IStockOperationType disposedStockOperationType =
+				stockOperationTypeDataService.getByUuid(disposedOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(disposedStockOperationType);
+		disposedStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+			
+		
+		
+
+		finalCrffOperationsSummary.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
+		    distributeStockOps, null, distinctItems));
+
+		//String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return finalConsumptionSummarys;
+	}
+	
+	
 
 	private String returnURL(String reportId) {
 		String filename = reportId + ".csv";
