@@ -10,6 +10,8 @@ package org.openmrs.module.webservices.rest.helper;
  */
 public class ConstantUtils {
 
+	public static final String ADJUSTMENT_KEY = "adjustment";
+
 	public static final String DISTRIBUTION_TYPE_UUID = "c264f34b-c795-4576-9928-454d1fa20e09";
 	public static final String ADJUSTMENT_TYPE_UUID = "288fd7fe-1374-4f7a-89e6-d5f1ac97d4a5";
 	public static final String DISPOSED_TYPE_UUID = "84be0aaf-70cf-4ebb-83e3-088e5d375905";

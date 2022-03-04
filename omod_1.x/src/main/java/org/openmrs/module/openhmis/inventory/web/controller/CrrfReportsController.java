@@ -234,17 +234,26 @@ public class CrrfReportsController {
 	  	System.out.println("Adult Item Size: " + distinctAdultItemBase.size());	
 	  	System.out.println("Distinct Adult Item Size: " + distinctElements.size());
 	  	
-	  	//get new consumption summary
+	  	//total consumed
 	  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
 	  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
 
 	  	System.out.println("forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
 	  	System.out.println("forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
 	  	
-	  	
+	  	//total received
 	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
 	  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
 	  	
+	  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+	  	//List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+	  	//		consumptionSummaryAtStockroom(null, startDate, distinctElements);
+	  	
+	  	
+	  	//positive adjustment, negative adjustment, loses/damages/expires
+	  	List<CrffOperationsSummary> crffOperationsSummary = 
+	  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+	  
   		int i = 0;
 	  	for(Item item: distinctElements) {
 	  		CrrfDetails crrfDetails = new CrrfDetails();
@@ -273,17 +282,52 @@ public class CrrfReportsController {
 	  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
 	  		}
 	  		
-	  		//get positive and negative adjustment
+	  		//get positive adjustment, negative adjustment and losses
+	  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+	  			    filter(b -> b.getItem().equals(item)).findFirst();
+	  
+	  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+	  		if(pcsAdjustment == null) {
+	  			crrfDetails.setPositiveAdjustments(0);	
+	  			crrfDetails.setNegativeAdjustments(0);	
+	  			crrfDetails.setLossesdDamagesExpiries(0);	
+	  		}else {
+	  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+	  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+	  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+	  		}
 	  		
+	  		//begining balance
+	  		crrfDetails.setBeginningBalance(0);
+	  		
+	  		//physical count or stock on hand
+	  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+	  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+	  				+ crrfDetails.getQuantityDispensed());
+	  		crrfDetails.setPhysicalCount(physicalCount);
+	  		
+	  		//maximum stock
+	  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+	  		
+	  		//quantity to order
+	  		crrfDetails.setQuantityToOrder(crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
 	  		
 	  		
 	  		i++;
-	  		System.out.println("Count: " + i);	
+	  		System.out.println("Count: " + i);		  		
 	  		System.out.println("Item/Drugs: " + crrfDetails.getDrugs());
 	  		System.out.println("Basic Unit: " + crrfDetails.getBasicUnit());
+	  		System.out.println("BeginningBalance: " + crrfDetails.getBeginningBalance());	
 	  		System.out.println("getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
 		  	System.out.println("QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
-		  
+			System.out.println("PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("PhysicalCount: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+		  	
+		  	
 	  		crrfAdultRegimen.add(crrfDetails);
 	  	}
 
@@ -329,9 +373,8 @@ public class CrrfReportsController {
 
 		return finalConsumptionSummarys;
 	}
-	
-	
-	private List<PharmacyConsumptionSummary> positiveAndNegativeAdjustment(
+
+	private List<CrffOperationsSummary> positiveAndNegativeAdjustment(
 	        Date startDate, Date endDate, List<Item> distinctItems) {
 
 		StockOperationStatus status = StockOperationStatus.COMPLETED;
@@ -351,35 +394,33 @@ public class CrrfReportsController {
 		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
 
 		//for adjustment
-		IStockOperationType adjustmentStockOperationType = 
-				stockOperationTypeDataService.getByUuid(adjustmentOperationTypeUuid);
+		IStockOperationType adjustmentStockOperationType =
+		        stockOperationTypeDataService.getByUuid(adjustmentOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(adjustmentStockOperationType);
 		adjustmentStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+		System.out.println("adjustmentStockOps: " + adjustmentStockOps.size());
 
 		//for transfer
 		IStockOperationType transferStockOperationType =
 		        stockOperationTypeDataService.getByUuid(transferOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(transferStockOperationType);
 		transferStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-		
+		System.out.println("transferStockOps: " + transferStockOps.size());
+
 		//for transfer
 		IStockOperationType disposedStockOperationType =
-				stockOperationTypeDataService.getByUuid(disposedOperationTypeUuid);
+		        stockOperationTypeDataService.getByUuid(disposedOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(disposedStockOperationType);
 		disposedStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-			
-		
-		
+		System.out.println("disposedStockOps: " + disposedStockOps.size());
 
-		finalCrffOperationsSummary.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
-		    distributeStockOps, null, distinctItems));
+		finalCrffOperationsSummary.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(adjustmentStockOps,
+		    transferStockOps, disposedStockOps, null, distinctItems));
 
 		//String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
-		return finalConsumptionSummarys;
+		return finalCrffOperationsSummary;
 	}
-	
-	
 
 	private String returnURL(String reportId) {
 		String filename = reportId + ".csv";

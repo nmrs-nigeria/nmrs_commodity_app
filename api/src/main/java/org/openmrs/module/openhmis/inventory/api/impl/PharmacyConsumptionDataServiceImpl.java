@@ -22,6 +22,7 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServi
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
+import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
 import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
@@ -217,6 +218,93 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
     }
 
 	@Override
+	public List<CrffOperationsSummary>
+	        retrieveConsumptionSummaryForStockroom(List<StockOperation> adjustmentStockOperations,
+	                List<StockOperation> transferStockOperations, List<StockOperation> disposedStockOperations,
+	                PagingInfo pagingInfo, List<Item> distinctItems) {
+		List<CrffOperationsSummary> fromAdjustment = null;
+		List<CrffOperationsSummary> fromTransfer = null;
+		List<CrffOperationsSummary> fromDisposed = null;
+		List<CrffOperationsSummary> finalCrrfOperationSummarys = null;
+
+		final String ADJUSTMENT_KEY = "adjustment";
+		final String TRANSFER_KEY = "transfer";
+		final String DISPOSED_KEY = "disposed";
+
+		//adjustment
+		System.out.println("stock operations result adjustmentStockOperations: " + adjustmentStockOperations.size());
+		fromAdjustment = getSummaryFromStockroomStockOperationCrrf(adjustmentStockOperations,
+		    null, distinctItems, ADJUSTMENT_KEY);
+		System.out.println("After stock summary fromAdjustment: " + fromAdjustment.size());
+
+		//transfer
+		System.out.println("stock operations result transferStockOperations: " + transferStockOperations.size());
+		fromTransfer = getSummaryFromStockroomStockOperationCrrf(transferStockOperations,
+		    null, distinctItems, TRANSFER_KEY);
+		System.out.println("After stock summary fromTransfer: " + fromTransfer.size());
+
+		//disposed
+		System.out.println("stock operations result disposedStockOperations: " + disposedStockOperations.size());
+		fromDisposed = getSummaryFromStockroomStockOperationCrrf(disposedStockOperations,
+		    null, distinctItems, DISPOSED_KEY);
+		System.out.println("After stock summary fromDisposed: " + fromDisposed.size());
+		
+		System.out.println("fromAdjustment  : " + fromAdjustment.size());
+
+		List<CrffOperationsSummary> tempsTransfer = new ArrayList<>();		
+		fromTransfer.stream().forEach(a -> {
+			CrffOperationsSummary tempT = a;
+			tempT.setTotalPositiveAdjustment(0);
+			tempT.setTotalNegativeAdjustment(a.getTotalNegativeAdjustment());
+			tempT.setTotalLossDamagesExpires(0);
+			
+			System.out.println("fromTransfer getTotalPositiveAdjustment : " 
+			+ (a.getTotalPositiveAdjustment() == null ? 0 : a.getTotalPositiveAdjustment()));
+			System.out.println("fromTransfer getTotalNegativeAdjustment : " 
+			+ (a.getTotalNegativeAdjustment() == null ? 0 : a.getTotalNegativeAdjustment()));
+			System.out.println("fromTransfer getTotalLossDamagesExpires  : " 
+			+ (a.getTotalLossDamagesExpires() == null ? 0 : a.getTotalLossDamagesExpires()));
+			
+			tempsTransfer.add(tempT);
+		});		
+		fromTransfer = tempsTransfer;
+		System.out.println("fromTransfer  : " + fromTransfer.size());
+		
+		
+		List<CrffOperationsSummary> tempsDisposed = new ArrayList<>();		
+		fromDisposed.stream().forEach(a -> {
+			CrffOperationsSummary tempD = a;
+			tempD.setTotalPositiveAdjustment(0);
+			tempD.setTotalNegativeAdjustment(0);
+			tempD.setTotalLossDamagesExpires(a.getTotalLossDamagesExpires());
+			
+			System.out.println("fromDisposed getTotalPositiveAdjustment : " 
+			+ (a.getTotalPositiveAdjustment() == null ? 0 : a.getTotalPositiveAdjustment()));
+			System.out.println("fromDisposed getTotalNegativeAdjustment : " 
+			+ (a.getTotalNegativeAdjustment() == null ? 0 : a.getTotalNegativeAdjustment()));
+			System.out.println("fromDisposed getTotalLossDamagesExpires  : "
+			+ (a.getTotalLossDamagesExpires() == null ? 0 : a.getTotalLossDamagesExpires()));
+		
+			tempsDisposed.add(tempD);
+		});		
+		fromDisposed = tempsDisposed;
+		System.out.println("fromDisposed  : " + fromDisposed.size());
+		
+
+		List<CrffOperationsSummary> tempConsumptionSummary = new ArrayList<>();
+
+		tempConsumptionSummary = mergeStockRoomSummaryCrrf(fromAdjustment, fromTransfer,
+		    fromDisposed, null, distinctItems);
+
+		finalCrrfOperationSummarys = tempConsumptionSummary;
+
+		System.out.println("final finalCrrfOperationSummarys summary is: " + finalCrrfOperationSummarys.size());
+
+		return finalCrrfOperationSummarys;
+
+	}
+
+	@Override
     public List<PharmacyConsumptionSummary> retrieveConsumptionSummary(List<StockOperation> stockOperations,
             SearchConsumptionSummary searchConsumptionSummary, PagingInfo pagingInfo, List<Item> distinctItems) {
         List<PharmacyConsumptionSummary> fromConsumption = null;
@@ -369,6 +457,39 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
     }
 
+	private List<CrffOperationsSummary> mergeStockRoomSummaryCrrf(List<CrffOperationsSummary> fromAdjustment,
+            List<CrffOperationsSummary> fromTransfer, List<CrffOperationsSummary> fromDisposed, 
+            Department department, List<Item> distinctItems) {
+
+        List<CrffOperationsSummary> mergedConsumptionSummarysCrrf = new ArrayList<>();
+
+        distinctItems.forEach(a -> {
+        	CrffOperationsSummary each = new CrffOperationsSummary();
+        	
+            //get sum from adjustment
+            int sumAdjusted = fromAdjustment.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalPositiveAdjustment).findFirst().get();
+            each.setTotalPositiveAdjustment(sumAdjusted);
+            
+            //get sum from transfer
+            int sumTransfer = fromTransfer.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalNegativeAdjustment).findFirst().get();
+            each.setTotalNegativeAdjustment(sumTransfer);
+            
+            //get sum from disposed
+            int sumDisposed = fromDisposed.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalLossDamagesExpires).findFirst().get();
+            each.setTotalLossDamagesExpires(sumDisposed);
+
+            each.setItem(a);
+            mergedConsumptionSummarysCrrf.add(each);
+
+        });
+
+        return mergedConsumptionSummarysCrrf;
+
+    }
+
 	private List<PharmacyConsumptionSummary> getSummaryFromConsumption(List<PharmacyConsumption> consumptions,
             Department department, List<Item> distinctItems) {
 
@@ -444,6 +565,45 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 
 	}
 
+	protected List<CrffOperationsSummary>
+	        getSummaryFromStockroomStockOperationCrrf(List<StockOperation> stockOperations,
+	                Department department, List<Item> distinctItems, String operationTypeKey) {
+
+		List<CrffOperationsSummary> aConsumptions = new ArrayList<>();
+		List<CrffOperationsSummary> aggregateConsumption = new ArrayList<>();
+
+		for (StockOperation stockOperation : stockOperations) {
+
+			if (operationTypeKey.equalsIgnoreCase("adjustment")) {
+				aConsumptions.addAll(fillUpStockroomItemsCrrf(stockOperation.getItems(),
+				    stockOperation, operationTypeKey));
+			}
+			if (operationTypeKey.equalsIgnoreCase("transfer")) {
+				aConsumptions.addAll(fillUpStockroomItemsCrrfTransfer(stockOperation.getItems(),
+				    stockOperation, operationTypeKey));
+			}
+			if (operationTypeKey.equalsIgnoreCase("disposed")) {
+				aConsumptions.addAll(fillUpStockroomItemsCrrfDisposed(stockOperation.getItems(),
+				    stockOperation, operationTypeKey));
+			}
+
+		}
+		System.out.println("aConsumptions Size : " + operationTypeKey + " " + aConsumptions.size());
+
+		if (operationTypeKey.equalsIgnoreCase("adjustment")) {
+			aggregateConsumption = aggregateItemsCrrf(aConsumptions, department, distinctItems);
+		}
+		if (operationTypeKey.equalsIgnoreCase("transfer")) {
+			aggregateConsumption = aggregateItemsCrrfTransfer(aConsumptions, department, distinctItems);
+		}
+		if (operationTypeKey.equalsIgnoreCase("disposed")) {
+			aggregateConsumption = aggregateItemsCrrfDisposed(aConsumptions, department, distinctItems);
+		}
+
+		return aggregateConsumption;
+
+	}
+
 	private List<PharmacyConsumptionSummary> aggregateItems(List<PharmacyConsumptionSummary> consumptionSummarys,
             Department department, List<Item> distinctItems) {
 //        distinctItems = consumptionSummarys.stream()
@@ -466,6 +626,91 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
             } else {
                 consumptionSummary.setTotalQuantityReceived(0);
             }
+            aggregateConsumption.add(consumptionSummary);
+        });
+
+        return aggregateConsumption;
+
+    }
+
+	private List<CrffOperationsSummary> aggregateItemsCrrf(List<CrffOperationsSummary> consumptionSummarys,
+            Department department, List<Item> distinctItems) {
+
+        System.out.println("The items count is " + distinctItems.size());
+
+        List<CrffOperationsSummary> aggregateConsumption = new ArrayList<>();
+
+        distinctItems.forEach(a -> {
+            // assume a department would be selected at all time
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a);
+            //positive
+            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalPositiveAdjustment).mapToInt(Integer::intValue).sum();
+            if (itemCount > 0) {
+                System.out.println("");
+                consumptionSummary.setTotalPositiveAdjustment((int) itemCount);
+            } else {
+                consumptionSummary.setTotalPositiveAdjustment(0);
+            }
+            
+            aggregateConsumption.add(consumptionSummary);
+        });
+
+        return aggregateConsumption;
+
+    }
+
+	private List<CrffOperationsSummary> aggregateItemsCrrfTransfer(List<CrffOperationsSummary> consumptionSummarys,
+            Department department, List<Item> distinctItems) {
+
+        System.out.println("The items count is " + distinctItems.size());
+
+        List<CrffOperationsSummary> aggregateConsumption = new ArrayList<>();
+
+        distinctItems.forEach(a -> {
+            // assume a department would be selected at all time
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a);
+             
+            //negative
+            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalNegativeAdjustment).mapToInt(Integer::intValue).sum();
+            if (itemCount > 0) {
+                System.out.println("");
+                consumptionSummary.setTotalNegativeAdjustment((int) itemCount);
+            } else {
+                consumptionSummary.setTotalNegativeAdjustment(0);
+            }
+            
+            aggregateConsumption.add(consumptionSummary);
+        });
+
+        return aggregateConsumption;
+
+    }
+
+	private List<CrffOperationsSummary> aggregateItemsCrrfDisposed(List<CrffOperationsSummary> consumptionSummarys,
+            Department department, List<Item> distinctItems) {
+
+        System.out.println("The items count is " + distinctItems.size());
+
+        List<CrffOperationsSummary> aggregateConsumption = new ArrayList<>();
+
+        distinctItems.forEach(a -> {
+            // assume a department would be selected at all time
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a);
+            //losses
+            long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
+                    .map(CrffOperationsSummary::getTotalLossDamagesExpires).mapToInt(Integer::intValue).sum();
+            if (itemCount > 0) {
+                System.out.println("");
+                consumptionSummary.setTotalLossDamagesExpires((int) itemCount);
+            } else {
+                consumptionSummary.setTotalLossDamagesExpires(0);
+            }
+            
             aggregateConsumption.add(consumptionSummary);
         });
 
@@ -500,6 +745,48 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
         });
 
         return rConsumptions;
+    }
+
+	private List<CrffOperationsSummary> fillUpStockroomItemsCrrf(Set<StockOperationItem> items, 
+            StockOperation stockOperation, String operationTypeKey) {
+        List<CrffOperationsSummary> aConsumptions = new ArrayList<>();
+
+        items.stream().forEach(a -> {
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a.getItem());
+            consumptionSummary.setTotalPositiveAdjustment(a.getQuantity());
+            aConsumptions.add(consumptionSummary);
+        });
+
+        return aConsumptions;
+    }
+
+	private List<CrffOperationsSummary> fillUpStockroomItemsCrrfTransfer(Set<StockOperationItem> items, 
+            StockOperation stockOperation, String operationTypeKey) {
+        List<CrffOperationsSummary> aConsumptions = new ArrayList<>();
+
+        items.stream().forEach(a -> {
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a.getItem());
+           	consumptionSummary.setTotalNegativeAdjustment(a.getQuantity());
+            aConsumptions.add(consumptionSummary);
+        });
+
+        return aConsumptions;
+    }
+
+	private List<CrffOperationsSummary> fillUpStockroomItemsCrrfDisposed(Set<StockOperationItem> items, 
+            StockOperation stockOperation, String operationTypeKey) {
+        List<CrffOperationsSummary> aConsumptions = new ArrayList<>();
+
+        items.stream().forEach(a -> {
+        	CrffOperationsSummary consumptionSummary = new CrffOperationsSummary();
+            consumptionSummary.setItem(a.getItem());        
+            consumptionSummary.setTotalLossDamagesExpires(a.getQuantity());           
+            aConsumptions.add(consumptionSummary);
+        });
+
+        return aConsumptions;
     }
 
 	private List<PharmacyConsumption> getConsumptionsByDate(final Date startDate, final Date endDate,
