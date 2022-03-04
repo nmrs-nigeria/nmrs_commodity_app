@@ -329,8 +329,8 @@ public class CrrfReportsController {
 
 		return finalConsumptionSummarys;
 	}
-	
-	
+
+
 	private List<PharmacyConsumptionSummary> positiveAndNegativeAdjustment(
 	        Date startDate, Date endDate, List<Item> distinctItems) {
 
@@ -351,7 +351,7 @@ public class CrrfReportsController {
 		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
 
 		//for adjustment
-		IStockOperationType adjustmentStockOperationType = 
+		IStockOperationType adjustmentStockOperationType =
 				stockOperationTypeDataService.getByUuid(adjustmentOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(adjustmentStockOperationType);
 		adjustmentStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
@@ -361,15 +361,15 @@ public class CrrfReportsController {
 		        stockOperationTypeDataService.getByUuid(transferOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(transferStockOperationType);
 		transferStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-		
+
 		//for transfer
 		IStockOperationType disposedStockOperationType =
 				stockOperationTypeDataService.getByUuid(disposedOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(disposedStockOperationType);
 		disposedStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
-			
-		
-		
+
+
+
 
 		finalCrffOperationsSummary.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
 		    distributeStockOps, null, distinctItems));
@@ -378,8 +378,8 @@ public class CrrfReportsController {
 
 		return finalConsumptionSummarys;
 	}
-	
-	
+
+
 
 	private String returnURL(String reportId) {
 		String filename = reportId + ".csv";
