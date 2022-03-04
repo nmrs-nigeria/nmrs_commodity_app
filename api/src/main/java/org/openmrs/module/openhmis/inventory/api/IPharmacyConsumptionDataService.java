@@ -10,6 +10,7 @@ import java.util.List;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
+import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
 import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
@@ -77,5 +78,11 @@ public interface IPharmacyConsumptionDataService extends IMetadataDataService<Ph
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	List<PharmacyConsumptionSummary> retrieveConsumptionSummaryForStockroom(List<StockOperation> receiptStockOperations,
 	        List<StockOperation> distributeStockOperations, PagingInfo pagingInfo, List<Item> distinctItems);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	List<CrffOperationsSummary> retrieveConsumptionSummaryForStockroom(List<StockOperation> adjustmentStockOperations,
+	        List<StockOperation> transferStockOperations, List<StockOperation> disposedStockOperations,
+	        PagingInfo pagingInfo, List<Item> distinctItems);
 
 }
