@@ -8,10 +8,7 @@ package org.openmrs.module.openhmis.inventory.api;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 
 /**
  * @author MORRISON.I
@@ -31,5 +28,8 @@ public interface IPharmacyReportsService {
 	        String reportFolder);
 
 	String getItemStockSummaryByPharmacyByDate(String reportId, List<CrrfDetails> finalConsumptionSummarys,
+	        String reportFolder);
+
+	String getARVCRRIFAdultModalitiesPharmacyConsumptionByDate(String reportId, Crrf reportData,
 	        String reportFolder);
 }
