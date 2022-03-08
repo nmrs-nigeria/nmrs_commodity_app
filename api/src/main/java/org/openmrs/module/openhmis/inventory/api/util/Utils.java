@@ -99,6 +99,7 @@ public class Utils {
 	public static final int PEP_IDENTIFIER_INDEX = 9;
 
 	public static final int RECENCY_INDENTIFIER_INDEX = 10;
+	public static final String ARV_CRRIF_ADULT = "Adult Regimen";
 
 	public static boolean contains(List<Obs> obsList, int conceptID) {
 		boolean ans = false;
@@ -276,6 +277,19 @@ public class Utils {
 	public static final String SSR_BATCH_HEADER = "Batch";
 	public static final String SSR_EXPIRATION_HEADER = "Expiration";
 	public static final String SSR_QUANTITY_HEADER = "Quantity";
+
+	public static final String ARV_CRRIF_DRUG = "Drugs";
+	public static final String ARV_CRRIF_BASICUNIT = "Basic Unit";
+	public static final String ARV_CRRIF_BEGINBALANCE = "Beginning Balance";
+	public static final String ARV_CRRIF_QTYRECEIVED = "Quantity Received";
+	public static final String ARV_CRRIF_QTYDISPENSED = "Quantity Dispensed";
+	public static final String ARV_CRRIF_POSITIVEADJ = "Positive Adjustments";
+	public static final String ARV_CRRIF_NEGATIVEADJ = "Negative Adjustments";
+	public static final String ARV_CRRIF_LOSSES = "Losses Damages/Expires";
+	public static final String ARV_CRRIF_PHYSICALCOUNT = "Physical Count";
+	public static final String ARV_CRRIF_MAXSTOCKQTY = "Maximum Stock Quantity";
+	public static final String ARV_CRRIF_QTYORDER = "Quantity to Order";
+	public static final String ARV_CRRIF_REMARKS = "Remarks";
 
 	//integer constant
 	public static final int ZERO_INTEGER = 0;

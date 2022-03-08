@@ -199,19 +199,19 @@ public class CrrfReportsController {
 		//crrfAdultRegimenCategory
 		List<CrrfDetails> crrfAdultRegimenCategory = new ArrayList<CrrfDetails>();
 		crrfAdultRegimenCategory = getCrrfAdultRegimenCategory(startDate, endDate);
+		crrf.setCrrfAdultRegimenCategory(crrfAdultRegimenCategory);
 
-		//SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
-		//List<NewPharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+		//		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		//		List<NewPharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
 
-		//	finalConsumptionSummarys = aRVPharmacyDispenseService
-		//	        .getAdultDrugDispenseSummaryByModalities(startDate, endDate);
+		//			finalConsumptionSummarys = aRVPharmacyDispenseService
+		//			        .getAdultDrugDispenseSummaryByModalities(startDate, endDate);
 
-		// String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
-		//	return iPharmacyReports
-		//	        .getAdultModalitiesPharmacyConsumptionByDate(reportId, finalConsumptionSummarys, reportFolder);
+		return iPharmacyReports
+		        .getARVCRRIFAdultModalitiesPharmacyConsumptionByDate(reportId, crrf, reportFolder);
 
-		return null;
 	}
 
 	private List<CrrfDetails> getCrrfAdultRegimenCategory(Date startDate, Date endDate) {
@@ -532,6 +532,7 @@ public class CrrfReportsController {
 		//for adjustment
 		IStockOperationType adjustmentStockOperationType =
 		        stockOperationTypeDataService.getByUuid(adjustmentOperationTypeUuid);
+
 		searchConsumptionSummary.setOperationType(adjustmentStockOperationType);
 		adjustmentStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
 		System.out.println("adjustmentStockOps: " + adjustmentStockOps.size());
@@ -541,6 +542,7 @@ public class CrrfReportsController {
 		        stockOperationTypeDataService.getByUuid(transferOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(transferStockOperationType);
 		transferStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
 		System.out.println("transferStockOps: " + transferStockOps.size());
 
 		//for transfer
@@ -548,6 +550,7 @@ public class CrrfReportsController {
 		        stockOperationTypeDataService.getByUuid(disposedOperationTypeUuid);
 		searchConsumptionSummary.setOperationType(disposedStockOperationType);
 		disposedStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
 		System.out.println("disposedStockOps: " + disposedStockOps.size());
 
 		finalCrffOperationsSummary.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(adjustmentStockOps,
