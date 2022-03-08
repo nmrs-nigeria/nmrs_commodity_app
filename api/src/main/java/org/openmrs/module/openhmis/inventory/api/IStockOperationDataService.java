@@ -238,4 +238,13 @@ public interface IStockOperationDataService extends IMetadataDataService<StockOp
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	List<StockOperation> getOperationsByDateDiff(final SearchConsumptionSummary searchConsumptionSummary, PagingInfo paging);
 
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	List<StockOperation> getOperationsByDateDiffBeginningBalance(
+	        final SearchConsumptionSummary searchConsumptionSummary, PagingInfo paging);
+
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	StockOperation getOperationsByMinDateCreated(final SearchConsumptionSummary searchConsumptionSummary, PagingInfo paging);
+
 }

@@ -250,6 +250,23 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	@Override
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	public StockOperation getOperationsByMinDateCreated(final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging) {
+		List<StockOperation> results =
+		        getOperationsByMinDate(searchConsumptionSummary, null, 1,
+		            Order.desc(HibernateCriteriaConstants.OPERATION_ORDER),
+		            Order.asc(HibernateCriteriaConstants.DATE_CREATED));
+
+		if (results == null || results.size() == 0) {
+			return null;
+		} else {
+			return results.get(0);
+		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	public List<StockOperation> getOperationsSince(final Date operationDate, PagingInfo paging) {
 		if (operationDate == null) {
 			throw new IllegalArgumentException("The operation date must be defined.");
@@ -305,6 +322,17 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	@Override
 	@Transactional(readOnly = true)
 	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
+	public List<StockOperation> getOperationsByDateDiffBeginningBalance(
+	        final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging) {
+		return getOperationsByDateDiffBeginningBalance(searchConsumptionSummary,
+		    paging, null, Order.asc(HibernateCriteriaConstants.OPERATION_ORDER),
+		    Order.asc(HibernateCriteriaConstants.OPERATION_DATE));
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_OPERATIONS })
 	public StockOperation getLastOperationByDate(final Date date) {
 		List<StockOperation> results =
 		        getOperationsByDate(date, null, 1, Order.desc(HibernateCriteriaConstants.OPERATION_ORDER),
@@ -341,6 +369,41 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 			@Override
 			public void apply(Criteria criteria) {
 				criteria.add(createDateRestriction(date));
+				if (maxResults != null && maxResults > 0) {
+					criteria.setMaxResults(maxResults);
+				}
+			}
+		}, orders);
+	}
+
+	private List<StockOperation> getOperationsByMinDate(final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging, final Integer maxResults,
+	        Order... orders) {
+
+		return executeCriteria(StockOperation.class, paging, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+
+				if (searchConsumptionSummary.getItem() != null) {
+					criteria.createAlias("items", "items").add(Restrictions.eq("items.item",
+					    searchConsumptionSummary.getItem()));
+				}
+
+				if (searchConsumptionSummary.getOperationType() != null) {
+					criteria.add(Restrictions.eq("instanceType", searchConsumptionSummary.getOperationType()));
+				}
+
+				if (searchConsumptionSummary.getOperationStatus() != null) {
+					criteria.add(Restrictions.eq("status", searchConsumptionSummary.getOperationStatus()));
+				}
+
+				if (searchConsumptionSummary.getDepartment() != null) {
+					criteria.add(Restrictions.eq("department", searchConsumptionSummary.getDepartment()));
+				}
+				if (searchConsumptionSummary.getCommodityType() != null) {
+					criteria.add(Restrictions.eq("commodityType", searchConsumptionSummary.getCommodityType()));
+				}
+
 				if (maxResults != null && maxResults > 0) {
 					criteria.setMaxResults(maxResults);
 				}
@@ -389,6 +452,48 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 		}, orders);
 	}
 
+	private List<StockOperation> getOperationsByDateDiffBeginningBalance(
+	        final SearchConsumptionSummary searchConsumptionSummary,
+	        PagingInfo paging, final Integer maxResults,
+	        Order... orders) {
+		if (searchConsumptionSummary.getStartDate() == null || searchConsumptionSummary.getEndDate() == null) {
+			throw new IllegalArgumentException("The date to search for must be defined.");
+		}
+
+		return executeCriteria(StockOperation.class, paging, new Action1<Criteria>() {
+			@Override
+			public void apply(Criteria criteria) {
+
+				criteria.add(createDateDiffRestrictionBeginningBalance(searchConsumptionSummary.getStartDate(),
+				    searchConsumptionSummary.getEndDate()));
+
+				if (searchConsumptionSummary.getItem() != null) {
+					criteria.createAlias("items", "items").add(Restrictions.eq("items.item",
+					    searchConsumptionSummary.getItem()));
+				}
+
+				if (searchConsumptionSummary.getOperationType() != null) {
+					criteria.add(Restrictions.eq("instanceType", searchConsumptionSummary.getOperationType()));
+				}
+
+				if (searchConsumptionSummary.getOperationStatus() != null) {
+					criteria.add(Restrictions.eq("status", searchConsumptionSummary.getOperationStatus()));
+				}
+
+				if (searchConsumptionSummary.getDepartment() != null) {
+					criteria.add(Restrictions.eq("department", searchConsumptionSummary.getDepartment()));
+				}
+				if (searchConsumptionSummary.getCommodityType() != null) {
+					criteria.add(Restrictions.eq("commodityType", searchConsumptionSummary.getCommodityType()));
+				}
+
+				if (maxResults != null && maxResults > 0) {
+					criteria.setMaxResults(maxResults);
+				}
+			}
+		}, orders);
+	}
+
 	private Criterion createDateRestriction(Date date) {
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
@@ -403,24 +508,21 @@ public class StockOperationDataServiceImpl extends BaseCustomizableMetadataDataS
 	}
 
 	private Criterion createDateDiffRestriction(Date sDate, Date eDate) {
-		//		Calendar cal = Calendar.getInstance();
-		//		cal.setTime(sDate);
-		//		Utility.clearCalendarTime(cal);
-		//		final Date start = cal.getTime();
-		//
-		//		Calendar cal_2 = Calendar.getInstance();
-		//		cal_2.setTime(eDate);
-		//		Utility.clearCalendarTime(cal_2);
-		//
-		//		//	cal.add(Calendar.DAY_OF_MONTH, 1);
-		//		//	cal.add(Calendar.MILLISECOND, -1);
-		//		final Date end = cal_2.getTime();
 
 		System.out.println("Start date for diff " + sDate);
 		System.out.println("End date for diff " + eDate);
 
 		//	return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, start, end);
 		return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, sDate, eDate);
+	}
+
+	private Criterion createDateDiffRestrictionBeginningBalance(Date sDate, Date eDate) {
+
+		System.out.println("Start date for diff " + sDate);
+		System.out.println("End date for diff " + eDate);
+
+		//	return Restrictions.between(HibernateCriteriaConstants.OPERATION_DATE, start, end);
+		return Restrictions.le(HibernateCriteriaConstants.OPERATION_DATE, sDate);
 	}
 
 	@Override

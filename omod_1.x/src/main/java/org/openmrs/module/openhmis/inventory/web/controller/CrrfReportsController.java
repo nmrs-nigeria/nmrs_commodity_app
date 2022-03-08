@@ -245,9 +245,15 @@ public class CrrfReportsController {
 	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
 	  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
 	  	
+	  	//get minimum receipt operation data recorded
+	  	Date minimumReceiptDate = getMinimumReceiptDate();
+	  	
 	  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
-	  	//List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
-	  	//		consumptionSummaryAtStockroom(null, startDate, distinctElements);
+	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+	  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+	  	
+		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 	  	
 	  	
 	  	//positive adjustment, negative adjustment, loses/damages/expires
@@ -297,8 +303,34 @@ public class CrrfReportsController {
 	  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
 	  		}
 	  		
-	  		//begining balance
-	  		crrfDetails.setBeginningBalance(0);
+	  		//beginning balance
+	  		int totalBeginingBalanceReceived = 0; 
+	  		int totalBeginingBalanceConsumed = 0;
+	  		int beginingBalance = 0;
+	  		
+	  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+	  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+	  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+	  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+	  		if(pcsBeginingBalance == null) {
+	  			totalBeginingBalanceReceived = 0;
+	  		}else {
+	  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+	  		}
+	  		
+	  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+	  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+	  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+	  
+	  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+	  				matchingObjectBeginingBalanceConsumed.orElse(null);
+	  		if(pcsBeginingBalanceConsumed == null) {
+	  			totalBeginingBalanceConsumed = 0; 			
+	  		}else {
+	  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+	  		}
+	  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+	  		crrfDetails.setBeginningBalance(beginingBalance);
 	  		
 	  		//physical count or stock on hand
 	  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
@@ -328,6 +360,48 @@ public class CrrfReportsController {
 		  	System.out.println("QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
 		  	
 		  	
+		  	//set negative values to 0
+		  	if(crrfDetails.getBeginningBalance() < 0) {
+		  		crrfDetails.setBeginningBalance(0);
+		  	}
+			if(crrfDetails.getQuantityReceived() < 0) {
+		  		crrfDetails.setQuantityReceived(0);
+		  	}
+			if(crrfDetails.getQuantityDispensed() < 0) {
+		  		crrfDetails.setQuantityDispensed(0);
+		  	}
+			if(crrfDetails.getPositiveAdjustments() < 0) {
+		  		crrfDetails.setPositiveAdjustments(0);
+		  	}
+			if(crrfDetails.getNegativeAdjustments() < 0) {
+		  		crrfDetails.setNegativeAdjustments(0);
+		  	}
+			if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+		  		crrfDetails.setLossesdDamagesExpiries(0);
+		  	}
+			if(crrfDetails.getPhysicalCount() < 0) {
+		  		crrfDetails.setPhysicalCount(0);
+		  	}
+			if(crrfDetails.getMaximumStockQuantity() < 0) {
+		  		crrfDetails.setMaximumStockQuantity(0);
+		  	}
+			if(crrfDetails.getQuantityToOrder() < 0) {
+		  		crrfDetails.setQuantityToOrder(0);
+		  	}
+			
+			System.out.println("Count: " + i);		  		
+	  		System.out.println("Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("Basic Unit 2: " + crrfDetails.getBasicUnit());
+	  		System.out.println("BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+	  		System.out.println("getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+			System.out.println("PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+			
 	  		crrfAdultRegimen.add(crrfDetails);
 	  	}
 
@@ -365,6 +439,68 @@ public class CrrfReportsController {
 		searchConsumptionSummary.setOperationType(distributeStockOperationType);
 
 		distributeStockOps = stockOperationDataService.getOperationsByDateDiff(searchConsumptionSummary, null);
+
+		finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
+		    distributeStockOps, null, distinctItems));
+
+		//String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
+
+		return finalConsumptionSummarys;
+	}
+
+	private Date getMinimumReceiptDate() {
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String receiptOperationTypeUuid = ConstantUtils.RECEIPT_TYPE_UUID;
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<PharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+
+		searchConsumptionSummary.setOperationStatus(status);
+		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(receiptOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(stockOperationType);
+
+		StockOperation receiptStockOps = stockOperationDataService.getOperationsByMinDateCreated(
+		    searchConsumptionSummary, null);
+
+		return receiptStockOps.getDateCreated();
+
+	}
+
+	private List<PharmacyConsumptionSummary> consumptionSummaryAtStockroomBeggingBalance(
+	        Date startDate, Date endDate, List<Item> distinctItems) {
+
+		StockOperationStatus status = StockOperationStatus.COMPLETED;
+		String distributeOperationTypeUuid = ConstantUtils.DISTRIBUTION_TYPE_UUID;
+		String receiptOperationTypeUuid = ConstantUtils.RECEIPT_TYPE_UUID;
+
+		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
+		List<PharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+
+		//searchConsumptionSummary.setDepartment(d);
+		//  searchConsumptionSummary.setItem(searchItem);
+		searchConsumptionSummary.setStartDate(startDate);
+		searchConsumptionSummary.setEndDate(endDate);
+		searchConsumptionSummary.setOperationStatus(status);
+		searchConsumptionSummary.setCommodityType(ConstantUtils.PHARMACY_COMMODITY_TYPE);
+
+		IStockOperationType stockOperationType = stockOperationTypeDataService.getByUuid(receiptOperationTypeUuid);
+		searchConsumptionSummary.setOperationType(stockOperationType);
+
+		List<StockOperation> receiptStockOps = null;
+		List<StockOperation> distributeStockOps = null;
+
+		receiptStockOps = stockOperationDataService.getOperationsByDateDiffBeginningBalance(searchConsumptionSummary, null);
+
+		IStockOperationType distributeStockOperationType =
+		        stockOperationTypeDataService.getByUuid(distributeOperationTypeUuid);
+
+		searchConsumptionSummary.setOperationType(distributeStockOperationType);
+
+		distributeStockOps = stockOperationDataService.getOperationsByDateDiffBeginningBalance(
+		    searchConsumptionSummary, null);
 
 		finalConsumptionSummarys.addAll(consumptionDataService.retrieveConsumptionSummaryForStockroom(receiptStockOps,
 		    distributeStockOps, null, distinctItems));

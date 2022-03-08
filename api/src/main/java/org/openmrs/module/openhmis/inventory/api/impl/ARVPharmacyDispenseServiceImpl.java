@@ -309,6 +309,87 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
         return arvsuConsumptionSummarys;
     }
 
+	public List<NewPharmacyConsumptionSummary> 
+	 getDrugDispenseSummaryBeginingBalance(Date startDate, Date endDate, PagingInfo pagingInfo) {
+			
+			System.out.println("Start Date: " + startDate);
+			System.out.println("End Date: " + endDate);
+			
+	        String queryString = "select a from " + Encounter.class.getName() + " "
+	                + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
+	                + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) "
+	                + "and a.encounterType = 13 and a.voided = 0 ";
+
+	        Query query = getRepository().createQuery(queryString);
+	        //   Query query = getRepository().createQuery(queryString);
+	        query.setDate("startDate", startDate);
+	        query.setDate("endDate", endDate);
+	        List<Encounter> encounters = (List<Encounter>) query.list();
+	        System.out.println("found arv encounters");
+	        System.out.println(encounters.size());
+
+	        //   query = this.createPagingQuery(pagingInfo, query);
+	        List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
+	        List<Obs> obsPerVisit = null;
+
+	        for (Encounter enc : encounters) {
+	            Obs obs = null;
+
+	            String uuid = UUID.randomUUID().toString();
+	            try {
+	                obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+	                Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+
+	                Set<ARVDispensedItem> aRVDispensedItems = null;
+
+	                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+	                        visitDate, obsPerVisit, uuid);
+	                System.out.println("arv count " + aRVDispensedItems.size());
+
+	                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+	                        .collect(Collectors.toList());
+
+	                if (!collect.isEmpty()) {
+	                    arvsuConsumptionSummarys.addAll(collect);
+	                }
+
+	                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+	                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+	                        .collect(Collectors.toList());
+
+	                if (!collect1.isEmpty()) {
+	                    arvsuConsumptionSummarys.addAll(collect1);
+	                }
+
+	                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+	                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+	                        .collect(Collectors.toList());
+
+	                if (!collect2.isEmpty()) {
+	                    arvsuConsumptionSummarys.addAll(collect2);
+	                }
+
+	            } catch (DatatypeConfigurationException ex) {
+	                Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+	            }
+
+	        }
+
+	        arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+
+	        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+	            Integer count = arvsuConsumptionSummarys.size();
+
+	            pagingInfo.setTotalRecordCount(count.longValue());
+	            pagingInfo.setLoadRecordCount(false);
+	        }
+
+	        return arvsuConsumptionSummarys;
+	}
+
 	@Override
     public List<NewPharmacyConsumptionSummary>
            getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate,

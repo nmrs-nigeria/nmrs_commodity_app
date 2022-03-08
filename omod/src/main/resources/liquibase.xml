@@ -7021,5 +7021,27 @@ UPDATE inv_item SET concept_id = 165257 WHERE uuid = '8e346146-767d-11eb-9439-02
         </sql>  
     </changeSet>
     
+     <changeSet id="openhmis.inventory-v5.0" author="Toyeeb" >    
+	      <sql>
+	            <![CDATA[   
+	            SET FOREIGN_KEY_CHECKS=0;   
+				ALTER TABLE `inv_stockonhand_pharmacy_dispensary` ADD `concept_id` INT(11) NOT NULL AFTER `department_id`;
+	        	SET FOREIGN_KEY_CHECKS=1;
+	        	]]>           	
+	      </sql>  
+     </changeSet>
+    
+     <changeSet id="openhmis.inventory-v5.1" author="Toyeeb" >        
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;   
+			UPDATE inv_stockonhand_pharmacy_dispensary r 
+			JOIN inv_item t ON (r.item_id = t.item_id) AND t.concept_id IS NOT NULL 
+			SET r.concept_id = t.concept_id WHERE r.concept_id = 0;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
+    </changeSet>
+    
                           
 </databaseChangeLog>
