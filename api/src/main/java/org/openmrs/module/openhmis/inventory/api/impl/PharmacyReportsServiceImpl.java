@@ -20,12 +20,9 @@ import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.validator.util.LoggerFactory;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
-import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
-import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
 
 /**
  * @author MORRISON.I
@@ -183,4 +180,45 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
 		return null;
 	}
+
+	@Override
+    public String getARVCRRIFAdultModalitiesPharmacyConsumptionByDate(String reportId, Crrf reportData, String reportFolder) {
+        String fileName = Paths.get(reportFolder, reportId + ".csv").toString();
+
+        try {
+            BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
+
+            String[] HEADERS = {Utils.ARV_CRRIF_DRUG, Utils.ARV_CRRIF_BASICUNIT, Utils.ARV_CRRIF_BEGINBALANCE,
+                    Utils.ARV_CRRIF_QTYRECEIVED, Utils.ARV_CRRIF_QTYDISPENSED,Utils.ARV_CRRIF_POSITIVEADJ,Utils.ARV_CRRIF_NEGATIVEADJ,
+                    Utils.ARV_CRRIF_LOSSES,Utils.ARV_CRRIF_PHYSICALCOUNT,Utils.ARV_CRRIF_MAXSTOCKQTY,Utils.ARV_CRRIF_QTYORDER,Utils.ARV_CRRIF_REMARKS};
+            String[] HEADERS_ADULT = {Utils.ARV_CRRIF_ADULT};
+
+            CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+                    .withHeader(HEADERS));
+
+            reportData.getCrrfAdultRegimenCategory().stream()
+                    .forEach(con -> {
+
+                        try {
+
+                            csvPrinter.printRecord(con.getDrugs().getName(), con.getBasicUnit(),
+                                    con.getBeginningBalance(),
+                                    con.getQuantityReceived(), con.getQuantityDispensed(),
+                                    con.getPositiveAdjustments(),con.getNegativeAdjustments(),
+                                    con.getLossesdDamagesExpiries(),con.getPhysicalCount(),con.getMaximumStockQuantity(),
+                                    con.getQuantityToOrder());
+
+                        } catch (IOException ex) {
+                            LOG.error(ex.getMessage());
+                        }
+
+                    });
+            csvPrinter.flush();
+
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage());
+        }
+
+        return fileName;
+    }
 }

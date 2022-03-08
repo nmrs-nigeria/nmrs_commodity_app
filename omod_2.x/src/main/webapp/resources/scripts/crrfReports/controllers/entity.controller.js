@@ -126,7 +126,7 @@
                         console.log(JSON.stringify(data.results));
                         var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
                         localStorage.setItem("preview_url", JSON.stringify(data.results));
-                        window.location = final_url;
+                      //  window.location = final_url;
 
                         //  return printReport(data.results);
                     }
