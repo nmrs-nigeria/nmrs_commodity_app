@@ -28,6 +28,9 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.ndrmodel.TaskOperationType;
 import org.xml.sax.SAXException;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 // org.apache.xerces.jaxp.datatype.DatatypeFactoryImpl cannot be cast to javax.xml.datatype.DatatypeFactory
 /**
  * @author MORRISON.I
@@ -227,6 +230,12 @@ public class RestUtils {
 		return taskOperationType.getAdjustmentOperation() == null && taskOperationType.getDisposedOperation() == null
 		        && taskOperationType.getDistributionOperation() == null && taskOperationType.getReceiptOperation() == null
 		        && taskOperationType.getReturnOperation() == null && taskOperationType.getTransferOperation() == null;
+	}
+
+	public static Gson getGsonObject() {
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+
+		return gson;
 	}
 
 }

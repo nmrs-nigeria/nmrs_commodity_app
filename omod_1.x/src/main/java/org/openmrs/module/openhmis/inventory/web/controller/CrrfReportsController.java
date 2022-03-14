@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.gson.Gson;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
@@ -51,6 +54,8 @@ import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import static java.util.Comparator.comparingInt;
 import static java.util.stream.Collectors.collectingAndThen;
@@ -82,6 +87,8 @@ public class CrrfReportsController {
 	private String endDateStringVal;
 	List<Department> dispensarys = null;
 	HttpServletRequest request = null;
+
+	//Gson gson = RestUtils.getGsonObject();
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
@@ -116,30 +123,37 @@ public class CrrfReportsController {
 		System.out.println("End Date get: " + endDate);
 		System.out.println("CrrfType get: " + crrfCategory);
 
-		String path = routeReport(reportId, startDate, endDate, crrfCategory);
+		//		String path = routeReport(reportId, startDate, endDate, crrfCategory);
+		//		result.put("results", path);
 
-		result.put("results", path);
+		Crrf crrf = routeReport(reportId, startDate, endDate, crrfCategory);
+		result.put("results", crrf);
 
 		return result;
 
 	}
 
-	private String routeReport(String reportId, Date startDate, Date endDate, String crrfCategory) {
+	private Crrf routeReport(String reportId, Date startDate, Date endDate, String crrfCategory) {
 
 		if (crrfCategory.equalsIgnoreCase("ARV Cotrim")) {
 			reportId = ConstantUtils.ARV_COTRIM;
 			System.out.println("ARV Cotrim: " + crrfCategory);
 
-			aRVCotrimCrffReport(reportId, startDate, endDate);
-			return returnURL(reportId);
+			Crrf crrf = aRVCotrimCrffReport(reportId, startDate, endDate);
 
+			//String response = null;
+			//response = gson.toJson(crrf);
+
+			return crrf;
+
+			//return returnURL(reportId);
 		}
 
 		if (crrfCategory.equalsIgnoreCase("HIV RTKS and DBS")) {
 			reportId = ConstantUtils.HIV_RTKS_AND_DBS;
 			System.out.println("HIV RTKS and DBS: " + crrfCategory);
 			//  HIVRTKSDBSCrffReport(reportId, startDate, endDate);
-			return returnURL(reportId);
+			//return returnURL(reportId);
 
 		}
 
@@ -147,7 +161,7 @@ public class CrrfReportsController {
 			reportId = ConstantUtils.OTHER_OIS;
 			System.out.println("Other OIs: " + crrfCategory);
 			//   OtherOIsCrffReport(reportId, startDate, endDate);
-			return returnURL(reportId);
+			//return returnURL(reportId);
 
 		}
 
@@ -155,7 +169,7 @@ public class CrrfReportsController {
 
 	}
 
-	private String aRVCotrimCrffReport(String reportId, Date startDate, Date endDate) {
+	private Crrf aRVCotrimCrffReport(String reportId, Date startDate, Date endDate) {
 
 		Crrf crrf = new Crrf();
 
@@ -201,19 +215,40 @@ public class CrrfReportsController {
 		crrfAdultRegimenCategory = getCrrfAdultRegimenCategory(startDate, endDate);
 		crrf.setCrrfAdultRegimenCategory(crrfAdultRegimenCategory);
 
-		//		SearchConsumptionSummary searchConsumptionSummary = new SearchConsumptionSummary();
-		//		List<NewPharmacyConsumptionSummary> finalConsumptionSummarys = new ArrayList<>();
+		//crrfPediatricRegimenCategory
+		List<CrrfDetails> crrfPediatricRegimenCategory = new ArrayList<CrrfDetails>();
+		crrfPediatricRegimenCategory = getCrrfPediatricRegimenCategory(startDate, endDate);
+		crrf.setCrrfPediatricRegimenCategory(crrfPediatricRegimenCategory);
 
-		//			finalConsumptionSummarys = aRVPharmacyDispenseService
-		//			        .getAdultDrugDispenseSummaryByModalities(startDate, endDate);
+		//crrfOIRegimenCategory
+		List<CrrfDetails> crrfOIRegimenCategory = new ArrayList<CrrfDetails>();
+		crrfOIRegimenCategory = getCrrfOIRegimenCategory(startDate, endDate);
+		crrf.setCrrfOIRegimenCategory(crrfOIRegimenCategory);
+
+		//crrfAdvanceHIVRegimenCategory
+		List<CrrfDetails> crrfAdvanceHIVRegimenCategory = new ArrayList<CrrfDetails>();
+		crrfAdvanceHIVRegimenCategory = getCrrfAdvanceHIVRegimenCategory(startDate, endDate);
+		crrf.setCrrfAdvanceHIVRegimenCategory(crrfAdvanceHIVRegimenCategory);
+
+		//crrfTBRegimenCategory
+		List<CrrfDetails> crrfTBRegimenCategory = new ArrayList<CrrfDetails>();
+		crrfTBRegimenCategory = getCrrfTBRegimenCategory(startDate, endDate);
+		crrf.setCrrfTBRegimenCategory(crrfTBRegimenCategory);
+
+		//crrfSTIRegimenCategory
+		List<CrrfDetails> crrfSTIRegimenCategory = new ArrayList<CrrfDetails>();
+		crrfSTIRegimenCategory = getCrrfSTIRegimenCategory(startDate, endDate);
+		crrf.setCrrfSTIRegimenCategory(crrfSTIRegimenCategory);
 
 		String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
 
-		return iPharmacyReports
+		iPharmacyReports
 		        .getARVCRRIFAdultModalitiesPharmacyConsumptionByDate(reportId, crrf, reportFolder);
 
+		return crrf;
 	}
 
+	//adult
 	private List<CrrfDetails> getCrrfAdultRegimenCategory(Date startDate, Date endDate) {
 		List<CrrfDetails> crrfAdultRegimen = new ArrayList<CrrfDetails>();
 		
@@ -407,6 +442,986 @@ public class CrrfReportsController {
 
 		return crrfAdultRegimen;
 	}
+
+	//pediatric
+	private List<CrrfDetails> getCrrfPediatricRegimenCategory(Date startDate, Date endDate) {
+		List<CrrfDetails> crrfPedeatricRegimen = new ArrayList<CrrfDetails>();
+		
+		//get distinct items for Pedeatric regimen line as base.
+	  	List<Item> distinctPedeatricItemBase = new ArrayList<Item>();
+	  	distinctPedeatricItemBase = itemDataService.getAll().stream().filter(a -> a.getItemType()
+                 .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE) && a.getRegimenLine().equals(ConstantUtils.PEDITRIC))
+                 .collect(Collectors.toList());
+       
+        List<Item> distinctElements = new ArrayList<Item>();
+        for(Item it : distinctPedeatricItemBase) {
+        	if(!(distinctElements.stream().filter(b -> b.getConcept().getConceptId()
+        			.equals(it.getConcept().getConceptId())).findFirst().isPresent())) {
+        		distinctElements.add(it);
+        	}            		
+        }
+                                           
+	  	System.out.println("Pedeatric Item Size: " + distinctPedeatricItemBase.size());	
+	  	System.out.println("Distinct Pedeatric Item Size: " + distinctElements.size());
+	  	
+	  	//total consumed
+	  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
+	  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
+
+	  	System.out.println("Pedeatric forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
+	  	System.out.println("Pedeatric forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
+	  	
+	  	//total received
+	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+	  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
+	  	
+	  	//get minimum receipt operation data recorded
+	  	Date minimumReceiptDate = getMinimumReceiptDate();
+	  	
+	  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+	  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+	  	
+		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
+	  	
+	  	
+	  	//positive adjustment, negative adjustment, loses/damages/expires
+	  	List<CrffOperationsSummary> crffOperationsSummary = 
+	  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+	  
+  		int i = 0;
+	  	for(Item item: distinctElements) {
+	  		CrrfDetails crrfDetails = new CrrfDetails();
+	  		crrfDetails.setDrugs(item);
+	  		crrfDetails.setBasicUnit(item.getPackSize() +  " " + item.getUnitOfMeasure());	  		
+	  		
+	  		//get total quantity received for the item
+	  		Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream().
+	  			    filter(p -> p.getItem().equals(item)).findFirst();
+	  
+	  		PharmacyConsumptionSummary pcs = matchingObject.orElse(null);
+	  		if(pcs == null) {
+	  			crrfDetails.setQuantityReceived(0);
+	  		}else {
+	  			crrfDetails.setQuantityReceived(pcs.getTotalQuantityReceived());
+	  		}
+	  		
+	  		//get total quantity consumed for the item
+	  		Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = forPharmacyConsumptionSummary.stream().
+	  			    filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+	  
+	  		NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
+	  		if(pcsConsumed == null) {
+	  			crrfDetails.setQuantityDispensed(0);	  			
+	  		}else {
+	  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
+	  		}
+	  		
+	  		//get positive adjustment, negative adjustment and losses
+	  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+	  			    filter(b -> b.getItem().equals(item)).findFirst();
+	  
+	  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+	  		if(pcsAdjustment == null) {
+	  			crrfDetails.setPositiveAdjustments(0);	
+	  			crrfDetails.setNegativeAdjustments(0);	
+	  			crrfDetails.setLossesdDamagesExpiries(0);	
+	  		}else {
+	  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+	  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+	  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+	  		}
+	  		
+	  		//beginning balance
+	  		int totalBeginingBalanceReceived = 0; 
+	  		int totalBeginingBalanceConsumed = 0;
+	  		int beginingBalance = 0;
+	  		
+	  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+	  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+	  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+	  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+	  		if(pcsBeginingBalance == null) {
+	  			totalBeginingBalanceReceived = 0;
+	  		}else {
+	  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+	  		}
+	  		
+	  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+	  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+	  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+	  
+	  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+	  				matchingObjectBeginingBalanceConsumed.orElse(null);
+	  		if(pcsBeginingBalanceConsumed == null) {
+	  			totalBeginingBalanceConsumed = 0; 			
+	  		}else {
+	  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+	  		}
+	  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+	  		crrfDetails.setBeginningBalance(beginingBalance);
+	  		
+	  		//physical count or stock on hand
+	  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+	  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+	  				+ crrfDetails.getQuantityDispensed());
+	  		crrfDetails.setPhysicalCount(physicalCount);
+	  		
+	  		//maximum stock
+	  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+	  		
+	  		//quantity to order
+	  		crrfDetails.setQuantityToOrder(crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
+	  		
+	  		
+	  		i++;
+	  		System.out.println("Pedeatric Count: " + i);		  		
+	  		System.out.println("Pedeatric Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("Pedeatric Basic Unit: " + crrfDetails.getBasicUnit());
+	  		System.out.println("Pedeatric BeginningBalance: " + crrfDetails.getBeginningBalance());	
+	  		System.out.println("Pedeatric getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("Pedeatric QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+			System.out.println("Pedeatric PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("Pedeatric NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("Pedeatric LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("Pedeatric PhysicalCount: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("Pedeatric MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("Pedeatric QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+		  	
+		  	
+		  	//set negative values to 0
+		  	if(crrfDetails.getBeginningBalance() < 0) {
+		  		crrfDetails.setBeginningBalance(0);
+		  	}
+			if(crrfDetails.getQuantityReceived() < 0) {
+		  		crrfDetails.setQuantityReceived(0);
+		  	}
+			if(crrfDetails.getQuantityDispensed() < 0) {
+		  		crrfDetails.setQuantityDispensed(0);
+		  	}
+			if(crrfDetails.getPositiveAdjustments() < 0) {
+		  		crrfDetails.setPositiveAdjustments(0);
+		  	}
+			if(crrfDetails.getNegativeAdjustments() < 0) {
+		  		crrfDetails.setNegativeAdjustments(0);
+		  	}
+			if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+		  		crrfDetails.setLossesdDamagesExpiries(0);
+		  	}
+			if(crrfDetails.getPhysicalCount() < 0) {
+		  		crrfDetails.setPhysicalCount(0);
+		  	}
+			if(crrfDetails.getMaximumStockQuantity() < 0) {
+		  		crrfDetails.setMaximumStockQuantity(0);
+		  	}
+			if(crrfDetails.getQuantityToOrder() < 0) {
+		  		crrfDetails.setQuantityToOrder(0);
+		  	}
+			
+			System.out.println("Pedeatric Count: " + i);		  		
+	  		System.out.println("Pedeatric Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("Pedeatric Basic Unit 2: " + crrfDetails.getBasicUnit());
+	  		System.out.println("Pedeatric BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+	  		System.out.println("Pedeatric getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("Pedeatric QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+			System.out.println("Pedeatric PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("Pedeatric NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("Pedeatric LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("Pedeatric PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("Pedeatric MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("Pedeatric QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+			
+	  		crrfPedeatricRegimen.add(crrfDetails);
+	  	}
+
+		return crrfPedeatricRegimen;
+	}
+
+	//OI
+	private List<CrrfDetails> getCrrfOIRegimenCategory(Date startDate, Date endDate) {
+		List<CrrfDetails> crrfOIRegimen = new ArrayList<CrrfDetails>();
+		
+		//get distinct items for OI regimen line as base.
+	  	List<Item> distinctOIItemBase = new ArrayList<Item>();
+	  	distinctOIItemBase = itemDataService.getAll().stream().filter(a -> a.getItemType()
+                 .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE) && a.getRegimenLine().equals(ConstantUtils.OI))
+                 .collect(Collectors.toList());
+       
+        List<Item> distinctElements = new ArrayList<Item>();
+        for(Item it : distinctOIItemBase) {
+        	if(!(distinctElements.stream().filter(b -> b.getConcept().getConceptId()
+        			.equals(it.getConcept().getConceptId())).findFirst().isPresent())) {
+        		distinctElements.add(it);
+        	}            		
+        }
+                                           
+	  	System.out.println("OI Item Size: " + distinctOIItemBase.size());	
+	  	System.out.println("Distinct OI Item Size: " + distinctElements.size());
+	  	
+	  	//total consumed
+	  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
+	  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
+
+	  	System.out.println("OI forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
+	  	System.out.println("OI forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
+	  	
+	  	//total received
+	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+	  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
+	  	
+	  	//get minimum receipt operation data recorded
+	  	Date minimumReceiptDate = getMinimumReceiptDate();
+	  	
+	  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+	  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+	  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+	  	
+		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
+	  	
+	  	
+	  	//positive adjustment, negative adjustment, loses/damages/expires
+	  	List<CrffOperationsSummary> crffOperationsSummary = 
+	  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+	  
+  		int i = 0;
+	  	for(Item item: distinctElements) {
+	  		CrrfDetails crrfDetails = new CrrfDetails();
+	  		crrfDetails.setDrugs(item);
+	  		crrfDetails.setBasicUnit(item.getPackSize() +  " " + item.getUnitOfMeasure());	  		
+	  		
+	  		//get total quantity received for the item
+	  		Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream().
+	  			    filter(p -> p.getItem().equals(item)).findFirst();
+	  
+	  		PharmacyConsumptionSummary pcs = matchingObject.orElse(null);
+	  		if(pcs == null) {
+	  			crrfDetails.setQuantityReceived(0);
+	  		}else {
+	  			crrfDetails.setQuantityReceived(pcs.getTotalQuantityReceived());
+	  		}
+	  		
+	  		//get total quantity consumed for the item
+	  		Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = forPharmacyConsumptionSummary.stream().
+	  			    filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+	  
+	  		NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
+	  		if(pcsConsumed == null) {
+	  			crrfDetails.setQuantityDispensed(0);	  			
+	  		}else {
+	  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
+	  		}
+	  		
+	  		//get positive adjustment, negative adjustment and losses
+	  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+	  			    filter(b -> b.getItem().equals(item)).findFirst();
+	  
+	  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+	  		if(pcsAdjustment == null) {
+	  			crrfDetails.setPositiveAdjustments(0);	
+	  			crrfDetails.setNegativeAdjustments(0);	
+	  			crrfDetails.setLossesdDamagesExpiries(0);	
+	  		}else {
+	  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+	  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+	  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+	  		}
+	  		
+	  		//beginning balance
+	  		int totalBeginingBalanceReceived = 0; 
+	  		int totalBeginingBalanceConsumed = 0;
+	  		int beginingBalance = 0;
+	  		
+	  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+	  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+	  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+	  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+	  		if(pcsBeginingBalance == null) {
+	  			totalBeginingBalanceReceived = 0;
+	  		}else {
+	  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+	  		}
+	  		
+	  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+	  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+	  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+	  
+	  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+	  				matchingObjectBeginingBalanceConsumed.orElse(null);
+	  		if(pcsBeginingBalanceConsumed == null) {
+	  			totalBeginingBalanceConsumed = 0; 			
+	  		}else {
+	  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+	  		}
+	  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+	  		crrfDetails.setBeginningBalance(beginingBalance);
+	  		
+	  		//physical count or stock on hand
+	  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+	  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+	  				+ crrfDetails.getQuantityDispensed());
+	  		crrfDetails.setPhysicalCount(physicalCount);
+	  		
+	  		//maximum stock
+	  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+	  		
+	  		//quantity to order
+	  		crrfDetails.setQuantityToOrder(crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
+	  		
+	  		
+	  		i++;
+	  		System.out.println("OI Count: " + i);		  		
+	  		System.out.println("OI Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("OI Basic Unit: " + crrfDetails.getBasicUnit());
+	  		System.out.println("OI BeginningBalance: " + crrfDetails.getBeginningBalance());	
+	  		System.out.println("OI getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("OI QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+			System.out.println("OI PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("OI NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("OI LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("OI PhysicalCount: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("OI MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("OI QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+		  	
+		  	
+		  	//set negative values to 0
+		  	if(crrfDetails.getBeginningBalance() < 0) {
+		  		crrfDetails.setBeginningBalance(0);
+		  	}
+			if(crrfDetails.getQuantityReceived() < 0) {
+		  		crrfDetails.setQuantityReceived(0);
+		  	}
+			if(crrfDetails.getQuantityDispensed() < 0) {
+		  		crrfDetails.setQuantityDispensed(0);
+		  	}
+			if(crrfDetails.getPositiveAdjustments() < 0) {
+		  		crrfDetails.setPositiveAdjustments(0);
+		  	}
+			if(crrfDetails.getNegativeAdjustments() < 0) {
+		  		crrfDetails.setNegativeAdjustments(0);
+		  	}
+			if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+		  		crrfDetails.setLossesdDamagesExpiries(0);
+		  	}
+			if(crrfDetails.getPhysicalCount() < 0) {
+		  		crrfDetails.setPhysicalCount(0);
+		  	}
+			if(crrfDetails.getMaximumStockQuantity() < 0) {
+		  		crrfDetails.setMaximumStockQuantity(0);
+		  	}
+			if(crrfDetails.getQuantityToOrder() < 0) {
+		  		crrfDetails.setQuantityToOrder(0);
+		  	}
+			
+			System.out.println("OI Count: " + i);		  		
+	  		System.out.println("OI Item/Drugs: " + crrfDetails.getDrugs());
+	  		System.out.println("OI Basic Unit 2: " + crrfDetails.getBasicUnit());
+	  		System.out.println("OI BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+	  		System.out.println("OI getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+		  	System.out.println("OI QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+			System.out.println("OI PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+	  		System.out.println("OI NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+		  	System.out.println("OI LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+		  	System.out.println("OI PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+		  	System.out.println("OI MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+		  	System.out.println("OI QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+			
+	  		crrfOIRegimen.add(crrfDetails);
+	  	}
+
+		return crrfOIRegimen;
+	}
+
+	//OI
+	private List<CrrfDetails> getCrrfAdvanceHIVRegimenCategory(Date startDate, Date endDate) {
+			List<CrrfDetails> crrfAdvanceHIVRegimen = new ArrayList<CrrfDetails>();
+			
+			//get distinct items for OI regimen line as base.
+		  	List<Item> distinctAdvanceHIVItemBase = new ArrayList<Item>();
+		  	distinctAdvanceHIVItemBase = itemDataService.getAll().stream().filter(a -> a.getItemType()
+	                 .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE) && a.getRegimenLine().equals(ConstantUtils.ADVANCE_HIV))
+	                 .collect(Collectors.toList());
+	       
+	        List<Item> distinctElements = new ArrayList<Item>();
+	        for(Item it : distinctAdvanceHIVItemBase) {
+	        	if(!(distinctElements.stream().filter(b -> b.getConcept().getConceptId()
+	        			.equals(it.getConcept().getConceptId())).findFirst().isPresent())) {
+	        		distinctElements.add(it);
+	        	}            		
+	        }
+	                                           
+		  	System.out.println("AdvanceHIV Item Size: " + distinctAdvanceHIVItemBase.size());	
+		  	System.out.println("Distinct AdvanceHIV Item Size: " + distinctElements.size());
+		  	
+		  	//total consumed
+		  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
+		  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
+
+		  	System.out.println("AdvanceHIV forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
+		  	System.out.println("AdvanceHIV forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
+		  	
+		  	//total received
+		  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+		  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
+		  	
+		  	//get minimum receipt operation data recorded
+		  	Date minimumReceiptDate = getMinimumReceiptDate();
+		  	
+		  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+		  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+		  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+		  	
+			List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+	  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
+		  	
+		  	
+		  	//positive adjustment, negative adjustment, loses/damages/expires
+		  	List<CrffOperationsSummary> crffOperationsSummary = 
+		  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+		  
+	  		int i = 0;
+		  	for(Item item: distinctElements) {
+		  		CrrfDetails crrfDetails = new CrrfDetails();
+		  		crrfDetails.setDrugs(item);
+		  		crrfDetails.setBasicUnit(item.getPackSize() +  " " + item.getUnitOfMeasure());	  		
+		  		
+		  		//get total quantity received for the item
+		  		Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream().
+		  			    filter(p -> p.getItem().equals(item)).findFirst();
+		  
+		  		PharmacyConsumptionSummary pcs = matchingObject.orElse(null);
+		  		if(pcs == null) {
+		  			crrfDetails.setQuantityReceived(0);
+		  		}else {
+		  			crrfDetails.setQuantityReceived(pcs.getTotalQuantityReceived());
+		  		}
+		  		
+		  		//get total quantity consumed for the item
+		  		Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = forPharmacyConsumptionSummary.stream().
+		  			    filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+		  
+		  		NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
+		  		if(pcsConsumed == null) {
+		  			crrfDetails.setQuantityDispensed(0);	  			
+		  		}else {
+		  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
+		  		}
+		  		
+		  		//get positive adjustment, negative adjustment and losses
+		  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+		  			    filter(b -> b.getItem().equals(item)).findFirst();
+		  
+		  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+		  		if(pcsAdjustment == null) {
+		  			crrfDetails.setPositiveAdjustments(0);	
+		  			crrfDetails.setNegativeAdjustments(0);	
+		  			crrfDetails.setLossesdDamagesExpiries(0);	
+		  		}else {
+		  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+		  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+		  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+		  		}
+		  		
+		  		//beginning balance
+		  		int totalBeginingBalanceReceived = 0; 
+		  		int totalBeginingBalanceConsumed = 0;
+		  		int beginingBalance = 0;
+		  		
+		  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+		  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+		  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+		  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+		  		if(pcsBeginingBalance == null) {
+		  			totalBeginingBalanceReceived = 0;
+		  		}else {
+		  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+		  		}
+		  		
+		  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+		  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+		  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+		  
+		  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+		  				matchingObjectBeginingBalanceConsumed.orElse(null);
+		  		if(pcsBeginingBalanceConsumed == null) {
+		  			totalBeginingBalanceConsumed = 0; 			
+		  		}else {
+		  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+		  		}
+		  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+		  		crrfDetails.setBeginningBalance(beginingBalance);
+		  		
+		  		//physical count or stock on hand
+		  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+		  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+		  				+ crrfDetails.getQuantityDispensed());
+		  		crrfDetails.setPhysicalCount(physicalCount);
+		  		
+		  		//maximum stock
+		  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+		  		
+		  		//quantity to order
+		  		crrfDetails.setQuantityToOrder(crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
+		  		
+		  		
+		  		i++;
+		  		System.out.println("AdvanceHIV Count: " + i);		  		
+		  		System.out.println("AdvanceHIV Item/Drugs: " + crrfDetails.getDrugs());
+		  		System.out.println("AdvanceHIV Basic Unit: " + crrfDetails.getBasicUnit());
+		  		System.out.println("AdvanceHIV BeginningBalance: " + crrfDetails.getBeginningBalance());	
+		  		System.out.println("AdvanceHIV getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+			  	System.out.println("AdvanceHIV QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+				System.out.println("AdvanceHIV PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+		  		System.out.println("AdvanceHIV NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+			  	System.out.println("AdvanceHIV LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+			  	System.out.println("AdvanceHIV PhysicalCount: " + crrfDetails.getPhysicalCount());	
+			  	System.out.println("AdvanceHIV MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+			  	System.out.println("AdvanceHIV QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+			  	
+			  	
+			  	//set negative values to 0
+			  	if(crrfDetails.getBeginningBalance() < 0) {
+			  		crrfDetails.setBeginningBalance(0);
+			  	}
+				if(crrfDetails.getQuantityReceived() < 0) {
+			  		crrfDetails.setQuantityReceived(0);
+			  	}
+				if(crrfDetails.getQuantityDispensed() < 0) {
+			  		crrfDetails.setQuantityDispensed(0);
+			  	}
+				if(crrfDetails.getPositiveAdjustments() < 0) {
+			  		crrfDetails.setPositiveAdjustments(0);
+			  	}
+				if(crrfDetails.getNegativeAdjustments() < 0) {
+			  		crrfDetails.setNegativeAdjustments(0);
+			  	}
+				if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+			  		crrfDetails.setLossesdDamagesExpiries(0);
+			  	}
+				if(crrfDetails.getPhysicalCount() < 0) {
+			  		crrfDetails.setPhysicalCount(0);
+			  	}
+				if(crrfDetails.getMaximumStockQuantity() < 0) {
+			  		crrfDetails.setMaximumStockQuantity(0);
+			  	}
+				if(crrfDetails.getQuantityToOrder() < 0) {
+			  		crrfDetails.setQuantityToOrder(0);
+			  	}
+				
+				System.out.println("AdvanceHIV Count: " + i);		  		
+		  		System.out.println("AdvanceHIV Item/Drugs: " + crrfDetails.getDrugs());
+		  		System.out.println("AdvanceHIV Basic Unit 2: " + crrfDetails.getBasicUnit());
+		  		System.out.println("AdvanceHIV BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+		  		System.out.println("AdvanceHIV getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+			  	System.out.println("AdvanceHIV QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+				System.out.println("AdvanceHIV PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+		  		System.out.println("AdvanceHIV NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+			  	System.out.println("AdvanceHIV LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+			  	System.out.println("AdvanceHIV PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+			  	System.out.println("AdvanceHIV MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+			  	System.out.println("AdvanceHIV QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+				
+		  		crrfAdvanceHIVRegimen.add(crrfDetails);
+		  	}
+
+			return crrfAdvanceHIVRegimen;
+		}
+
+	//TB
+	private List<CrrfDetails> getCrrfTBRegimenCategory(Date startDate, Date endDate) {
+				List<CrrfDetails> crrfTBRegimen = new ArrayList<CrrfDetails>();
+				
+				//get distinct items for TB regimen line as base.
+			  	List<Item> distinctTBItemBase = new ArrayList<Item>();
+			  	distinctTBItemBase = itemDataService.getAll().stream().filter(a -> a.getItemType()
+		                 .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE) && a.getRegimenLine().equals(ConstantUtils.TB))
+		                 .collect(Collectors.toList());
+		       
+		        List<Item> distinctElements = new ArrayList<Item>();
+		        for(Item it : distinctTBItemBase) {
+		        	if(!(distinctElements.stream().filter(b -> b.getConcept().getConceptId()
+		        			.equals(it.getConcept().getConceptId())).findFirst().isPresent())) {
+		        		distinctElements.add(it);
+		        	}            		
+		        }
+		                                           
+			  	System.out.println("TB Item Size: " + distinctTBItemBase.size());	
+			  	System.out.println("Distinct TB Item Size: " + distinctElements.size());
+			  	
+			  	//total consumed
+			  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
+			  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
+
+			  	System.out.println("TB forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
+			  	System.out.println("TB forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
+			  	
+			  	//total received
+			  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+			  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
+			  	
+			  	//get minimum receipt operation data recorded
+			  	Date minimumReceiptDate = getMinimumReceiptDate();
+			  	
+			  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+			  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+			  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+			  	
+				List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+		  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(
+		  		        		minimumReceiptDate, startDate, null);
+			  	
+			  	
+			  	//positive adjustment, negative adjustment, loses/damages/expires
+			  	List<CrffOperationsSummary> crffOperationsSummary = 
+			  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+			  
+		  		int i = 0;
+			  	for(Item item: distinctElements) {
+			  		CrrfDetails crrfDetails = new CrrfDetails();
+			  		crrfDetails.setDrugs(item);
+			  		crrfDetails.setBasicUnit(item.getPackSize() +  " " + item.getUnitOfMeasure());	  		
+			  		
+			  		//get total quantity received for the item
+			  		Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream().
+			  			    filter(p -> p.getItem().equals(item)).findFirst();
+			  
+			  		PharmacyConsumptionSummary pcs = matchingObject.orElse(null);
+			  		if(pcs == null) {
+			  			crrfDetails.setQuantityReceived(0);
+			  		}else {
+			  			crrfDetails.setQuantityReceived(pcs.getTotalQuantityReceived());
+			  		}
+			  		
+			  		//get total quantity consumed for the item
+			  		Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = forPharmacyConsumptionSummary.stream().
+			  			    filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+			  
+			  		NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
+			  		if(pcsConsumed == null) {
+			  			crrfDetails.setQuantityDispensed(0);	  			
+			  		}else {
+			  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
+			  		}
+			  		
+			  		//get positive adjustment, negative adjustment and losses
+			  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+			  			    filter(b -> b.getItem().equals(item)).findFirst();
+			  
+			  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+			  		if(pcsAdjustment == null) {
+			  			crrfDetails.setPositiveAdjustments(0);	
+			  			crrfDetails.setNegativeAdjustments(0);	
+			  			crrfDetails.setLossesdDamagesExpiries(0);	
+			  		}else {
+			  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+			  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+			  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+			  		}
+			  		
+			  		//beginning balance
+			  		int totalBeginingBalanceReceived = 0; 
+			  		int totalBeginingBalanceConsumed = 0;
+			  		int beginingBalance = 0;
+			  		
+			  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+			  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+			  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+			  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+			  		if(pcsBeginingBalance == null) {
+			  			totalBeginingBalanceReceived = 0;
+			  		}else {
+			  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+			  		}
+			  		
+			  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+			  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+			  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+			  
+			  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+			  				matchingObjectBeginingBalanceConsumed.orElse(null);
+			  		if(pcsBeginingBalanceConsumed == null) {
+			  			totalBeginingBalanceConsumed = 0; 			
+			  		}else {
+			  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+			  		}
+			  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+			  		crrfDetails.setBeginningBalance(beginingBalance);
+			  		
+			  		//physical count or stock on hand
+			  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+			  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+			  				+ crrfDetails.getQuantityDispensed());
+			  		crrfDetails.setPhysicalCount(physicalCount);
+			  		
+			  		//maximum stock
+			  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+			  		
+			  		//quantity to order
+			  		crrfDetails.setQuantityToOrder(crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
+			  		
+			  		
+			  		i++;
+			  		System.out.println("TB Count: " + i);		  		
+			  		System.out.println("TB Item/Drugs: " + crrfDetails.getDrugs());
+			  		System.out.println("TB Basic Unit: " + crrfDetails.getBasicUnit());
+			  		System.out.println("TB BeginningBalance: " + crrfDetails.getBeginningBalance());	
+			  		System.out.println("TB getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+				  	System.out.println("TB QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+					System.out.println("TB PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+			  		System.out.println("TB NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+				  	System.out.println("TB LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+				  	System.out.println("TB PhysicalCount: " + crrfDetails.getPhysicalCount());	
+				  	System.out.println("TB MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+				  	System.out.println("TB QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+				  	
+				  	
+				  	//set negative values to 0
+				  	if(crrfDetails.getBeginningBalance() < 0) {
+				  		crrfDetails.setBeginningBalance(0);
+				  	}
+					if(crrfDetails.getQuantityReceived() < 0) {
+				  		crrfDetails.setQuantityReceived(0);
+				  	}
+					if(crrfDetails.getQuantityDispensed() < 0) {
+				  		crrfDetails.setQuantityDispensed(0);
+				  	}
+					if(crrfDetails.getPositiveAdjustments() < 0) {
+				  		crrfDetails.setPositiveAdjustments(0);
+				  	}
+					if(crrfDetails.getNegativeAdjustments() < 0) {
+				  		crrfDetails.setNegativeAdjustments(0);
+				  	}
+					if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+				  		crrfDetails.setLossesdDamagesExpiries(0);
+				  	}
+					if(crrfDetails.getPhysicalCount() < 0) {
+				  		crrfDetails.setPhysicalCount(0);
+				  	}
+					if(crrfDetails.getMaximumStockQuantity() < 0) {
+				  		crrfDetails.setMaximumStockQuantity(0);
+				  	}
+					if(crrfDetails.getQuantityToOrder() < 0) {
+				  		crrfDetails.setQuantityToOrder(0);
+				  	}
+					
+					System.out.println("TB Count: " + i);		  		
+			  		System.out.println("TB Item/Drugs: " + crrfDetails.getDrugs());
+			  		System.out.println("TB Basic Unit 2: " + crrfDetails.getBasicUnit());
+			  		System.out.println("TB BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+			  		System.out.println("TB getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+				  	System.out.println("TB QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+					System.out.println("TB PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+			  		System.out.println("TB NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+				  	System.out.println("TB LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+				  	System.out.println("TB PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+				  	System.out.println("TB MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+				  	System.out.println("TB QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+					
+			  		crrfTBRegimen.add(crrfDetails);
+			  	}
+
+				return crrfTBRegimen;
+	}
+
+	//STI
+	private List<CrrfDetails> getCrrfSTIRegimenCategory(Date startDate, Date endDate) {
+					List<CrrfDetails> crrfSTIRegimen = new ArrayList<CrrfDetails>();
+					
+					//get distinct items for TB regimen line as base.
+				  	List<Item> distinctSTIItemBase = new ArrayList<Item>();
+				  	distinctSTIItemBase = itemDataService.getAll().stream().filter(a -> a.getItemType()
+			                 .equals(ConstantUtils.PHARMACY_COMMODITY_TYPE) && a.getRegimenLine().equals(ConstantUtils.STI))
+			                 .collect(Collectors.toList());
+			       
+			        List<Item> distinctElements = new ArrayList<Item>();
+			        for(Item it : distinctSTIItemBase) {
+			        	if(!(distinctElements.stream().filter(b -> b.getConcept().getConceptId()
+			        			.equals(it.getConcept().getConceptId())).findFirst().isPresent())) {
+			        		distinctElements.add(it);
+			        	}            		
+			        }
+			                                           
+				  	System.out.println("STI Item Size: " + distinctSTIItemBase.size());	
+				  	System.out.println("Distinct STI Item Size: " + distinctElements.size());
+				  	
+				  	//total consumed
+				  	List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummary =
+				  		        iARVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
+
+				  	System.out.println("STI forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary);
+				  	System.out.println("STI forPharmacyConsumptionSummary: " + forPharmacyConsumptionSummary.size());
+				  	
+				  	//total received
+				  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummary = 
+				  			consumptionSummaryAtStockroom(startDate, endDate, distinctElements);
+				  	
+				  	//get minimum receipt operation data recorded
+				  	Date minimumReceiptDate = getMinimumReceiptDate();
+				  	
+				  	//beginning balance - get stock on hand of data below the start date (total received and total consumed)
+				  	List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+				  			consumptionSummaryAtStockroomBeggingBalance(startDate, endDate, distinctElements);
+				  	
+					List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed =
+			  		        iARVPharmacyDispenseService.getDrugDispenseSummaryBeginingBalance(
+			  		        		minimumReceiptDate, startDate, null);
+				  	
+				  	
+				  	//positive adjustment, negative adjustment, loses/damages/expires
+				  	List<CrffOperationsSummary> crffOperationsSummary = 
+				  			positiveAndNegativeAdjustment(startDate, endDate, distinctElements);
+				  
+			  		int i = 0;
+				  	for(Item item: distinctElements) {
+				  		CrrfDetails crrfDetails = new CrrfDetails();
+				  		crrfDetails.setDrugs(item);
+				  		crrfDetails.setBasicUnit(item.getPackSize() +  " " + item.getUnitOfMeasure());	  		
+				  		
+				  		//get total quantity received for the item
+				  		Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream().
+				  			    filter(p -> p.getItem().equals(item)).findFirst();
+				  
+				  		PharmacyConsumptionSummary pcs = matchingObject.orElse(null);
+				  		if(pcs == null) {
+				  			crrfDetails.setQuantityReceived(0);
+				  		}else {
+				  			crrfDetails.setQuantityReceived(pcs.getTotalQuantityReceived());
+				  		}
+				  		
+				  		//get total quantity consumed for the item
+				  		Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = 
+				  				forPharmacyConsumptionSummary.stream().
+				  			    filter(a -> a.getItemConceptId().equals(
+				  			    		item.getConcept().getConceptId())).findFirst();
+				  
+				  		NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
+				  		if(pcsConsumed == null) {
+				  			crrfDetails.setQuantityDispensed(0);	  			
+				  		}else {
+				  			crrfDetails.setQuantityDispensed(pcsConsumed.getTotalQuantityReceived());
+				  		}
+				  		
+				  		//get positive adjustment, negative adjustment and losses
+				  		Optional<CrffOperationsSummary> matchingObjectAdjustment = crffOperationsSummary.stream().
+				  			    filter(b -> b.getItem().equals(item)).findFirst();
+				  
+				  		CrffOperationsSummary pcsAdjustment = matchingObjectAdjustment.orElse(null);
+				  		if(pcsAdjustment == null) {
+				  			crrfDetails.setPositiveAdjustments(0);	
+				  			crrfDetails.setNegativeAdjustments(0);	
+				  			crrfDetails.setLossesdDamagesExpiries(0);	
+				  		}else {
+				  			crrfDetails.setPositiveAdjustments(pcsAdjustment.getTotalPositiveAdjustment());	
+				  			crrfDetails.setNegativeAdjustments(pcsAdjustment.getTotalNegativeAdjustment());	
+				  			crrfDetails.setLossesdDamagesExpiries(pcsAdjustment.getTotalLossDamagesExpires());	
+				  		}
+				  		
+				  		//beginning balance
+				  		int totalBeginingBalanceReceived = 0; 
+				  		int totalBeginingBalanceConsumed = 0;
+				  		int beginingBalance = 0;
+				  		
+				  		Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+				  				pharmacyConsumptionSummaryBeginningBalanceReceived.stream().
+				  			    filter(pr -> pr.getItem().equals(item)).findFirst();	  
+				  		PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+				  		if(pcsBeginingBalance == null) {
+				  			totalBeginingBalanceReceived = 0;
+				  		}else {
+				  			totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+				  		}
+				  		
+				  		Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+				  				forPharmacyConsumptionSummaryBeginningBalanceConsumed.stream().
+				  			    filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+				  
+				  		NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+				  				matchingObjectBeginingBalanceConsumed.orElse(null);
+				  		if(pcsBeginingBalanceConsumed == null) {
+				  			totalBeginingBalanceConsumed = 0; 			
+				  		}else {
+				  			totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+				  		}
+				  		beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+				  		crrfDetails.setBeginningBalance(beginingBalance);
+				  		
+				  		//physical count or stock on hand
+				  		Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
+				  		+ crrfDetails.getPositiveAdjustments()) - (crrfDetails.getNegativeAdjustments()
+				  				+ crrfDetails.getQuantityDispensed());
+				  		crrfDetails.setPhysicalCount(physicalCount);
+				  		
+				  		//maximum stock
+				  		crrfDetails.setMaximumStockQuantity(crrfDetails.getQuantityDispensed() * 2);
+				  		
+				  		//quantity to order
+				  		crrfDetails.setQuantityToOrder(
+				  				crrfDetails.getMaximumStockQuantity() - crrfDetails.getPhysicalCount());
+				  		
+				  		
+				  		i++;
+				  		System.out.println("STI Count: " + i);		  		
+				  		System.out.println("STI Item/Drugs: " + crrfDetails.getDrugs());
+				  		System.out.println("STI Basic Unit: " + crrfDetails.getBasicUnit());
+				  		System.out.println("STI BeginningBalance: " + crrfDetails.getBeginningBalance());	
+				  		System.out.println("STI getTotalQuantityReceived: " + crrfDetails.getQuantityReceived());
+					  	System.out.println("STI QuantityDispensed: " + crrfDetails.getQuantityDispensed());	
+						System.out.println("STI PositiveAdjustments: " + crrfDetails.getPositiveAdjustments());
+				  		System.out.println("STI NegativeAdjustments: " + crrfDetails.getNegativeAdjustments());
+					  	System.out.println("STI LossesdDamagesExpiries: " + crrfDetails.getLossesdDamagesExpiries());	
+					  	System.out.println("STI PhysicalCount: " + crrfDetails.getPhysicalCount());	
+					  	System.out.println("STI MaximumStockQuantity: " + crrfDetails.getMaximumStockQuantity());	
+					  	System.out.println("STI QuantityToOrder: " + crrfDetails.getQuantityToOrder());	
+					  	
+					  	
+					  	//set negative values to 0
+					  	if(crrfDetails.getBeginningBalance() < 0) {
+					  		crrfDetails.setBeginningBalance(0);
+					  	}
+						if(crrfDetails.getQuantityReceived() < 0) {
+					  		crrfDetails.setQuantityReceived(0);
+					  	}
+						if(crrfDetails.getQuantityDispensed() < 0) {
+					  		crrfDetails.setQuantityDispensed(0);
+					  	}
+						if(crrfDetails.getPositiveAdjustments() < 0) {
+					  		crrfDetails.setPositiveAdjustments(0);
+					  	}
+						if(crrfDetails.getNegativeAdjustments() < 0) {
+					  		crrfDetails.setNegativeAdjustments(0);
+					  	}
+						if(crrfDetails.getLossesdDamagesExpiries() < 0) {
+					  		crrfDetails.setLossesdDamagesExpiries(0);
+					  	}
+						if(crrfDetails.getPhysicalCount() < 0) {
+					  		crrfDetails.setPhysicalCount(0);
+					  	}
+						if(crrfDetails.getMaximumStockQuantity() < 0) {
+					  		crrfDetails.setMaximumStockQuantity(0);
+					  	}
+						if(crrfDetails.getQuantityToOrder() < 0) {
+					  		crrfDetails.setQuantityToOrder(0);
+					  	}
+						
+						System.out.println("STI Count: " + i);		  		
+				  		System.out.println("STI Item/Drugs: " + crrfDetails.getDrugs());
+				  		System.out.println("STI Basic Unit 2: " + crrfDetails.getBasicUnit());
+				  		System.out.println("STI BeginningBalance 2: " + crrfDetails.getBeginningBalance());	
+				  		System.out.println("STI getTotalQuantityReceived 2: " + crrfDetails.getQuantityReceived());
+					  	System.out.println("STI QuantityDispensed 2: " + crrfDetails.getQuantityDispensed());	
+						System.out.println("STI PositiveAdjustments 2: " + crrfDetails.getPositiveAdjustments());
+				  		System.out.println("STI NegativeAdjustments 2: " + crrfDetails.getNegativeAdjustments());
+					  	System.out.println("STI LossesdDamagesExpiries 2: " + crrfDetails.getLossesdDamagesExpiries());	
+					  	System.out.println("STI PhysicalCount 2: " + crrfDetails.getPhysicalCount());	
+					  	System.out.println("STI MaximumStockQuantity 2: " + crrfDetails.getMaximumStockQuantity());	
+					  	System.out.println("STI QuantityToOrder: 2 " + crrfDetails.getQuantityToOrder());	
+						
+				  		crrfSTIRegimen.add(crrfDetails);
+				  	}
+
+					return crrfSTIRegimen;
+		}
 
 	private List<PharmacyConsumptionSummary> consumptionSummaryAtStockroom(
 	        Date startDate, Date endDate, List<Item> distinctItems) {

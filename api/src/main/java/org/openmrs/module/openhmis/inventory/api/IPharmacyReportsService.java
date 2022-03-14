@@ -8,7 +8,11 @@ package org.openmrs.module.openhmis.inventory.api;
 import java.util.Date;
 import java.util.List;
 
-import org.openmrs.module.openhmis.inventory.api.model.*;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.ItemExpirationSummaryReport;
+import org.openmrs.module.openhmis.inventory.api.model.Crrf;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 
 /**
  * @author MORRISON.I
