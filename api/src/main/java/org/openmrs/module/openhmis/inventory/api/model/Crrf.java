@@ -2,13 +2,18 @@ package org.openmrs.module.openhmis.inventory.api.model;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.openmrs.OpenmrsObject;
 import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpenmrsMetadata;
 
 /**
  * @author Toyeeb Abdulfatai
  */
-public class Crrf extends BaseSerializableOpenmrsMetadata {
+public class Crrf extends BaseSerializableOpenmrsMetadata implements OpenmrsObject {
+
+	public static final long serialVersionUID = 2L;
 
 	private Integer crrfReportId;
 
@@ -26,26 +31,26 @@ public class Crrf extends BaseSerializableOpenmrsMetadata {
 
 	private Date datePrepared;
 
-	private List<CrrfDetails> crrfAdultRegimenCategory;
+	private Set<CrrfDetails> crrfAdultRegimenCategory;
 
-	private List<CrrfDetails> crrfPediatricRegimenCategory;
+	private Set<CrrfDetails> crrfPediatricRegimenCategory;
 
-	private List<CrrfDetails> crrfOIRegimenCategory;
+	private Set<CrrfDetails> crrfOIRegimenCategory;
 
-	private List<CrrfDetails> crrfAdvanceHIVRegimenCategory;
+	private Set<CrrfDetails> crrfAdvanceHIVRegimenCategory;
 
-	private List<CrrfDetails> crrfTBRegimenCategory;
+	private Set<CrrfDetails> crrfTBRegimenCategory;
 
-	private List<CrrfDetails> crrfSTIRegimenCategory;
+	private Set<CrrfDetails> crrfSTIRegimenCategory;
 
 	public Crrf() {}
 
 	public Crrf(Integer crrfReportId, String facilityName, String facilityCode,
 	    String lga, String state, Date reportingPeriodStart,
-	    Date reportingPeriodEnd, Date datePrepared, List<CrrfDetails> crrfAdultRegimenCategory,
-	    List<CrrfDetails> crrfPediatricRegimenCategory, List<CrrfDetails> crrfOIRegimenCategory,
-	    List<CrrfDetails> crrfAdvanceHIVRegimenCategory, List<CrrfDetails> crrfTBRegimenCategory,
-	    List<CrrfDetails> crrfSTIRegimenCategory) {
+	    Date reportingPeriodEnd, Date datePrepared, Set<CrrfDetails> crrfAdultRegimenCategory,
+	    Set<CrrfDetails> crrfPediatricRegimenCategory, Set<CrrfDetails> crrfOIRegimenCategory,
+	    Set<CrrfDetails> crrfAdvanceHIVRegimenCategory, Set<CrrfDetails> crrfTBRegimenCategory,
+	    Set<CrrfDetails> crrfSTIRegimenCategory) {
 		super();
 		this.crrfReportId = crrfReportId;
 		this.facilityName = facilityName;
@@ -127,51 +132,51 @@ public class Crrf extends BaseSerializableOpenmrsMetadata {
 		this.datePrepared = datePrepared;
 	}
 
-	public List<CrrfDetails> getCrrfAdultRegimenCategory() {
+	public Set<CrrfDetails> getCrrfAdultRegimenCategory() {
 		return crrfAdultRegimenCategory;
 	}
 
-	public void setCrrfAdultRegimenCategory(List<CrrfDetails> crrfAdultRegimenCategory) {
+	public void setCrrfAdultRegimenCategory(Set<CrrfDetails> crrfAdultRegimenCategory) {
 		this.crrfAdultRegimenCategory = crrfAdultRegimenCategory;
 	}
 
-	public List<CrrfDetails> getCrrfPediatricRegimenCategory() {
+	public Set<CrrfDetails> getCrrfPediatricRegimenCategory() {
 		return crrfPediatricRegimenCategory;
 	}
 
-	public void setCrrfPediatricRegimenCategory(List<CrrfDetails> crrfPediatricRegimenCategory) {
+	public void setCrrfPediatricRegimenCategory(Set<CrrfDetails> crrfPediatricRegimenCategory) {
 		this.crrfPediatricRegimenCategory = crrfPediatricRegimenCategory;
 	}
 
-	public List<CrrfDetails> getCrrfOIRegimenCategory() {
+	public Set<CrrfDetails> getCrrfOIRegimenCategory() {
 		return crrfOIRegimenCategory;
 	}
 
-	public void setCrrfOIRegimenCategory(List<CrrfDetails> crrfOIRegimenCategory) {
+	public void setCrrfOIRegimenCategory(Set<CrrfDetails> crrfOIRegimenCategory) {
 		this.crrfOIRegimenCategory = crrfOIRegimenCategory;
 	}
 
-	public List<CrrfDetails> getCrrfAdvanceHIVRegimenCategory() {
+	public Set<CrrfDetails> getCrrfAdvanceHIVRegimenCategory() {
 		return crrfAdvanceHIVRegimenCategory;
 	}
 
-	public void setCrrfAdvanceHIVRegimenCategory(List<CrrfDetails> crrfAdvanceHIVRegimenCategory) {
+	public void setCrrfAdvanceHIVRegimenCategory(Set<CrrfDetails> crrfAdvanceHIVRegimenCategory) {
 		this.crrfAdvanceHIVRegimenCategory = crrfAdvanceHIVRegimenCategory;
 	}
 
-	public List<CrrfDetails> getCrrfTBRegimenCategory() {
+	public Set<CrrfDetails> getCrrfTBRegimenCategory() {
 		return crrfTBRegimenCategory;
 	}
 
-	public void setCrrfTBRegimenCategory(List<CrrfDetails> crrfTBRegimenCategory) {
+	public void setCrrfTBRegimenCategory(Set<CrrfDetails> crrfTBRegimenCategory) {
 		this.crrfTBRegimenCategory = crrfTBRegimenCategory;
 	}
 
-	public List<CrrfDetails> getCrrfSTIRegimenCategory() {
+	public Set<CrrfDetails> getCrrfSTIRegimenCategory() {
 		return crrfSTIRegimenCategory;
 	}
 
-	public void setCrrfSTIRegimenCategory(List<CrrfDetails> crrfSTIRegimenCategory) {
+	public void setCrrfSTIRegimenCategory(Set<CrrfDetails> crrfSTIRegimenCategory) {
 		this.crrfSTIRegimenCategory = crrfSTIRegimenCategory;
 	}
 
@@ -185,6 +190,12 @@ public class Crrf extends BaseSerializableOpenmrsMetadata {
 	public void setId(Integer id) {
 		// TODO Auto-generated method stub
 		this.crrfReportId = id;
+	}
+
+	@Override
+	@JsonIgnore
+	public Boolean getRetired() {
+		return super.getRetired();
 	}
 
 }

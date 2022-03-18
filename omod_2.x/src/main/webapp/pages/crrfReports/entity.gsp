@@ -41,7 +41,7 @@
             <span>CRRF Report</span>
         </legend>
         <small>select date range</small>
-         <ul class="table-layout">
+        <ul class="table-layout">
             <li><label>Start Date</label></li>
             <li>
                 ${ ui.includeFragment("uicommons", "field/datetimepicker", [
@@ -77,7 +77,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_CRFFReport()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateCRFFReport(currentPage)">Generate Report</a></li>
         </ul>
     </fieldset>
     

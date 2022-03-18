@@ -8,7 +8,7 @@ import org.openmrs.BaseOpenmrsObject;
 public class CrrfDetails extends BaseOpenmrsObject {
 
 	private Integer id;
-	private Item drugs;
+	private String drugs;
 	private String basicUnit;
 	private Integer beginningBalance;
 	private Integer quantityReceived;
@@ -30,11 +30,11 @@ public class CrrfDetails extends BaseOpenmrsObject {
 
 	}
 
-	public Item getDrugs() {
+	public String getDrugs() {
 		return drugs;
 	}
 
-	public void setDrugs(Item drugs) {
+	public void setDrugs(String drugs) {
 		this.drugs = drugs;
 	}
 
