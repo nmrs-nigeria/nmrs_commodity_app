@@ -909,7 +909,11 @@ public class ItemStockDetailDataServiceImpl
 			vs.setUpdatableQuantity(opItem.getQuantity());
 			vs.setDepartment(operation.getDepartment());
 			vs.setDateCreated(operation.getDateCreated());
-			vs.setConceptId(opItem.getItem().getConcept().getConceptId());
+			if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)) {
+				vs.setConceptId(opItem.getItem().getConcept().getConceptId());
+			} else {
+				vs.setConceptId(0);
+			}
 
 			int updateAbleQuantity = 0;
 			int finalQuantity = 0;

@@ -216,10 +216,6 @@ public class Item extends BaseSimpleCustomizableMetadata<ItemAttribute> implemen
 		return this.conceptAccepted;
 	}
 
-	public boolean isConceptAccepted() {
-		return Boolean.TRUE.equals(getConceptAccepted());
-	}
-
 	public void setConceptAccepted(Boolean conceptAccepted) {
 		this.conceptAccepted = conceptAccepted;
 	}

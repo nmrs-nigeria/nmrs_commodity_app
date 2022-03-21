@@ -38,6 +38,7 @@
 
             EntityRestFactory.setCustomBaseUrl(ROOT_URL);
             EntityRestFactory.loadResults(requestParams, successCallback, function (error) {
+                console.log("Error Message:")
                 console.log(error)
             });
         }

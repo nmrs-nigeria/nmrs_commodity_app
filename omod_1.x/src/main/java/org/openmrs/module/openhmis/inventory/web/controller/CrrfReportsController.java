@@ -5,6 +5,8 @@
  */
 package org.openmrs.module.openhmis.inventory.web.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,6 +64,7 @@ import static java.util.stream.Collectors.collectingAndThen;
 import static java.util.stream.Collectors.toCollection;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.parser.Entity;
 
 /**
  * @author MORRISON.I
@@ -92,7 +95,7 @@ public class CrrfReportsController {
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
-	public SimpleObject get(@RequestParam(value = "reportId", required = true) String reportId,
+	public String get(@RequestParam(value = "reportId", required = true) String reportId,
 	        @RequestParam(value = "startDate", required = true) String startDateString,
 	        @RequestParam(value = "endDate", required = true) String endDateString,
 	        @RequestParam(value = "crrfCategory", required = false) String crrfCategory,
@@ -127,9 +130,13 @@ public class CrrfReportsController {
 		//		result.put("results", path);
 
 		Crrf crrf = routeReport(reportId, startDate, endDate, crrfCategory);
-		result.put("results", crrf);
-
-		return result;
+		//result.put("results", crrf);
+		//		Gson gson = new Gson();
+		//		System.out.println("Crrf: " + crrf);
+		//		gson.toJson(crrf);
+		//		System.out.println("Crrf: " + gson.toJson(crrf));
+		//		String results = gson.toJson(crrf);
+		return "results";
 
 	}
 

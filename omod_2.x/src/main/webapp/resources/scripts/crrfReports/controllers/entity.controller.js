@@ -112,10 +112,13 @@
             if (parametersAreValid) {
 
                 $scope.loading = true;
+                var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
+                window.location = final_url;
 
                 CrrfReportsRestfulService.getReport("crrf_report", CrrfReportsFunctions.formatDate(startDate),
                         CrrfReportsFunctions.formatDate(endDate),crrfCategory, function (data) {
                     //	$scope.expiringStockReport = data;
+
                     console.log('logging error data');
                     console.log(data.error);
                     if (data.error !== undefined) {
@@ -127,8 +130,8 @@
                         console.log(JSON.stringify(data.results));
                         console.log(data.results);
                         var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
-                        localStorage.setItem("preview_url", JSON.stringify(data.results));
-                        // window.location = final_url;
+                      //  localStorage.setItem("preview_url", JSON.stringify(data.results));
+                         window.location = final_url;
 
                         //  return printReport(data.results);
                     }
