@@ -11,9 +11,9 @@ ui.includeCss("openhmis.inventory", "extCss/dataTables.bootstrap.css")
 ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery-3.5.1.js")
 ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/bootstrap.min.js")
 ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv.min.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.dataTables.min.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/dataTables.bootstrap.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_html_table.js")
+
+
+    ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.table2excel.js")
 
 %>
 
@@ -49,43 +49,55 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
      const dataURL = JSON.parse(localStorage.getItem("preview_url"));   
      console.log("dataURL: " + dataURL);     
      
-     displayData();
-     
-     function displayData() {
-     	var rsd = dataURL.reportingPeriodStart.split("T");
-     	var repDateStart = rsd[0];
-     	var red = dataURL.reportingPeriodEnd.split("T");
-     	var repDateEnd = red[0];
-     	var dp = dataURL.datePrepared.split("T");
-     	var repDatePrepared = dp[0];
-     
-        var content = "";
-        content += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
-        content += "<thead>";
-	    content += "<tr><th>Facility Name: </th><td>" + dataURL.facilityName + "</td><th>Reporting Period Start: </th><td colspan='3'>" + repDateStart + "</td></tr>";
-	    content += "<tr><th>Facility Code: </th><td>" + dataURL.facilityCode + "</th><th>Reporting Period End: </th><td>" + repDateEnd + "</td><th>Maximum Stock Level: </th><td>4 Months</td></tr>";
-	    content += "<tr><th>LGA: </th><td>" + dataURL.lga + "</td><th>Date Prepared: </th><td>" + repDatePrepared + "</td><th>Minimum Stock Level:</th><td> 2 Months</td></tr>";
-	    content += "<tr><th>State: </th><td colspan='5'>" + dataURL.state + "</td></tr>";
-	    content += "</thead>";
-	    content += "</table>";            
-        jq("#crrf-list-table").append(content);
-    }
+    //  displayData();
+    //
+    //  function displayData() {
+    //  	var rsd = dataURL.reportingPeriodStart.split("T");
+    //  	var repDateStart = rsd[0];
+    //  	var red = dataURL.reportingPeriodEnd.split("T");
+    //  	var repDateEnd = red[0];
+    //  	var dp = dataURL.datePrepared.split("T");
+    //  	var repDatePrepared = dp[0];
+    //
+    //     var content = "";
+    //     content += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
+    //     content += "<thead>";
+	 //    content += "<tr><th>Facility Name: </th><td>" + dataURL.facilityName + "</td><th>Reporting Period Start: </th><td colspan='3'>" + repDateStart + "</td></tr>";
+	 //    content += "<tr><th>Facility Code: </th><td>" + dataURL.facilityCode + "</th><th>Reporting Period End: </th><td>" + repDateEnd + "</td><th>Maximum Stock Level: </th><td>4 Months</td></tr>";
+	 //    content += "<tr><th>LGA: </th><td>" + dataURL.lga + "</td><th>Date Prepared: </th><td>" + repDatePrepared + "</td><th>Minimum Stock Level:</th><td> 2 Months</td></tr>";
+	 //    content += "<tr><th>State: </th><td colspan='5'>" + dataURL.state + "</td></tr>";
+	 //    content += "</thead>";
+	 //    content += "</table>";
+    //     jq("#crrf-list-table").append(content);
+    // }
 
     displayDataBody();
-    
+     //refreshDatatable();
     function displayDataBody() {
+        var rsd = dataURL.reportingPeriodStart.split("T");
+        var repDateStart = rsd[0];
+        var red = dataURL.reportingPeriodEnd.split("T");
+        var repDateEnd = red[0];
+        var dp = dataURL.datePrepared.split("T");
+        var repDatePrepared = dp[0];
         var contents = "";
-        contents += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 80%;'>";
+        contents += "<table id='fileexport1' class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
         contents += "<thead>";
-        contents += "<tr><th style='text-align: center;' colspan='13'>Antiretroviral Drugs</th></tr>";
-        contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='3'>REQUISITION</th></tr>";
-       
+
+        contents += "<tr><th colspan='2'>Facility Name: </th><td colspan='6'>" + dataURL.facilityName + "</td><th colspan='2'>Reporting Period Start: </th><td colspan='2'>" + repDateStart + "</td></tr>";
+        contents += "<tr><th colspan='2'>Facility Code: </th><td colspan='2'>" + dataURL.facilityCode + "</th><th colspan='2'>Reporting Period End: </th><td colspan='2'>" + repDateEnd + "</td><th colspan='2'>Maximum Stock Level: </th><td colspan='2'>4 Months</td></tr>";
+        contents += "<tr><th colspan='2'>LGA: </th><td colspan='2'>" + dataURL.lga + "</td><th colspan='2'>Date Prepared: </th><td colspan='2'>" + repDatePrepared + "</td><th colspan='2'>Minimum Stock Level:</th><td colspan='2'> 2 Months</td></tr>";
+        contents += "<tr><th colspan='2'>State: </th><td colspan='10'>" + dataURL.state + "</td></tr>";
+
+        contents += "<tr><th style='text-align: center;' colspan='12'>Antiretroviral Drugs</th></tr>";
+       contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='3'>REQUISITION</th></tr>";
+
         contents += "<tr><th>Drugs</th><th>Basic Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Dispensed</th>";
         contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Physical Count</th>";
         contents += "<th>Maximum Stock Quantity</th><th>Quantity to Order</th><th>Remarks</th></tr>";
         contents += "</thead><tbody>";
         
-        contents += "<tr><td colspan='13' style='font-weight: bold'>Adult Regimen</td></tr>";         
+        contents += "<tr><td colspan='13' style='font-weight: bold'>Adult Regimen</td></tr>";
         adult = dataURL.crrfAdultRegimenCategory;     
         for (i = 0; i < adult.length; i++) {
           	var adultElement = adult[i];
@@ -96,7 +108,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "</tr>";
         }
          
-        contents += "<tr><td colspan='13' style='font-weight: bold'>Paediatric Regimen</td></tr>";         
+        contents += "<tr><td colspan='12' style='font-weight: bold'>Paediatric Regimen</td></tr>";
         paediatric = dataURL.crrfPediatricRegimenCategory;     
         for (j = 0; j < paediatric.length; j++) {
           	var paediatricElement = paediatric[j];
@@ -107,7 +119,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "</tr>";
         }
          
-        contents += "<tr><td colspan='13' style='font-weight: bold'>Opportunistic Infections Drugs</td></tr>";         
+        contents += "<tr><td colspan='12' style='font-weight: bold'>Opportunistic Infections Drugs</td></tr>";
         oi = dataURL.crrfOIRegimenCategory;     
         for (k = 0; k < oi.length; k++) {
           	var oiElement = oi[k];
@@ -118,8 +130,8 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "</tr>";
         }
         
-        contents += "<tr><td colspan='13' style='font-weight: bold'>Advanced HIV Disease Drugs</td></tr>";         
-        advanceHIV = dataURL.crrfAdvanceHIVRegimenCategory;     
+        contents += "<tr><td colspan='12' style='font-weight: bold'>Advanced HIV Disease Drugs</td></tr>";
+        advanceHIV = dataURL.crrfAdvanceHIVRegimenCategory;
         for (l = 0; l < advanceHIV.length; l++) {
           	var advanceHIVElement = advanceHIV[l];
          	contents += "<tr><td>" + advanceHIVElement.drugs +  "</td><td>" + advanceHIVElement.basicUnit +  "</td><td>" + advanceHIVElement.beginningBalance +  "</td>";
@@ -129,8 +141,8 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "</tr>";
         }
         
-        contents += "<tr><td colspan='13' style='font-weight: bold'>STI Drugs</td></tr>";         
-        sti = dataURL.crrfSTIRegimenCategory;     
+        contents += "<tr><td colspan='12' style='font-weight: bold'>STI Drugs</td></tr>";
+        sti = dataURL.crrfSTIRegimenCategory;
         for (m = 0; m < sti.length; m++) {
           	var stiElement = sti[m];
          	contents += "<tr><td>" + stiElement.drugs +  "</td><td>" + stiElement.basicUnit +  "</td><td>" + stiElement.beginningBalance +  "</td>";
@@ -139,9 +151,9 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "<td>" + stiElement.maximumStockQuantity +  "</td><td>" + stiElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
         }
-        
-        contents += "<tr><td colspan='13' style='font-weight: bold'>TB Drugs</td></tr>";         
-        tb = dataURL.crrfTBRegimenCategory;     
+
+        contents += "<tr><td colspan='12' style='font-weight: bold'>TB Drugs</td></tr>";
+        tb = dataURL.crrfTBRegimenCategory;
         for (n = 0; n < tb.length; n++) {
           	var tbElement = tb[n];
          	contents += "<tr><td>" + tbElement.drugs +  "</td><td>" + tbElement.basicUnit +  "</td><td>" + tbElement.beginningBalance +  "</td>";
@@ -150,39 +162,95 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "<td>" + tbElement.maximumStockQuantity +  "</td><td>" + tbElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
         }
-        
+
+        contents += "<tr style='background-color: white'><th colspan='12'>Comments:</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='12'>1. Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in six months time.</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='12'>2. Any other information</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='2'>S/N</th><th colspan='4'>Description</th><th colspan='2'>Batch/Lot Number</th><th colspan='2'>Expiry date</th><th colspan='2'>Quantity</th></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+
         contents += "</tbody></table>";
-        
+
+        contents += "<button id='exportToExcel'>Export to Excel</button>";
+
         jq("#crrfbody-list-table").append(contents);
+
     }
     
-    displayDataComment();
-    
-	function displayDataComment() {
-	    var contentss = "";
-	    contentss += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;''>";  
-	    contentss += "<tbody>"; 
-	    contentss += "<tr style='background-color: white'><th colspan='13'>Comments:</th></tr>"; 
-	    contentss += "<tr style='background-color: white'><th colspan='13'>1. Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in six months time.</th></tr>"; 
-	    contentss += "<tr style='background-color: white'><th colspan='13'>2. Any other information</th></tr>"; 
-	    contentss += "<tr style='background-color: white'><th>S/N</th><th>Description</th><th>Batch/Lot Number</th><th>Expiry date</th><th>Quantity</th></tr>"; 
-	    contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    contentss += "</tbody>"; 
-	    contentss += "</table>";        
-	    contentss += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>"; 
-	    contentss += "<tbody>"; 
-	    contentss += "<tr style='background-color: white'><th>Report Prepared by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>"; 
-	    contentss += "<tr style='background-color: white'><th>Report Approved by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>"; 
-	    contentss += "</tbody>"; 
-	    contentss += "</table>"; 
-	    jq("#crrfbodycomment-list-table").append(contentss);
-	}
-    
-     
+    // displayDataComment();
+    //
+	// function displayDataComment() {
+	//     var contentss = "";
+	//     contentss += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;''>";
+	//     contentss += "<tbody>";
+	//     contentss += "<tr style='background-color: white'><th colspan='13'>Comments:</th></tr>";
+	//     contentss += "<tr style='background-color: white'><th colspan='13'>1. Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in six months time.</th></tr>";
+	//     contentss += "<tr style='background-color: white'><th colspan='13'>2. Any other information</th></tr>";
+	//     contentss += "<tr style='background-color: white'><th>S/N</th><th>Description</th><th>Batch/Lot Number</th><th>Expiry date</th><th>Quantity</th></tr>";
+	//     contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>";
+	//     contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>";
+	//     contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>";
+	//     contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>";
+	//     contentss += "<tr style='background-color: white'><td></td><td></td><td></td><td></td><td></td></tr>";
+	//     contentss += "</tbody>";
+	//     contentss += "</table>";
+	//     contentss += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
+	//     contentss += "<tbody>";
+	//     contentss += "<tr style='background-color: white'><th>Report Prepared by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>";
+	//     contentss += "<tr style='background-color: white'><th>Report Approved by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>";
+	//     contentss += "</tbody>";
+	//     contentss += "</table>";
+	//     jq("#crrfbodycomment-list-table").append(contentss);
+	// }
+
+     function refreshDatatable(){
+         var jq = jQuery;
+         var table;
+         jq(document).ready( function () {
+             table= jq('#fileexport1').DataTable({
+                 "paging":   true,
+                 "info":     true,
+                 "LengthChange": true,
+                 "aLengthMenu": [[20,5, 10, 15, -1], [20,5, 10, 15, "All"]],
+                 dom: 'Bfrtip',
+                 buttons: [
+                     'copy', 'csv', 'excel', 'pdf', 'print'
+                 ]
+             });
+             jq('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-success mr-1');
+             table.columns().eq( 0 ).each( function ( colIdx ) {
+                 jq( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                     table
+                         .column( colIdx )
+                         .search( this.value )
+                         .draw(); //<--here is the draw
+                 } );
+             } );
+
+         } );
+     }
+
+     var jqy = jQuery;
+     jqy(function() {
+         jqy("#exportToExcel").click(function(e){
+                 console.log('Hi tables');
+                 jqy("#fileexport1").table2excel({
+                     name: "Excel Document Name",
+                     filename: "Antiretroviral-and-OIs",
+                     fileext: ".xls",
+                     exclude_img: true,
+                     exclude_links: true,
+                     exclude_inputs: true
+                 });
+
+         });
+
+     });
+
 </script>
 
 

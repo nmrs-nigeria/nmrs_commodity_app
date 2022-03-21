@@ -5,7 +5,6 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
