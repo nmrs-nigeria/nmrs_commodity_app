@@ -17,13 +17,8 @@ import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * @author MORRISON.I
+ * @author Toyeeb
  */
 public interface ICrrfReportDataService extends IMetadataDataService<Crrf> {
-
-	@Transactional(readOnly = true)
-	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
-	List<Crrf> getCrrfReport(Crrf crrf,
-	        PagingInfo pagingInfo);
 
 }

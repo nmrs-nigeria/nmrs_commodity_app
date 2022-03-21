@@ -26,7 +26,7 @@ public class ModuleRestConstants extends ModuleWebConstants {
 	public static final String CONSUMPTION_SUMMARY_RESOURCE = MODULE_REST_ROOT + "consumptionSummary";
 	public static final String PHARMACY_CONSUMPTION_SUMMARY_RESOURCE = MODULE_REST_ROOT + "pharmacyConsumptionSummary";
 	public static final String PHARMACY_DISPENSE_SUMMARY_RESOURCE = MODULE_REST_ROOT + "pharmacyDispenseSummary";
-	public static final String CRRF_REPORT_RESOURCE = MODULE_REST_ROOT + "crrfReport";
+	public static final String CRRF_REPORT_RESOURCE = MODULE_REST_ROOT + "crrfReports";
 
 	public static final String ITEM_RESOURCE = MODULE_REST_ROOT + "item";
 	public static final String ITEM_PRICE_RESOURCE = MODULE_REST_ROOT + "itemPrice";

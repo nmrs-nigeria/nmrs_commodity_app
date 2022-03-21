@@ -21,8 +21,17 @@
 
 
     <!-- Services accessible via Context.getService() -->
+    
+    <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.ICrrfReportDataService</value>
+                <ref bean="iCrrfReportDataServiceService" />
+            </list>
+        </property>
+    </bean>    
         
-               <bean parent="serviceContext">
+    <bean parent="serviceContext">
         <property name="moduleService">
             <list merge="true">
                 <value>org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService</value>
@@ -203,10 +212,30 @@
             </list>
         </property>
     </bean>
+    
+      <bean parent="serviceContext">
+        <property name="moduleService">
+            <list merge="true">
+                <value>org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService</value>
+                <ref bean="invItemStockDetailDataService" />
+            </list>
+        </property>
+    </bean>
 
     <!-- Service Bean Definitions -->
+    
+    <bean id="iCrrfReportDataServiceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+        <property name="transactionManager" ref="transactionManager" />
+        <property name="target">
+            <bean class="org.openmrs.module.openhmis.inventory.api.impl.CrrfReportDataServiceImpl">
+                <property name="repository" ref="genericRepository" />
+            </bean>
+        </property>
+        <property name="preInterceptors" ref="serviceInterceptors" />
+        <property name="transactionAttributeSource" ref="transactionAttributeSource" />
+    </bean> 
        
-         <bean id="iPharmacyReportsServiceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+    <bean id="iPharmacyReportsServiceService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
         <property name="transactionManager" ref="transactionManager" />
         <property name="target">
             <bean class="org.openmrs.module.openhmis.inventory.api.impl.PharmacyReportsServiceImpl">

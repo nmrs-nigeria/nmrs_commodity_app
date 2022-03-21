@@ -209,7 +209,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
 
                         try {
 
-                            csvPrinter.printRecord(con.getDrugs().getName(), con.getBasicUnit(),
+                            csvPrinter.printRecord(con.getDrugs(), con.getBasicUnit(),
                                     con.getBeginningBalance(),
                                     con.getQuantityReceived(), con.getQuantityDispensed(),
                                     con.getPositiveAdjustments(),con.getNegativeAdjustments(),

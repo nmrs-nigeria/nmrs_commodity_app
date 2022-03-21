@@ -1,57 +1,59 @@
-/*
- * The contents of this file are subject to the OpenMRS Public License
- * Version 2.0 (the "License"); you may not use this file except in
- * compliance with the License. You may obtain a copy of the License at
- * http://license.openmrs.org
- *
- * Software distributed under the License is distributed on an "AS IS"
- * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
- * the License for the specific language governing rights and
- * limitations under the License.
- *
- * Copyright (C) OpenHMIS.  All Rights Reserved.
- *
- */
-
-(function () {
-    'use strict';
-
-    angular.module('app.restfulServices').service('CrrfReportsRestfulService', CrrfReportsRestfulService);
-
-    CrrfReportsRestfulService.$inject = ['EntityRestFactory'];
-
-    function CrrfReportsRestfulService(EntityRestFactory) {
-        var service;
-        service = {
-            getReport: getReport
-        };
-        return service;
-
-        function getReport(reportId, startDate, endDate, crrfCategory, successCallback) {
-            var requestParams = [];
-            requestParams['resource'] = INVENTORY_MODULE_CRRF_REPORTS_URL;
-            requestParams['reportId'] = reportId;
-            requestParams['startDate'] = startDate;
-            requestParams['endDate'] = endDate;
-            requestParams['crrfCategory'] = crrfCategory;
-            
-
-            EntityRestFactory.setCustomBaseUrl(ROOT_URL);
-            EntityRestFactory.loadResults(requestParams, successCallback, function (error) {
-                console.log("Error Message:")
-                console.log(error)
-            });
-        }
-
-       
 
 
+(function() {
+	'use strict';
 
+	angular.module('app.restfulServices').service('CrrfReportsRestfulService', CrrfReportsRestfulService);
 
+	CrrfReportsRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
 
+	function CrrfReportsRestfulService(EntityRestFactory, PaginationService) {
+		var service;
 
+		service = {
+				generateCRFFReport : generateCRFFReport
+		};
 
+		return service;
+		
+		function generateCRFFReport(reportId, startDate, endDate, crrfCategory, startIndex, limit, includeRetired, onLoadSuccessfulCallback){
+					         
+			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
+					requestParams['rest_entity_name'] = 'crrfReports';
+					requestParams['reportId'] = reportId;
+					requestParams['crrfCategory'] = crrfCategory; 
+                        
+                        if(angular.isDefined(startDate)){
+                            requestParams['startDate'] = startDate;
+                        }
+                        
+                        if(angular.isDefined(endDate)){
+                            requestParams['endDate'] = endDate;
+                        }
 
+						
+                        console.log('about to call crrf endpoint');
 
-    }
+			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
+		}
+
+		/**
+		 * Temporary Function: It will ONLY be used until the Department module is done.
+		 * @param onLoadDepartmentsSuccessful
+		 */
+		
+
+		/**
+		 * An auto-complete function to search concepts given a query term.
+		 * @param module_name
+		 * @param q - search term
+		 * @param limit
+		 */
+	
+
+	
+		function errorCallback(error) {
+			emr.errorAlert(error);
+		}
+	}
 })();

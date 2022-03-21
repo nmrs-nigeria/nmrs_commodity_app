@@ -79,21 +79,7 @@
             CookiesService.set('endDate', $scope.endDate);
 
             var department_uuid;
-          //  var item_uuid;
-
-//            if ($scope.department !== null) {
-//                department_uuid = $scope.department.uuid;
-//            }
-
-//            if ($scope.item !== null) {
-//                item_uuid = $scope.item.uuid;
-//            }
-
-
-            // var searchField = $scope.searchField || '';
-            
-         	// ConsumptionSummaryRestfulService.searchConsumptionSummarys(currentPage, $scope.limit, department_uuid, item_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadConsumptionSummarysSuccessful)
-
+       
             ARVPharmacyDispenseRestfulService.searchDispenseSummarys(currentPage, $scope.limit, department_uuid,$scope.startDate,$scope.endDate, $scope.includeRetired, self.onLoadARVPharmacyDispenseSuccessful)
         }
 
