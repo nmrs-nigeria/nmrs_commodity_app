@@ -100,6 +100,7 @@
                    "CRRF Category": crrfCategory
                });
 
+
                console.log('parametersvalid output');
                console.log(parametersAreValid);
 

@@ -47,44 +47,33 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
  	 var jq = jQuery;
      const dataURL = JSON.parse(localStorage.getItem("preview_url"));   
      console.log("dataURL: " + dataURL);     
-     
-     displayData();
-     
-     function displayData() {
-     	var rsd = dataURL.reportingPeriodStart.split("T");
+    
+    displayDataBody();
+    
+    function displayDataBody() {
+        var rsd = dataURL.reportingPeriodStart.split("T");
      	var repDateStart = rsd[0];
      	var red = dataURL.reportingPeriodEnd.split("T");
      	var repDateEnd = red[0];
      	var dp = dataURL.datePrepared.split("T");
      	var repDatePrepared = dp[0];
      
-        var content = "";
-        content += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
-        content += "<thead>";
-        content += "<tr><th style='text-align: center' colspan='6'>HIV Rapid Test Kit (RTKs), Dried Blood Spot (DBS) Kit and Other RDT</th></tr>";
-	    content += "<tr><th>Facility Name: </th><td>" + dataURL.facilityName + "</td><th>Reporting Period Start: </th><td colspan='3'>" + repDateStart + "</td></tr>";
-	    content += "<tr><th>Facility Code: </th><td>" + dataURL.facilityCode + "</th><th>Reporting Period End: </th><td>" + repDateEnd + "</td><th>Maximum Stock Level: </th><td>4 Months</td></tr>";
-	    content += "<tr><th>LGA: </th><td>" + dataURL.lga + "</td><th>Date Prepared: </th><td>" + repDatePrepared + "</td><th>Minimum Stock Level:</th><td> 2 Months</td></tr>";
-	    content += "<tr><th>State: </th><td colspan='5'>" + dataURL.state + "</td></tr>";
-	    content += "</thead>";
-	    content += "</table>";            
-        jq("#crrf-list-table").append(content);
-    }
-
-    
-    displayDataBody();
-    
-    function displayDataBody() {
         var contents = "";
-        contents += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 80%;'>";
+        contents += "<table id='fileexport1' class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
         contents += "<thead>";
+        contents += "<tr><th style='text-align: center' colspan='13'>HIV Rapid Test Kit (RTKs), Dried Blood Spot (DBS) Kit and Other RDT</th></tr>";
+	    contents += "<tr><th colspan='2'>Facility Name: </th><td colspan='4'>" + dataURL.facilityName + "</td><th colspan='2'>Reporting Period Start: </th><td colspan='5'>" + repDateStart + "</td></tr>";
+	    contents += "<tr><th colspan='2'>Facility Code: </th><td colspan='4'>" + dataURL.facilityCode + "</th><th colspan='2'>Reporting Period End: </th><td>" + repDateEnd + "</td><th colspan='3'>Maximum Stock Level: </th><td>4 Months</td></tr>";
+	    contents += "<tr><th colspan='2'>LGA: </th><td colspan='4'>" + dataURL.lga + "</td><th colspan='2'>Date Prepared: </th><td>" + repDatePrepared + "</td><th colspan='3'>Minimum Stock Level:</th><td> 2 Months</td></tr>";
+	    contents += "<tr><th colspan='2'>State: </th><td colspan='11'>" + dataURL.state + "</td></tr>";
+	    contents += "</thead>";
+        
         contents += "<tr><th style='text-align: center;' colspan='13'>HIV RTK & DBS</th></tr>";
         contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='3'>REQUISITION</th></tr>";
        
         contents += "<tr><th>Test Kit</th><th>Pack Size</th><th>Reporting Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Dispensed</th>";
         contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Physical Count</th>";
         contents += "<th>Maximum Stock Quantity</th><th>Quantity to Order</th><th>Remarks</th></tr>";
-        contents += "</thead><tbody>";
         
         contents += "<tr><td colspan='13' style='font-weight: bold'>HIV RTK & DBS</td></tr>";         
         rtk = dataURL.crrfRTKRegimenCategory; 
@@ -101,61 +90,87 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          	contents += "</tr>";
         }
          
-        contents += "</tbody></table>";
+        contents += "<tr style='background-color: white'><th colspan='13'>BIMONTHLY SUMMARY OF HIV RAPID TEST BY PURPOSE</th></tr>"; 
+	    contents += "<tr style='background-color: white'><th></th><th>HTS</th><th colspan='2'>PMTCT</th><th colspan='2'>CLINICAL DIAGNOSIS</th><th colspan='2'>QUALITY CONTROL</th><th colspan='2'>TRAINING</th><th colspan='2'>RECRUIT/OUTREACH SCREENING</th><th>TOTAL</th></tr>"; 
+	    contents += "<tr style='background-color: white'><td>1st Screening</td><td></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td>Confirmatory</td><td></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td>Tie-breaker</td><td></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td><td></td></tr>";
+	    
+        contents += "<tr style='background-color: white'><th colspan='13'> BIMONTHLY TEST SUMMARY OF HIV TESTING & EARLY INFANT DIAGNOSIS (EID)</th></tr>"; 
+	    
+	    contents += "<tr style='background-color: white'><th colspan='13'> HIV TESTING</th></tr>"; 	   
+	    contents += "<tr style='background-color: white'><td colspan='11'>Number of people tested</td><td colspan='2'></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td colspan='11'>Number of people who received counseling and testing and got result (HTS, PMTCT, TB/HIV combined)</td><td colspan='2'></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td colspan='11'>Number of people tested with positive results (HTS, PMTCT, TB/HIV combined) </td><td colspan='2'></td></tr>";
+	    contents += "<tr style='background-color: white'><th colspan='13'> EID TESTING</th></tr>"; 	   
+	    contents += "<tr style='background-color: white'><td colspan='11'>Number of HIV exposed Babies</td><td colspan='2'></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td colspan='11'>Number of Infants received EID testing</td><td colspan='2'></td></tr>"; 	   
+	 
+        contents += "<tr style='background-color: white'><th colspan='13'> Expiry Details </th></tr>";
+	    contents += "<tr style='background-color: white'><th colspan='4'>Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in three months time </th><th colspan='9'>Additional Remarks:</th></tr>"; 	   
+	    contents += "<tr style='background-color: white'><th>Description</th><th>Lot No</th><th>Exp date</th><th>Quantity</th><th colspan='9' rowspan='6'></th></tr>"; 
+	    contents += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>";
+	    contents += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 	   
+	    contents += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 
+	    contents += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 	   
+
+        contents += "<tr><th colspan='13'>Reporting Officers Details:</th></tr>"; 	    
+	    contents += "<tr style='background-color: white'><th colspan='5'>Report Prepared by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>"; 
+	    contents += "<tr style='background-color: white'><th colspan='5'>Report Approved by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>"; 
+	    contents += "</tbody>"; 
+	    contents += "</table>";
         
+        contents += "<button id='exportToExcel'>Export to Excel</button>";
+
         jq("#crrfbody-list-table").append(contents);
     }
-    
-    displayBiMonthly();
-    
-	function displayBiMonthly() {
-	    var bimonthly = "";
-	    bimonthly += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";  
-	    bimonthly += "<tbody>"; 
-	    bimonthly += "<tr style='background-color: white'><th colspan='12'>BIMONTHLY SUMMARY OF HIV RAPID TEST BY PURPOSE</th></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><th></th><th>HTS</th><th>PMTCT</th><th>CLINICAL DIAGNOSIS</th><th>QUALITY CONTROL</th><th>TRAINING</th><th>RECRUIT/OUTREACH SCREENING</th><th>TOTAL</th></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>1st Screening</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>Confirmatory</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>Tie-breaker</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>";
-	    bimonthly += "</tbody>"; 
-	    
-	    bimonthly += "<table style='font-size: 12px; width: 100%;'>";   
-	    bimonthly += "<tbody>"; 
-	    bimonthly += "<tr style='background-color: white'><th colspan='2'> BIMONTHLY TEST SUMMARY OF HIV TESTING & EARLY INFANT DIAGNOSIS (EID)</th></tr>"; 
-	    
-	    bimonthly += "<tr style='background-color: white'><th colspan='2'> HIV TESTING</th></tr>"; 	   
-	    bimonthly += "<tr style='background-color: white'><td>Number of people tested</td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>Number of people who received counseling and testing and got result (HTS, PMTCT, TB/HIV combined)</td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>Number of people tested with positive results (HTS, PMTCT, TB/HIV combined) </td><td></td></tr>";
-	    bimonthly += "<tr style='background-color: white'><th colspan='2'> EID TESTING</th></tr>"; 	   
-	    bimonthly += "<tr style='background-color: white'><td>Number of HIV exposed Babies</td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td>Number of Infants received EID testing</td><td></td></tr>"; 	   
-	    bimonthly += "</tbody>"; 
-	    
-	    bimonthly += "<table style='font-size: 12px; width: 100%;'>";    
-	    bimonthly += "<tbody>"; 
-	    bimonthly += "<tr style='background-color: white'><th colspan='5'> Expiry Details </th></tr>";
-	    bimonthly += "<tr style='background-color: white'><th colspan='4'>Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in three months time </th><th>Additional Remarks:</th></tr>"; 	   
-	    bimonthly += "<tr style='background-color: white'><th>Description</th><th>Lot No</th><th>Exp date</th><th>Quantity</th><th rowspan='6'></th></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>";
-	    bimonthly += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 	   
-	    bimonthly += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><td></td><td></td><td></td><td></td></tr>"; 	   
-	    bimonthly += "</tbody>"; 
-	    
-	    bimonthly += "</table>";        
-	    bimonthly += "<table class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>"; 
-	    bimonthly += "<tbody>"; 
-	    bimonthly += "<tr><th colspan='3'>Reporting Officers Details:</th></tr>"; 	    
-	    bimonthly += "<tr style='background-color: white'><th>Report Prepared by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>"; 
-	    bimonthly += "<tr style='background-color: white'><th>Report Approved by (Full Name):</th><th>Telephone:</th><th>Date:</th></tr>"; 
-	    bimonthly += "</tbody>"; 
-	    bimonthly += "</table>"; 
-	    jq("#crrfbodycomment-list-table").append(bimonthly);
-	}   
 	
-    localStorage.clear();
+    function refreshDatatable(){
+         var jq = jQuery;
+         var table;
+         jq(document).ready( function () {
+             table= jq('#fileexport1').DataTable({
+                 "paging":   true,
+                 "info":     true,
+                 "LengthChange": true,
+                 "aLengthMenu": [[20,5, 10, 15, -1], [20,5, 10, 15, "All"]],
+                 dom: 'Bfrtip',
+                 buttons: [
+                     'copy', 'csv', 'excel', 'pdf', 'print'
+                 ]
+             });
+             jq('.buttons-copy, .buttons-csv, .buttons-print, .buttons-pdf, .buttons-excel').addClass('btn btn-success mr-1');
+             table.columns().eq( 0 ).each( function ( colIdx ) {
+                 jq( 'input', table.column( colIdx ).header() ).on( 'keyup change', function () {
+                     table
+                         .column( colIdx )
+                         .search( this.value )
+                         .draw(); //<--here is the draw
+                 } );
+             } );
+
+         } );
+     }
+
+     var jqy = jQuery;
+     jqy(function() {
+         jqy("#exportToExcel").click(function(e){
+                 console.log('Hi tables');
+                 jqy("#fileexport1").table2excel({
+                     name: "Excel Document Name",
+                     filename: "RTK-and-DBS",
+                     fileext: ".xls",
+                     exclude_img: true,
+                     exclude_links: true,
+                     exclude_inputs: true
+                 });
+
+         });
+
+     });
+
+    //localStorage.clear();
 </script>
 
 
