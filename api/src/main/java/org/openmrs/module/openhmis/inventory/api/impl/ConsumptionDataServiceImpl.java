@@ -214,6 +214,52 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
         
     }
 
+	public List<ConsumptionSummary> retrieveConsumptionSummaryLab(List<StockOperation> stockOperations,
+	        SearchConsumptionSummary searchConsumptionSummary, PagingInfo pagingInfo, List<Item> distinctItems) {
+		List<ConsumptionSummary> fromConsumption = null;
+		List<ConsumptionSummary> fromReceived = null;
+		List<ConsumptionSummary> finalConsumptionSummarys = null;
+		List<Consumption> consumptions = new ArrayList<>();
+
+		System.out.println("stock operations result: " + stockOperations.size());
+
+		if (searchConsumptionSummary.getDepartment() == null) {
+			fromReceived = getSummaryFromStockOperation(stockOperations, null,
+			    distinctItems);
+		} else {
+			fromReceived = getSummaryFromStockOperation(stockOperations, searchConsumptionSummary.getDepartment(),
+			    distinctItems);
+		}
+
+		System.out.println("After stock summary: " + fromReceived.size());
+
+		consumptions = getConsumptionByConsumptionDate(searchConsumptionSummary.getStartDate(),
+		    searchConsumptionSummary.getEndDate(), pagingInfo);
+
+		System.out.println("stock consumptions result: " + consumptions.size());
+
+		// filter out the Department
+		//		consumptions = consumptions.stream()
+		//				.filter(a -> a.getDepartment().equals(searchConsumptionSummary.getDepartment()))
+		//				.collect(Collectors.toList());
+		fromConsumption = getSummaryFromConsumption(consumptions, null,
+		    distinctItems);
+
+		System.out.println("stock consumptions aggregate result  : " + fromConsumption.size());
+
+		List<ConsumptionSummary> tempConsumptionSummary = new ArrayList<>();
+
+		tempConsumptionSummary = mergeSummary(fromConsumption, fromReceived, null,
+		    distinctItems);
+
+		finalConsumptionSummarys = calculateStockBalance(tempConsumptionSummary);
+
+		System.out.println("final consumption summary is " + finalConsumptionSummarys.size());
+
+		return finalConsumptionSummarys;
+
+	}
+
 	private List<ConsumptionSummary> calculateStockBalance(List<ConsumptionSummary> consumptionSummarys) {
 
 		List<ConsumptionSummary> consumptionSummarysWithBalance = new ArrayList<>();
@@ -285,7 +331,11 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
             
             filteredConsumptions = consumptions.stream().filter(b -> b.getItem().equals(a))
                     .collect(Collectors.toList());
-            consumptionSummary.setDepartment(department);
+           
+            if(department != null) {
+            	consumptionSummary.setDepartment(department);
+            }           
+            
             consumptionSummary.setItem(a);
             
             for (Consumption c : filteredConsumptions) {
@@ -337,7 +387,10 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
         distinctItems.forEach(a -> {
             // assume a department would be selected at all time
             ConsumptionSummary consumptionSummary = new ConsumptionSummary();
-            consumptionSummary.setDepartment(department);
+            if(department != null) {
+            	 consumptionSummary.setDepartment(department);
+            }          
+            
             consumptionSummary.setItem(a);
             long itemCount = consumptionSummarys.stream().filter(b -> b.getItem().equals(a))
                     .map(ConsumptionSummary::getTotalQuantityReceived).mapToInt(Integer::intValue).sum();

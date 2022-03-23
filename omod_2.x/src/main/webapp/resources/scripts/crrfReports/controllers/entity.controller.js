@@ -105,7 +105,7 @@
 
                if (parametersAreValid) {
 
-                   //$scope.loading = true;
+                   $scope.loading = true;
                    
                    console.log('After loading');
               
@@ -125,10 +125,20 @@
             $scope.fetchedEntities = data.results[0];
             var resultReturn = $scope.fetchedEntities;
             localStorage.setItem("resultReturn", resultReturn);
-            console.log(data.results);
             console.log(data.results[0]);
-            var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
-            localStorage.setItem("preview_url", JSON.stringify(data.results[0]));
+            var cat = $scope.category; 
+            console.log(cat);
+            
+            if(cat == "ARV Cotrim"){
+            	var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
+            }
+            if(cat == "HIV RTKS and DBS"){
+            	var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview_rtk.page#/';
+            }
+            if(cat == "Other OIs"){
+            	var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview_oi.page#/';
+            }            
+            localStorage.setItem("preview_url", JSON.stringify(data.results[0]));        
             window.location = final_url;
         }
 
