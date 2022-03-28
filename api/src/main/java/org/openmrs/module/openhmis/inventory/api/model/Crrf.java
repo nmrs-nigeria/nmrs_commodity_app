@@ -43,14 +43,16 @@ public class Crrf extends BaseSerializableOpenmrsMetadata implements OpenmrsObje
 
 	private Set<CrrfDetails> crrfSTIRegimenCategory;
 
+	private Set<CrrfDetails> crrfRTKRegimenCategory;
+
 	public Crrf() {}
 
-	public Crrf(Integer crrfReportId, String facilityName, String facilityCode,
-	    String lga, String state, Date reportingPeriodStart,
-	    Date reportingPeriodEnd, Date datePrepared, Set<CrrfDetails> crrfAdultRegimenCategory,
-	    Set<CrrfDetails> crrfPediatricRegimenCategory, Set<CrrfDetails> crrfOIRegimenCategory,
-	    Set<CrrfDetails> crrfAdvanceHIVRegimenCategory, Set<CrrfDetails> crrfTBRegimenCategory,
-	    Set<CrrfDetails> crrfSTIRegimenCategory) {
+	public Crrf(Integer crrfReportId, String facilityName, String facilityCode, String lga, String state,
+	    Date reportingPeriodStart, Date reportingPeriodEnd, Date datePrepared,
+	    Set<CrrfDetails> crrfAdultRegimenCategory, Set<CrrfDetails> crrfPediatricRegimenCategory,
+	    Set<CrrfDetails> crrfOIRegimenCategory, Set<CrrfDetails> crrfAdvanceHIVRegimenCategory,
+	    Set<CrrfDetails> crrfTBRegimenCategory, Set<CrrfDetails> crrfSTIRegimenCategory,
+	    Set<CrrfDetails> crrfRTKRegimenCategory) {
 		super();
 		this.crrfReportId = crrfReportId;
 		this.facilityName = facilityName;
@@ -66,6 +68,7 @@ public class Crrf extends BaseSerializableOpenmrsMetadata implements OpenmrsObje
 		this.crrfAdvanceHIVRegimenCategory = crrfAdvanceHIVRegimenCategory;
 		this.crrfTBRegimenCategory = crrfTBRegimenCategory;
 		this.crrfSTIRegimenCategory = crrfSTIRegimenCategory;
+		this.crrfRTKRegimenCategory = crrfRTKRegimenCategory;
 	}
 
 	public Integer getCrrfReportId() {
@@ -178,6 +181,14 @@ public class Crrf extends BaseSerializableOpenmrsMetadata implements OpenmrsObje
 
 	public void setCrrfSTIRegimenCategory(Set<CrrfDetails> crrfSTIRegimenCategory) {
 		this.crrfSTIRegimenCategory = crrfSTIRegimenCategory;
+	}
+
+	public Set<CrrfDetails> getCrrfRTKRegimenCategory() {
+		return crrfRTKRegimenCategory;
+	}
+
+	public void setCrrfRTKRegimenCategory(Set<CrrfDetails> crrfRTKRegimenCategory) {
+		this.crrfRTKRegimenCategory = crrfRTKRegimenCategory;
 	}
 
 	@Override
