@@ -175,7 +175,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
 
         contents += "</tbody></table>";
 
-        contents += "<button id='exportToExcel'>Export to Excel</button>";
+        contents += "<button id='exportToExcel'>Export to Excel </button>";
 
         jq("#crrfbody-list-table").append(contents);
 
