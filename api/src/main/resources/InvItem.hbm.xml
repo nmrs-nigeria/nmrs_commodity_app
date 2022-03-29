@@ -33,6 +33,7 @@
         <many-to-one name="department" class="Department" column="department_id" />
         <many-to-one name="defaultPrice" class="ItemPrice" column="default_price_id" />
         <many-to-one name="concept" class="org.openmrs.Concept" column="concept_id" />
+        <many-to-one name="strenghtConcept" class="org.openmrs.Concept" column="strength_concept_id" />
 
         <set name="attributes" lazy="false" fetch="subselect" inverse="true" cascade="all-delete-orphan">
             <key column="item_id" />
