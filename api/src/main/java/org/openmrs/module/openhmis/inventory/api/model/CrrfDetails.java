@@ -9,6 +9,8 @@ public class CrrfDetails extends BaseOpenmrsObject {
 
 	private Integer id;
 	private String drugs;
+	private String strength;
+	private Integer packSize;
 	private String basicUnit;
 	private Integer beginningBalance;
 	private Integer quantityReceived;
@@ -116,6 +118,22 @@ public class CrrfDetails extends BaseOpenmrsObject {
 
 	public void setQuantityToOrder(Integer quantityToOrder) {
 		this.quantityToOrder = quantityToOrder;
+	}
+
+	public String getStrength() {
+		return strength;
+	}
+
+	public void setStrength(String strength) {
+		this.strength = strength;
+	}
+
+	public Integer getPackSize() {
+		return packSize;
+	}
+
+	public void setPackSize(Integer packSize) {
+		this.packSize = packSize;
 	}
 
 }

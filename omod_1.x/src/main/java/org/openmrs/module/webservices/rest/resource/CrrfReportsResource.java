@@ -177,13 +177,6 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 		}
 
-		if (crrfCategory.equalsIgnoreCase("Other OIs")) {
-			reportId = ConstantUtils.OTHER_OIS;
-			System.out.println("Other OIs: " + crrfCategory);
-			// OtherOIsCrffReport(reportId, startDate, endDate);
-			// return returnURL(reportId);
-		}
-
 		return null;
 	}
 
@@ -578,7 +571,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
 
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream()
@@ -779,8 +774,10 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
-
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
+			
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream()
 					.filter(p -> p.getItem().equals(item)).findFirst();
@@ -981,8 +978,10 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
-
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
+			
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream()
 					.filter(p -> p.getItem().equals(item)).findFirst();
@@ -1184,8 +1183,10 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
-
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
+			
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = pharmacyConsumptionSummary.stream()
 					.filter(p -> p.getItem().equals(item)).findFirst();
@@ -1387,8 +1388,10 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
-
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
+			
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = 
 					pharmacyConsumptionSummary.stream()
@@ -1591,8 +1594,10 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		for (Item item : distinctElements) {
 			CrrfDetails crrfDetails = new CrrfDetails();
 			crrfDetails.setDrugs(item.getName());
-			crrfDetails.setBasicUnit(item.getPackSize() + " " + item.getUnitOfMeasure());
-
+			crrfDetails.setBasicUnit(item.getUnitOfMeasure());
+			crrfDetails.setPackSize(item.getPackSize());
+			crrfDetails.setStrength(item.getStrength());
+			
 			// get total quantity received for the item
 			Optional<PharmacyConsumptionSummary> matchingObject = 
 					pharmacyConsumptionSummary.stream()

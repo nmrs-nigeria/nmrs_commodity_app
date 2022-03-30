@@ -153,7 +153,6 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
          } );
      }
 
-     var jqy = jQuery;
      jqy(function() {
          jqy("#exportToExcel").click(function(e){
                  console.log('Hi tables');
@@ -170,7 +169,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
 
      });
 
-    //localStorage.clear();
+    localStorage.clear();
 </script>
 
 

@@ -26,8 +26,13 @@
                 }
 
         self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function () {
-        	$scope.categories = ["ARV Cotrim", "HIV RTKS and DBS","Other OIs"];
-            $scope.category = $scope.categories[0];
+        	$scope.categories = ["ARV Cotrim", "HIV RTKS and DBS"];
+        	$scope.reportingPeriods = ["January-February","March-April","May-June","July-August","September-October","November-December"];
+        	$scope.years = ["2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050"];
+        	
+        	$scope.category = $scope.categories[0];
+            $scope.reportingPeriod = $scope.reportingPeriods[0];
+            $scope.year = $scope.years[0];
 
             $scope.generateCRFFReport = self.generateCRFFReport;
 //            $scope.startDate = CookiesService.get('startDate') || {};
@@ -86,10 +91,58 @@
 	            CookiesService.set('startDate', $scope.startDate);
 	            CookiesService.set('endDate', $scope.endDate);
 			
-               var startDate = $scope.startDate;
-               var endDate = $scope.endDate;
+              // var startDate = $scope.startDate;
+              // var endDate = $scope.endDate;
                var crrfCategory = $scope.category;
-
+               var repPeriod = $scope.reportingPeriod;
+               var repYear = $scope.year;
+               
+               var startDay = "";
+        	   var endDay = "";
+        	   var startMonth = "";
+        	   var endMonth = "";
+               
+               if(repPeriod == 'January-February'){
+            	   startDay = "01";
+            	   endDay = "29";
+            	   startMonth = "Jan";
+            	   endMonth = "Feb";
+               }
+               if(repPeriod == 'March-April'){
+            	   startDay = "01";
+            	   endDay = "30";
+            	   startMonth = "Mar";
+            	   endMonth = "Apr";
+               }
+               if(repPeriod == 'May-June'){
+            	   startDay = "01";
+            	   endDay = "30";
+            	   startMonth = "May";
+            	   endMonth = "Jun";
+               }
+               if(repPeriod == 'July-August'){
+            	   startDay = "01";
+            	   endDay = "31";
+            	   startMonth = "Jul";
+            	   endMonth = "Aug";
+               }
+               if(repPeriod == 'September-October'){
+            	   startDay = "01";
+            	   endDay = "31";
+            	   startMonth = "Sep";
+            	   endMonth = "Oct";
+               }
+               if(repPeriod == 'November-December'){
+            	   startDay = "01";
+            	   endDay = "31";
+            	   startMonth = "Nov";
+            	   endMonth = "Dec";
+               }
+               var startDate = startDay + " " + startMonth + " " + repYear;
+               var endDate = endDay + " " + endMonth + " " + repYear;
+               
+               console.log("repPeriod: " + startDate);
+               console.log("repYear: " + endDate);
                console.log("Start Date: " + startDate);
                console.log("End Date: " + endDate);
                console.log("Selected CRRF Category: " + crrfCategory);

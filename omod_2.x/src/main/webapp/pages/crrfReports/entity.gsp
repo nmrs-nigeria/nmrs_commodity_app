@@ -40,36 +40,32 @@
             <i class="icon-list-alt"></i>
             <span>CRRF Report</span>
         </legend>
-        <small>select date range</small>
-        <ul class="table-layout">
-            <li><label>Start Date</label></li>
-            <li>
-                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "startDate",
-                        id: "startDate",
-                        label: "",
-                        useTime: false
-                ])}
-            </li>
-        </ul>
-
-        <ul class="table-layout">
-            <li><label>End Date</label></li>
-            <li>
-                ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                        formFieldName: "endDate",
-                        id: "endDate",
-                        label: "",
-                        useTime: false
-                ])}
-            </li>
-        </ul>
-
-        <ul class="table-layout">
+        
+         <ul class="table-layout">
             <li><label>CRRF Type</label></li>
             <li>               
                 <select ng-model="category" class="form-control"
                     	ng-options="category for category in categories">
+                </select>
+               
+            </li>
+        </ul>
+        
+        <ul class="table-layout">
+            <li><label>Reporting Period</label></li>
+            <li>               
+                <select ng-model="reportingPeriod" class="form-control"
+                    	ng-options="reportingPeriod for reportingPeriod in reportingPeriods">
+                </select>
+               
+            </li>
+        </ul>
+        
+        <ul class="table-layout">
+            <li><label>Year</label></li>
+            <li>               
+                <select ng-model="year" class="form-control"
+                    	ng-options="year for year in years">
                 </select>
                
             </li>
