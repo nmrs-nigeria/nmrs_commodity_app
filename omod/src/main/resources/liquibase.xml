@@ -7042,6 +7042,108 @@ UPDATE inv_item SET concept_id = 165257 WHERE uuid = '8e346146-767d-11eb-9439-02
         	]]>           	
         </sql>  
     </changeSet>
-    
+
+    <changeSet id="openhmis.inventory-v5.2" author="Tobechi" >
+        <sql>
+            <![CDATA[
+	            SET FOREIGN_KEY_CHECKS=0;
+				ALTER TABLE `inv_item` ADD `strength_concept_id` INT(11) DEFAULT NULL AFTER `strength`;
+	        	SET FOREIGN_KEY_CHECKS=1;
+	        	]]>
+        </sql>
+    </changeSet>
+
+
+    <changeSet id="openhmis.inventory-v5.3" author="Tobechi" >
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+UPDATE inv_item SET strength_concept_id = 165618 WHERE strength='300/300/600mg' and uuid = 'b798dad9-d7d6-480d-8bd4-d2819145ea31';
+UPDATE inv_item SET strength_concept_id =166044  WHERE strength='300/300/50mg' and uuid = '55dfcd9b-e3b9-4164-a2fc-8faf8df25d58';
+UPDATE inv_item SET strength_concept_id =166044  WHERE strength='300/300/50mg' and uuid = '161937c6-c1b2-44a9-b2f3-1d7ad3da85da';
+UPDATE inv_item SET strength_concept_id =165620  WHERE strength='150/300/200mg' and uuid = '3d66d5eb-bbad-474b-9637-971f6a8e5b01';
+UPDATE inv_item SET strength_concept_id =165621  WHERE strength='300/300mg' and uuid = 'e52a152b-1eb7-4189-8899-b91308f8b7b0';
+UPDATE inv_item SET strength_concept_id =165622  WHERE strength='300/150mg' and uuid = 'd4c09c9b-bead-4578-85d8-0802f8bf1b4a';
+UPDATE inv_item SET strength_concept_id =165623  WHERE strength='600/300mg' and uuid = 'f49501ee-637a-4115-87dc-bb2e72019a6c';
+UPDATE inv_item SET strength_concept_id =165068  WHERE strength='120/60mg' and uuid = 'c2a303db-bcd4-46d9-b6d1-5c0c4eabcd2a';
+UPDATE inv_item SET strength_concept_id =165616  WHERE strength='600mg' and uuid = '91dc08f8-f7ae-4ea7-b2ea-0e483c0cb463';
+UPDATE inv_item SET strength_concept_id =165074  WHERE strength='300mg' and uuid = '0b17816e-d41a-4c8f-917a-8b55e3c345cc';
+UPDATE inv_item SET strength_concept_id =165624  WHERE strength='300/100mg' and uuid = '1860973c-1031-489c-b650-4c3d564a9844';
+UPDATE inv_item SET strength_concept_id =165625  WHERE strength='200/50mg' and uuid = 'd7232d03-06a9-4915-9299-2fd511afb215';
+UPDATE inv_item SET strength_concept_id =165640  WHERE strength='40/10mg' and uuid = '5e949026-a650-423e-85c5-4c760e6b201b';
+UPDATE inv_item SET strength_concept_id =165616  WHERE strength='600mg' and uuid = '8bdc5767-636c-4a86-be12-a4dae87bbae3';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg' and uuid = '6102fcba-aec7-4b55-896b-606217a8de6b';
+UPDATE inv_item SET strength_concept_id =166045  WHERE strength='800mg/100mg' and uuid = '681b29bf-2ca0-48bb-8832-4eb701c5e070';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='50mg' and uuid = 'f85affcc-9e07-4303-aabf-a00c13bee5d1';
+UPDATE inv_item SET strength_concept_id =165633  WHERE strength='30/60/50mg' and uuid = '95800b9b-f334-4871-a383-13d663a99a2f';
+UPDATE inv_item SET strength_concept_id =165634  WHERE strength='60/30mg' and uuid = 'c837ea4c-1aa5-4289-b8ea-033a4c2c793a';
+UPDATE inv_item SET strength_concept_id =165634  WHERE strength='60/30mg' and uuid = '68817326-9e61-4cb6-95a7-75193c377f7f';
+UPDATE inv_item SET strength_concept_id =165634  WHERE strength='60/30mg' and uuid = 'cc047f31-8b44-4ca1-bb02-a85186adfe15';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg' and uuid = '291cf1a7-de8a-43a9-9c68-9c83b1c8cc4a';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='50mg/5ml' and uuid = 'b9261d1a-ee6c-4ae0-b03e-15f93a12db20';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='240ml' and uuid = '7605d1cf-94de-44bf-9f6f-006d8361eab4';
+UPDATE inv_item SET strength_concept_id =165068  WHERE strength='120mg' and uuid = '3e3fba6b-cdce-4b20-bae5-7b6916e691a0';
+UPDATE inv_item SET strength_concept_id =165062  WHERE strength='960mg' and uuid = '4c511821-236e-42d3-9272-9f12841b8e35';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100ml' and uuid = '1fc71936-ef5f-4105-b020-2d63f6704dc6';
+UPDATE inv_item SET strength_concept_id =166044  WHERE strength='300/300/50mg' and uuid = 'ee39626c-7678-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165619  WHERE strength='300/300/400mg' and uuid = '2b88c424-775e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165705  WHERE strength='400/50mg' and uuid = 'c0cdb086-767c-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166080  WHERE strength='300/200mg' and uuid = 'ff3d8ada-775d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165637  WHERE strength='60mg' and uuid = 'cecd47f0-767c-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165637  WHERE strength='60mg' and uuid = 'cecd47f0-767c-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165638  WHERE strength='100/25mg' and uuid = 'dd60b338-775d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165639  WHERE strength='80/20mg/ml' and uuid = '0df10d0e-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165706  WHERE strength='25mg' and uuid = '3a50c164-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10mg/ml' and uuid = '43804d68-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg' and uuid = '51524eaa-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg' and uuid = '5c5bb76e-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165074  WHERE strength='300mg' and uuid = '7ac77300-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='100,000 IU/ml' and uuid = '83aac7a6-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='960/300/25mg' and uuid = '8e346146-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='50mg' and uuid = '9729a86a-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='50mg/5ml' and uuid = 'a53009cc-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg' and uuid = 'ae45d352-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='50mg'	    		and uuid = 'b8118f84-767d-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = '99a516e8-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='50mg'				and uuid = '9379181e-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165617  WHERE strength='50mg'				and uuid = '890bda88-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165074  WHERE strength='300mg'			and uuid = '715300f6-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg'			and uuid = '6a3516a6-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = '59494880-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166054  WHERE strength='400mg'			and uuid = '522ff756-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = '4738a0aa-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165706  WHERE strength='25mg'				and uuid = '3fbbb56a-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = '324698f0-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='250mg/5ml'		and uuid = '2a889406-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = '1d8ba658-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166052  WHERE strength='250mg'			and uuid = '15d689a0-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='2.4MIU'			and uuid = '06e5463e-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='1g Injection'		and uuid = '00db558a-769f-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = 'f6522990-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166054  WHERE strength='400mg'			and uuid = 'efc9a24c-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = 'e44b779c-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg'			and uuid = 'dd6d84c4-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = 'cfe69e58-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg'			and uuid = 'c9385146-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='1mg/ml'			and uuid = 'bf10cd06-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = 'b82f5c0a-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = 'a518de70-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165076  WHERE strength='100mg'			and uuid = '9ea69dca-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = '92a49612-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166054  WHERE strength='400mg'			and uuid = '8a8abf9c-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='2mg'				and uuid = '78541b34-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165635  WHERE strength='200mg'			and uuid = '71a7f968-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =166054  WHERE strength='400mg'			and uuid = '64d874a6-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml'				and uuid = '5bdffaf4-769e-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = '57da5ab8-7698-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='500mg'			and uuid = '325c5192-7698-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml'				and uuid = '1e4dd50e-7698-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='20.5mg'			and uuid = '990d766a-7697-11eb-9439-0242ac130002';
+UPDATE inv_item SET strength_concept_id =5622  WHERE strength='75mg'				and uuid = '8ca90610-a0f3-11eb-bcbc-0242ac130002';
+UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and uuid = '7aadf603-14e9-4a18-988a-b008f07e85d5';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
                           
 </databaseChangeLog>

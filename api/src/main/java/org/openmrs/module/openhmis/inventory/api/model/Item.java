@@ -45,6 +45,7 @@ public class Item extends BaseSimpleCustomizableMetadata<ItemAttribute> implemen
 	private String strength;
 	private String regimenLine;
 	private String itemType;
+	private Concept strenghtConcept;
 
 	public String getUnitOfMeasure() {
 		return unitOfMeasure;
@@ -272,5 +273,13 @@ public class Item extends BaseSimpleCustomizableMetadata<ItemAttribute> implemen
 	@JsonIgnore
 	public Boolean getRetired() {
 		return super.getRetired();
+	}
+
+	public Concept getStrenghtConcept() {
+		return strenghtConcept;
+	}
+
+	public void setStrenghtConcept(Concept strenghtConcept) {
+		this.strenghtConcept = strenghtConcept;
 	}
 }
