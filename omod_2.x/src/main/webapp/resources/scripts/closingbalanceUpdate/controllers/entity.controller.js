@@ -3,19 +3,19 @@
     'use strict';
 
     var base = angular.module('app.genericManageController');
-    base.controller("CrrfReportsController", CrrfReportsController);
-    CrrfReportsController.$inject = ['$injector', '$scope', '$filter',
+    base.controller("ClosingbalanceUpdateController", ClosingbalanceUpdateController);
+    ClosingbalanceUpdateController.$inject = ['$injector', '$scope', '$filter',
         'EntityRestFactory', 'CssStylesFactory', 'PaginationService',
-        'CrrfReportsModel', 'CookiesService', 'CrrfReportsRestfulService', 'CrrfReportsFunctions'];
+        'ClosingbalanceUpdateModel', 'CookiesService', 'ClosingbalanceUpdateRestfulService', 'ClosingbalanceUpdateFunctions'];
 
-    function CrrfReportsController($injector, $scope, $filter,
-            EntityRestFactory, CssStylesFactory, PaginationService, CrrfReportsModel,
-            CookiesService, CrrfReportsRestfulService, CrrfReportsFunctions) {
+    function ClosingbalanceUpdateController($injector, $scope, $filter,
+            EntityRestFactory, CssStylesFactory, PaginationService, ClosingbalanceUpdateModel,
+            CookiesService, ClosingbalanceUpdateRestfulService, ClosingbalanceUpdateFunctions) {
 
         var self = this;
 
         var entity_name = emr.message("openhmis.inventory.report.name");
-        var REST_ENTITY_NAME = "crrfReports";
+        var REST_ENTITY_NAME = "closingbalanceUpdate";
 
         // @Override
         self.getModelAndEntityName = self.getModelAndEntityName
@@ -38,11 +38,11 @@
 //            $scope.startDate = CookiesService.get('startDate') || {};
 //            $scope.endDate = CookiesService.get('endDate') || {};
 
-            CrrfReportsFunctions.onChangeDatePicker('startDate-display', function (value) {
+            ClosingbalanceUpdateFunctions.onChangeDatePicker('startDate-display', function (value) {
                $scope.startDate = value;
             });
 
-            CrrfReportsFunctions.onChangeDatePicker('endDate-display', function (value) {
+            ClosingbalanceUpdateFunctions.onChangeDatePicker('endDate-display', function (value) {
                $scope.endDate = value;
             });
         }
@@ -163,7 +163,7 @@
                    
                    console.log('After loading');
               
-                   CrrfReportsRestfulService.generateCRFFReport("crrf_report", CrrfReportsFunctions.formatDate(startDate), CrrfReportsFunctions.formatDate(endDate), crrfCategory, currentPage, $scope.limit, $scope.includeRetired, self.onLoadCRRFReportSuccessful) 
+                   ClosingbalanceUpdateRestfulService.generateCRFFReport("crrf_report", ClosingbalanceUpdateFunctions.formatDate(startDate), ClosingbalanceUpdateFunctions.formatDate(endDate), crrfCategory, currentPage, $scope.limit, $scope.includeRetired, self.onLoadClosingbalanceUpdateSuccessful) 
 
                } else {
                    $scope.loading = false;
@@ -175,7 +175,7 @@
                
         }
 
-        self.onLoadCRRFReportSuccessful = self.onLoadCRRFReportSuccessful || function (data) {
+        self.onLoadClosingbalanceUpdateSuccessful = self.onLoadClosingbalanceUpdateSuccessful || function (data) {
             $scope.fetchedEntities = data.results[0];
             var resultReturn = $scope.fetchedEntities;
             localStorage.setItem("resultReturn", resultReturn);
@@ -203,7 +203,7 @@
             EntityRestFactory: EntityRestFactory,
             PaginationService: PaginationService,
             CssStylesFactory: CssStylesFactory,
-            GenericMetadataModel: CrrfReportsModel,
+            GenericMetadataModel: ClosingbalanceUpdateModel,
             CookiesService: CookiesService
         });
     }

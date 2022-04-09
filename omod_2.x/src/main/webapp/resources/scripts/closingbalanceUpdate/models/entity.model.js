@@ -6,7 +6,7 @@
 	var baseModel = angular.module('app.genericMetadataModel');
 
 	/* Define model fields */
-	function CrrfReportsModel(GenericMetadataModel) {
+	function ClosingbalanceUpdateModel(GenericMetadataModel) {
 
 		var extended = angular.extend(GenericMetadataModel, {});
 
@@ -24,8 +24,8 @@
 		return extended;
 	}
 
-	baseModel.factory("CrrfReportsModel", CrrfReportsModel);
+	baseModel.factory("ClosingbalanceUpdateModel", ClosingbalanceUpdateModel);
 
-	CrrfReportsModel.$inject = ['GenericMetadataModel'];
+	ClosingbalanceUpdateModel.$inject = ['GenericMetadataModel'];
 
 })();

@@ -17,11 +17,11 @@
     'use strict';
 
     var app = angular.module('app.arvpharmacyDispenseFunctionsFactory', []);
-    app.service('CrrfReportsFunctions', CrrfReportsFunctions);
+    app.service('ClosingbalanceUpdateFunctions', ClosingbalanceUpdateFunctions);
 
-    CrrfReportsFunctions.$inject = ['EntityFunctions','$filter'];
+    ClosingbalanceUpdateFunctions.$inject = ['EntityFunctions','$filter'];
 
-    function CrrfReportsFunctions(EntityFunctions,$filter) {
+    function ClosingbalanceUpdateFunctions(EntityFunctions,$filter) {
         var service;
 
         service = {

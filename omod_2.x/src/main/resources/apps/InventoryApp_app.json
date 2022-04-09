@@ -232,7 +232,7 @@
                 "requiredPrivilege": "Task: Access Inventory Reports"
             },
             {
-                "id": "openhmis.inventory.inventoryPharmacyReport",
+                "id": "openhmis.inventory.inventoryPharmacyReport.closingBalanaceUpdate",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
                 "label": "openhmis.inventory.admin.closingbalanceUpdate",
@@ -241,7 +241,7 @@
                 "requiredPrivilege": "Task: Access Inventory Reports"
             },
             {
-                "id": "openhmis.inventory.inventoryPharmacyReport",
+                "id": "openhmis.inventory.inventoryPharmacyReport.crrf",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
                 "label": "openhmis.inventory.admin.crrfReports",

@@ -11,7 +11,7 @@
         },
         {
             label: "${ ui.message("openhmis.inventory.admin.closingbalanceUpdate")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/ndrExtraction/entities.page#/'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/closingbalanceUpdate/entities.page#/'
         }
     ];
 
@@ -20,7 +20,7 @@
 
 <div id="reportPage">
 
-<h2>{{ ui.message("openhmis.inventory.admin.closingbalanceUpdate")}}</h2>
+<h2>{{ ui.message("openhmis.inventory.admin.crrfReports")}}</h2>
 
 <hr>
 

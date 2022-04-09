@@ -3,11 +3,11 @@
 (function() {
 	'use strict';
 
-	angular.module('app.restfulServices').service('CrrfReportsRestfulService', CrrfReportsRestfulService);
+	angular.module('app.restfulServices').service('ClosingbalanceUpdateRestfulService', ClosingbalanceUpdateRestfulService);
 
-	CrrfReportsRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
+	ClosingbalanceUpdateRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
 
-	function CrrfReportsRestfulService(EntityRestFactory, PaginationService) {
+	function ClosingbalanceUpdateRestfulService(EntityRestFactory, PaginationService) {
 		var service;
 
 		service = {
@@ -19,7 +19,7 @@
 		function generateCRFFReport(reportId, startDate, endDate, crrfCategory, startIndex, limit, includeRetired, onLoadSuccessfulCallback){
 					         
 			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
-					requestParams['rest_entity_name'] = 'crrfReports';
+					requestParams['rest_entity_name'] = 'closingbalanceUpdate';
 					requestParams['reportId'] = reportId;
 					requestParams['crrfCategory'] = crrfCategory; 
                         

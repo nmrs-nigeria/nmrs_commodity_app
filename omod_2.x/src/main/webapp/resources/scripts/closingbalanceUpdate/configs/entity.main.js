@@ -1,7 +1,7 @@
 
 
 /* initialize and bootstrap application */
-requirejs(['crrfReports/configs/entity.module'], function() {
+requirejs(['closingbalanceUpdate/configs/entity.module'], function() {
 	angular.bootstrap(document, ['entitiesApp']);
 });
 
@@ -69,6 +69,7 @@ emr.loadMessages([
 		"openhmis.inventory.dateofdispense",
 		"openhmis.inventory.pharmacyDispenseSummary.name",
 		"openhmis.inventory.admin.dispenseSummarys",
-		"openhmis.inventory.operations.noDispenseFound"
+		"openhmis.inventory.operations.noDispenseFound",
+		"openhmis.inventory.admin.closingbalanceUpdate"
 
 ]);

@@ -21,13 +21,13 @@
 			$stateProvider.state('/', {
 				url : '/',
 				templateUrl : 'entity.page',
-				controller : 'closingbalanceUpdateController'
+				controller : 'ClosingbalanceUpdateController'
 			}).state('new', {
 				url : '/',
 				views : {
 					'' : {
 						templateUrl : 'entity.page',
-						controller : 'closingbalanceUpdateController'
+						controller : 'ClosingbalanceUpdateController'
 					}
 				}
 			});
