@@ -63,9 +63,19 @@ public class StockroomResource extends BaseRestMetadataResource<Stockroom> {
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 		String stockroomType = context.getParameter("stockroomType");
 		String name = context.getParameter("name");
-
-		List<Stockroom> results = iStockroomDataService.getByNameFragment(name, stockroomType, pagingInfo);
-
+		//System.out.println("Long the stock room---" + stockroomType);
+		List<Stockroom> results = null;
+		if (stockroomType.equalsIgnoreCase("crrf")) {
+			results = iStockroomDataService.getByNameFragment(name, null, pagingInfo);
+		} else {
+			results = iStockroomDataService.getByNameFragment(name, stockroomType, pagingInfo);
+		}
+		//		if (results != null) {
+		//			for (Stockroom s : results) {
+		//				System.out.println("Long the stock room---" + s.getStockroomType());
+		//				System.out.println("Long the stock room---" + s.getName());
+		//			}
+		//		}
 		return new AlreadyPagedWithLength<Stockroom>(context, results, pagingInfo.hasMoreResults(),
 		        pagingInfo.getTotalRecordCount());
 	}

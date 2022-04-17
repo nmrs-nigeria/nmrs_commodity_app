@@ -74,7 +74,9 @@
 						console.log("stockTakeDetails Details is equal 0: Calling loadStockDetailsDepartment function");					
 						$scope.loadStockDetailsDepartment(stockTakeCurrentPage);
 					}
-				}
+
+                    console.log("departmentDialog");
+                }
 
 				$scope.loadStockDetailsDepartment = function (stockTakeCurrentPage) {
 					if ($scope.entity.department != null) {
@@ -95,6 +97,7 @@
 						$scope.showStockDetails = false;
 						$scope.showStockDetailsTable = false;
 					}
+                    console.log("loadStockDetailsDepartment");
 				}
 				
 				$scope.loadStockDetails = function (stockTakeCurrentPage) {
@@ -114,6 +117,7 @@
 						$scope.showStockDetails = false;
 						$scope.showStockDetailsTable = false;
 					}
+                    console.log("loadStockDetails");
 				}
 				
 				$scope.showTableDetails = function () {
@@ -128,6 +132,7 @@
 					if (entity.actualQuantity >= 0) {
 						entity.id = entity.item.uuid + "_" + entity.expiration;
 						self.getNewStock(entity);
+                        console.log("getActualQuantity");
 					}
 				}
 
@@ -138,7 +143,7 @@
 			}
 		
 		self.getNewStock = self.getNewStock || function (newStock) {
-				console.log($scope.stockTakeDetails);
+				console.log("Hiiii"+$scope.stockTakeDetails);
 				var index = EntityFunctions.findIndexByKeyValue($scope.stockTakeDetails,newStock.id);
 				if (index < 0 ) {
 					$scope.stockTakeDetails.push(newStock);
@@ -162,6 +167,8 @@
 					$scope.showStockDetailsTable = false;
 				}
 				$scope.stockTakeDetails = $filter('orderBy')($scope.stockTakeDetails, ['item.name', 'expiration']);
+
+            console.log("getNewStock");
 			}
 		
 		self.loadStockrooms = self.loadStockrooms || function () {

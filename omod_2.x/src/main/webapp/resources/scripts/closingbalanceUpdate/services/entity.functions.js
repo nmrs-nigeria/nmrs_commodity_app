@@ -16,123 +16,59 @@
 (function () {
     'use strict';
 
-    var app = angular.module('app.arvpharmacyDispenseFunctionsFactory', []);
-    app.service('ClosingbalanceUpdateFunctions', ClosingbalanceUpdateFunctions);
+    var app = angular.module('app.stockTakeFunctionsFactory', []);
+    app.service('PharmacyStockTakeFunctions', PharmacyStockTakeFunctions);
 
-    ClosingbalanceUpdateFunctions.$inject = ['EntityFunctions','$filter'];
+    PharmacyStockTakeFunctions.$inject = ['$filter'];
 
-    function ClosingbalanceUpdateFunctions(EntityFunctions,$filter) {
+    function PharmacyStockTakeFunctions($filter) {
         var service;
 
         service = {
-            addMessageLabels: addMessageLabels,
             formatDate: formatDate,
-            formatTime: formatTime,
-            onChangeDatePicker: onChangeDatePicker
+            stockroomChangeDialog: stockroomChangeDialog
         };
 
         return service;
 
-
+        /**
+         * Formats the date to allow proper updating of the stocks
+         * @params date
+         * @returns formattedDate
+         * */
+        function formatDate(date) {
+            return ($filter('date')(new Date(date), 'dd-MM-yyyy'));
+        }
 
         /**
-         * All message labels used in the UI are defined here
-         * @returns {{}}
+         * Disable and gray-out background when a dialog box opens up.
          */
-        function addMessageLabels() {
-            var messages = {};
-
-            messages['openhmis.inventory.department.name'] = emr
-                    .message('openhmis.inventory.department.name');
-            messages['openhmis.inventory.consumption.consumptionDate'] = emr
-                    .message('openhmis.inventory.consumption.consumptionDate');
-            messages['openhmis.inventory.consumption.quantity'] = emr
-                    .message('openhmis.inventory.consumption.quantity');
-            messages['openhmis.inventory.consumption.testingPoint'] = emr
-                    .message('openhmis.inventory.consumption.testingPoint');
-            messages['openhmis.inventory.consumption.wastage'] = emr
-                    .message('openhmis.inventory.consumption.wastage');
-             messages['openhmis.inventory.consumption.batchNumber'] = emr
-                    .message('openhmis.inventory.consumption.batchNumber');
-            messages['openhmis.inventory.item.name'] =
-                    emr.message('openhmis.inventory.item.name');
-            
-            messages['openhmis.inventory.summary.quantityConsumed'] =
-                    emr.message('openhmis.inventory.summary.quantityConsumed');
-              messages['openhmis.inventory.summary.quantityReceived'] =
-                    emr.message('openhmis.inventory.summary.quantityReceived');
-             messages['openhmis.inventory.summary.startDate'] =
-                    emr.message('openhmis.inventory.summary.startDate');
-                  messages['openhmis.inventory.summary.endDate'] =
-                    emr.message('openhmis.inventory.summary.endDate');
-              messages['openhmis.inventory.summary.totalWastage'] =
-                    emr.message('openhmis.inventory.summary.totalWastage');
-            messages['openhmis.inventory.summary.stockBalance'] =
-                    emr.message('openhmis.inventory.summary.stockBalance');
-
-
-            messages['openhmis.inventory.stockroom.name'] = emr
-                    .message('openhmis.inventory.stockroom.name');
-
-            messages['openhmis.commons.general.add'] = emr
-                    .message('openhmis.commons.general.add');
-            messages['openhmis.commons.general.edit'] = emr
-                    .message('openhmis.commons.general.edit');
-
-                    messages['openhmis.inventory.summary.endDate'] =
-                    emr.message('openhmis.inventory.summary.endDate');
-              messages['openhmis.inventory.summary.totalWastage'] =
-                    emr.message('openhmis.inventory.summary.totalWastage');
-            messages['openhmis.inventory.summary.stockBalance'] =
-                    emr.message('openhmis.inventory.summary.stockBalance');
-
-
-            messages['openhmis.inventory.stockroom.name'] = emr
-                    .message('openhmis.inventory.stockroom.name');
-
-            messages['openhmis.commons.general.add'] = emr
-                    .message('openhmis.commons.general.add');
-            messages['openhmis.commons.general.edit'] = emr
-                    .message('openhmis.commons.general.edit');
-
-
-            messages['openhmis.inventory.patient.id'] =
-                    emr.message('openhmis.inventory.patient.id');
-            messages['openhmis.inventory.patient.category'] =
-                    emr.message('openhmis.inventory.patient.category');
-            messages['openhmis.inventory.treatment.type'] =
-                    emr.message('openhmis.inventory.treatment.type');
-            messages['openhmis.inventory.visit.type'] = emr
-                    .message('openhmis.inventory.visit.type');
-            messages['openhmis.inventory.pickupreason'] = emr
-                    .message('openhmis.inventory.pickupreason');
-            messages['openhmis.inventory.dateofdispense'] = emr
-                    .message('openhmis.inventory.dateofdispense');
-            messages['openhmis.inventory.pharmacyDispenseSummary.name'] = emr
-                    .message('openhmis.inventory.pharmacyDispenseSummary.name');
- 			messages['openhmis.inventory.admin.dispenseSummarys'] = emr
-                    .message('openhmis.inventory.admin.dispenseSummarys');
-
-            return messages;
+        function disableBackground() {
+            var backgroundElement = angular.element('.simplemodal-overlay');
+            backgroundElement.addClass('disable-background');
         }
 
-        function formatDate(date) {
-            
-            return $filter('date')(new Date(date), "yyyy-MM-dd");
-        }
-
-        function formatTime(time) {
-            var format = 'HH:mm';
-            return ($filter('date')(new Date(time), format));
-        }
-
-        function onChangeDatePicker(id, successfulCallback) {
-            var datePicker = angular.element(document.getElementById(id));
-            datePicker.bind('keyup change select checked', function () {
-                var input = this.value;
-                successfulCallback(input);
+        /**
+         * Show the generate report popup
+         * @param selectorId - div id
+         */
+        function stockroomChangeDialog(selectorId, $scope) {
+            var dialog = emr.setupConfirmationDialog({
+                selector: '#' + selectorId,
+                actions: {
+                    cancel: function () {
+                        dialog.close();
+                    },
+                    confirm: function () {
+                        $scope.loadStockDetails($scope.stockTakeCurrentPage);
+                        $scope.$apply();
+                        dialog.close();
+                    }
+                }
             });
-        }
 
+            dialog.show();
+            disableBackground();
+        }
     }
 })();

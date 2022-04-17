@@ -47,21 +47,22 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
-import org.openmrs.module.openhmis.inventory.api.model.ARVDispensedItem;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
-import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
-import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
+import org.openmrs.module.openhmis.inventory.api.model.ClosingbalanceUpdate;
+import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
+import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ARVDispensedItem;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
 import org.springframework.transaction.annotation.Transactional;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
 
 import com.google.common.primitives.Ints;
 
@@ -175,6 +176,59 @@ public class ItemStockDetailDataServiceImpl
 				}
 			}
 
+			results.add(summary);
+		}
+
+		// We done.
+		return results;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	@Authorized({ PrivilegeConstants.VIEW_METADATA })
+	public List<ClosingbalanceUpdate> getItemStockSummaryByItemType(final Stockroom stockroom, PagingInfo pagingInfo) {
+		if (stockroom == null) {
+			throw new IllegalArgumentException("The stockroom must be defined.");
+		}
+
+		// We cannot use a normal Criteria query here because criteria does not support a group by with a having statement
+		// so HQL it is!
+
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			// Load the record count (for paging)
+			String countHql = "select 1 "
+			        + "from Item as detail "
+			        + "where itemType = '" + stockroom.getStockroomType() + "'";
+			Query countQuery = getRepository().createQuery(countHql);
+
+			Integer count = countQuery.list().size();
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
+
+		// Create the query and optionally add paging
+		String hql = "select detail.id, detail.name, detail.uuid "
+		        + "from Item as detail"
+		        + "where detail.itemType = '" + stockroom.getStockroomType() + "' "
+		        + "order by detail.name asc";
+		Query query = getRepository().createQuery(hql);
+		query = this.createPagingQuery(pagingInfo, query);
+
+		List list = query.list();
+
+		// Parse the aggregate query into an ItemStockSummary object
+		List<ClosingbalanceUpdate> results = new ArrayList<ClosingbalanceUpdate>(list.size());
+		for (Object obj : list) {
+			Object[] row = (Object[])obj;
+
+			ClosingbalanceUpdate summary = new ClosingbalanceUpdate();
+			Integer itemid = Ints.checkedCast((Long)row[0]);
+			summary.setItemId(itemid);
+			String itemname = (String)row[1];
+			summary.setItemName(itemname);
+			String itemuuid = (String)row[2];
+			summary.setItemName(itemuuid);
 			results.add(summary);
 		}
 
