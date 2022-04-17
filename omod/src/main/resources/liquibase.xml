@@ -7145,5 +7145,63 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         	]]>
         </sql>
     </changeSet>
+    
+    <changeSet id="openhmis.inventory-v5.4" author="Toyeeb" >    
+	      <sql>
+	            <![CDATA[   
+	            SET FOREIGN_KEY_CHECKS=0;   
+				ALTER TABLE `inv_stockonhand_pharmacy_dispensary` ADD `strength_concept_id` INT(11) NOT NULL AFTER `concept_id`;
+	        	SET FOREIGN_KEY_CHECKS=1;
+	        	]]>           	
+	      </sql>  
+     </changeSet>
+    
+    <changeSet id="openhmis.inventory-v5.5" author="Toyeeb" >        
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;   
+			UPDATE inv_stockonhand_pharmacy_dispensary r 
+			JOIN inv_item t ON (r.item_id = t.item_id) AND t.strength_concept_id IS NOT NULL 
+			SET r.strength_concept_id = t.strength_concept_id WHERE r.strength_concept_id = 0;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v5.6" author="Toyeeb Abdulfatai">
+        <createTable tableName="inv_closing_balance_update">
+            <column name="closing_balance_update_id" autoIncrement="true" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="reporting_period" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reporting_year" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="stockroom_type" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="item_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pack_size" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="strength" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>           
+            <column name="calculated_closing_balance" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="updated_closing_balance" type="int">
+                <constraints nullable="true"/>
+            </column>
+            <column name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>       
+    </changeSet>
+    
                           
 </databaseChangeLog>

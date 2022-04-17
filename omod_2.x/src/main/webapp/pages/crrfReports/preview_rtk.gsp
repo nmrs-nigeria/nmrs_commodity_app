@@ -49,6 +49,70 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
      console.log("dataURL: " + dataURL);     
     
     displayDataBody();
+
+    function calculateFunction(id){
+    	var arrayS = id.split("_");
+    	var packSizeId = arrayS[0];
+    	var packSizeValue = document.getElementById('' + packSizeId).value;
+    	if(packSizeValue == "" || packSizeValue <= 0){
+    		packSizeValue = 1;
+    	}    
+    	
+        var receivedId = arrayS[1];
+        var receivedQty = arrayS[2];
+        var finalReceived = parseFloat(receivedQty) / parseFloat(packSizeValue);
+        var finalReceivedRounded = parseFloat(finalReceived).toFixed(1);
+    	document.getElementById('' + receivedId).innerHTML = finalReceivedRounded;
+          
+        var beginingBalanceId = arrayS[3];
+        var beginingBalanceQty = arrayS[4];
+        var finalbeginingBalance = parseFloat(beginingBalanceQty) / parseFloat(packSizeValue);
+        var finalbeginingBalanceRounded = parseFloat(finalbeginingBalance).toFixed(1);
+    	document.getElementById('' + beginingBalanceId).innerHTML = finalbeginingBalanceRounded;
+        
+        var dispensedId = arrayS[5];
+        var dispensedQty = arrayS[6];
+        var finaldispensed = parseFloat(dispensedQty) / parseFloat(packSizeValue);
+        var finaldispensedRounded = parseFloat(finaldispensed).toFixed(1);
+    	document.getElementById('' + dispensedId).innerHTML = finaldispensedRounded;
+        
+        var positiveAdjustmentId = arrayS[7];
+        var positiveAdjustmentQty = arrayS[8];
+        var finalpositiveAdjustment = parseFloat(positiveAdjustmentQty) / parseFloat(packSizeValue);
+        var finalpositiveAdjustmentRounded = parseFloat(finalpositiveAdjustment).toFixed(1);
+    	document.getElementById('' + positiveAdjustmentId).innerHTML = finalpositiveAdjustmentRounded;
+        
+        var negativeAdjustmentId = arrayS[9];
+        var negativeAdjustmentQty = arrayS[10];
+        var finalnegativeAdjustment = parseFloat(negativeAdjustmentQty) / parseFloat(packSizeValue);
+        var finalnegativeAdjustmentRounded = parseFloat(finalnegativeAdjustment).toFixed(1);
+    	document.getElementById('' + negativeAdjustmentId).innerHTML = finalnegativeAdjustmentRounded;
+        
+        var receivedLossesId = arrayS[11];
+        var receivedLossesQty = arrayS[12];
+        var finalreceivedLosses = parseFloat(receivedLossesQty) / parseFloat(packSizeValue);
+        var finalreceivedLossesRounded = parseFloat(finalreceivedLosses).toFixed(1);
+    	document.getElementById('' + receivedLossesId).innerHTML = finalreceivedLossesRounded;
+        
+        var physicalCountId = arrayS[13];
+        var physicalCountQty = arrayS[14];
+        var finalphysicalCount = parseFloat(physicalCountQty) / parseFloat(packSizeValue);
+        var finalphysicalCountRounded = parseFloat(finalReceived).toFixed(1);
+    	document.getElementById('' + physicalCountId).innerHTML = finalphysicalCountRounded;
+        
+        var maximumStockId = arrayS[15];
+        var maximumStockQty = arrayS[16];
+        var finalmaximumStock = parseFloat(maximumStockQty) / parseFloat(packSizeValue);
+        var finalmaximumStockRounded = parseFloat(finalmaximumStock).toFixed(1);
+    	document.getElementById('' + maximumStockId).innerHTML = finalmaximumStockRounded;
+        
+        var quantityOrderId = arrayS[17];
+        var quantityOrderQty = arrayS[18];
+        var finalquantityOrder = parseFloat(quantityOrderQty) / parseFloat(packSizeValue);
+        var finalquantityOrderRounded = parseFloat(finalquantityOrder).toFixed(1);
+    	document.getElementById('' + quantityOrderId).innerHTML = finalquantityOrderRounded;   		
+        
+    }
     
     function displayDataBody() {
         var rsd = dataURL.reportingPeriodStart.split("T");
@@ -71,7 +135,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
         contents += "<tr><th style='text-align: center;' colspan='13'>HIV RTK & DBS</th></tr>";
         contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='3'>REQUISITION</th></tr>";
        
-        contents += "<tr><th>Test Kit</th><th>Pack Size</th><th>Reporting Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Dispensed</th>";
+        contents += "<tr><th>Test Kit</th><th>Pack Size</th><th>Reporting Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Consumed</th>";
         contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Physical Count</th>";
         contents += "<th>Maximum Stock Quantity</th><th>Quantity to Order</th><th>Remarks</th></tr>";
         
@@ -83,11 +147,26 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
           	var ru = rtkElement.basicUnit.split(" ");
      		var packSize = ru[0];
      		var repUnit = ru[1];
-         	contents += "<tr><td>" + rtkElement.drugs +  "</td><td>" + packSize +  "</td><td>" + repUnit +  "</td><td>" + rtkElement.beginningBalance +  "</td>";
-         	contents += "<td>" + rtkElement.quantityReceived +  "</td><td>" + rtkElement.quantityDispensed +  "</td><td>" + rtkElement.positiveAdjustments +  "</td>";
-         	contents += "<td>" + rtkElement.negativeAdjustments +  "</td><td>" + rtkElement.lossesdDamagesExpiries +  "</td><td>" + rtkElement.physicalCount +  "</td>";
-         	contents += "<td>" + rtkElement.maximumStockQuantity +  "</td><td>" + rtkElement.quantityToOrder +  "</td><td></td>";         	            
+
+            var packsizertk = "packsizertk" + i;
+          	var qtyReceivedId = "packsizertk" + i + "r";
+          	var qtyBeginingBalanceId = "packsizertk" + i + "bb";
+          	var qtyDispensedId = "packsizertk" + i + "d";
+          	var qtyPositiveAdjustmentId = "packsizertk" + i + "pa";
+          	var qtyNegativeAdjustmentId = "packsizertk" + i + "na";
+          	var qtyReceivedLossesId = "packsizertk" + i + "l";
+          	var qtyPhysicalCountId = "packsizertk" + i + "pc";
+          	var qtyMaximumStockId = "packsizertk" + i + "ms";
+          	var qtyQuantityOrderId = "packsizertk" + i + "qo";
+          	
+          	var final = packsizertk + "_" + qtyReceivedId + "_" + rtkElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + rtkElement.beginningBalance + "_" + qtyDispensedId + "_" + rtkElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + rtkElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + rtkElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + rtkElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + rtkElement.physicalCount + "_" + qtyMaximumStockId + "_" + rtkElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + rtkElement.quantityToOrder;
+          	
+         	contents += "<tr><td>" + rtkElement.drugs +  "</td><td><input type='text' size='5' id='" + packsizertk + "' onkeyup=\"calculateFunction('" + final + "')\" /></td><td>" + repUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + rtkElement.beginningBalance +  "</td>";
+         	contents += "<td id='" + qtyReceivedId + "'>" + rtkElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + rtkElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + rtkElement.positiveAdjustments +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + rtkElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + rtkElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + rtkElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyMaximumStockId + "'>" + rtkElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + rtkElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
+
         }
          
         contents += "<tr style='background-color: white'><th colspan='13'>BIMONTHLY SUMMARY OF HIV RAPID TEST BY PURPOSE</th></tr>"; 

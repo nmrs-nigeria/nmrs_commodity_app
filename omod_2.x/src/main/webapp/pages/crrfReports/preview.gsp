@@ -126,13 +126,13 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         contents += "<table id='fileexport1' class='table table-striped table-condensed' style='font-size: 12px; width: 100%;'>";
         contents += "<thead>";
 
-        contents += "<tr><th colspan='2'>Facility Name: </th><td colspan='2'>" + dataURL.facilityName + "</td><th colspan='2'>Reporting Period Start: </th><td colspan='6'>" + repDateStart + "</td></tr>";
-        contents += "<tr><th colspan='2'>Facility Code: </th><td colspan='2'>" + dataURL.facilityCode + "</th><th colspan='2'>Reporting Period End: </th><td colspan='2'>" + repDateEnd + "</td><th colspan='2'>Maximum Stock Level: </th><td colspan='2'>4 Months</td></tr>";
-        contents += "<tr><th colspan='2'>LGA: </th><td colspan='2'>" + dataURL.lga + "</td><th colspan='2'>Date Prepared: </th><td colspan='2'>" + repDatePrepared + "</td><th colspan='2'>Minimum Stock Level:</th><td colspan='2'> 2 Months</td></tr>";
-        contents += "<tr><th colspan='2'>State: </th><td colspan='10'>" + dataURL.state + "</td></tr>";
+        contents += "<tr><th>Facility Name: </th><td colspan='4'>" + dataURL.facilityName + "</td><th colspan='3'>Reporting Period Start: </th><td colspan='6'>" + repDateStart + "</td></tr>";
+        contents += "<tr><th>Facility Code: </th><td colspan='4'>" + dataURL.facilityCode + "</th><th colspan='3'>Reporting Period End: </th><td colspan='2'>" + repDateEnd + "</td><th colspan='3'>Maximum Stock Level: </th><td>4 Months</td></tr>";
+        contents += "<tr><th>LGA: </th><td colspan='4'>" + dataURL.lga + "</td><th colspan='3'>Date Prepared: </th><td colspan='2'>" + repDatePrepared + "</td><th colspan='3'>Minimum Stock Level:</th><td> 2 Months</td></tr>";
+        contents += "<tr><th>State: </th><td colspan='14'>" + dataURL.state + "</td></tr>";
 
-        contents += "<tr><th style='text-align: center;' colspan='12'>Antiretroviral Drugs</th></tr>";
-        contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='3'>REQUISITION</th></tr>";
+        contents += "<tr><th style='text-align: center;' colspan='14'>Antiretroviral Drugs</th></tr>";
+        contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='5'>REQUISITION</th></tr>";
 
         contents += "<tr><th>Drugs</th><th>Strength</th><th>Pack Size</th><th>Basic Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Dispensed</th>";
         contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Physical Count</th>";
@@ -168,20 +168,20 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         for (j = 0; j < paediatric.length; j++) {
           	var paediatricElement = paediatric[j];
           	
-          	var packsizepaediatric = "packsizepaediatric" + i;
-          	var qtyReceivedId = "packsizepaediatric" + i + "r";
-          	var qtyBeginingBalanceId = "packsizepaediatric" + i + "bb";
-          	var qtyDispensedId = "packsizepaediatric" + i + "d";
-          	var qtyPositiveAdjustmentId = "packsizepaediatric" + i + "pa";
-          	var qtyNegativeAdjustmentId = "packsizepaediatric" + i + "na";
-          	var qtyReceivedLossesId = "packsizepaediatric" + i + "l";
-          	var qtyPhysicalCountId = "packsizepaediatric" + i + "pc";
-          	var qtyMaximumStockId = "packsizepaediatric" + i + "ms";
-          	var qtyQuantityOrderId = "packsizepaediatric" + i + "qo";
+          	var packsizepaediatric = "packsizepaediatric" + j;
+          	var qtyReceivedId = "packsizepaediatric" + j + "r";
+          	var qtyBeginingBalanceId = "packsizepaediatric" + j + "bb";
+          	var qtyDispensedId = "packsizepaediatric" + j + "d";
+          	var qtyPositiveAdjustmentId = "packsizepaediatric" + j + "pa";
+          	var qtyNegativeAdjustmentId = "packsizepaediatric" + j + "na";
+          	var qtyReceivedLossesId = "packsizepaediatric" + j + "l";
+          	var qtyPhysicalCountId = "packsizepaediatric" + j + "pc";
+          	var qtyMaximumStockId = "packsizepaediatric" + j + "ms";
+          	var qtyQuantityOrderId = "packsizepaediatric" + j + "qo";
           	
           	var finalpaediatric = packsizepaediatric + "_" + qtyReceivedId + "_" + paediatricElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + paediatricElement.beginningBalance + "_" + qtyDispensedId + "_" + paediatricElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + paediatricElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + paediatricElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + paediatricElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + paediatricElement.physicalCount + "_" + qtyMaximumStockId + "_" + paediatricElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + paediatricElement.quantityToOrder;
   	
-         	contents += "<tr><td>" + paediatricElement.drugs +  "</td><td>" + paediatricElement.strength +  "</td><td></td><td><input type='text' size='5' id='" + packsizepaediatric + "' onkeyup=\"calculateFunction('" + finalpaediatric + "')\" /></td><td>" + paediatricElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + paediatricElement.beginningBalance +  "</td>";
+         	contents += "<tr><td>" + paediatricElement.drugs +  "</td><td>" + paediatricElement.strength +  "</td><td><input type='text' size='5' id='" + packsizepaediatric + "' onkeyup=\"calculateFunction('" + finalpaediatric + "')\" /></td><td>" + paediatricElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + paediatricElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + paediatricElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + paediatricElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + paediatricElement.positiveAdjustments +  "</td>";
          	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + paediatricElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + paediatricElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + paediatricElement.physicalCount +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + paediatricElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + paediatricElement.quantityToOrder +  "</td><td></td>";         	            
@@ -192,58 +192,117 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         oi = dataURL.crrfOIRegimenCategory;     
         for (k = 0; k < oi.length; k++) {
           	var oiElement = oi[k];
-         	contents += "<tr><td>" + oiElement.drugs +  "</td><td>" + adultElement.strength +  "</td><td><td>" + oiElement.basicUnit +  "</td><td>" + oiElement.beginningBalance +  "</td>";
-         	contents += "<td>" + oiElement.quantityReceived +  "</td><td>" + oiElement.quantityDispensed +  "</td><td>" + oiElement.positiveAdjustments +  "</td>";
-         	contents += "<td>" + oiElement.negativeAdjustments +  "</td><td>" + oiElement.lossesdDamagesExpiries +  "</td><td>" + oiElement.physicalCount +  "</td>";
-         	contents += "<td>" + oiElement.maximumStockQuantity +  "</td><td>" + oiElement.quantityToOrder +  "</td><td></td>";         	            
-         	contents += "</tr>";
+
+            var packsizeoi = "packsizeoi" + k;
+          	var qtyReceivedId = "packsizeoi" + k + "r";
+          	var qtyBeginingBalanceId = "packsizeoi" + k + "bb";
+          	var qtyDispensedId = "packsizeoi" + k + "d";
+          	var qtyPositiveAdjustmentId = "packsizeoi" + k + "pa";
+          	var qtyNegativeAdjustmentId = "packsizeoi" + k + "na";
+          	var qtyReceivedLossesId = "packsizeoi" + k + "l";
+          	var qtyPhysicalCountId = "packsizeoi" + k + "pc";
+          	var qtyMaximumStockId = "packsizeoi" + k + "ms";
+          	var qtyQuantityOrderId = "packsizeoi" + k + "qo";
+          	
+          	var finaloi = packsizeoi + "_" + qtyReceivedId + "_" + oiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + oiElement.beginningBalance + "_" + qtyDispensedId + "_" + oiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + oiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + oiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + oiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + oiElement.physicalCount + "_" + qtyMaximumStockId + "_" + oiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + oiElement.quantityToOrder;
+
+            contents += "<tr><td>" + oiElement.drugs +  "</td><td>" + oiElement.strength +  "</td><td><input type='text' size='5' id='" + packsizeoi + "' onkeyup=\"calculateFunction('" + finaloi + "')\" /></td><td>" + oiElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + oiElement.beginningBalance +  "</td>";
+         	contents += "<td id='" + qtyReceivedId + "'>" + oiElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + oiElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + oiElement.positiveAdjustments +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + oiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + oiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + oiElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyMaximumStockId + "'>" + oiElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + oiElement.quantityToOrder +  "</td><td></td>";         	            
+         	contents += "</tr>";            
+
         }
         
         contents += "<tr><td colspan='12' style='font-weight: bold'>Advanced HIV Disease Drugs</td></tr>";
         advanceHIV = dataURL.crrfAdvanceHIVRegimenCategory;
         for (l = 0; l < advanceHIV.length; l++) {
           	var advanceHIVElement = advanceHIV[l];
-         	contents += "<tr><td>" + advanceHIVElement.drugs +  "</td><td>" + adultElement.strength +  "</td><td><td>" + advanceHIVElement.basicUnit +  "</td><td>" + advanceHIVElement.beginningBalance +  "</td>";
-         	contents += "<td>" + advanceHIVElement.quantityReceived +  "</td><td>" + advanceHIVElement.quantityDispensed +  "</td><td>" + advanceHIVElement.positiveAdjustments +  "</td>";
-         	contents += "<td>" + advanceHIVElement.negativeAdjustments +  "</td><td>" + advanceHIVElement.lossesdDamagesExpiries +  "</td><td>" + advanceHIVElement.physicalCount +  "</td>";
-         	contents += "<td>" + advanceHIVElement.maximumStockQuantity +  "</td><td>" + advanceHIVElement.quantityToOrder +  "</td><td></td>";         	            
-         	contents += "</tr>";
+
+            var packsizeadvance = "packsizeadvance" + l;
+          	var qtyReceivedId = "packsizeadvance" + l + "r";
+          	var qtyBeginingBalanceId = "packsizeadvance" + l + "bb";
+          	var qtyDispensedId = "packsizeadvance" + l + "d";
+          	var qtyPositiveAdjustmentId = "packsizeadvance" + l + "pa";
+          	var qtyNegativeAdjustmentId = "packsizeadvance" + l + "na";
+          	var qtyReceivedLossesId = "packsizeadvance" + l + "l";
+          	var qtyPhysicalCountId = "packsizeadvance" + l + "pc";
+          	var qtyMaximumStockId = "packsizeadvance" + l + "ms";
+          	var qtyQuantityOrderId = "packsizeadvance" + l + "qo";
+          	
+          	var finalpacksizeadvance = packsizeadvance + "_" + qtyReceivedId + "_" + advanceHIVElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + advanceHIVElement.beginningBalance + "_" + qtyDispensedId + "_" + advanceHIVElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + advanceHIVElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + advanceHIVElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + advanceHIVElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + advanceHIVElement.physicalCount + "_" + qtyMaximumStockId + "_" + advanceHIVElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + advanceHIVElement.quantityToOrder;
+
+            contents += "<tr><td>" + advanceHIVElement.drugs +  "</td><td>" + advanceHIVElement.strength +  "</td><td><input type='text' size='5' id='" + packsizeadvance + "' onkeyup=\"calculateFunction('" + finalpacksizeadvance+ "')\" /></td><td>" + advanceHIVElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + advanceHIVElement.beginningBalance +  "</td>";
+         	contents += "<td id='" + qtyReceivedId + "'>" + advanceHIVElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + advanceHIVElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + advanceHIVElement.positiveAdjustments +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + advanceHIVElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + advanceHIVElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + advanceHIVElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyMaximumStockId + "'>" + advanceHIVElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + advanceHIVElement.quantityToOrder +  "</td><td></td>";         	            
+         	contents += "</tr>";            
+
         }
         
         contents += "<tr><td colspan='12' style='font-weight: bold'>STI Drugs</td></tr>";
         sti = dataURL.crrfSTIRegimenCategory;
         for (m = 0; m < sti.length; m++) {
           	var stiElement = sti[m];
-         	contents += "<tr><td>" + stiElement.drugs +  "</td><td>" + adultElement.strength +  "</td><td><td>" + stiElement.basicUnit +  "</td><td>" + stiElement.beginningBalance +  "</td>";
-         	contents += "<td>" + stiElement.quantityReceived +  "</td><td>" + stiElement.quantityDispensed +  "</td><td>" + stiElement.positiveAdjustments +  "</td>";
-         	contents += "<td>" + stiElement.negativeAdjustments +  "</td><td>" + stiElement.lossesdDamagesExpiries +  "</td><td>" + stiElement.physicalCount +  "</td>";
-         	contents += "<td>" + stiElement.maximumStockQuantity +  "</td><td>" + stiElement.quantityToOrder +  "</td><td></td>";         	            
-         	contents += "</tr>";
+
+            var packsizesti = "packsizesti" + m;
+          	var qtyReceivedId = "packsizesti" + m + "r";
+          	var qtyBeginingBalanceId = "packsizesti" + m + "bb";
+          	var qtyDispensedId = "packsizesti" + m + "d";
+          	var qtyPositiveAdjustmentId = "packsizesti" + m + "pa";
+          	var qtyNegativeAdjustmentId = "packsizesti" + m + "na";
+          	var qtyReceivedLossesId = "packsizesti" + m + "l";
+          	var qtyPhysicalCountId = "packsizesti" + m + "pc";
+          	var qtyMaximumStockId = "packsizesti" + m + "ms";
+          	var qtyQuantityOrderId = "packsizesti" + m + "qo";
+          	
+          	var finalpacksizesti = packsizesti + "_" + qtyReceivedId + "_" + stiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + stiElement.beginningBalance + "_" + qtyDispensedId + "_" + stiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + stiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + stiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + stiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + stiElement.physicalCount + "_" + qtyMaximumStockId + "_" + stiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + stiElement.quantityToOrder;
+
+            contents += "<tr><td>" + stiElement.drugs +  "</td><td>" + stiElement.strength +  "</td><td><input type='text' size='5' id='" + packsizesti + "' onkeyup=\"calculateFunction('" + finalpacksizesti+ "')\" /></td><td>" + stiElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + stiElement.beginningBalance +  "</td>";
+         	contents += "<td id='" + qtyReceivedId + "'>" + stiElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + stiElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + stiElement.positiveAdjustments +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + stiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + stiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + stiElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyMaximumStockId + "'>" + stiElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + stiElement.quantityToOrder +  "</td><td></td>";         	            
+         	contents += "</tr>";            
+
         }
 
         contents += "<tr><td colspan='12' style='font-weight: bold'>TB Drugs</td></tr>";
         tb = dataURL.crrfTBRegimenCategory;
         for (n = 0; n < tb.length; n++) {
           	var tbElement = tb[n];
-         	contents += "<tr><td>" + tbElement.drugs +  "</td><td>" + adultElement.strength +  "</td><td><td>" + tbElement.basicUnit +  "</td><td>" + tbElement.beginningBalance +  "</td>";
-         	contents += "<td>" + tbElement.quantityReceived +  "</td><td>" + tbElement.quantityDispensed +  "</td><td>" + tbElement.positiveAdjustments +  "</td>";
-         	contents += "<td>" + tbElement.negativeAdjustments +  "</td><td>" + tbElement.lossesdDamagesExpiries +  "</td><td>" + tbElement.physicalCount +  "</td>";
-         	contents += "<td>" + tbElement.maximumStockQuantity +  "</td><td>" + tbElement.quantityToOrder +  "</td><td></td>";         	            
-         	contents += "</tr>";
+
+            var packsizetb = "packsizetb" + n;
+          	var qtyReceivedId = "packsizetb" + n + "r";
+          	var qtyBeginingBalanceId = "packsizetb" + n + "bb";
+          	var qtyDispensedId = "packsizetb" + n + "d";
+          	var qtyPositiveAdjustmentId = "packsizetb" + n + "pa";
+          	var qtyNegativeAdjustmentId = "packsizetb" + n + "na";
+          	var qtyReceivedLossesId = "packsizetb" + n + "l";
+          	var qtyPhysicalCountId = "packsizetb" + n + "pc";
+          	var qtyMaximumStockId = "packsizetb" + n + "ms";
+          	var qtyQuantityOrderId = "packsizetb" + n + "qo";
+          	
+          	var finalpacksizetb = packsizetb + "_" + qtyReceivedId + "_" + tbElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + tbElement.beginningBalance + "_" + qtyDispensedId + "_" + tbElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + tbElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + tbElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + tbElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + tbElement.physicalCount + "_" + qtyMaximumStockId + "_" + tbElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + tbElement.quantityToOrder;
+
+            contents += "<tr><td>" + tbElement.drugs +  "</td><td>" + tbElement.strength +  "</td><td><input type='text' size='5' id='" + packsizetb + "' onkeyup=\"calculateFunction('" + finalpacksizetb+ "')\" /></td><td>" + tbElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + tbElement.beginningBalance +  "</td>";
+         	contents += "<td id='" + qtyReceivedId + "'>" + tbElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + tbElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + tbElement.positiveAdjustments +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + tbElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + tbElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + tbElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyMaximumStockId + "'>" + tbElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + tbElement.quantityToOrder +  "</td><td></td>";         	            
+         	contents += "</tr>";    
         }
 
-        contents += "<tr style='background-color: white'><th colspan='12'>Comments:</th></tr>";
-        contents += "<tr style='background-color: white'><th colspan='12'>1. Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in six months time.</th></tr>";
-        contents += "<tr style='background-color: white'><th colspan='12'>2. Any other information</th></tr>";
-        contents += "<tr style='background-color: white'><th colspan='2'>S/N</th><th colspan='4'>Description</th><th colspan='2'>Batch/Lot Number</th><th colspan='2'>Expiry date</th><th colspan='2'>Quantity</th></tr>";
-        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
-        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
-        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
-        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
-        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='4'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";        
-        contents += "<tr style='background-color: white'><th colspan='12'>Reporting Officers Details</th></tr>";   
-        contents += "<tr style='background-color: white'><th colspan='4'>Report Prepared by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>";
-        contents += "<tr style='background-color: white'><th colspan='4'>Report Approved by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>";        
+        contents += "<tr style='background-color: white'><th colspan='14'>Comments:</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='14'>1. Please provide details (expiry dates, lot numbers & quantities) of any commodity that will expire in six months time.</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='14'>2. Any other information</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='2'>S/N</th><th colspan='6'>Description</th><th colspan='2'>Batch/Lot Number</th><th colspan='2'>Expiry date</th><th colspan='2'>Quantity</th></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='6'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='6'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='6'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='6'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";
+        contents += "<tr style='background-color: white'><td colspan='2'></td><td colspan='6'></td><td colspan='2'></td><td colspan='2'></td><td colspan='2'></td></tr>";        
+        contents += "<tr style='background-color: white'><th colspan='14'>Reporting Officers Details</th></tr>";   
+        contents += "<tr style='background-color: white'><th colspan='6'>Report Prepared by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>";
+        contents += "<tr style='background-color: white'><th colspan='6'>Report Approved by (Full Name):</th><th colspan='4'>Telephone:</th><th colspan='4'>Date:</th></tr>";        
         contents += "</tbody></table>";
 
         contents += "<button id='exportToExcel'>Export to Excel </button>";
@@ -299,10 +358,3 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
      //localStorage.clear();
 
 </script>
-
-
-
-
-
-
-

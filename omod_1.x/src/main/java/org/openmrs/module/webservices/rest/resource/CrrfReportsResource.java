@@ -65,7 +65,7 @@ import com.google.gson.Gson;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 
 /**
- * @author MORRISON.I
+ * @author Toyeeb
  */
 @Resource(name = ModuleRestConstants.CRRF_REPORT_RESOURCE, supportedClass = Crrf.class, supportedOpenmrsVersions = {
         "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
@@ -255,12 +255,6 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		Set<CrrfDetails> crrfRTKRegimenCategorys = new HashSet<CrrfDetails>();
 		crrfRTKRegimenCategorys.addAll(getEmptyDataElements());
 		crrf.setCrrfRTKRegimenCategory(crrfRTKRegimenCategorys);
-
-		// String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
-
-		// iPharmacyReports
-		// .getARVCRRIFAdultModalitiesPharmacyConsumptionByDate(reportId, crrf,
-		// reportFolder);
 
 		return crrf;
 	}
@@ -530,7 +524,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctAdultItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}
@@ -562,7 +558,13 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
 				iARVPharmacyDispenseService
 				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		
+		//beginning balance by reporting period
+		List<PharmacyConsumptionSummary> pharmacyBeginningBalance = 
+				consumptionSummaryAtStockroomBeggingBalance(
+				startDate, endDate, distinctElements);
+		
+		
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = positiveAndNegativeAdjustment(startDate, endDate,
 				distinctElements);
@@ -588,7 +590,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 			// get total quantity consumed for the item
 			Optional<NewPharmacyConsumptionSummary> matchingObjectConsumed = forPharmacyConsumptionSummary.stream()
-					.filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+					.filter(a -> a.getItemConceptId().equals(item.getConcept().getConceptId())
+							&& (a.getStrengthConceptId().equals(item.getStrenghtConcept().getConceptId()))
+							).findFirst();
 
 			NewPharmacyConsumptionSummary pcsConsumed = matchingObjectConsumed.orElse(null);
 			if (pcsConsumed == null) {
@@ -730,7 +734,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctPedeatricItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}
@@ -936,7 +942,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctOIItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}
@@ -1140,7 +1148,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctAdvanceHIVItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}
@@ -1344,7 +1354,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctTBItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}
@@ -1550,7 +1562,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		List<Item> distinctElements = new ArrayList<Item>();
 		for (Item it : distinctSTIItemBase) {
 			if (!(distinctElements.stream()
-					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())).findFirst()
+					.filter(b -> b.getConcept().getConceptId().equals(it.getConcept().getConceptId())
+					&& b.getStrenghtConcept().getConceptId().equals(it.getStrenghtConcept().getConceptId())
+							).findFirst()
 					.isPresent())) {
 				distinctElements.add(it);
 			}

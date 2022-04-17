@@ -403,7 +403,23 @@
         <property name="updatableQuantity" type="int" not-null="true" column="updatable_quantity" />
        	<many-to-one name="department" class="Department" column="department_id" />
        	<property name="conceptId" type="int" not-null="true" column="concept_id" />
-       	
+       	<property name="strengthConceptId" type="int" not-null="true" column="strength_concept_id" />
+	</class>
+	
+	<class name="ClosingBalanceUpdateModel" table="inv_closing_balance_update">
+		<cache usage="read-write"/>	
+		<id name="id" type="int" column="closing_balance_update_id">
+	        <generator class="native" />
+	    </id>
+	    <property name="reportingPeriod" type="java.lang.String" column="reporting_period" length="255" />
+	    <property name="reportingYear" type="java.lang.String" column="reporting_year" length="255" />
+	    <property name="stockroomType" type="java.lang.String" column="stockroom_type" length="255" />
+	    <many-to-one name="item" class="Item" not-null="true" column="item_id" />
+	    <property name="packSize" type="java.lang.String" column="pack_size" length="255" />
+	    <property name="strength" type="java.lang.String" column="strength" length="255" />   
+	    <property name="calculatedClosingBalance" type="int" not-null="true" column="calculated_closing_balance" />
+        <property name="updatedClosingBalance" type="int" not-null="true" column="updated_closing_balance" />   
+		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
 	</class>
 	
 </hibernate-mapping>

@@ -22,6 +22,7 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 	private String serviceDeliveryModel;
 	private String deliveryType;
 	private Integer itemConceptId;
+	private Integer strengthConceptId;
 
 	public Integer getTotalQuantityReceived() {
 		return totalQuantityReceived;
@@ -93,6 +94,14 @@ public class NewPharmacyConsumptionSummary extends BaseSerializableOpenmrsMetada
 
 	public void setItemConceptId(Integer itemConceptId) {
 		this.itemConceptId = itemConceptId;
+	}
+
+	public Integer getStrengthConceptId() {
+		return strengthConceptId;
+	}
+
+	public void setStrengthConceptId(Integer strengthConceptId) {
+		this.strengthConceptId = strengthConceptId;
 	}
 
 	@Override
