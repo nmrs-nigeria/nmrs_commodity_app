@@ -488,14 +488,17 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
         });
         
         int conceptIdd = 0;
+        int strengthConceptIdd = 0;
         for(NewPharmacyConsumptionSummary s : summarys) {	       	
 	       	 for(NewPharmacyConsumptionSummary nc : arvsuConsumptionSummarys) {
 	       		 if(s.getItem().equalsIgnoreCase(nc.getItem())) {
 	       			 conceptIdd = nc.getItemConceptId();
+	       			 strengthConceptIdd = nc.getStrengthConceptId();
 	       			 break;
 	       		 }
 	       	 }
-	       	 s.setItemConceptId(conceptIdd);	       
+	       	 s.setItemConceptId(conceptIdd);	 
+	       	 s.setStrengthConceptId(strengthConceptIdd);
 	       	 newSummarys.add(s);
         }
     
@@ -542,6 +545,8 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
             summary.setUuid(UUID.randomUUID().toString());
             
             summary.setItemConceptId(a.getValue());
+            
+           // summary.setStrengthConceptId();
             
             return summary;
             
@@ -703,6 +708,8 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
 				if (obs != null) {
 					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
 				}
 
 				obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
@@ -773,6 +780,8 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
 				if (obs != null) {
 					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
 				}
 
 				aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
@@ -828,6 +837,8 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
 				if (obs != null) {
 					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
 				}
 
 				aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
@@ -852,8 +863,10 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 			summary.setDeliveryType(arvItem.getDeliveryType());
 			summary.setServiceDeliveryModel(arvItem.getServiceDeliveryModel());
 			summary.setItemConceptId(arvItem.getItemConceptId());
+			summary.setStrengthConceptId(arvItem.getStrengthConceptId());
 
 			System.out.println("Concept ID summary map : " + arvItem.getItemConceptId());
+			System.out.println("Strength Concept ID summary map : " + arvItem.getStrengthConceptId());
 		}
 
 		return summary;

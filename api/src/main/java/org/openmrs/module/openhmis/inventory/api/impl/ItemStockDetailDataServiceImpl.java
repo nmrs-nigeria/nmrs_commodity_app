@@ -914,6 +914,11 @@ public class ItemStockDetailDataServiceImpl
 			} else {
 				vs.setConceptId(0);
 			}
+			if (operation.getCommodityType().equalsIgnoreCase(Utils.PHARMACY_COMMODITY_TYPE)) {
+				vs.setStrengthConceptId(opItem.getItem().getStrenghtConcept().getConceptId());
+			} else {
+				vs.setStrengthConceptId(0);
+			}
 
 			int updateAbleQuantity = 0;
 			int finalQuantity = 0;

@@ -26,6 +26,7 @@ public class ARVDispensedItem implements Serializable {
 	private Integer singleDose;
 	private String frequency;
 	private Integer itemConceptId;
+	private Integer strengthConceptId;
 
 	public Integer getQuantityPrescribed() {
 		return quantityPrescribed;
@@ -121,6 +122,14 @@ public class ARVDispensedItem implements Serializable {
 
 	public void setItemConceptId(Integer itemConceptId) {
 		this.itemConceptId = itemConceptId;
+	}
+
+	public Integer getStrengthConceptId() {
+		return strengthConceptId;
+	}
+
+	public void setStrengthConceptId(Integer strengthConceptId) {
+		this.strengthConceptId = strengthConceptId;
 	}
 
 }
