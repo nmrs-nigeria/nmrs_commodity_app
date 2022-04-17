@@ -406,7 +406,7 @@
        	<property name="strengthConceptId" type="int" not-null="true" column="strength_concept_id" />
 	</class>
 	
-	<class name="ClosingBalanceUpdateModel" table=inv_closing_balance_update>
+	<class name="ClosingBalanceUpdateModel" table="inv_closing_balance_update">
 		<cache usage="read-write"/>	
 		<id name="id" type="int" column="closing_balance_update_id">
 	        <generator class="native" />
