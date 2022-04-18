@@ -115,7 +115,8 @@
                 <td>{{entity.packSize}}</td>
                 <td><input name="actualQuantity" min="0"
                            id="{{'actualQuantity-'+entity.itemUUID}}"
-                           type="number" class="form-control input-sm"></td>
+                           type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
+                           ng-blur="getActualQuantity(entity)"></td>
 
             </tr>
             </tbody>

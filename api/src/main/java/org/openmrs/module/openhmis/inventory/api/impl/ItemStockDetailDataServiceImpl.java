@@ -47,18 +47,7 @@ import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.impl.BaseObjectDataServiceImpl;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
-import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
-import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
-import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
-import org.openmrs.module.openhmis.inventory.api.model.ClosingbalanceUpdate;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
-import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
-import org.openmrs.module.openhmis.inventory.api.model.NewPharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
-import org.openmrs.module.openhmis.inventory.api.model.ARVDispensedItem;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.security.BasicObjectAuthorizationPrivileges;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.openmrs.module.openhmis.inventory.api.util.Utils;
@@ -1065,6 +1054,20 @@ public class ItemStockDetailDataServiceImpl
 	public List<CrrfDetails> getItemStockSummaryByPharmacy(Date startDate, Date endDate, PagingInfo pagingInfo) {
 		System.out.println("Stock CRRF Tobe");
 		return null;
+	}
+
+	@Override
+	public void insertInvClosingBalanceUpdate(List<ClosingBalanceUpdateModel> closingBalanceUpdateModels) {
+		for (ClosingBalanceUpdateModel obj : closingBalanceUpdateModels) {
+
+			//			String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+			//					+ "updatableQuantity = " + obj.getUpdatableQuantity() + " "
+			//					+ "where id = " + obj.getId();
+			//
+			//			Query query = getRepository().createQuery(hql);
+			//			int sql = query.executeUpdate();
+			//			System.out.println("Updated Executed: " + sql);
+		}
 	}
 
 }

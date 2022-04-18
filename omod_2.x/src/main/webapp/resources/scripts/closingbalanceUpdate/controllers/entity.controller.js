@@ -27,7 +27,7 @@
                                          CookiesService) {
         var self = this;
         var entity_name_message_key = "openhmis.inventory.admin.stockTake.pharmacy";
-        var REST_ENTITY_NAME = "inventoryStockTake";
+        var REST_ENTITY_NAME = "InventoryClosingBalanceUpdateStockTake";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
@@ -129,7 +129,9 @@
                 }
 
                 $scope.getActualQuantity = function (entity) {
+                    console.log("ActualQuantity "+actualQuantity);
                     if (entity.actualQuantity >= 0) {
+
                         entity.id = entity.item.uuid + "_" + entity.expiration;
                         self.getNewStock(entity);
                     }
@@ -223,7 +225,7 @@
                 //     $scope.fetchedEntities[i].actualQuantity = $scope.stockTakeDetails[index].actualQuantity;
                 // }
 
-                console.log("Item name "+ $scope.fetchedEntities[i].itemName);
+               // console.log("Item name "+ $scope.fetchedEntities[i].itemName);
             }
 
             $scope.totalNumOfResults = data.length;
@@ -251,24 +253,28 @@
         // @Override
         self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
             var stockObject = $scope.stockTakeDetails;
+            // for (var i = 0; i < stockObject.length; i++) {
+            //     delete stockObject[i]['$$hashKey'];
+            //     delete stockObject[i]['id'];
+            //     if (stockObject[i].expiration != null) {
+            //         stockObject[i].expiration = PharmacyStockTakeFunctions.formatDate(stockObject[i].expiration);
+            //     }
+            //
+            //     if (stockObject[i].reasonForChange == "" || stockObject[i].reasonForChange == null || stockObject[i].reasonForChange == undefined) {
+            //         emr.errorAlert("Reason for change is required");
+            //         return false;
+            //     }
+            //
+            //     stockObject[i].item = stockObject[i].item.uuid;
+            // }
             for (var i = 0; i < stockObject.length; i++) {
-                delete stockObject[i]['$$hashKey'];
-                delete stockObject[i]['id'];
-                if (stockObject[i].expiration != null) {
-                    stockObject[i].expiration = PharmacyStockTakeFunctions.formatDate(stockObject[i].expiration);
-                }
-
-                if (stockObject[i].reasonForChange == "" || stockObject[i].reasonForChange == null || stockObject[i].reasonForChange == undefined) {
-                    emr.errorAlert("Reason for change is required");
-                    return false;
-                }
-
-                stockObject[i].item = stockObject[i].item.uuid;
+                console.log("Item Name:" + stockObject[i].itemName);
+                console.log("Item Strength:" + stockObject[i].drugStrenght);
             }
 
             if ($scope.stockTakeDetails.length != 0) {
                 $scope.entity = {
-                    "itemStockSummaryList": stockObject,
+                    "closingBalanceUpdateModel": stockObject,
                     "operationNumber": "",
                     "stockroom": "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0"
                 };

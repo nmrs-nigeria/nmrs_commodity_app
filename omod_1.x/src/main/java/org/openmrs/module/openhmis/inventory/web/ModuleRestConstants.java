@@ -56,6 +56,8 @@ public class ModuleRestConstants extends ModuleWebConstants {
 
 	public static final String RESERVATION_TRANSACTION_RESOURCE = MODULE_REST_ROOT + "reservationTransaction";
 	public static final String CLOSINGBALANCEUPDATE_RESOURCE = MODULE_REST_ROOT + "closingbalanceUpdate";
+	public static final String INVENTORY_CLOSINGBALANCEUPDATE_STOCKTAKE_RESOURCE = MODULE_REST_ROOT
+	        + "InventoryClosingBalanceUpdateStockTake";
 
 	protected ModuleRestConstants() {}
 }
