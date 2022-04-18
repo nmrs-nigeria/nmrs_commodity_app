@@ -1,31 +1,41 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ *
+ */
 
+(function () {
+    'use strict';
 
-(function() {
-	'use strict';
+    var baseModel = angular.module('app.genericMetadataModel');
 
-	var baseModel = angular.module('app.genericMetadataModel');
+    /* Define model fields */
+    function PharmacyStockTakeModel(GenericMetadataModel) {
 
-	/* Define model fields */
-	function ClosingbalanceUpdateModel(GenericMetadataModel) {
+        var extended = angular.extend(GenericMetadataModel, {});
 
-		var extended = angular.extend(GenericMetadataModel, {});
+        var defaultFields = extended.getModelFields();
 
-	//	var defaultFields = extended.getModelFields();
+        // @Override
+        extended.getModelFields = function () {
+            var fields = ["itemId", "itemName", "itemUUID", "unitOfMeasure", "itemType", "closingBalanceQty","drugStrenght","packSize"];
+            return fields.concat(defaultFields);
+        };
 
-		// @Override
-		extended.getModelFields = function() {
+        return extended;
+    }
 
-            var fields = ["crrfReportId","facilityName","facilityCode","lga","state","reportingPeriodStart","reportingPeriodEnd","datePrepared","crrfAdultRegimenCategory","crrfPediatricRegimenCategory","crrfOIRegimenCategory","crrfAdvanceHIVRegimenCategory","crrfTBRegimenCategory","crrfSTIRegimenCategory","crrfRTKRegimenCategory"];
+    baseModel.factory("PharmacyStockTakeModel", PharmacyStockTakeModel);
 
-		//	return fields.concat(defaultFields);
-            return fields;
-		};
-
-		return extended;
-	}
-
-	baseModel.factory("ClosingbalanceUpdateModel", ClosingbalanceUpdateModel);
-
-	ClosingbalanceUpdateModel.$inject = ['GenericMetadataModel'];
+    PharmacyStockTakeModel.$inject = ['GenericMetadataModel'];
 
 })();

@@ -30,4 +30,3 @@
 <div id="entitiesApp">
     <div ui-view></div>
 </div>
-

@@ -1,59 +1,111 @@
+/*
+ * The contents of this file are subject to the OpenMRS Public License
+ * Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License. You may obtain a copy of the License at
+ * http://license.openmrs.org
+ *
+ * Software distributed under the License is distributed on an "AS IS"
+ * basis, WITHOUT WARRANTY OF ANY KIND, either express or implied. See
+ * the License for the specific language governing rights and
+ * limitations under the License.
+ *
+ * Copyright (C) OpenHMIS.  All Rights Reserved.
+ *
+ */
 
+(function () {
+    'use strict';
 
-(function() {
-	'use strict';
+    angular.module('app.restfulServices').service('PharmacyStockTakeRestfulService', PharmacyStockTakeRestfulService);
 
-	angular.module('app.restfulServices').service('ClosingbalanceUpdateRestfulService', ClosingbalanceUpdateRestfulService);
+    PharmacyStockTakeRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
 
-	ClosingbalanceUpdateRestfulService.$inject = ['EntityRestFactory', 'PaginationService'];
+    function PharmacyStockTakeRestfulService(EntityRestFactory, PaginationService) {
+        var service;
 
-	function ClosingbalanceUpdateRestfulService(EntityRestFactory, PaginationService) {
-		var service;
+        service = {
+            loadStockrooms: loadStockrooms,
+            loadDepartments: loadDepartments,
+            loadStockDetailsDepartment: loadStockDetailsDepartment,
+            loadStockDetails: loadStockDetails,
+            loadStockroomsCRRF:loadStockroomsCRRF
+        };
 
-		service = {
-				generateCRFFReport : generateCRFFReport
-		};
+        return service;
 
-		return service;
-		
-		function generateCRFFReport(reportId, startDate, endDate, crrfCategory, startIndex, limit, includeRetired, onLoadSuccessfulCallback){
-					         
-			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
-					requestParams['rest_entity_name'] = 'closingbalanceUpdate';
-					requestParams['reportId'] = reportId;
-					requestParams['crrfCategory'] = crrfCategory; 
-                        
-                        if(angular.isDefined(startDate)){
-                            requestParams['startDate'] = startDate;
-                        }
-                        
-                        if(angular.isDefined(endDate)){
-                            requestParams['endDate'] = endDate;
-                        }
+        /**
+         * Retrieve all Stockrooms
+         * @param onLoadStockroomsSuccessful
+         * @param onLoadDepartmentsSuccessful
+         * @param module_name
+         */
+        function loadStockrooms(module_name, onLoadStockroomsSuccessful) {
+            var requestParams = [];
+            requestParams['rest_entity_name'] = 'stockroom';
+            requestParams['stockroomType'] = 'pharmacy';
+            EntityRestFactory.loadEntities(requestParams,
+                onLoadStockroomsSuccessful,
+                errorCallback
+            );
+        }
 
-						
-                        console.log('about to call crrf endpoint');
+        function loadStockroomsCRRF(module_name, onLoadStockroomsSuccessful) {
+            var requestParams = [];
+            requestParams['rest_entity_name'] = 'stockroom';
+            requestParams['stockroomType'] = 'crrf';
+            EntityRestFactory.loadEntities(requestParams,
+                onLoadStockroomsSuccessful,
+                errorCallback
+            );
+        }
+        /**
+         * Retrieve all departments
+         */
+        function loadDepartments(module_name, onLoadDepartmentsSuccessful) {
+            var requestParams = [];
+            requestParams['rest_entity_name'] = 'department';
+            EntityRestFactory.loadEntities(requestParams,
+                onLoadDepartmentsSuccessful,
+                errorCallback
+            );
+        }
+        /**
+         * Retrieve all the stock in the selected stockroom
+         * @param stockroomUuid
+         * @param rest_entity_name
+         * @param currentPage
+         * @param limit
+         * @param onLoadStockDetailsSuccessful
+         * */
+        function loadStockDetails(stockroomUuid, currentPage, limit, onLoadStockDetailsSuccessful) {
+            currentPage = currentPage || 1;
+            if (angular.isDefined(stockroomUuid) && stockroomUuid !== '' && stockroomUuid !== undefined) {
+                var requestParams = PaginationService.paginateParams(currentPage, limit, false);
+                requestParams['rest_entity_name'] = 'closingbalanceUpdate';
+                requestParams['stockroom_uuid'] = stockroomUuid;
+                EntityRestFactory.loadEntities(requestParams,
+                    onLoadStockDetailsSuccessful,
+                    errorCallback
+                );
+            }
+        }
 
-			EntityRestFactory.loadEntities(requestParams, onLoadSuccessfulCallback, errorCallback);
-		}
+        function loadStockDetailsDepartment(departmentUuid, currentPage, limit, onLoadStockDetailsSuccessful) {
+            console.log("inside loadStockDetailsDepartment entity.restful.service");
+            currentPage = currentPage || 1;
+            if (angular.isDefined(departmentUuid) && departmentUuid !== '' && departmentUuid !== undefined) {
+                var requestParams = PaginationService.paginateParams(currentPage, limit, false);
+                requestParams['rest_entity_name'] = 'inventoryStockTakeSummary';
+                requestParams['department_uuid'] = departmentUuid;
+                EntityRestFactory.loadEntities(requestParams,
+                    onLoadStockDetailsSuccessful,
+                    errorCallback
+                );
+            }
+        }
 
-		/**
-		 * Temporary Function: It will ONLY be used until the Department module is done.
-		 * @param onLoadDepartmentsSuccessful
-		 */
-		
-
-		/**
-		 * An auto-complete function to search concepts given a query term.
-		 * @param module_name
-		 * @param q - search term
-		 * @param limit
-		 */
-	
-
-	
-		function errorCallback(error) {
-			emr.errorAlert(error);
-		}
-	}
+        function errorCallback(error) {
+            emr.errorAlert(error);
+        }
+    }
 })();
