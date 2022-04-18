@@ -33,6 +33,7 @@ import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService
 import org.openmrs.module.openhmis.inventory.api.IPharmacyReportsService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationTypeDataService;
+import org.openmrs.module.openhmis.inventory.api.model.ClosingBalanceUpdateModel;
 import org.openmrs.module.openhmis.inventory.api.model.Consumption;
 import org.openmrs.module.openhmis.inventory.api.model.ConsumptionSummary;
 import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
@@ -83,6 +84,7 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	private IItemExpirationSummaryService itemExpirationSummaryService;
 	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
 	private IInstitutionDataService institutionDataService;
+	private ICrrfReportDataService crrfReportDataService;
 
 	List<Department> dispensarys = null;
 	HttpServletRequest request = null;
@@ -116,6 +118,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		Date endDate = RestUtils.parseCustomOpenhmisDateString(context.getParameter("endDate"));
 		String crrfCategory = context.getParameter("crrfCategory");
 		String reportId = context.getParameter("reportId");
+		String repPeriod = context.getParameter("repPeriod");
+		String repYear = context.getParameter("repYear");
 
 		PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
 		PageableResult result = null;
@@ -130,6 +134,7 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		this.institutionDataService = Context.getService(IInstitutionDataService.class);
 		this.iPharmacyReports = Context.getService(IPharmacyReportsService.class);
 		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
+		this.crrfReportDataService = Context.getService(ICrrfReportDataService.class);
 
 		System.out.println("retreive data, about to route for crrf: " + crrfCategory);
 
@@ -138,7 +143,7 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		System.out.println("End Date get: " + endDate);
 		System.out.println("CrrfType get: " + crrfCategory);
 
-		List<Crrf> crrf = routeReport(reportId, startDate, endDate, crrfCategory);
+		List<Crrf> crrf = routeReport(reportId, startDate, endDate, crrfCategory, repPeriod, repYear);
 
 		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
 			Integer count = crrf.size();
@@ -156,13 +161,15 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 	}
 
-	private List<Crrf> routeReport(String reportId, Date startDate, Date endDate, String crrfCategory) {
+	private List<Crrf> routeReport(String reportId, Date startDate,
+	        Date endDate, String crrfCategory, String repPeriod, String repYear) {
 		List<Crrf> crrfList = new ArrayList<Crrf>();
 		if (crrfCategory.equalsIgnoreCase("ARV Cotrim")) {
 
 			reportId = ConstantUtils.ARV_COTRIM;
+			String stockroomType = "pharmacy";
 			System.out.println("ARV Cotrim: " + crrfCategory);
-			Crrf crrf = aRVCotrimCrffReport(reportId, startDate, endDate);
+			Crrf crrf = aRVCotrimCrffReport(reportId, startDate, endDate, repPeriod, repYear, stockroomType);
 			crrfList.add(crrf);
 			return crrfList;
 		}
@@ -170,8 +177,9 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		if (crrfCategory.equalsIgnoreCase("HIV RTKS and DBS")) {
 
 			reportId = ConstantUtils.HIV_RTKS_AND_DBS;
+			String stockroomType = "lab";
 			System.out.println("HIV_RTKS_AND_DBS: " + crrfCategory);
-			Crrf crrf = hIVRTKSDBSCrrfReport(reportId, startDate, endDate);
+			Crrf crrf = hIVRTKSDBSCrrfReport(reportId, startDate, endDate, repPeriod, repYear, stockroomType);
 			crrfList.add(crrf);
 			return crrfList;
 
@@ -180,7 +188,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		return null;
 	}
 
-	private Crrf aRVCotrimCrffReport(String reportId, Date startDate, Date endDate) {
+	private Crrf aRVCotrimCrffReport(String reportId, Date startDate,
+	        Date endDate, String repPeriod, String repYear, String stockroomType) {
 
 		Crrf crrf = new Crrf();
 
@@ -223,32 +232,38 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 		// crrfAdultRegimenCategory
 		Set<CrrfDetails> crrfAdultRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfAdultRegimenCategorys.addAll(getCrrfAdultRegimenCategory(startDate, endDate));
+		crrfAdultRegimenCategorys
+		        .addAll(getCrrfAdultRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfAdultRegimenCategory(crrfAdultRegimenCategorys);
 
 		// crrfPediatricRegimenCategory
 		Set<CrrfDetails> crrfPediatricRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfPediatricRegimenCategorys.addAll(getCrrfPediatricRegimenCategory(startDate, endDate));
+		crrfPediatricRegimenCategorys
+		        .addAll(getCrrfPediatricRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfPediatricRegimenCategory(crrfPediatricRegimenCategorys);
 
 		// crrfOIRegimenCategory
 		Set<CrrfDetails> crrfOIRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfOIRegimenCategorys.addAll(getCrrfOIRegimenCategory(startDate, endDate));
+		crrfOIRegimenCategorys
+		        .addAll(getCrrfOIRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfOIRegimenCategory(crrfOIRegimenCategorys);
 
 		// crrfAdvanceHIVRegimenCategory
 		Set<CrrfDetails> crrfAdvanceHIVRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfAdvanceHIVRegimenCategorys.addAll(getCrrfAdvanceHIVRegimenCategory(startDate, endDate));
+		crrfAdvanceHIVRegimenCategorys
+		        .addAll(getCrrfAdvanceHIVRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfAdvanceHIVRegimenCategory(crrfAdvanceHIVRegimenCategorys);
 
 		// crrfTBRegimenCategory
 		Set<CrrfDetails> crrfTBRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfTBRegimenCategorys.addAll(getCrrfTBRegimenCategory(startDate, endDate));
+		crrfTBRegimenCategorys
+		        .addAll(getCrrfTBRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfTBRegimenCategory(crrfTBRegimenCategorys);
 
 		// crrfSTIRegimenCategory
 		Set<CrrfDetails> crrfSTIRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfSTIRegimenCategorys.addAll(getCrrfSTIRegimenCategory(startDate, endDate));
+		crrfSTIRegimenCategorys
+		        .addAll(getCrrfSTIRegimenCategory(startDate, endDate, repPeriod, repYear, stockroomType));
 		crrf.setCrrfSTIRegimenCategory(crrfSTIRegimenCategorys);
 
 		// crrfRTKRegimenCategory
@@ -259,7 +274,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 		return crrf;
 	}
 
-	private Crrf hIVRTKSDBSCrrfReport(String reportId, Date startDate, Date endDate) {
+	private Crrf hIVRTKSDBSCrrfReport(String reportId, Date startDate,
+	        Date endDate, String repPeriod, String repYear, String stockroomType) {
 
 		Crrf crrf = new Crrf();
 
@@ -332,7 +348,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 		// crrfRTKRegimenCategory
 		Set<CrrfDetails> crrfRTKRegimenCategorys = new HashSet<CrrfDetails>();
-		crrfRTKRegimenCategorys.addAll(getCrrfRTKRegimenCategory(startDate, endDate));
+		crrfRTKRegimenCategorys.addAll(getCrrfRTKRegimenCategory(startDate, endDate,
+		    repPeriod, repYear, stockroomType));
 		crrf.setCrrfRTKRegimenCategory(crrfRTKRegimenCategorys);
 
 		// String reportFolder = RestUtils.ensureReportDownloadFolderExist(request);
@@ -345,7 +362,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	//rtk
-	private List<CrrfDetails> getCrrfRTKRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfRTKRegimenCategory(Date startDate, Date endDate,
+			 String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfRTKRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for rtk regimen line as base.
@@ -361,14 +379,18 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDateLab();
+//		Date minimumReceiptDate = getMinimumReceiptDateLab();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<ConsumptionSummary> labConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalanceLab(
+//				 minimumReceiptDate, startDate, distinctElements);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<ConsumptionSummary> labConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalanceLab(
-				 minimumReceiptDate, startDate, distinctElements);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> labBeginningBalance = 
+			crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+				
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = positiveAndNegativeAdjustmentLab(startDate, endDate,
 				distinctElements);
@@ -408,13 +430,32 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			Optional<ConsumptionSummary> matchingObjectBeginingBalance = labConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			ConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
+//			Optional<ConsumptionSummary> matchingObjectBeginingBalance = labConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			ConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				crrfDetails.setBeginningBalance(0);
+//			} else {
+//				crrfDetails.setBeginningBalance(pcsBeginingBalance.getStockBalance());
+//			}
+			
+			//beginning balance
+			if(labBeginningBalance.size() == 1 && labBeginningBalance.get(0).getItem() == null) {
 				crrfDetails.setBeginningBalance(0);
-			} else {
-				crrfDetails.setBeginningBalance(pcsBeginingBalance.getStockBalance());
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							labBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
 
 			// physical count or stock on hand
@@ -511,7 +552,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// adult
-	private List<CrrfDetails> getCrrfAdultRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfAdultRegimenCategory(Date startDate, 
+			Date endDate, String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfAdultRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for adult regimen line as base.
@@ -547,22 +589,21 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+		//Date minimumReceiptDate = getMinimumReceiptDate();
 
 		// beginning balance - get stock on hand of data below the start date (total
 		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 		
 		//beginning balance by reporting period
-		List<PharmacyConsumptionSummary> pharmacyBeginningBalance = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
 		
 		
 		// positive adjustment, negative adjustment, loses/damages/expires
@@ -617,34 +658,53 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = 
+//					matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = 
-					matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
+			
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
 
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
@@ -721,7 +781,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// pediatric
-	private List<CrrfDetails> getCrrfPediatricRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfPediatricRegimenCategory(Date startDate, Date endDate,
+			 String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfPedeatricRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for Pedeatric regimen line as base.
@@ -759,18 +820,22 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+//		Date minimumReceiptDate = getMinimumReceiptDate();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+		
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = 
 				positiveAndNegativeAdjustment(startDate, endDate,
@@ -824,36 +889,55 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = 
+//					matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
+//
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+//					matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = 
-					matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
-					matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
-
+			
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
 					+ crrfDetails.getPositiveAdjustments())
@@ -929,7 +1013,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// OI
-	private List<CrrfDetails> getCrrfOIRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfOIRegimenCategory(Date startDate, Date endDate,
+			String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfOIRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for OI regimen line as base.
@@ -966,18 +1051,22 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+//		Date minimumReceiptDate = getMinimumReceiptDate();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+		
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = positiveAndNegativeAdjustment(startDate, endDate,
 				distinctElements);
@@ -1030,35 +1119,54 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = 
+//					matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
+//
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+//					matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
+			
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = 
-					matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
-					matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
 
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
@@ -1135,7 +1243,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// AdvanceHIV
-	private List<CrrfDetails> getCrrfAdvanceHIVRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfAdvanceHIVRegimenCategory(Date startDate, Date endDate,
+			String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfAdvanceHIVRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for OI regimen line as base.
@@ -1173,18 +1282,23 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+//		Date minimumReceiptDate = getMinimumReceiptDate();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+		
+	
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = positiveAndNegativeAdjustment(startDate, endDate,
 				distinctElements);
@@ -1236,36 +1350,55 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = 
+//					matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
+//
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+//					matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = 
-					matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
-					matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
-
+			
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
 					+ crrfDetails.getPositiveAdjustments())
@@ -1341,7 +1474,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// TB
-	private List<CrrfDetails> getCrrfTBRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfTBRegimenCategory(Date startDate, Date endDate,
+			String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfTBRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for TB regimen line as base.
@@ -1379,18 +1513,23 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+//		Date minimumReceiptDate = getMinimumReceiptDate();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+		
+	
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = 
 				positiveAndNegativeAdjustment(startDate, endDate,
@@ -1445,34 +1584,53 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
+//
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+//					matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
+			
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
-					matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
 
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
@@ -1549,7 +1707,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 	}
 
 	// STI
-	private List<CrrfDetails> getCrrfSTIRegimenCategory(Date startDate, Date endDate) {
+	private List<CrrfDetails> getCrrfSTIRegimenCategory(Date startDate, Date endDate,
+			String repPeriod, String repYear, String stockroomType) {
 		List<CrrfDetails> crrfSTIRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for TB regimen line as base.
@@ -1587,18 +1746,22 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 				distinctElements);
 
 		// get minimum receipt operation data recorded
-		Date minimumReceiptDate = getMinimumReceiptDate();
+//		Date minimumReceiptDate = getMinimumReceiptDate();
+//
+//		// beginning balance - get stock on hand of data below the start date (total
+//		// received and total consumed)
+//		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
+//				consumptionSummaryAtStockroomBeggingBalance(
+//				startDate, endDate, distinctElements);
+//
+//		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
+//				iARVPharmacyDispenseService
+//				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
 
-		// beginning balance - get stock on hand of data below the start date (total
-		// received and total consumed)
-		List<PharmacyConsumptionSummary> pharmacyConsumptionSummaryBeginningBalanceReceived = 
-				consumptionSummaryAtStockroomBeggingBalance(
-				startDate, endDate, distinctElements);
-
-		List<NewPharmacyConsumptionSummary> forPharmacyConsumptionSummaryBeginningBalanceConsumed = 
-				iARVPharmacyDispenseService
-				.getDrugDispenseSummaryBeginingBalance(minimumReceiptDate, startDate, null);
-
+		//beginning balance by reporting period
+		List<ClosingBalanceUpdateModel> pharmacyBeginningBalance = 
+				crrfReportDataService.getClosingBalance(repPeriod, repYear, stockroomType);
+		
 		// positive adjustment, negative adjustment, loses/damages/expires
 		List<CrffOperationsSummary> crffOperationsSummary = 
 				positiveAndNegativeAdjustment(startDate, endDate,
@@ -1653,36 +1816,55 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}
 
 			// beginning balance
-			int totalBeginingBalanceReceived = 0;
-			int totalBeginingBalanceConsumed = 0;
-			int beginingBalance = 0;
+//			int totalBeginingBalanceReceived = 0;
+//			int totalBeginingBalanceConsumed = 0;
+//			int beginingBalance = 0;
+//
+//			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
+//					pharmacyConsumptionSummaryBeginningBalanceReceived
+//					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
+//			PharmacyConsumptionSummary pcsBeginingBalance = 
+//					matchingObjectBeginingBalance.orElse(null);
+//			if (pcsBeginingBalance == null) {
+//				totalBeginingBalanceReceived = 0;
+//			} else {
+//				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+//			}
+//
+//			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
+//					forPharmacyConsumptionSummaryBeginningBalanceConsumed
+//					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
+//
+//			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
+//					matchingObjectBeginingBalanceConsumed
+//					.orElse(null);
+//			if (pcsBeginingBalanceConsumed == null) {
+//				totalBeginingBalanceConsumed = 0;
+//			} else {
+//				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
+//			}
+//			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
+//			crrfDetails.setBeginningBalance(beginingBalance);
 
-			Optional<PharmacyConsumptionSummary> matchingObjectBeginingBalance = 
-					pharmacyConsumptionSummaryBeginningBalanceReceived
-					.stream().filter(pr -> pr.getItem().equals(item)).findFirst();
-			PharmacyConsumptionSummary pcsBeginingBalance = 
-					matchingObjectBeginingBalance.orElse(null);
-			if (pcsBeginingBalance == null) {
-				totalBeginingBalanceReceived = 0;
-			} else {
-				totalBeginingBalanceReceived = pcsBeginingBalance.getTotalQuantityReceived();
+			//beginning balance
+			if(pharmacyBeginningBalance.size() == 1 && pharmacyBeginningBalance.get(0).getItem() == null) {
+				crrfDetails.setBeginningBalance(0);
+			}else {
+					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
+							pharmacyBeginningBalance
+							.stream().filter(pc -> pc.getItem().equals(item) 
+							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+
+					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
+							.orElse(null);
+					
+					if (pcsBeginingBalance == null) {
+						crrfDetails.setBeginningBalance(0);
+					} else {
+						crrfDetails.setBeginningBalance(pcsBeginingBalance.getUpdatedClosingBalance());
+					}			
 			}
-
-			Optional<NewPharmacyConsumptionSummary> matchingObjectBeginingBalanceConsumed = 
-					forPharmacyConsumptionSummaryBeginningBalanceConsumed
-					.stream().filter(pc -> pc.getItemConceptId().equals(item.getConcept().getConceptId())).findFirst();
-
-			NewPharmacyConsumptionSummary pcsBeginingBalanceConsumed = 
-					matchingObjectBeginingBalanceConsumed
-					.orElse(null);
-			if (pcsBeginingBalanceConsumed == null) {
-				totalBeginingBalanceConsumed = 0;
-			} else {
-				totalBeginingBalanceConsumed = pcsBeginingBalanceConsumed.getTotalQuantityReceived();
-			}
-			beginingBalance = totalBeginingBalanceReceived - totalBeginingBalanceConsumed;
-			crrfDetails.setBeginningBalance(beginingBalance);
-
+			
 			// physical count or stock on hand
 			Integer physicalCount = (crrfDetails.getBeginningBalance() + crrfDetails.getQuantityReceived()
 					+ crrfDetails.getPositiveAdjustments())

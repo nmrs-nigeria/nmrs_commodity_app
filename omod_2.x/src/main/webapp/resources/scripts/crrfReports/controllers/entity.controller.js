@@ -75,7 +75,7 @@
 
       
         self.generateCRFFReport = self.generateCRFFReport || function (currentPage) {
-               console.log('about to call crrf controller');
+                console.log('about to call crrf controller');
                
 	           	if(currentPage === undefined){
 					currentPage = $scope.currentPage;
@@ -101,42 +101,59 @@
         	   var endDay = "";
         	   var startMonth = "";
         	   var endMonth = "";
+               var prevReportingPeriod = "";
+        	   var prevReportingYear = "";
+               
+               console.log('about to call crrf controller2');
                
                if(repPeriod == 'January-February'){
             	   startDay = "01";
             	   endDay = "29";
             	   startMonth = "Jan";
             	   endMonth = "Feb";
+                   prevReportingPeriod = "November-December";
+                   var prevRepYear = parseInt(repYear) - 1;
+                   prevReportingYear = prevRepYear.toString();
                }
                if(repPeriod == 'March-April'){
             	   startDay = "01";
             	   endDay = "30";
             	   startMonth = "Mar";
             	   endMonth = "Apr";
+                   prevReportingPeriod = "January-February";
+                   prevReportingYear = repYear;
                }
                if(repPeriod == 'May-June'){
             	   startDay = "01";
             	   endDay = "30";
             	   startMonth = "May";
             	   endMonth = "Jun";
+                   prevReportingPeriod = "March-April";
+                   prevReportingYear = repYear;
                }
                if(repPeriod == 'July-August'){
             	   startDay = "01";
             	   endDay = "31";
             	   startMonth = "Jul";
             	   endMonth = "Aug";
+                   prevReportingPeriod = "May-June";
+                   prevReportingYear = repYear;
                }
                if(repPeriod == 'September-October'){
             	   startDay = "01";
             	   endDay = "31";
             	   startMonth = "Sep";
             	   endMonth = "Oct";
+                   prevReportingPeriod = "July-August";
+                   prevReportingYear = repYear;
                }
                if(repPeriod == 'November-December'){
             	   startDay = "01";
             	   endDay = "31";
             	   startMonth = "Nov";
             	   endMonth = "Dec";
+                   prevReportingPeriod = "September-October";
+                   prevReportingYear = repYear;
                }
                var startDate = startDay + " " + startMonth + " " + repYear;
                var endDate = endDay + " " + endMonth + " " + repYear;
@@ -163,7 +180,7 @@
                    
                    console.log('After loading');
               
-                   CrrfReportsRestfulService.generateCRFFReport("crrf_report", CrrfReportsFunctions.formatDate(startDate), CrrfReportsFunctions.formatDate(endDate), crrfCategory, currentPage, $scope.limit, $scope.includeRetired, self.onLoadCRRFReportSuccessful) 
+                   CrrfReportsRestfulService.generateCRFFReport("crrf_report", CrrfReportsFunctions.formatDate(startDate), CrrfReportsFunctions.formatDate(endDate), crrfCategory, prevReportingPeriod, prevReportingYear, currentPage, $scope.limit, $scope.includeRetired, self.onLoadCRRFReportSuccessful) 
 
                } else {
                    $scope.loading = false;
