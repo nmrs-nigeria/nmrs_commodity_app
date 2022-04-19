@@ -14,7 +14,6 @@
 package org.openmrs.module.openhmis.inventory.model;
 
 import org.openmrs.BaseOpenmrsObject;
-import org.openmrs.module.openhmis.inventory.api.model.ClosingBalanceUpdateModel;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
 import org.openmrs.module.openhmis.inventory.api.model.ClosingBalanceUpdateModel;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;

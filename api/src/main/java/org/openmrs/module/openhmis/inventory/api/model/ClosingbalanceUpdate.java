@@ -6,6 +6,9 @@ import org.openmrs.module.openhmis.commons.api.entity.model.BaseSerializableOpen
 
 import java.util.Set;
 
+/**
+ * Base model class used by models that have item stock detail information.
+ */
 public class ClosingbalanceUpdate implements OpenmrsObject {
 
 	public static final long serialVersionUID = 1L;

@@ -18,8 +18,12 @@ import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
-import org.openmrs.module.openhmis.inventory.api.*;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
+import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
+import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemDataService;
+import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
+import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
 import org.openmrs.module.openhmis.inventory.api.model.ClosingbalanceUpdate;
 import org.openmrs.module.openhmis.inventory.api.model.Item;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
@@ -138,7 +142,8 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 			//
 			//				Department department = departmentService.getByUuid(departmentUuid);
 			//				List<ClosingbalanceUpdate> itemStockSummaries =
-			//				        itemStockDetailDataService.getItemStockSummaryByDepartmentPharmacy(department, pagingInfo);
+			//				        itemStockDetailDataService
+			//	.getItemStockSummaryByDepartmentPharmacy(department, pagingInfo);
 			//				result =
 			//				        new AlreadyPagedWithLength<ClosingbalanceUpdate>(context, itemStockSummaries,
 			//				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
