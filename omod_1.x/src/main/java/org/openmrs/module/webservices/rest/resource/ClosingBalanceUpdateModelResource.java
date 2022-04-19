@@ -43,6 +43,16 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 	}
 
 	@Override
+	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
+		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("operationNumber");
+		description.addProperty("stockroom");
+		description.addProperty("closingBalanceUpdateModel");
+
+		return description;
+	}
+
+	@Override
 	public InventoryClosingBalanceUpdateStockTake newDelegate() {
 		return new InventoryClosingBalanceUpdateStockTake();
 	}
@@ -54,6 +64,8 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 	@Override
 	public InventoryClosingBalanceUpdateStockTake save(InventoryClosingBalanceUpdateStockTake delegate) {
 		// Ensure that the current user can process the operation
+		System.out.println("Item name --");
+		System.out.println("Item UUID --");
 		if (!userCanProcessAdjustment()) {
 			throw new RestClientException("The current user not authorized to process this operation.");
 		}

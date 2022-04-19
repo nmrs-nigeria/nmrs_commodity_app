@@ -223,14 +223,14 @@ public class ItemStockDetailDataServiceImpl
 		for (Object obj : list) {
 			Object[] row = (Object[])obj;
 
-			ClosingbalanceUpdate summary = new ClosingbalanceUpdate();
-			Integer itemid = Ints.checkedCast((Long)row[0]);
-			summary.setItemId(itemid);
-			String itemname = (String)row[1];
-			summary.setItemName(itemname);
-			String itemuuid = (String)row[2];
-			summary.setItemName(itemuuid);
-			results.add(summary);
+			//			ClosingbalanceUpdate summary = new ClosingbalanceUpdate();
+			//			Integer itemid = Ints.checkedCast((Long)row[0]);
+			//			summary.setItemId(itemid);
+			//			String itemname = (String)row[1];
+			//			summary.setItemName(itemname);
+			//			String itemuuid = (String)row[2];
+			//			summary.setItemName(itemuuid);
+			//			results.add(summary);
 		}
 
 		// We done.
@@ -1079,6 +1079,8 @@ public class ItemStockDetailDataServiceImpl
 			//			Query query = getRepository().createQuery(hql);
 			//			int sql = query.executeUpdate();
 			//			System.out.println("Updated Executed: " + sql);
+			System.out.println("Item name --" + obj.getItem().getName());
+			System.out.println("Item UUID --" + obj.getItem().getUuid());
 		}
 	}
 

@@ -60,7 +60,7 @@
         </ul>
 
         <ul class="table-layout">
-            <li><label>CRRF Type</label></li>
+            <li><label>Stockroom Type</label></li>
             <li>
                 <select class="form-control" ng-model="entity.stockroom"
                         ng-options='stockroom.name for stockroom in stockrooms track by stockroom.uuid'
@@ -110,11 +110,11 @@
             <tr class="clickable-tr" pagination-id="__stockTake"
                 dir-paginate="entity in fetchedEntities | itemsPerPage: stockTakeLimit"
                 total-items="totalNumOfResults" current-page="stockTakeCurrentPage">
-                <td>{{entity.itemName}}</td>
-                <td>{{entity.drugStrenght}}</td>
-                <td>{{entity.packSize}}</td>
+                <td>{{entity.item.name}}</td>
+                <td>{{entity.item.strength}}</td>
+                <td>{{entity.item.packSize}}</td>
                 <td><input name="actualQuantity" min="0"
-                           id="{{'actualQuantity-'+entity.itemUUID}}"
+                           id="{{'actualQuantity-'+entity.item.uuid}}"
                            type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
                            ng-blur="getActualQuantity(entity)"></td>
 
@@ -164,9 +164,9 @@
             <tbody><tr class="clickable-tr" pagination-id="__stockTakeChangeReview"
                        total-items="stockTakeChangeCounter"
                        dir-paginate="stock in stockTakeDetails | itemsPerPage: stockTakeLimitReview">
-                <td>{{entity.itemName}}</td>
-                <td>{{entity.drugStrenght}}</td>
-                <td>{{entity.packSize}}</td>
+                <td>{{entity.item.name}}</td>
+                <td>{{entity.item.strength}}</td>
+                <td>{{entity.item.packSize}}</td>
                 <td></td>
                 <td></td>
             </tr>

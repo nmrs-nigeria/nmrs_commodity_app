@@ -18,15 +18,12 @@ import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.Utility;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
 import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
-import org.openmrs.module.openhmis.inventory.api.model.ClosingbalanceUpdate;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
-import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.search.ItemSearch;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -66,13 +63,24 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		description.addProperty("itemId", Representation.DEFAULT);
-		description.addProperty("itemName", Representation.DEFAULT);
-		description.addProperty("itemUUID", Representation.DEFAULT);
-		description.addProperty("unitOfMeasure", Representation.DEFAULT);
-		description.addProperty("itemType", Representation.DEFAULT);
-		description.addProperty("drugStrenght", Representation.DEFAULT);
+		//		description.addProperty("itemId", Representation.DEFAULT);
+		//		description.addProperty("itemName", Representation.DEFAULT);
+		//		description.addProperty("itemUUID", Representation.DEFAULT);
+		//		description.addProperty("unitOfMeasure", Representation.DEFAULT);
+		//		description.addProperty("itemType", Representation.DEFAULT);
+		//		description.addProperty("drugStrenght", Representation.DEFAULT);
+		//		description.addProperty("packSize", Representation.DEFAULT);
+
+		description.addProperty("id", Representation.DEFAULT);
+		description.addProperty("reportingPeriod", Representation.DEFAULT);
+		description.addProperty("reportingYear", Representation.DEFAULT);
+		description.addProperty("stockroomType", Representation.DEFAULT);
+		description.addProperty("item", Representation.DEFAULT);
 		description.addProperty("packSize", Representation.DEFAULT);
+		description.addProperty("strength", Representation.DEFAULT);
+		description.addProperty("calculatedClosingBalance", Representation.DEFAULT);
+		description.addProperty("updatedClosingBalance", Representation.DEFAULT);
+		description.addProperty("dateCreated", Representation.DEFAULT);
 		return description;
 	}
 
@@ -102,26 +110,21 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 				//				List<ClosingbalanceUpdate> itemStockSummaries =
 				//				        itemStockDetailDataService.getItemStockSummaryByItemType(stockroom, pagingInfo);
 
-				List<ClosingbalanceUpdate> results = new ArrayList<ClosingbalanceUpdate>();
+				List<ClosingBalanceUpdateModel> results = new ArrayList<ClosingBalanceUpdateModel>();
 				for (Item i : items) {
-					ClosingbalanceUpdate summary = new ClosingbalanceUpdate();
-					Integer itemid = Ints.checkedCast(i.getId());
-					summary.setItemId(itemid);
-					String itemname = (String)i.getName();
-					summary.setItemName(itemname);
-					String itemuuid = (String)i.getUuid();
-					summary.setItemUUID(itemuuid);
+					ClosingBalanceUpdateModel summary = new ClosingBalanceUpdateModel();
 
 					String itemstrength = (String)i.getStrength();
-					summary.setDrugStrenght(itemstrength);
+					summary.setStrength(itemstrength);
 
-					Integer itempacksize = Ints.checkedCast(i.getPackSize());
+					String itempacksize = String.valueOf(i.getPackSize());
 					summary.setPackSize(itempacksize);
-
+					summary.setItem(i);
 					results.add(summary);
 				}
+
 				result =
-				        new AlreadyPagedWithLength<ClosingbalanceUpdate>(context, results,
+				        new AlreadyPagedWithLength<ClosingBalanceUpdateModel>(context, results,
 				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 
 			}

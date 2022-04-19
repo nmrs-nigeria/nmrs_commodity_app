@@ -27,7 +27,7 @@
                                          CookiesService) {
         var self = this;
         var entity_name_message_key = "openhmis.inventory.admin.stockTake.pharmacy";
-        var REST_ENTITY_NAME = "InventoryClosingBalanceUpdateStockTake";
+        var REST_ENTITY_NAME = "inventoryClosingBalanceUpdateStockTake";
 
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
@@ -129,10 +129,11 @@
                 }
 
                 $scope.getActualQuantity = function (entity) {
-                    console.log("ActualQuantity "+actualQuantity);
+                    console.log("ActualQuantity--");
+                    console.log("ActualQuantity "+entity.actualQuantity);
                     if (entity.actualQuantity >= 0) {
 
-                        entity.id = entity.item.uuid + "_" + entity.expiration;
+                        entity.id = entity.item.uuid;
                         self.getNewStock(entity);
                     }
                 }
@@ -144,9 +145,10 @@
         }
 
         self.getNewStock = self.getNewStock || function (newStock) {
-            console.log($scope.stockTakeDetails);
+            console.log("stockTakeDetails--- "+$scope.stockTakeDetails);
             var index = EntityFunctions.findIndexByKeyValue($scope.stockTakeDetails,newStock.id);
             if (index < 0 ) {
+
                 $scope.stockTakeDetails.push(newStock);
             } else {
                 $scope.stockTakeDetails[index] = newStock;
@@ -156,18 +158,19 @@
             * This loop is to remove any stock that had the actualQuantity updated and before saving changed again to either a value
             * equal to null or a value equal to the quantity
             * */
-            for (var i = 0; i < $scope.stockTakeDetails.length; i++) {
-                if ($scope.stockTakeDetails[i].actualQuantity == $scope.stockTakeDetails[i].quantity || $scope.stockTakeDetails[i].actualQuantity == null) {
-                    $scope.stockTakeDetails.splice(i, 1);
-                }
-            }
+            // for (var i = 0; i < $scope.stockTakeDetails.length; i++) {
+            //     console.log("stockTakeDetails"+$scope.stockTakeDetails[i].actualQuantity);
+            //     if ($scope.stockTakeDetails[i].actualQuantity == $scope.stockTakeDetails[i].quantity || $scope.stockTakeDetails[i].actualQuantity == null) {
+            //         $scope.stockTakeDetails.splice(i, 1);
+            //     }
+            // }
 
             if ($scope.stockTakeDetails.length > 0) {
                 $scope.showStockChangeDetails = true;
             } else {
                 $scope.showStockDetailsTable = false;
             }
-            $scope.stockTakeDetails = $filter('orderBy')($scope.stockTakeDetails, ['item.name', 'expiration']);
+            $scope.stockTakeDetails = $filter('orderBy')($scope.stockTakeDetails, ['item.name']);
         }
 
         self.loadStockrooms = self.loadStockrooms || function () {
@@ -253,26 +256,34 @@
         // @Override
         self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
             var stockObject = $scope.stockTakeDetails;
-            // for (var i = 0; i < stockObject.length; i++) {
-            //     delete stockObject[i]['$$hashKey'];
-            //     delete stockObject[i]['id'];
-            //     if (stockObject[i].expiration != null) {
-            //         stockObject[i].expiration = PharmacyStockTakeFunctions.formatDate(stockObject[i].expiration);
-            //     }
-            //
-            //     if (stockObject[i].reasonForChange == "" || stockObject[i].reasonForChange == null || stockObject[i].reasonForChange == undefined) {
-            //         emr.errorAlert("Reason for change is required");
-            //         return false;
-            //     }
-            //
-            //     stockObject[i].item = stockObject[i].item.uuid;
-            // }
             for (var i = 0; i < stockObject.length; i++) {
-                console.log("Item Name:" + stockObject[i].itemName);
-                console.log("Item Strength:" + stockObject[i].drugStrenght);
+                delete stockObject[i]['$$hashKey'];
+                delete stockObject[i]['id'];
+                var repPeriod = $scope.reportingPeriod;
+                var repYear = $scope.year;
+                var qty = stockObject[i].actualQuantity;
+
+
+               stockObject[i].id = stockObject[i].item.id;
+                stockObject[i].reportingPeriod = repPeriod;
+                stockObject[i].reportingYear = repYear;
+                stockObject[i].stockroomType = stockObject[i].item.itemType;
+                stockObject[i].item = stockObject[i].item;
+                stockObject[i].packSize = stockObject[i].item.packSize.toString();
+                stockObject[i].strength = stockObject[i].item.strength;
+                stockObject[i].calculatedClosingBalance = '0';
+                stockObject[i].updatedClosingBalance = qty;
+                stockObject[i].dateCreated = '';
+
+
             }
+            // for (var i = 0; i < stockObject.length; i++) {
+            //     console.log("Item Name:" + stockObject[i].item.name);
+            //     console.log("Item Strength:" + stockObject[i].item.strength);
+            // }
 
             if ($scope.stockTakeDetails.length != 0) {
+                console.log("Item Name ---:");
                 $scope.entity = {
                     "closingBalanceUpdateModel": stockObject,
                     "operationNumber": "",
