@@ -255,25 +255,55 @@
          */
         // @Override
         self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
-            var stockObject = $scope.stockTakeDetails;
-            for (var i = 0; i < stockObject.length; i++) {
+            console.log("Save 1");
+            var stockObject = $scope.stockTakeDetails;   
+            console.log("Save 2");
+            var stockObjects = [];
+            console.log("Save 3");
+            console.log("stockTakeDetails: " + JSON.stringify(stockObject));
+            for (var i = 0; i < stockObject.length; i++) { 
+                console.log("Save Loop " + i);
                 delete stockObject[i]['$$hashKey'];
+                console.log("Save Loop " + i);
                 delete stockObject[i]['id'];
+                console.log("Save Loop " + i);
                 var repPeriod = $scope.reportingPeriod;
+                console.log("Save Loop " + repPeriod);
                 var repYear = $scope.year;
+                console.log("Save Loop " + repYear);
                 var qty = stockObject[i].actualQuantity;
+                console.log("Save Loop " + qty);
 
+                console.log("stockTakeDetails in: " + JSON.stringify(stockObject[i]));
 
-               stockObject[i].id = stockObject[i].item.id;
-                stockObject[i].reportingPeriod = repPeriod;
-                stockObject[i].reportingYear = repYear;
-                stockObject[i].stockroomType = stockObject[i].item.itemType;
-                stockObject[i].item = stockObject[i].item;
-                stockObject[i].packSize = stockObject[i].item.packSize.toString();
-                stockObject[i].strength = stockObject[i].item.strength;
-                stockObject[i].calculatedClosingBalance = '0';
-                stockObject[i].updatedClosingBalance = qty;
-                stockObject[i].dateCreated = '';
+                console.log("id " + stockObject[i].item.id);
+                console.log("reportingPeriod " + repPeriod);               
+                console.log("reportingYear " + repYear);                
+                console.log("stockroomType " + stockObject[i].item.itemType);                
+                console.log("item " + stockObject[i].item);                
+                console.log("packSize " + stockObject[i].item.packSize.toString());                
+                console.log("strength " + stockObject[i].item.strength);                
+                console.log("calculatedClosingBalance 0");                
+                console.log("updatedClosingBalance " + qty);                 
+                console.log("dateCreated " + new Date().toISOString().slice(0, 10));
+                var j = i;
+                j++;
+
+                let obj = {
+                    "id": j,
+                    "reportingPeriod": repPeriod,
+                    "reportingYear": repYear,
+                    "stockroomType": stockObject[i].item.itemType,
+                    "item": stockObject[i].item,
+                    "packSize": stockObject[i].item.packSize.toString(),
+                    "strength": stockObject[i].item.strength,
+                    "calculatedClosingBalance": 0,
+                    "updatedClosingBalance": qty,
+                    "dateCreated": new Date().toISOString().slice(0, 10)
+                }
+                stockObjects.push(obj);
+
+                console.log("stockObjects " + stockObjects);              
 
 
             }
@@ -285,7 +315,7 @@
             if ($scope.stockTakeDetails.length != 0) {
                 console.log("Item Name ---:");
                 $scope.entity = {
-                    "closingBalanceUpdateModel": stockObject,
+                    "closingBalanceUpdateModel": stockObjects,
                     "operationNumber": "",
                     "stockroom": "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0"
                 };

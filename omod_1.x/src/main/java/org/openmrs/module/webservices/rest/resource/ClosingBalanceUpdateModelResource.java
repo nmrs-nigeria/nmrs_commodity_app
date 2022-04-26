@@ -45,9 +45,9 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
+		description.addProperty("closingBalanceUpdateModel");
 		description.addProperty("operationNumber");
 		description.addProperty("stockroom");
-		description.addProperty("closingBalanceUpdateModel");
 
 		return description;
 	}
@@ -70,7 +70,7 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 			throw new RestClientException("The current user not authorized to process this operation.");
 		}
 
-		itemStockDetailDataService.insertInvClosingBalanceUpdate(delegate.getItemStockSummaryList());
+		itemStockDetailDataService.insertInvClosingBalanceUpdate(delegate.getClosingBalanceUpdateModel());
 
 		return newDelegate();
 	}

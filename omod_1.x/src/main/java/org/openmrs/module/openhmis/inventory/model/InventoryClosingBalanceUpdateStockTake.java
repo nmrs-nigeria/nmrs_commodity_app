@@ -26,10 +26,11 @@ import java.util.List;
 public class InventoryClosingBalanceUpdateStockTake extends BaseOpenmrsObject {
 	public static final long serialVersionUID = 0L;
 
-	private String operationNumber;
-	private Stockroom stockroom;
 	private List<ClosingBalanceUpdateModel> closingBalanceUpdateModel;
-	private Department department;
+	private String operationNumber;
+	private String stockroom;
+
+	//private Department department;
 
 	public String getOperationNumber() {
 		return operationNumber;
@@ -39,29 +40,29 @@ public class InventoryClosingBalanceUpdateStockTake extends BaseOpenmrsObject {
 		this.operationNumber = operationNumber;
 	}
 
-	public Stockroom getStockroom() {
+	public String getStockroom() {
 		return stockroom;
 	}
 
-	public void setStockroom(Stockroom stockroom) {
+	public void setStockroom(String stockroom) {
 		this.stockroom = stockroom;
 	}
 
-	public List<ClosingBalanceUpdateModel> getItemStockSummaryList() {
+	public List<ClosingBalanceUpdateModel> getClosingBalanceUpdateModel() {
 		return closingBalanceUpdateModel;
 	}
 
-	public void setItemStockSummaryList(List<ClosingBalanceUpdateModel> closingBalanceUpdateModel) {
+	public void setClosingBalanceUpdateModel(List<ClosingBalanceUpdateModel> closingBalanceUpdateModel) {
 		this.closingBalanceUpdateModel = closingBalanceUpdateModel;
 	}
 
-	public Department getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(Department department) {
-		this.department = department;
-	}
+	//	public Department getDepartment() {
+	//		return department;
+	//	}
+	//
+	//	public void setDepartment(Department department) {
+	//		this.department = department;
+	//	}
 
 	@Override
 	public Integer getId() {
