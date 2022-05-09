@@ -1070,17 +1070,48 @@ public class ItemStockDetailDataServiceImpl
 
 	@Override
 	public void insertInvClosingBalanceUpdate(List<ClosingBalanceUpdateModel> closingBalanceUpdateModels) {
-		for (ClosingBalanceUpdateModel obj : closingBalanceUpdateModels) {
+		for (ClosingBalanceUpdateModel cbm : closingBalanceUpdateModels) {
+			//check if record is existing
+			String quer = "";
+			if (cbm.getStrength() != null) {
+				quer = "select detail.id "
+				        + "from ClosingBalanceUpdateModel as detail "
+				        + "where detail.reportingPeriod = '" + cbm.getReportingPeriod() + "' and "
+				        + "detail.reportingYear = '" + cbm.getReportingYear() + "' and "
+				        + "detail.stockroomType = '" + cbm.getStockroomType() + "' and "
+				        + "detail.strength = '" + cbm.getStrength() + "' and "
+				        + "detail.packSize = '" + cbm.getPackSize() + "' and "
+				        + "detail.item.id = " + cbm.getItem().getId();
+			} else {
+				quer = "select detail.id "
+				        + "from ClosingBalanceUpdateModel as detail "
+				        + "where detail.reportingPeriod = '" + cbm.getReportingPeriod() + "' and "
+				        + "detail.reportingYear = '" + cbm.getReportingYear() + "' and "
+				        + "detail.stockroomType = '" + cbm.getStockroomType() + "' and "
+				        + "detail.packSize = '" + cbm.getPackSize() + "' and "
+				        + "detail.item.id = " + cbm.getItem().getId();
+			}
 
-			//			String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
-			//					+ "updatableQuantity = " + obj.getUpdatableQuantity() + " "
-			//					+ "where id = " + obj.getId();
-			//
-			//			Query query = getRepository().createQuery(hql);
-			//			int sql = query.executeUpdate();
-			//			System.out.println("Updated Executed: " + sql);
-			System.out.println("Item name --" + obj.getItem().getName());
-			System.out.println("Item UUID --" + obj.getItem().getUuid());
+			Query query = getRepository().createQuery(quer);
+			List list = query.list();
+			System.out.println("List : " + list);
+			System.out.println("List : " + list.size());
+			if (list != null && list.size() >= 1) {
+				Integer closingBalanceUpdateId = (Integer)list.get(0);
+				//update the quantity
+				System.out.println("Before Update");
+				String hql3 = "UPDATE ClosingBalanceUpdateModel as c set "
+				        + "updatedClosingBalance = " + cbm.getUpdatedClosingBalance() + " "
+				        + "where id = " + closingBalanceUpdateId;
+				Query query3 = getRepository().createQuery(hql3);
+				query3.executeUpdate();
+				System.out.println("After Update");
+			} else {
+				//save 
+				System.out.println("Before Save");
+				getRepository().save(cbm);
+				System.out.println("After Save");
+			}
 		}
 	}
 

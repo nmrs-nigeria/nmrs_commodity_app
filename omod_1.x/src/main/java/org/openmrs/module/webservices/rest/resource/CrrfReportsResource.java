@@ -445,8 +445,7 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 			}else {
 					Optional<ClosingBalanceUpdateModel> matchingObjectBeginingBalance = 
 							labBeginningBalance
-							.stream().filter(pc -> pc.getItem().equals(item) 
-							&& pc.getStrength().equalsIgnoreCase(item.getStrength())).findFirst();
+							.stream().filter(pc -> pc.getItem().equals(item)).findFirst();
 
 					ClosingBalanceUpdateModel pcsBeginingBalance = matchingObjectBeginingBalance
 							.orElse(null);

@@ -13,11 +13,19 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationService;
 import org.openmrs.module.openhmis.inventory.api.WellKnownOperationTypes;
+import org.openmrs.module.openhmis.inventory.api.model.ClosingBalanceUpdateModel;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
+import org.openmrs.module.openhmis.inventory.api.model.ViewInvStockonhandPharmacyDispensary;
 import org.openmrs.module.openhmis.inventory.model.InventoryClosingBalanceUpdateStockTake;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.helper.IdgenHelper;
@@ -45,10 +53,12 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = super.getRepresentationDescription(rep);
-		description.addProperty("closingBalanceUpdateModel");
+		description.removeProperty("name");
+		description.removeProperty("description");
 		description.addProperty("operationNumber");
 		description.addProperty("stockroom");
-
+		description.addProperty("department");
+		description.addProperty("itemStockSummaryList");
 		return description;
 	}
 
@@ -64,13 +74,55 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 	@Override
 	public InventoryClosingBalanceUpdateStockTake save(InventoryClosingBalanceUpdateStockTake delegate) {
 		// Ensure that the current user can process the operation
-		System.out.println("Item name --");
-		System.out.println("Item UUID --");
-		if (!userCanProcessAdjustment()) {
-			throw new RestClientException("The current user not authorized to process this operation.");
+
+		List<ClosingBalanceUpdateModel> closingBalanceUpdateModels =
+		        new ArrayList<ClosingBalanceUpdateModel>();
+
+		String repPeriodRepYearStockroomTypeChoose = delegate.getOperationNumber();
+		String splited[] = repPeriodRepYearStockroomTypeChoose.split("_");
+		String reportingPeriod = splited[0];
+		String reportingYear = splited[1];
+		String stockroomTypeChoose = splited[2];
+
+		List<ItemStockSummary> inventoryStockTakeList = delegate.getItemStockSummaryList();
+		System.out.println("ItemStockSummary : " + inventoryStockTakeList.size());
+		int i = 1;
+		System.out.println("Count : " + i);
+		for (ItemStockSummary itemStockSummary : inventoryStockTakeList) {
+
+			ClosingBalanceUpdateModel closingBalanceUpdateModel = new ClosingBalanceUpdateModel();
+			closingBalanceUpdateModel.setCalculatedClosingBalance(0);
+			closingBalanceUpdateModel.setDateCreated(new Date());
+			closingBalanceUpdateModel.setItem(itemStockSummary.getItem());
+			closingBalanceUpdateModel.setPackSize(itemStockSummary.getItem().getPackSize().toString());
+			closingBalanceUpdateModel.setReportingPeriod(reportingPeriod);
+			closingBalanceUpdateModel.setReportingYear(reportingYear);
+			closingBalanceUpdateModel.setStockroomType(stockroomTypeChoose);
+			closingBalanceUpdateModel.setStrength(itemStockSummary.getItem().getStrength());
+			closingBalanceUpdateModel.setUpdatedClosingBalance(itemStockSummary.getActualQuantity());
+
+			System.out.println("setCalculatedClosingBalance : " + closingBalanceUpdateModel.getCalculatedClosingBalance());
+			System.out.println("setDateCreated : " + closingBalanceUpdateModel.getDateCreated());
+			System.out.println("setItem : " + closingBalanceUpdateModel.getItem());
+			System.out.println("setPackSize : " + closingBalanceUpdateModel.getPackSize());
+			System.out.println("setReportingPeriod : " + closingBalanceUpdateModel.getReportingPeriod());
+			System.out.println("setReportingYear : " + closingBalanceUpdateModel.getReportingYear());
+			System.out.println("setStockroomType : " + closingBalanceUpdateModel.getStockroomType());
+			System.out.println("setStrength : " + closingBalanceUpdateModel.getStrength());
+			System.out.println("setUpdatedClosingBalance : " + closingBalanceUpdateModel.getUpdatedClosingBalance());
+
+			if (closingBalanceUpdateModel.getUpdatedClosingBalance() != null) {
+				closingBalanceUpdateModels.add(closingBalanceUpdateModel);
+			}
+
+			i++;
+			System.out.println("Count : " + i);
+
 		}
 
-		itemStockDetailDataService.insertInvClosingBalanceUpdate(delegate.getClosingBalanceUpdateModel());
+		System.out.println("ClosingBalanceUpdateModels : " + closingBalanceUpdateModels.size());
+
+		itemStockDetailDataService.insertInvClosingBalanceUpdate(closingBalanceUpdateModels);
 
 		return newDelegate();
 	}

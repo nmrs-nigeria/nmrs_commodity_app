@@ -13,22 +13,16 @@
  */
 package org.openmrs.module.webservices.rest.resource;
 
-import com.google.common.primitives.Ints;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
-import org.openmrs.module.openhmis.commons.api.Utility;
 import org.openmrs.module.openhmis.inventory.api.model.*;
-import org.openmrs.module.openhmis.inventory.api.IARVPharmacyDispenseService;
-import org.openmrs.module.openhmis.inventory.api.IDepartmentDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
-import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
 import org.openmrs.module.openhmis.inventory.api.search.ItemSearch;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
 import org.openmrs.module.webservices.rest.web.RequestContext;
-import org.openmrs.module.webservices.rest.web.annotation.PropertySetter;
 import org.openmrs.module.webservices.rest.web.annotation.Resource;
 import org.openmrs.module.webservices.rest.web.representation.Representation;
 import org.openmrs.module.webservices.rest.web.resource.api.PageableResult;
@@ -42,51 +36,34 @@ import java.util.List;
 /**
  * REST resource representing an {@link ClosingbalanceUpdate}.
  */
-@Resource(name = ModuleRestConstants.CLOSINGBALANCEUPDATE_RESOURCE, supportedClass = ClosingbalanceUpdate.class,
+@Resource(name = ModuleRestConstants.CLOSINGBALANCEUPDATE_RESOURCE, supportedClass = ItemStockSummary.class,
         supportedOpenmrsVersions = { "1.9.*", "1.10.*", "1.11.*", "1.12.*", "2.*" })
-public class ClosingBalanceUpdateResource extends DelegatingCrudResource<ClosingbalanceUpdate> {
+public class ClosingBalanceUpdateResource extends DelegatingCrudResource<ItemStockSummary> {
 
 	private IStockroomDataService stockroomDataService;
-	private IItemStockDetailDataService itemStockDetailDataService;
-	private IDepartmentDataService departmentService;
-	private IARVPharmacyDispenseService iARVPharmacyDispenseService;
 	private IItemDataService iitemDataService;
 
 	public ClosingBalanceUpdateResource() {
 		this.stockroomDataService = Context.getService(IStockroomDataService.class);
-		this.itemStockDetailDataService = Context.getService(IItemStockDetailDataService.class);
-		this.departmentService = Context.getService(IDepartmentDataService.class);
-		this.iARVPharmacyDispenseService = Context.getService(IARVPharmacyDispenseService.class);
 		this.iitemDataService = Context.getService(IItemDataService.class);
 	}
 
 	@Override
 	public DelegatingResourceDescription getRepresentationDescription(Representation rep) {
 		DelegatingResourceDescription description = new DelegatingResourceDescription();
-		//		description.addProperty("itemId", Representation.DEFAULT);
-		//		description.addProperty("itemName", Representation.DEFAULT);
-		//		description.addProperty("itemUUID", Representation.DEFAULT);
-		//		description.addProperty("unitOfMeasure", Representation.DEFAULT);
-		//		description.addProperty("itemType", Representation.DEFAULT);
-		//		description.addProperty("drugStrenght", Representation.DEFAULT);
-		//		description.addProperty("packSize", Representation.DEFAULT);
-
-		description.addProperty("id", Representation.DEFAULT);
-		description.addProperty("reportingPeriod", Representation.DEFAULT);
-		description.addProperty("reportingYear", Representation.DEFAULT);
-		description.addProperty("stockroomType", Representation.DEFAULT);
 		description.addProperty("item", Representation.DEFAULT);
-		description.addProperty("packSize", Representation.DEFAULT);
-		description.addProperty("strength", Representation.DEFAULT);
-		description.addProperty("calculatedClosingBalance", Representation.DEFAULT);
-		description.addProperty("updatedClosingBalance", Representation.DEFAULT);
-		description.addProperty("dateCreated", Representation.DEFAULT);
+		description.addProperty("expiration", Representation.DEFAULT);
+		description.addProperty("quantity", Representation.DEFAULT);
+		description.addProperty("actualQuantity", Representation.DEFAULT);
+		description.addProperty("itemBatch", Representation.DEFAULT);
+		description.addProperty("reasonForChange", Representation.DEFAULT);
+		description.addProperty("pharmStockOnHandId", Representation.DEFAULT);
 		return description;
 	}
 
 	@Override
-	public ClosingbalanceUpdate newDelegate() {
-		return new ClosingbalanceUpdate();
+	public ItemStockSummary newDelegate() {
+		return new ItemStockSummary();
 	}
 
 	@Override
@@ -94,7 +71,6 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 		PageableResult result = null;
 
 		String stockroomUuid = context.getParameter("stockroom_uuid");
-		//	String departmentUuid = context.getParameter("department_uuid");
 
 		if (StringUtils.isNotBlank(stockroomUuid)) {
 			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
@@ -107,51 +83,23 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 					itemSearch.getTemplate().setItemType(stockroom.getStockroomType());
 				}
 				List<Item> items = iitemDataService.getItemsByItemSearch(itemSearch, pagingInfo);
-				//				List<ClosingbalanceUpdate> itemStockSummaries =
-				//				        itemStockDetailDataService.getItemStockSummaryByItemType(stockroom, pagingInfo);
 
-				List<ClosingBalanceUpdateModel> results = new ArrayList<ClosingBalanceUpdateModel>();
-				for (Item i : items) {
-					ClosingBalanceUpdateModel summary = new ClosingBalanceUpdateModel();
+				List<ItemStockSummary> results = new ArrayList<ItemStockSummary>();
 
-					String itemstrength = (String)i.getStrength();
-					summary.setStrength(itemstrength);
+				for (Item item : items) {
 
-					String itempacksize = String.valueOf(i.getPackSize());
-					summary.setPackSize(itempacksize);
-					summary.setItem(i);
-					results.add(summary);
+					ItemStockSummary itemStockSummary = new ItemStockSummary();
+
+					itemStockSummary.setItem(item);
+
+					results.add(itemStockSummary);
 				}
 
 				result =
-				        new AlreadyPagedWithLength<ClosingBalanceUpdateModel>(context, results,
+				        new AlreadyPagedWithLength<ItemStockSummary>(context, results,
 				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
 
 			}
-
-			//		if (StringUtils.isNotBlank(stockroomUuid) || StringUtils.isNotBlank(departmentUuid)) {
-			//			PagingInfo pagingInfo = PagingUtil.getPagingInfoFromContext(context);
-			//
-			//			if (stockroomUuid != null && !stockroomUuid.isEmpty()) {
-			//				Stockroom stockroom = stockroomDataService.getByUuid(stockroomUuid);
-			//				List<ClosingbalanceUpdate> itemStockSummaries =
-			//				        itemStockDetailDataService.getItemStockSummaryByItemType(stockroom, pagingInfo);
-			//				result =
-			//				        new AlreadyPagedWithLength<ClosingbalanceUpdate>(context, itemStockSummaries,
-			//				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-			//
-			//			}
-			//			else if (departmentUuid != null && !departmentUuid.isEmpty()) {
-			//
-			//				Department department = departmentService.getByUuid(departmentUuid);
-			//				List<ClosingbalanceUpdate> itemStockSummaries =
-			//				        itemStockDetailDataService
-			//	.getItemStockSummaryByDepartmentPharmacy(department, pagingInfo);
-			//				result =
-			//				        new AlreadyPagedWithLength<ClosingbalanceUpdate>(context, itemStockSummaries,
-			//				                pagingInfo.hasMoreResults(), pagingInfo.getTotalRecordCount());
-			//
-			//			}
 		} else {
 			result = super.doSearch(context);
 		}
@@ -165,22 +113,22 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<Closing
 	}
 
 	@Override
-	public ClosingbalanceUpdate save(ClosingbalanceUpdate delegate) {
+	public ItemStockSummary save(ItemStockSummary delegate) {
 		return null;
 	}
 
 	@Override
-	public ClosingbalanceUpdate getByUniqueId(String uniqueId) {
+	public ItemStockSummary getByUniqueId(String uniqueId) {
 		return null;
 	}
 
 	@Override
-	protected void delete(ClosingbalanceUpdate delegate, String reason, RequestContext context) throws ResponseException {
+	protected void delete(ItemStockSummary delegate, String reason, RequestContext context) throws ResponseException {
 		// Deletes not supported
 	}
 
 	@Override
-	public void purge(ClosingbalanceUpdate delegate, RequestContext context) throws ResponseException {
+	public void purge(ItemStockSummary delegate, RequestContext context) throws ResponseException {
 		// Purges not supported
 	}
 }

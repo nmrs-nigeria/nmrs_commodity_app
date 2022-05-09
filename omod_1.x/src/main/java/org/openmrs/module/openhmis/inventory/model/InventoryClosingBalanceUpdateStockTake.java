@@ -15,6 +15,7 @@ package org.openmrs.module.openhmis.inventory.model;
 
 import org.openmrs.BaseOpenmrsObject;
 import org.openmrs.module.openhmis.inventory.api.model.Department;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.ClosingBalanceUpdateModel;
 import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 
@@ -26,11 +27,10 @@ import java.util.List;
 public class InventoryClosingBalanceUpdateStockTake extends BaseOpenmrsObject {
 	public static final long serialVersionUID = 0L;
 
-	private List<ClosingBalanceUpdateModel> closingBalanceUpdateModel;
 	private String operationNumber;
-	private String stockroom;
-
-	//private Department department;
+	private Stockroom stockroom;
+	private List<ItemStockSummary> itemStockSummaryList;
+	private Department department;
 
 	public String getOperationNumber() {
 		return operationNumber;
@@ -40,29 +40,29 @@ public class InventoryClosingBalanceUpdateStockTake extends BaseOpenmrsObject {
 		this.operationNumber = operationNumber;
 	}
 
-	public String getStockroom() {
+	public Stockroom getStockroom() {
 		return stockroom;
 	}
 
-	public void setStockroom(String stockroom) {
+	public void setStockroom(Stockroom stockroom) {
 		this.stockroom = stockroom;
 	}
 
-	public List<ClosingBalanceUpdateModel> getClosingBalanceUpdateModel() {
-		return closingBalanceUpdateModel;
+	public List<ItemStockSummary> getItemStockSummaryList() {
+		return itemStockSummaryList;
 	}
 
-	public void setClosingBalanceUpdateModel(List<ClosingBalanceUpdateModel> closingBalanceUpdateModel) {
-		this.closingBalanceUpdateModel = closingBalanceUpdateModel;
+	public void setItemStockSummaryList(List<ItemStockSummary> itemStockSummaryList) {
+		this.itemStockSummaryList = itemStockSummaryList;
 	}
 
-	//	public Department getDepartment() {
-	//		return department;
-	//	}
-	//
-	//	public void setDepartment(Department department) {
-	//		this.department = department;
-	//	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
 
 	@Override
 	public Integer getId() {
