@@ -16,7 +16,7 @@
 
 		return service;
 		
-		function generateCRFFReport(reportId, startDate, endDate, crrfCategory, repPeriod, repYear,  startIndex, limit, includeRetired, onLoadSuccessfulCallback){
+		function generateCRFFReport(reportId, startDate, endDate, crrfCategory, repPeriod, repYear, currentReportingPeriod, currentReportingYear,  startIndex, limit, includeRetired, onLoadSuccessfulCallback){
 					         
 			var requestParams = PaginationService.paginateParams(startIndex, limit, includeRetired);
 					requestParams['rest_entity_name'] = 'crrfReports';
@@ -24,6 +24,8 @@
 					requestParams['crrfCategory'] = crrfCategory; 
 					requestParams['repPeriod'] = repPeriod;
 					requestParams['repYear'] = repYear; 
+					requestParams['currentReportingPeriod'] = currentReportingPeriod;
+					requestParams['currentReportingYear'] = currentReportingYear; 
                         
                         if(angular.isDefined(startDate)){
                             requestParams['startDate'] = startDate;

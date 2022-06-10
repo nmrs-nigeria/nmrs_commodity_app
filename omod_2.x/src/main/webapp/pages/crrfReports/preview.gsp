@@ -110,7 +110,13 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         var quantityOrderQty = arrayS[18];
         var finalquantityOrder = parseFloat(quantityOrderQty) / parseFloat(packSizeValue);
         var finalquantityOrderRounded = parseFloat(finalquantityOrder).toFixed(1);
-    	document.getElementById('' + quantityOrderId).innerHTML = finalquantityOrderRounded;   		
+    	document.getElementById('' + quantityOrderId).innerHTML = finalquantityOrderRounded;   
+        
+        var physicalBalanceId = arrayS[19];
+        var physicalBalanceQty = arrayS[20];
+        var finalphysicalBalance = parseFloat(physicalBalanceQty) / parseFloat(packSizeValue);
+        var finalphysicalBalanceRounded = parseFloat(finalphysicalBalance).toFixed(1);
+    	document.getElementById('' + physicalBalanceId).innerHTML = finalphysicalBalanceRounded;
         
     }
     
@@ -135,7 +141,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         contents += "<tr><th style='text-align: center;' colspan='9'>REPORT</th><th style='text-align: center;' colspan='5'>REQUISITION</th></tr>";
 
         contents += "<tr><th>Drugs</th><th>Strength</th><th>Pack Size</th><th>Basic Unit</th><th>Beginning Balance</th><th>Quantity Received</th><th>Quantity Dispensed</th>";
-        contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Physical Count</th>";
+        contents += "<th>Positive Adjustments</th><th>Negative Adjustments</th><th>Losses (Damages/Expiries)</th><th>Calculated Balance</th><th>Physical Count</th>";
         contents += "<th>Maximum Stock Quantity</th><th>Quantity to Order</th><th>Remarks</th></tr>";
         contents += "</thead><tbody>";
         
@@ -151,14 +157,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizeadult" + i + "na";
           	var qtyReceivedLossesId = "packsizeadult" + i + "l";
           	var qtyPhysicalCountId = "packsizeadult" + i + "pc";
+            var qtyCalculatedCountId = "packsizeadult" + i + "cc";
           	var qtyMaximumStockId = "packsizeadult" + i + "ms";
           	var qtyQuantityOrderId = "packsizeadult" + i + "qo";
           	
-          	var final = packsizeadult + "_" + qtyReceivedId + "_" + adultElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + adultElement.beginningBalance + "_" + qtyDispensedId + "_" + adultElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + adultElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + adultElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + adultElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + adultElement.physicalCount + "_" + qtyMaximumStockId + "_" + adultElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + adultElement.quantityToOrder;
+          	var final = packsizeadult + "_" + qtyReceivedId + "_" + adultElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + adultElement.beginningBalance + "_" + qtyDispensedId + "_" + adultElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + adultElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + adultElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + adultElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + adultElement.physicalCount + "_" + qtyMaximumStockId + "_" + adultElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + adultElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + adultElement.physicalBalance;
           	
          	contents += "<tr><td>" + adultElement.drugs +  "</td><td>" + adultElement.strength +  "</td><td><input type='text' size='5' id='" + packsizeadult + "' onkeyup=\"calculateFunction('" + final + "')\" /></td><td>" + adultElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + adultElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + adultElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + adultElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + adultElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + adultElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + adultElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + adultElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + adultElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + adultElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + adultElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + adultElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + adultElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + adultElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
         }
@@ -176,14 +183,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizepaediatric" + j + "na";
           	var qtyReceivedLossesId = "packsizepaediatric" + j + "l";
           	var qtyPhysicalCountId = "packsizepaediatric" + j + "pc";
+            var qtyCalculatedCountId = "packsizepaediatric" + j + "cc";
           	var qtyMaximumStockId = "packsizepaediatric" + j + "ms";
           	var qtyQuantityOrderId = "packsizepaediatric" + j + "qo";
           	
-          	var finalpaediatric = packsizepaediatric + "_" + qtyReceivedId + "_" + paediatricElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + paediatricElement.beginningBalance + "_" + qtyDispensedId + "_" + paediatricElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + paediatricElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + paediatricElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + paediatricElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + paediatricElement.physicalCount + "_" + qtyMaximumStockId + "_" + paediatricElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + paediatricElement.quantityToOrder;
+          	var finalpaediatric = packsizepaediatric + "_" + qtyReceivedId + "_" + paediatricElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + paediatricElement.beginningBalance + "_" + qtyDispensedId + "_" + paediatricElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + paediatricElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + paediatricElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + paediatricElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + paediatricElement.physicalCount + "_" + qtyMaximumStockId + "_" + paediatricElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + paediatricElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + paediatricElement.physicalBalance;
   	
          	contents += "<tr><td>" + paediatricElement.drugs +  "</td><td>" + paediatricElement.strength +  "</td><td><input type='text' size='5' id='" + packsizepaediatric + "' onkeyup=\"calculateFunction('" + finalpaediatric + "')\" /></td><td>" + paediatricElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + paediatricElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + paediatricElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + paediatricElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + paediatricElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + paediatricElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + paediatricElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + paediatricElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + paediatricElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + paediatricElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + paediatricElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + paediatricElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + paediatricElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + paediatricElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
         }
@@ -201,14 +209,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizeoi" + k + "na";
           	var qtyReceivedLossesId = "packsizeoi" + k + "l";
           	var qtyPhysicalCountId = "packsizeoi" + k + "pc";
+            var qtyCalculatedCountId = "packsizeoi" + k + "cc";
           	var qtyMaximumStockId = "packsizeoi" + k + "ms";
           	var qtyQuantityOrderId = "packsizeoi" + k + "qo";
           	
-          	var finaloi = packsizeoi + "_" + qtyReceivedId + "_" + oiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + oiElement.beginningBalance + "_" + qtyDispensedId + "_" + oiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + oiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + oiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + oiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + oiElement.physicalCount + "_" + qtyMaximumStockId + "_" + oiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + oiElement.quantityToOrder;
+          	var finaloi = packsizeoi + "_" + qtyReceivedId + "_" + oiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + oiElement.beginningBalance + "_" + qtyDispensedId + "_" + oiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + oiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + oiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + oiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + oiElement.physicalCount + "_" + qtyMaximumStockId + "_" + oiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + oiElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + oiElement.physicalBalance;
 
             contents += "<tr><td>" + oiElement.drugs +  "</td><td>" + oiElement.strength +  "</td><td><input type='text' size='5' id='" + packsizeoi + "' onkeyup=\"calculateFunction('" + finaloi + "')\" /></td><td>" + oiElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + oiElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + oiElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + oiElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + oiElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + oiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + oiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + oiElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + oiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + oiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + oiElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + oiElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + oiElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + oiElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";            
 
@@ -227,14 +236,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizeadvance" + l + "na";
           	var qtyReceivedLossesId = "packsizeadvance" + l + "l";
           	var qtyPhysicalCountId = "packsizeadvance" + l + "pc";
+            var qtyCalculatedCountId = "packsizeadvance" + l + "cc";
           	var qtyMaximumStockId = "packsizeadvance" + l + "ms";
           	var qtyQuantityOrderId = "packsizeadvance" + l + "qo";
           	
-          	var finalpacksizeadvance = packsizeadvance + "_" + qtyReceivedId + "_" + advanceHIVElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + advanceHIVElement.beginningBalance + "_" + qtyDispensedId + "_" + advanceHIVElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + advanceHIVElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + advanceHIVElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + advanceHIVElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + advanceHIVElement.physicalCount + "_" + qtyMaximumStockId + "_" + advanceHIVElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + advanceHIVElement.quantityToOrder;
+          	var finalpacksizeadvance = packsizeadvance + "_" + qtyReceivedId + "_" + advanceHIVElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + advanceHIVElement.beginningBalance + "_" + qtyDispensedId + "_" + advanceHIVElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + advanceHIVElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + advanceHIVElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + advanceHIVElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + advanceHIVElement.physicalCount + "_" + qtyMaximumStockId + "_" + advanceHIVElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + advanceHIVElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + advanceHIVElement.physicalBalance;
 
             contents += "<tr><td>" + advanceHIVElement.drugs +  "</td><td>" + advanceHIVElement.strength +  "</td><td><input type='text' size='5' id='" + packsizeadvance + "' onkeyup=\"calculateFunction('" + finalpacksizeadvance+ "')\" /></td><td>" + advanceHIVElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + advanceHIVElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + advanceHIVElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + advanceHIVElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + advanceHIVElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + advanceHIVElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + advanceHIVElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + advanceHIVElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + advanceHIVElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + advanceHIVElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + advanceHIVElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + advanceHIVElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + advanceHIVElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + advanceHIVElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";            
 
@@ -253,14 +263,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizesti" + m + "na";
           	var qtyReceivedLossesId = "packsizesti" + m + "l";
           	var qtyPhysicalCountId = "packsizesti" + m + "pc";
+            var qtyCalculatedCountId = "packsizesti" + m + "cc";
           	var qtyMaximumStockId = "packsizesti" + m + "ms";
           	var qtyQuantityOrderId = "packsizesti" + m + "qo";
           	
-          	var finalpacksizesti = packsizesti + "_" + qtyReceivedId + "_" + stiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + stiElement.beginningBalance + "_" + qtyDispensedId + "_" + stiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + stiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + stiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + stiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + stiElement.physicalCount + "_" + qtyMaximumStockId + "_" + stiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + stiElement.quantityToOrder;
+          	var finalpacksizesti = packsizesti + "_" + qtyReceivedId + "_" + stiElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + stiElement.beginningBalance + "_" + qtyDispensedId + "_" + stiElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + stiElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + stiElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + stiElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + stiElement.physicalCount + "_" + qtyMaximumStockId + "_" + stiElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + stiElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + stiElement.physicalBalance;
 
             contents += "<tr><td>" + stiElement.drugs +  "</td><td>" + stiElement.strength +  "</td><td><input type='text' size='5' id='" + packsizesti + "' onkeyup=\"calculateFunction('" + finalpacksizesti+ "')\" /></td><td>" + stiElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + stiElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + stiElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + stiElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + stiElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + stiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + stiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + stiElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + stiElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + stiElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + stiElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + stiElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + stiElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + stiElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";            
 
@@ -279,14 +290,15 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
           	var qtyNegativeAdjustmentId = "packsizetb" + n + "na";
           	var qtyReceivedLossesId = "packsizetb" + n + "l";
           	var qtyPhysicalCountId = "packsizetb" + n + "pc";
+            var qtyCalculatedCountId = "packsizetb" + n + "cc";
           	var qtyMaximumStockId = "packsizetb" + n + "ms";
           	var qtyQuantityOrderId = "packsizetb" + n + "qo";
           	
-          	var finalpacksizetb = packsizetb + "_" + qtyReceivedId + "_" + tbElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + tbElement.beginningBalance + "_" + qtyDispensedId + "_" + tbElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + tbElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + tbElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + tbElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + tbElement.physicalCount + "_" + qtyMaximumStockId + "_" + tbElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + tbElement.quantityToOrder;
+          	var finalpacksizetb = packsizetb + "_" + qtyReceivedId + "_" + tbElement.quantityReceived +  "_" + qtyBeginingBalanceId + "_" + tbElement.beginningBalance + "_" + qtyDispensedId + "_" + tbElement.quantityDispensed + "_" + qtyPositiveAdjustmentId + "_" + tbElement.positiveAdjustments + "_" + qtyNegativeAdjustmentId + "_" + tbElement.negativeAdjustments + "_" + qtyReceivedLossesId + "_" + tbElement.lossesdDamagesExpiries +  "_" + qtyPhysicalCountId + "_" + tbElement.physicalCount + "_" + qtyMaximumStockId + "_" + tbElement.maximumStockQuantity +  "_" + qtyQuantityOrderId + "_" + tbElement.quantityToOrder +  "_" + qtyCalculatedCountId + "_" + tbElement.physicalBalance;
 
             contents += "<tr><td>" + tbElement.drugs +  "</td><td>" + tbElement.strength +  "</td><td><input type='text' size='5' id='" + packsizetb + "' onkeyup=\"calculateFunction('" + finalpacksizetb+ "')\" /></td><td>" + tbElement.basicUnit +  "</td><td id='" + qtyBeginingBalanceId + "'>" + tbElement.beginningBalance +  "</td>";
          	contents += "<td id='" + qtyReceivedId + "'>" + tbElement.quantityReceived +  "</td><td id='" + qtyDispensedId + "'>" + tbElement.quantityDispensed +  "</td><td id='" + qtyPositiveAdjustmentId + "'>" + tbElement.positiveAdjustments +  "</td>";
-         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + tbElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + tbElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + tbElement.physicalCount +  "</td>";
+         	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + tbElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + tbElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + tbElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + tbElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + tbElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + tbElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";    
         }

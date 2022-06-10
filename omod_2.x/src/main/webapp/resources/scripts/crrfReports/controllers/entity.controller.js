@@ -96,6 +96,8 @@
                var crrfCategory = $scope.category;
                var repPeriod = $scope.reportingPeriod;
                var repYear = $scope.year;
+               var currentReportingPeriod = $scope.reportingPeriod;
+               var currentReportingYear = $scope.year;
                
                var startDay = "";
         	   var endDay = "";
@@ -180,7 +182,7 @@
                    
                    console.log('After loading');
               
-                   CrrfReportsRestfulService.generateCRFFReport("crrf_report", CrrfReportsFunctions.formatDate(startDate), CrrfReportsFunctions.formatDate(endDate), crrfCategory, prevReportingPeriod, prevReportingYear, currentPage, $scope.limit, $scope.includeRetired, self.onLoadCRRFReportSuccessful) 
+                   CrrfReportsRestfulService.generateCRFFReport("crrf_report", CrrfReportsFunctions.formatDate(startDate), CrrfReportsFunctions.formatDate(endDate), crrfCategory, prevReportingPeriod, prevReportingYear, currentReportingPeriod, currentReportingYear, currentPage, $scope.limit, $scope.includeRetired, self.onLoadCRRFReportSuccessful) 
 
                } else {
                    $scope.loading = false;

@@ -21,6 +21,7 @@ public class CrrfDetails extends BaseOpenmrsObject {
 	private Integer physicalCount;
 	private Integer maximumStockQuantity;
 	private Integer quantityToOrder;
+	private Integer calculatedCount;
 
 	@Override
 	public Integer getId() {
@@ -134,6 +135,14 @@ public class CrrfDetails extends BaseOpenmrsObject {
 
 	public void setPackSize(Integer packSize) {
 		this.packSize = packSize;
+	}
+
+	public Integer getPhysicalBalance() {
+		return calculatedCount;
+	}
+
+	public void setPhysicalBalance(Integer calculatedCount) {
+		this.calculatedCount = calculatedCount;
 	}
 
 }
