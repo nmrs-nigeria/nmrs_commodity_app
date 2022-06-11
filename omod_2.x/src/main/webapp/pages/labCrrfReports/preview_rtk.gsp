@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.crrfReports") ])
+    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.labcrrfReports") ])
 
 //include css
 ui.includeCss("openhmis.commons", "bootstrap.css")
@@ -8,12 +8,12 @@ ui.includeCss("openhmis.inventory", "extCss/dataTables.bootstrap.css")
     
 
 //include js
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery-3.5.1.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/bootstrap.min.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv.min.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.dataTables.min.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/dataTables.bootstrap.js")
-ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_html_table.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery-3.5.1.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/bootstrap.min.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.csv.min.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.dataTables.min.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/dataTables.bootstrap.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/csv_to_html_table.js")
 
 %>
 
@@ -25,12 +25,11 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/csv_to_htm
             link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
     },
     {
-            label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}",
-    link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
+            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
+    link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
     },
     {
-            label: "${ ui.message("openhmis.inventory.admin.crrfReports")}",
-    link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/ndrExtraction/entities.page#/'
+            label: "${ ui.message("openhmis.inventory.admin.labcrrfReports")}"
     }
     ];
 

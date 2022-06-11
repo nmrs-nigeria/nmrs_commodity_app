@@ -26,7 +26,7 @@
                 }
 
         self.bindExtraVariablesToScope = self.bindExtraVariablesToScope || function () {
-        	$scope.categories = ["ARV Cotrim"];
+        	$scope.categories = ["HIV RTKS and DBS"];
         	$scope.reportingPeriods = ["January-February","March-April","May-June","July-August","September-October","November-December"];
         	$scope.years = ["2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050"];
         	
@@ -200,11 +200,12 @@
             localStorage.setItem("resultReturn", resultReturn);
             console.log(data.results[0]);
             var cat = $scope.category; 
-            console.log(cat);
-            
-            if(cat == "ARV Cotrim"){
-            	var final_url = ROOT_URL + 'openhmis.inventory/crrfReports/preview.page#/';
-            }           
+            console.log(cat);            
+          
+            if(cat == "HIV RTKS and DBS"){
+            	var final_url = ROOT_URL + 'openhmis.inventory/labCrrfReports/preview_rtk.page#/';
+            }
+                 
             localStorage.setItem("preview_url", JSON.stringify(data.results[0]));        
             window.location = final_url;
         }

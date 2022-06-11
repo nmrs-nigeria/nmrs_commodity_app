@@ -42,7 +42,7 @@
         function loadStockrooms(module_name, onLoadStockroomsSuccessful) {
             var requestParams = [];
             requestParams['rest_entity_name'] = 'stockroom';
-            requestParams['stockroomType'] = 'pharmacy';
+            requestParams['stockroomType'] = 'lab';
             EntityRestFactory.loadEntities(requestParams,
                 onLoadStockroomsSuccessful,
                 errorCallback
@@ -52,7 +52,7 @@
         function loadStockroomsCRRF(module_name, onLoadStockroomsSuccessful) {
             var requestParams = [];
             requestParams['rest_entity_name'] = 'stockroom';
-            requestParams['stockroomType'] = 'pharmacy';
+            requestParams['stockroomType'] = 'lab';
             EntityRestFactory.loadEntities(requestParams,
                 onLoadStockroomsSuccessful,
                 errorCallback

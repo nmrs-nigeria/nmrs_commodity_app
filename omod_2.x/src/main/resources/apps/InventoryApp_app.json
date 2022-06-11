@@ -151,6 +151,24 @@
                 "requiredPrivilege": "Task: Access Create Operation"
             },
             {
+                "id": "openhmis.inventory.inventoryLabClosingBalance",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.labclosingbalanceUpdate",
+                "url": "openhmis.inventory/labClosingbalanceUpdate/entities.page",
+                "icon": "icon-share-alt",
+                "requiredPrivilege": "Task: Access Inventory Reports"
+            },
+            {
+                "id": "openhmis.inventory.inventoryLabCrrf",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
+                "type": "link",
+                "label": "openhmis.inventory.admin.labcrrfReports",
+                "url": "openhmis.inventory/labCrrfReports/entities.page",
+                "icon": "icon-list",
+                "requiredPrivilege": "Task: Access Inventory Reports"
+            }, 
+            {
                 "id": "openhmis.inventory.inventoryNDRExtraction",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
                 "type": "link",
