@@ -45,17 +45,18 @@
                 $scope.reportingPeriods = ["January-February","March-April","May-June","July-August","September-October","November-December"];
                 $scope.years = ["2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050"];
                 $scope.reportingPeriod = $scope.reportingPeriods[0];
-                $scope.year = $scope.years[0];
-                self.loadStockrooms();
-                self.loadDepartments();
+                $scope.year = $scope.years[0];                
+                
                 $scope.showNoStockroomSelected = true;
                 $scope.showNoStockSummaries = false;
                 $scope.showStockDetails = false;
                 $scope.showStockChangeDetails = false;
                 $scope.showStockDetailsTable = false;
-                $scope.stockTakeDetails = [];
+                $scope.stockTakeDetails = [];               
 
                 $scope.loading = false;
+
+                self.loadStockDetailsPharmClosingBal('stockroomChange', 1);
 
                 $scope.stockroomDialog = function (stockroomChange, stockTakeCurrentPage) {
                     if ($scope.stockTakeDetails.length != 0) {
@@ -102,8 +103,11 @@
                 }
 
                 $scope.loadStockDetails = function (stockTakeCurrentPage) {
+
+                    console.log("in a load stok details 2");
                     if ($scope.entity.stockroom != null) {
-                        var stockroom_uuid = $scope.entity.stockroom.uuid;
+                        console.log("in a load stok details 3");
+                        var stockroom_uuid = "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0";
                         self.loadStockDetails(stockroom_uuid, stockTakeCurrentPage);
 
                         $scope.stockTakeLimit = CookiesService.get(stockroom_uuid + 'stockTakeLimit') || 5;
@@ -111,6 +115,8 @@
                         $scope.stockTakePagingFrom = PaginationService.pagingFrom;
                         $scope.stockTakePagingTo = PaginationService.pagingTo;
                     } else {
+                        console.log("in a load stok details 4");
+
                         $scope.showNoStockroomSelected = true;
                         $scope.showNoStockSummaries = false;
                         $scope.showStockChangeDetails = false;
@@ -138,7 +144,119 @@
                     }
                 }
 
+                $scope.getBulkStockQuantity = function (entity) {
+                    console.log("bulkStockQuantity--");
+                    console.log("bulkStockQuantity "+entity.bulkStockQuantity);
+                    if (entity.bulkStockQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getATMQuantity = function (entity) {
+                    console.log("atmQuantity--");
+                    console.log("atmQuantity "+entity.atmQuantity);
+                    if (entity.atmQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getComPharmacyQuantity = function (entity) {
+                    console.log("comPharmacyQuantity--");
+                    console.log("comPharmacyQuantity "+entity.comPharmacyQuantity);
+                    if (entity.comPharmacyQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getCommunityARTGroupsQuantity = function (entity) {
+                    console.log("communityARTGroupsQuantity--");
+                    console.log("communityARTGroupsQuantity "+entity.communityARTGroupsQuantity);
+                    if (entity.communityARTGroupsQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getCourierDeliveryQuantity = function (entity) {
+                    console.log("courierDeliveryQuantity--");
+                    console.log("courierDeliveryQuantity "+entity.courierDeliveryQuantity);
+                    if (entity.courierDeliveryQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getDispensaryQuantity = function (entity) {
+                    console.log("dispensaryQuantity--");
+                    console.log("dispensaryQuantity "+entity.dispensaryQuantity);
+                    if (entity.dispensaryQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getPatentMedicineStoreQuantity = function (entity) {
+                    console.log("patentMedicineStoreQuantity--");
+                    console.log("patentMedicineStoreQuantity "+entity.patentMedicineStoreQuantity);
+                    if (entity.patentMedicineStoreQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getPrivateClinicsQuantity = function (entity) {
+                    console.log("privateClinicsQuantity--");
+                    console.log("privateClinicsQuantity "+entity.privateClinicsQuantity);
+                    if (entity.privateClinicsQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getOthersQuantity = function (entity) {
+                    console.log("othersQuantity--");
+                    console.log("othersQuantity "+entity.othersQuantity);
+                    if (entity.othersQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+
+
+        }
+
+        self.loadStockDetailsPharmClosingBal = function (stockroomChange, stockTakeCurrentPage) {
+            if ($scope.stockTakeDetails.length != 0) {
+                $scope.stockTakeDetails = [];
+                self.stockroomChangeDialog(stockroomChange);
+            } else {
+                console.log(stockTakeCurrentPage);
+                $scope.loadStockDetailsPharmClosingBal(stockTakeCurrentPage);
             }
+        }
+
+        $scope.loadStockDetailsPharmClosingBal = function (stockTakeCurrentPage) {
+                var stockroom_uuid = "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0";
+                self.loadStockDetails(stockroom_uuid, stockTakeCurrentPage);
+                $scope.stockTakeLimit = CookiesService.get(stockroom_uuid + 'stockTakeLimit') || 200;
+                $scope.stockTakeCurrentPage = CookiesService.get(stockroom_uuid + 'stockTakeCurrentPage') || 1;
+                $scope.stockTakePagingFrom = PaginationService.pagingFrom;
+                $scope.stockTakePagingTo = PaginationService.pagingTo;
+        }
+
 
         self.stockroomChangeDialog = self.stockroomChangeDialog || function (id) {
             PharmacyStockTakeFunctions.stockroomChangeDialog(id, $scope);
@@ -186,7 +304,6 @@
             stockTakeCurrentPage = stockTakeCurrentPage || $scope.stockTakeCurrentPage;
             CookiesService.set(stockroomUuid + 'stockTakeCurrentPage', stockTakeCurrentPage);
             CookiesService.set(stockroomUuid + 'stockTakeLimit', $scope.stockTakeLimit);
-
             PharmacyStockTakeRestfulService.loadStockDetails(stockroomUuid, CookiesService.get(stockroomUuid + 'stockTakeCurrentPage'),
                 CookiesService.get(stockroomUuid + 'stockTakeLimit'),
                 self.onLoadStockDetailsSuccessful);
@@ -219,17 +336,9 @@
         }
 
         self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {
+            console.log(data.results);
             $scope.fetchedEntities = data.results;
-
-            for (var i = 0; i < $scope.fetchedEntities.length; i++) {
-                // $scope.fetchedEntities[i].id = $scope.fetchedEntities[i].item.uuid + "_" + $scope.fetchedEntities[i].expiration;
-                // var index = EntityFunctions.findIndexByKeyValue($scope.stockTakeDetails,$scope.fetchedEntities[i].id);
-                // if (index > -1) {
-                //     $scope.fetchedEntities[i].actualQuantity = $scope.stockTakeDetails[index].actualQuantity;
-                // }
-
-               // console.log("Item name "+ $scope.fetchedEntities[i].itemName);
-            }
+            console.log($scope.fetchedEntities);
 
             $scope.totalNumOfResults = data.length;
 
@@ -257,9 +366,13 @@
         self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
        
             var stockObject = $scope.stockTakeDetails; 
+            console.log(stockObject);
             var stockroomTypeChoose = stockObject[0].item.itemType;
+            console.log(stockroomTypeChoose);
             var repPeriod = $scope.reportingPeriod;
+            console.log(repPeriod);
             var repYear = $scope.year;
+            console.log(repYear);
             
 			for (var i = 0; i < stockObject.length; i++) {
 				delete stockObject[i]['$$hashKey'];

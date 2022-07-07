@@ -59,20 +59,6 @@
             </li>
         </ul>
 
-        <ul class="table-layout">
-            <li><label>Stockroom Type</label></li>
-            <li>
-                <select class="form-control" ng-model="entity.stockroom"
-                        ng-options='stockroom.name for stockroom in stockrooms track by stockroom.uuid'
-                        ng-change="stockroomDialog('stockroomChange',stockTakeCurrentPage)">
-                    <option value="" selected="selected">Any</option>
-                </select>
-
-            </li>
-        </ul>
-
-
-
         <br/>
     </div>
 
@@ -94,16 +80,27 @@
         <br/>
     </div>
 
-    <div id="entities" ng-show="showStockDetails == true" class="detail-section-border-top">
+    <div id="entities" ng-show="showStockDetails == true" style="font-size: 13px; width: 100%; overflow-x: auto;">
         <br/>
-        <table class="manage-entities-table" id="stockTakeTable">
+        <table id="stockTakeTable" class='table table-striped table-condensed' >
             <thead>
+             <tr>
+                <th rowspan='2'>Item</th>
+                <th rowspan='2'>Strength</th>
+                <th rowspan='2'>Pack Size</th>
+                <th colspan='10' style="text-align: center">Closing Balance Quantity at all Dispensaries</th>                
+            </tr>
             <tr>
-                <th>Item</th>
-                <th>Strength</th>
-                <th>Pack Size</th>
-                <th>Closing Balance Quantity</th>
-
+                <th>BULK STOCKROOM</th>
+                <th>ATM </th>
+                <th>Com-Pharmacy</th>
+                <th>Community ART Groups</th>
+                <th>Courier Delivery</th>
+                <th>Dispensary</th>
+                <th>Patent Medicine Store</th>
+                <th>Private Clinics</th>
+                <th>Other </th>
+                <th>Total Closing Balance Quantity</th>              
             </tr>
             </thead>
             <tbody>
@@ -113,11 +110,56 @@
                 <td>{{entity.item.name}}</td>
                 <td>{{entity.item.strength}}</td>
                 <td>{{entity.item.packSize}}</td>
+                <td><input name="bulkStockQuantity" min="0"
+                           id="{{'bulkStockQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.bulkStockQuantity"
+                           ng-blur="getBulkStockQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="atmQuantity" min="0"
+                           id="{{'atmQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.atmQuantity"
+                           ng-blur="getATMQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="comPharmacyQuantity" min="0"
+                           id="{{'comPharmacyQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.comPharmacyQuantity"
+                           ng-blur="getComPharmacyQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="communityARTGroupsQuantity" min="0"
+                           id="{{'communityARTGroupsQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.communityARTGroupsQuantity"
+                           ng-blur="getCommunityARTGroupsQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="courierDeliveryQuantity" min="0"
+                           id="{{'courierDeliveryQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.courierDeliveryQuantity"
+                           ng-blur="getCourierDeliveryQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="dispensaryQuantity" min="0"
+                           id="{{'dispensaryQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.dispensaryQuantity"
+                           ng-blur="getDispensaryQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="patentMedicineStoreQuantity" min="0"
+                           id="{{'patentMedicineStoreQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.patentMedicineStoreQuantity"
+                           ng-blur="getPatentMedicineStoreQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="privateClinicsQuantity" min="0"
+                           id="{{'privateClinicsQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.privateClinicsQuantity"
+                           ng-blur="getPrivateClinicsQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="othersQuantity" min="0"
+                           id="{{'othersQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.othersQuantity"
+                           ng-blur="getOthersQuantity(entity)" style="width:70px"></td>
+
+
                 <td><input name="actualQuantity" min="0"
                            id="{{'actualQuantity-'+entity.item.uuid}}"
                            type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
-                           ng-blur="getActualQuantity(entity)"></td>
-
+                           ng-blur="getActualQuantity(entity)" style="width:70px"></td>
             </tr>
             </tbody>
         </table>
@@ -155,10 +197,21 @@
         <table class="manage-entities-table" id="stockTakeChangeDetailsTable">
             <thead>
             <tr>
-                <th>Item</th>
-                <th>Strength</th>
-                <th>Pack Size</th>
-                <th>Closing Balance Quantity</th>
+                <th colspan='2'>Item</th>
+                <th colspan='2'>Strength</th>
+                <th colspan='2'>Pack Size</th>
+                <th rowspan='9'>Closing Balance Quantity at Dispensaries</th>                
+            </tr>
+            <tr>
+                <th>ATM</th>
+                <th>Com-Pharmacy</th>
+                <th>Community ART Groups</th>
+                <th>Courier Delivery</th>
+                <th>Dispensary</th>
+                <th>Patent Medicine Store</th>
+                <th>Private Clinics</th>
+                <th>Others</th>
+                <th>Total Closing Balance Quantity</th>              
             </tr>
             </thead>
             <tbody><tr class="clickable-tr" pagination-id="__stockTakeChangeReview"
@@ -167,6 +220,13 @@
                 <td>{{entity.item.name}}</td>
                 <td>{{entity.item.strength}}</td>
                 <td>{{entity.item.packSize}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>

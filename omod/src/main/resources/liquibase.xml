@@ -7200,7 +7200,38 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
             <column name="date_created" type="DATETIME">
                 <constraints nullable="false"/>
             </column>
+            
         </createTable>       
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v5.7" author="Toyeeb" > 
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;
+			ALTER TABLE `inv_closing_balance_update` ADD `atm_quantity` INT NULL DEFAULT NULL AFTER `date_created`, ADD `com_pharmacy_quantity` INT NULL DEFAULT NULL AFTER `atm_quantity`, ADD `community_art_groups_quantity` INT NULL DEFAULT NULL AFTER `com_pharmacy_quantity`, ADD `courier_delivery_quantity` INT NULL DEFAULT NULL AFTER `community_art_groups_quantity`, ADD `dispensary_quantity` INT NULL DEFAULT NULL AFTER `courier_delivery_quantity`, ADD `patent_medicine_store_quantity` INT NULL DEFAULT NULL AFTER `dispensary_quantity`, ADD `private_clinics_quantity` INT NULL DEFAULT NULL AFTER `patent_medicine_store_quantity`, ADD `others_quantity` INT NULL DEFAULT NULL AFTER `private_clinics_quantity`;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
+    </changeSet>
+    
+    <changeSet id="openhmis.inventory-v5.8" author="Toyeeb"> 
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;
+			ALTER TABLE `inv_closing_balance_update` ADD `anc_quantity` INT NULL AFTER `others_quantity`, ADD `com_quantity` INT NULL AFTER `anc_quantity`, ADD `eid_quantity` INT NULL AFTER `com_quantity`, ADD `emerg_quantity` INT NULL AFTER `eid_quantity`, ADD `fp_quantity` INT NULL AFTER `emerg_quantity`, ADD `inpat_quantity` INT NULL AFTER `fp_quantity`, ADD `landd_quantity` INT NULL AFTER `inpat_quantity`, ADD `lab_quantity` INT NULL AFTER `landd_quantity`, ADD `mal_quantity` INT NULL AFTER `lab_quantity`, ADD `mob_quantity` INT NULL AFTER `mal_quantity`, ADD `opd_quantity` INT NULL AFTER `mob_quantity`, ADD `oss_quantity` INT NULL AFTER `opd_quantity`, ADD `oth_quantity` INT NULL AFTER `oss_quantity`, ADD `paed_quantity` INT NULL AFTER `oth_quantity`, ADD `pp_quantity` INT NULL AFTER `paed_quantity`, ADD `sti_quantity` INT NULL AFTER `pp_quantity`, ADD `tb_quantity` INT NULL AFTER `sti_quantity`, ADD `vct_quantity` INT NULL AFTER `tb_quantity`;
+			SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
+    </changeSet>
+    
+     <changeSet id="openhmis.inventory-v5.9" author="Toyeeb"> 
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;
+			ALTER TABLE `inv_closing_balance_update` ADD `bulk_stock_quantity` INT NULL DEFAULT NULL AFTER `others_quantity`, ADD `lab_stock_quantity` INT NULL DEFAULT NULL AFTER `bulk_stock_quantity`;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
     </changeSet>
     
                           

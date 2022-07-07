@@ -100,6 +100,34 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 			closingBalanceUpdateModel.setStockroomType(stockroomTypeChoose);
 			closingBalanceUpdateModel.setStrength(itemStockSummary.getItem().getStrength());
 			closingBalanceUpdateModel.setUpdatedClosingBalance(itemStockSummary.getActualQuantity());
+			closingBalanceUpdateModel.setAtmQuantity(itemStockSummary.getAtmQuantity());
+			closingBalanceUpdateModel.setCommunityARTGroupsQuantity(itemStockSummary.getCommunityARTGroupsQuantity());
+			closingBalanceUpdateModel.setComPharmacyQuantity(itemStockSummary.getComPharmacyQuantity());
+			closingBalanceUpdateModel.setCourierDeliveryQuantity(itemStockSummary.getCourierDeliveryQuantity());
+			closingBalanceUpdateModel.setDispensaryQuantity(itemStockSummary.getDispensaryQuantity());
+			closingBalanceUpdateModel.setOthersQuantity(itemStockSummary.getOthersQuantity());
+			closingBalanceUpdateModel.setPatentMedicineStoreQuantity(itemStockSummary.getPatentMedicineStoreQuantity());
+			closingBalanceUpdateModel.setPrivateClinicsQuantity(itemStockSummary.getPrivateClinicsQuantity());
+			closingBalanceUpdateModel.setAncQuantity(itemStockSummary.getAncQuantity());
+			closingBalanceUpdateModel.setComQuantity(itemStockSummary.getComQuantity());
+			closingBalanceUpdateModel.setEidQuantity(itemStockSummary.getEidQuantity());
+			closingBalanceUpdateModel.setEmergQuantity(itemStockSummary.getEmergQuantity());
+			closingBalanceUpdateModel.setFpQuantity(itemStockSummary.getFpQuantity());
+			closingBalanceUpdateModel.setInpatQuantity(itemStockSummary.getInpatQuantity());
+			closingBalanceUpdateModel.setLanddQuantity(itemStockSummary.getLanddQuantity());
+			closingBalanceUpdateModel.setLabQuantity(itemStockSummary.getLabQuantity());
+			closingBalanceUpdateModel.setMalQuantity(itemStockSummary.getMalQuantity());
+			closingBalanceUpdateModel.setMobQuantity(itemStockSummary.getMobQuantity());
+			closingBalanceUpdateModel.setOpdQuantity(itemStockSummary.getOpdQuantity());
+			closingBalanceUpdateModel.setOssQuantity(itemStockSummary.getOssQuantity());
+			closingBalanceUpdateModel.setOthQuantity(itemStockSummary.getOthQuantity());
+			closingBalanceUpdateModel.setPaedQuantity(itemStockSummary.getPaedQuantity());
+			closingBalanceUpdateModel.setPpQuantity(itemStockSummary.getPpQuantity());
+			closingBalanceUpdateModel.setStiQuantity(itemStockSummary.getStiQuantity());
+			closingBalanceUpdateModel.setTbQuantity(itemStockSummary.getTbQuantity());
+			closingBalanceUpdateModel.setVctQuantity(itemStockSummary.getVctQuantity());
+			closingBalanceUpdateModel.setBulkStockQuantity(itemStockSummary.getBulkStockQuantity());
+			closingBalanceUpdateModel.setLabStockQuantity(itemStockSummary.getLabStockQuantity());
 
 			System.out.println("setCalculatedClosingBalance : " + closingBalanceUpdateModel.getCalculatedClosingBalance());
 			System.out.println("setDateCreated : " + closingBalanceUpdateModel.getDateCreated());
@@ -110,6 +138,16 @@ public class ClosingBalanceUpdateModelResource extends BaseRestObjectResource<In
 			System.out.println("setStockroomType : " + closingBalanceUpdateModel.getStockroomType());
 			System.out.println("setStrength : " + closingBalanceUpdateModel.getStrength());
 			System.out.println("setUpdatedClosingBalance : " + closingBalanceUpdateModel.getUpdatedClosingBalance());
+			System.out.println("setAtmQuantity : " + closingBalanceUpdateModel.getAtmQuantity());
+			System.out.println("setCommunityARTGroupsQuantity : "
+			        + closingBalanceUpdateModel.getCommunityARTGroupsQuantity());
+			System.out.println("setComPharmacyQuantity : " + closingBalanceUpdateModel.getComPharmacyQuantity());
+			System.out.println("setCourierDeliveryQuantity : " + closingBalanceUpdateModel.getCourierDeliveryQuantity());
+			System.out.println("setDispensaryQuantity : " + closingBalanceUpdateModel.getDispensaryQuantity());
+			System.out.println("setOthersQuantity : " + closingBalanceUpdateModel.getOthersQuantity());
+			System.out.println("setPatentMedicineStoreQuantity : "
+			        + closingBalanceUpdateModel.getPatentMedicineStoreQuantity());
+			System.out.println("setPrivateClinicsQuantity : " + closingBalanceUpdateModel.getPrivateClinicsQuantity());
 
 			if (closingBalanceUpdateModel.getUpdatedClosingBalance() != null) {
 				closingBalanceUpdateModels.add(closingBalanceUpdateModel);

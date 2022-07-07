@@ -374,7 +374,8 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 
 	//rtk
 	private List<CrrfDetails> getCrrfRTKRegimenCategory(Date startDate, Date endDate,
-			 String repPeriod, String repYear, String stockroomType, String currentReportingPeriod, String currentReportingYear) {
+			 String repPeriod, String repYear, String stockroomType, 
+			 String currentReportingPeriod, String currentReportingYear) {
 		List<CrrfDetails> crrfRTKRegimen = new ArrayList<CrrfDetails>();
 
 		// get distinct items for rtk regimen line as base.

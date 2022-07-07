@@ -420,6 +420,36 @@
 	    <property name="calculatedClosingBalance" type="int" not-null="true" column="calculated_closing_balance" />
         <property name="updatedClosingBalance" type="int" not-null="true" column="updated_closing_balance" />   
 		<property name="dateCreated" type="java.util.Date" column="date_created" not-null="true" length="19" />
+		
+		<property name="atmQuantity" type="int" not-null="false" column="atm_quantity" />
+		<property name="comPharmacyQuantity" type="int" not-null="false" column="com_pharmacy_quantity" />
+		<property name="communityARTGroupsQuantity" type="int" not-null="false" column="community_art_groups_quantity" />
+		<property name="courierDeliveryQuantity" type="int" not-null="false" column="courier_delivery_quantity" />
+		<property name="dispensaryQuantity" type="int" not-null="false" column="dispensary_quantity" />
+		<property name="patentMedicineStoreQuantity" type="int" not-null="false" column="patent_medicine_store_quantity" />
+		<property name="privateClinicsQuantity" type="int" not-null="false" column="private_clinics_quantity" />
+		<property name="othersQuantity" type="int" not-null="false" column="others_quantity" />		
+		<property name="ancQuantity" type="int" not-null="false" column="anc_quantity" />
+		<property name="comQuantity" type="int" not-null="false" column="com_quantity" />
+		<property name="eidQuantity" type="int" not-null="false" column="eid_quantity" />
+		<property name="emergQuantity" type="int" not-null="false" column="emerg_quantity" />
+		<property name="fpQuantity" type="int" not-null="false" column="fp_quantity" />
+		<property name="inpatQuantity" type="int" not-null="false" column="inpat_quantity" />
+		<property name="landdQuantity" type="int" not-null="false" column="landd_quantity" />
+		<property name="labQuantity" type="int" not-null="false" column="lab_quantity" />		
+		<property name="malQuantity" type="int" not-null="false" column="mal_quantity" />
+		<property name="mobQuantity" type="int" not-null="false" column="mob_quantity" />
+		<property name="opdQuantity" type="int" not-null="false" column="opd_quantity" />
+		<property name="ossQuantity" type="int" not-null="false" column="oss_quantity" />
+		<property name="othQuantity" type="int" not-null="false" column="oth_quantity" />
+		<property name="paedQuantity" type="int" not-null="false" column="paed_quantity" />
+		<property name="ppQuantity" type="int" not-null="false" column="pp_quantity" />
+		<property name="stiQuantity" type="int" not-null="false" column="sti_quantity" />
+		<property name="tbQuantity" type="int" not-null="false" column="tb_quantity" />
+		<property name="vctQuantity" type="int" not-null="false" column="vct_quantity" />	
+		<property name="bulkStockQuantity" type="int" not-null="false" column="bulk_stock_quantity" />
+		<property name="labStockQuantity" type="int" not-null="false" column="lab_stock_quantity" />
+		
 	</class>
 	
 </hibernate-mapping>
