@@ -59,18 +59,7 @@
             </li>
         </ul>
 
-        <ul class="table-layout">
-            <li><label>Stockroom Type</label></li>
-            <li>
-                <select class="form-control" ng-model="entity.stockroom"
-                        ng-options='stockroom.name for stockroom in stockrooms track by stockroom.uuid'
-                        ng-change="stockroomDialog('stockroomChange',stockTakeCurrentPage)">
-                    <option value="" selected="selected">Any</option>
-                </select>
-
-            </li>
-        </ul>
-
+        
 
 
         <br/>
@@ -94,29 +83,146 @@
         <br/>
     </div>
 
-    <div id="entities" ng-show="showStockDetails == true" class="detail-section-border-top">
+    <div id="entities" ng-show="showStockDetails == true" style="font-size: 13px; width: 100%; overflow-x: auto;">
         <br/>
-        <table class="manage-entities-table" id="stockTakeTable">
+        <table class='table table-striped table-condensed' id="stockTakeTable">
             <thead>
+             <tr>
+                <th rowspan='2'>Item</th>
+                <th rowspan='2'>Strength</th>
+                <th rowspan='2'>Pack Size</th>
+                <th colspan='20' style="text-align: center">Closing Balance Quantity at all Department</th>                
+            </tr>
             <tr>
-                <th>Item</th>
-                <th>Strength</th>
-                <th>Pack Size</th>
-                <th>Closing Balance Quantity</th>
-
+                <th>LAB STOCKROOM</th>
+                <th>ANC</th>
+                <th>COM</th>
+                <th>EID</th>
+                <th>EMERG.</th>
+                <th>FP</th>
+                <th>IN-PAT</th>
+                <th>L-AND-D</th>
+                <th>LAB</th>
+                <th>MAL</th>     
+                <th>MOB</th>
+                <th>OPD</th>
+                <th>OSS</th>
+                <th>OTH</th>
+                <th>PAED</th>
+                <th>PP</th>
+                <th>STI</th>
+                <th>TB</th>
+                <th>VCT</th>
+                <th>Total Closing Balance Quantity</td>
             </tr>
             </thead>
             <tbody>
+
             <tr class="clickable-tr" pagination-id="__stockTake"
                 dir-paginate="entity in fetchedEntities | itemsPerPage: stockTakeLimit"
                 total-items="totalNumOfResults" current-page="stockTakeCurrentPage">
                 <td>{{entity.item.name}}</td>
                 <td>{{entity.item.strength}}</td>
                 <td>{{entity.item.packSize}}</td>
+                <td><input name="labStockQuantity" min="0"
+                           id="{{'labStockQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.labStockQuantity"
+                           ng-blur="getLabStockQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="ancQuantity" min="0"
+                           id="{{'ancQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.ancQuantity"
+                           ng-blur="getAncQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="comQuantity" min="0"
+                           id="{{'comQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.comQuantity"
+                           ng-blur="getComQuantity(entity)" style="width:70px" ></td>
+
+                <td><input name="eidQuantity" min="0"
+                           id="{{'eidQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.eidQuantity"
+                           ng-blur="getEidQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="emergQuantity" min="0"
+                           id="{{'emergQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.emergQuantity"
+                           ng-blur="getEmergQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="fpQuantity" min="0"
+                           id="{{'fpQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.fpQuantity"
+                           ng-blur="getFpQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="inpatQuantity" min="0"
+                           id="{{'inpatQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.inpatQuantity"
+                           ng-blur="getInpatQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="landdQuantity" min="0"
+                           id="{{'landdQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.landdQuantity"
+                           ng-blur="getLanddQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="labQuantity" min="0"
+                           id="{{'labQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.labQuantity"
+                           ng-blur="getLabQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="malQuantity" min="0"
+                           id="{{'malQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.malQuantity"
+                           ng-blur="getMalQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="mobQuantity" min="0"
+                           id="{{'mobQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.mobQuantity"
+                           ng-blur="getMobQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="opdQuantity" min="0"
+                           id="{{'opdQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.opdQuantity"
+                           ng-blur="getOpdQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="ossQuantity" min="0"
+                           id="{{'ossQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.ossQuantity"
+                           ng-blur="getOssQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="othQuantity" min="0"
+                           id="{{'othQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.othQuantity"
+                           ng-blur="getOthQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="paedQuantity" min="0"
+                           id="{{'paedQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.paedQuantity"
+                           ng-blur="getPaedQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="ppQuantity" min="0"
+                           id="{{'ppQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.ppQuantity"
+                           ng-blur="getPpQuantity(entity)" style="width:70px" ></td>
+
+                <td><input name="stiQuantity" min="0"
+                           id="{{'stiQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.stiQuantity"
+                           ng-blur="getStiQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="tbQuantity" min="0"
+                           id="{{'tbQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.tbQuantity"
+                           ng-blur="getTbQuantity(entity)" style="width:70px"></td>
+
+                <td><input name="vctQuantity" min="0"
+                           id="{{'vctQuantity-'+entity.item.uuid}}"
+                           type="number" class="form-control input-sm" ng-model="entity.vctQuantity"
+                           ng-blur="getVctQuantity(entity)" style="width:70px"></td>
+
                 <td><input name="actualQuantity" min="0"
                            id="{{'actualQuantity-'+entity.item.uuid}}"
                            type="number" class="form-control input-sm" ng-model="entity.actualQuantity"
-                           ng-blur="getActualQuantity(entity)"></td>
+                           ng-blur="getActualQuantity(entity)" style="width:70px"></td>
 
             </tr>
             </tbody>
@@ -154,11 +260,33 @@
     <div id="showStockDetailsTable" ng-show="showStockDetailsTable == true">
         <table class="manage-entities-table" id="stockTakeChangeDetailsTable">
             <thead>
+               <tr>
+                <th rowspan='2'>Item</th>
+                <th rowspan='2'>Strength</th>
+                <th rowspan='2'>Pack Size</th>
+                <th colspan='19' style="text-align: center">Closing Balance Quantity at all Department</th>                
+            </tr>
             <tr>
-                <th>Item</th>
-                <th>Strength</th>
-                <th>Pack Size</th>
-                <th>Closing Balance Quantity</th>
+                <th>LAB STOCKROOM</th>
+                <th>ANC</th>
+                <th>COM</th>
+                <th>EID</th>
+                <th>EMERG.</th>
+                <th>FP</th>
+                <th>IN-PAT</th>
+                <th>L-AND-D</th>
+                <th>LAB</th>
+                <th>MAL</th>     
+                <th>MOB</th>
+                <th>OPD</th>
+                <th>OSS</th>
+                <th>OTH.</th>
+                <th>PAED</th>
+                <th>PP</th>
+                <th>STI</th>
+                <th>TB</th>
+                <th>VCT</th>
+                <th>Total Closing Balance Quantity</td>
             </tr>
             </thead>
             <tbody><tr class="clickable-tr" pagination-id="__stockTakeChangeReview"
@@ -167,6 +295,24 @@
                 <td>{{entity.item.name}}</td>
                 <td>{{entity.item.strength}}</td>
                 <td>{{entity.item.packSize}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td></td>
             </tr>

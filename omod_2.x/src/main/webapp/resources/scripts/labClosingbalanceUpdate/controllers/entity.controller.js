@@ -46,8 +46,8 @@
                 $scope.years = ["2021","2022","2023","2024","2025","2026","2027","2028","2029","2030","2031","2032","2033","2034","2035","2036","2037","2038","2039","2040","2041","2042","2043","2044","2045","2046","2047","2048","2049","2050"];
                 $scope.reportingPeriod = $scope.reportingPeriods[0];
                 $scope.year = $scope.years[0];
-                self.loadStockrooms();
-                self.loadDepartments();
+                // self.loadStockrooms();
+                // self.loadDepartments();
                 $scope.showNoStockroomSelected = true;
                 $scope.showNoStockSummaries = false;
                 $scope.showStockDetails = false;
@@ -57,11 +57,16 @@
 
                 $scope.loading = false;
 
+                self.loadStockDetailsLabClosingBal('stockroomChange', 1);
+
                 $scope.stockroomDialog = function (stockroomChange, stockTakeCurrentPage) {
+                    console.log("start");
                     if ($scope.stockTakeDetails.length != 0) {
+                        console.log("2");
                         $scope.stockTakeDetails = [];
                         self.stockroomChangeDialog(stockroomChange);
                     } else {
+                        console.log("3");
                         $scope.loadStockDetails(stockTakeCurrentPage);
                     }
                 }
@@ -102,8 +107,10 @@
                 }
 
                 $scope.loadStockDetails = function (stockTakeCurrentPage) {
+                    console.log("5");
                     if ($scope.entity.stockroom != null) {
-                        var stockroom_uuid = $scope.entity.stockroom.uuid;
+                        console.log("6");
+                        var stockroom_uuid = "2741bae2-c5de-43ef-891f-7ec2fd58f442";
                         self.loadStockDetails(stockroom_uuid, stockTakeCurrentPage);
 
                         $scope.stockTakeLimit = CookiesService.get(stockroom_uuid + 'stockTakeLimit') || 5;
@@ -111,6 +118,7 @@
                         $scope.stockTakePagingFrom = PaginationService.pagingFrom;
                         $scope.stockTakePagingTo = PaginationService.pagingTo;
                     } else {
+                        console.log("7");
                         $scope.showNoStockroomSelected = true;
                         $scope.showNoStockSummaries = false;
                         $scope.showStockChangeDetails = false;
@@ -128,6 +136,16 @@
                     $scope.showStockDetailsTable = false;
                 }
 
+                $scope.getLabStockQuantity = function (entity) {
+                    console.log("labStockQuantity--");
+                    console.log("labStockQuantity "+entity.labStockQuantity);
+                    if (entity.labStockQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
                 $scope.getActualQuantity = function (entity) {
                     console.log("ActualQuantity--");
                     console.log("ActualQuantity "+entity.actualQuantity);
@@ -138,9 +156,194 @@
                     }
                 }
 
-            }
+                $scope.getAncQuantity = function (entity) {
+                    console.log("ancQuantity--");
+                    console.log("ancQuantity "+entity.ancQuantity);
+                    if (entity.ancQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getComQuantity = function (entity) {
+                    console.log("comQuantity--");
+                    console.log("comQuantity "+entity.comQuantity);
+                    if (entity.comQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getEidQuantity = function (entity) {
+                    console.log("eidQuantity--");
+                    console.log("eidQuantity "+entity.eidQuantity);
+                    if (entity.eidQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getEmergQuantity = function (entity) {
+                    console.log("emergQuantity--");
+                    console.log("emergQuantity "+entity.emergQuantity);
+                    if (entity.emergQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getFpQuantity = function (entity) {
+                    console.log("fpQuantity--");
+                    console.log("fpQuantity "+entity.fpQuantity);
+                    if (entity.fpQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getInpatQuantity = function (entity) {
+                    console.log("inpatQuantity--");
+                    console.log("inpatQuantity "+entity.inpatQuantity);
+                    if (entity.inpatQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getLanddQuantity = function (entity) {
+                    console.log("landdQuantity--");
+                    console.log("landdQuantity "+entity.landdQuantity);
+                    if (entity.landdQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getLabQuantity = function (entity) {
+                    console.log("labQuantity--");
+                    console.log("labQuantity "+entity.labQuantity);
+                    if (entity.labQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getMalQuantity = function (entity) {
+                    console.log("malQuantity--");
+                    console.log("malQuantity "+entity.malQuantity);
+                    if (entity.malQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getMobQuantity = function (entity) {
+                    console.log("mobQuantity--");
+                    console.log("mobQuantity "+entity.mobQuantity);
+                    if (entity.mobQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getOpdQuantity = function (entity) {
+                    console.log("opdQuantity--");
+                    console.log("opdQuantity "+entity.opdQuantity);
+                    if (entity.opdQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getOssQuantity = function (entity) {
+                    console.log("ossQuantity--");
+                    console.log("ossQuantity "+entity.ossQuantity);
+                    if (entity.ossQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getOthQuantity = function (entity) {
+                    console.log("othQuantity--");
+                    console.log("othQuantity "+entity.othQuantity);
+                    if (entity.othQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getPaedQuantity = function (entity) {
+                    console.log("paedQuantity--");
+                    console.log("paedQuantity "+entity.paedQuantity);
+                    if (entity.paedQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getPpQuantity = function (entity) {
+                    console.log("ppQuantity--");
+                    console.log("ppQuantity "+entity.ppQuantity);
+                    if (entity.ppQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getStiQuantity = function (entity) {
+                    console.log("stiQuantity--");
+                    console.log("stiQuantity "+entity.stiQuantity);
+                    if (entity.stiQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getTbQuantity = function (entity) {
+                    console.log("tbQuantity--");
+                    console.log("tbQuantity "+entity.tbQuantity);
+                    if (entity.tbQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+                $scope.getVctQuantity = function (entity) {
+                    console.log("vctQuantity--");
+                    console.log("vctQuantity "+entity.vctQuantity);
+                    if (entity.vctQuantity >= 0) {
+
+                        entity.id = entity.item.uuid;
+                        self.getNewStock(entity);
+                    }
+                }
+
+
+
+
+
+        }
 
         self.stockroomChangeDialog = self.stockroomChangeDialog || function (id) {
+            console.log("4");
             PharmacyStockTakeFunctions.stockroomChangeDialog(id, $scope);
         }
 
@@ -183,6 +386,7 @@
         }
 
         self.loadStockDetails = self.loadStockDetails || function (stockroomUuid, stockTakeCurrentPage) {
+            console.log("9");
             stockTakeCurrentPage = stockTakeCurrentPage || $scope.stockTakeCurrentPage;
             CookiesService.set(stockroomUuid + 'stockTakeCurrentPage', stockTakeCurrentPage);
             CookiesService.set(stockroomUuid + 'stockTakeLimit', $scope.stockTakeLimit);
@@ -218,18 +422,31 @@
             $scope.departments = data.results;
         }
 
-        self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {
-            $scope.fetchedEntities = data.results;
 
-            for (var i = 0; i < $scope.fetchedEntities.length; i++) {
-                // $scope.fetchedEntities[i].id = $scope.fetchedEntities[i].item.uuid + "_" + $scope.fetchedEntities[i].expiration;
-                // var index = EntityFunctions.findIndexByKeyValue($scope.stockTakeDetails,$scope.fetchedEntities[i].id);
-                // if (index > -1) {
-                //     $scope.fetchedEntities[i].actualQuantity = $scope.stockTakeDetails[index].actualQuantity;
-                // }
-
-               // console.log("Item name "+ $scope.fetchedEntities[i].itemName);
+        self.loadStockDetailsLabClosingBal = function (stockroomChange, stockTakeCurrentPage) {
+            if ($scope.stockTakeDetails.length != 0) {
+                $scope.stockTakeDetails = [];
+                self.stockroomChangeDialog(stockroomChange);
+            } else {
+                console.log(stockTakeCurrentPage);
+                $scope.loadStockDetailsLabClosingBal(stockTakeCurrentPage);
             }
+        }
+
+        $scope.loadStockDetailsLabClosingBal = function (stockTakeCurrentPage) {
+                var stockroom_uuid = "2741bae2-c5de-43ef-891f-7ec2fd58f442";
+                self.loadStockDetails(stockroom_uuid, stockTakeCurrentPage);
+                $scope.stockTakeLimit = CookiesService.get(stockroom_uuid + 'stockTakeLimit') || 200;
+                $scope.stockTakeCurrentPage = CookiesService.get(stockroom_uuid + 'stockTakeCurrentPage') || 1;
+                $scope.stockTakePagingFrom = PaginationService.pagingFrom;
+                $scope.stockTakePagingTo = PaginationService.pagingTo;
+        }
+
+
+        self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {
+            console.log(data.results);            
+            $scope.fetchedEntities = data.results;
+            console.log($scope.fetchedEntities);
 
             $scope.totalNumOfResults = data.length;
 

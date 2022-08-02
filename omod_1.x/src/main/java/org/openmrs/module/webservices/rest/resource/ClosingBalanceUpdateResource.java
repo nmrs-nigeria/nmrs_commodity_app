@@ -16,9 +16,12 @@ package org.openmrs.module.webservices.rest.resource;
 import org.apache.commons.lang.StringUtils;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
-import org.openmrs.module.openhmis.inventory.api.model.*;
+//import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.IItemDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockroomDataService;
+import org.openmrs.module.openhmis.inventory.api.model.Item;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
+import org.openmrs.module.openhmis.inventory.api.model.Stockroom;
 import org.openmrs.module.openhmis.inventory.api.search.ItemSearch;
 import org.openmrs.module.openhmis.inventory.web.ModuleRestConstants;
 import org.openmrs.module.webservices.rest.SimpleObject;
@@ -58,6 +61,33 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<ItemSto
 		description.addProperty("itemBatch", Representation.DEFAULT);
 		description.addProperty("reasonForChange", Representation.DEFAULT);
 		description.addProperty("pharmStockOnHandId", Representation.DEFAULT);
+		description.addProperty("atmQuantity", Representation.DEFAULT);
+		description.addProperty("comPharmacyQuantity", Representation.DEFAULT);
+		description.addProperty("communityARTGroupsQuantity", Representation.DEFAULT);
+		description.addProperty("courierDeliveryQuantity", Representation.DEFAULT);
+		description.addProperty("dispensaryQuantity", Representation.DEFAULT);
+		description.addProperty("patentMedicineStoreQuantity", Representation.DEFAULT);
+		description.addProperty("privateClinicsQuantity", Representation.DEFAULT);
+		description.addProperty("othersQuantity", Representation.DEFAULT);
+		description.addProperty("ancQuantity", Representation.DEFAULT);
+		description.addProperty("comQuantity", Representation.DEFAULT);
+		description.addProperty("eidQuantity", Representation.DEFAULT);
+		description.addProperty("emergQuantity", Representation.DEFAULT);
+		description.addProperty("fpQuantity", Representation.DEFAULT);
+		description.addProperty("inpatQuantity", Representation.DEFAULT);
+		description.addProperty("landdQuantity", Representation.DEFAULT);
+		description.addProperty("labQuantity", Representation.DEFAULT);
+		description.addProperty("malQuantity", Representation.DEFAULT);
+		description.addProperty("mobQuantity", Representation.DEFAULT);
+		description.addProperty("opdQuantity", Representation.DEFAULT);
+		description.addProperty("ossQuantity", Representation.DEFAULT);
+		description.addProperty("othQuantity", Representation.DEFAULT);
+		description.addProperty("paedQuantity", Representation.DEFAULT);
+		description.addProperty("ppQuantity", Representation.DEFAULT);
+		description.addProperty("stiQuantity", Representation.DEFAULT);
+		description.addProperty("tbQuantity", Representation.DEFAULT);
+		description.addProperty("vctQuantity", Representation.DEFAULT);
+
 		return description;
 	}
 
@@ -91,6 +121,14 @@ public class ClosingBalanceUpdateResource extends DelegatingCrudResource<ItemSto
 					ItemStockSummary itemStockSummary = new ItemStockSummary();
 
 					itemStockSummary.setItem(item);
+					//					itemStockSummary.setAtmQuantity(0);
+					//					itemStockSummary.setCommunityARTGroupsQuantity(0);
+					//					itemStockSummary.setComPharmacyQuantity(0);
+					//					itemStockSummary.setCourierDeliveryQuantity(0);
+					//					itemStockSummary.setDispensaryQuantity(0);
+					//					itemStockSummary.setOthersQuantity(0);
+					//					itemStockSummary.setPatentMedicineStoreQuantity(0);
+					//					itemStockSummary.setPrivateClinicsQuantity(0);
 
 					results.add(itemStockSummary);
 				}
