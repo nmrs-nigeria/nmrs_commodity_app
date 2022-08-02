@@ -13,7 +13,7 @@ ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/bootstr
 ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.csv.min.js")
 ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.dataTables.min.js")
 ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/dataTables.bootstrap.js")
-ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/csv_to_html_table.js")
+ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.table2excel.js")
 
 %>
 
@@ -237,7 +237,7 @@ ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/csv_to_
 
          } );
      }
-
+     var jqy = jQuery;
      jqy(function() {
          jqy("#exportToExcel").click(function(e){
                  console.log('Hi tables');

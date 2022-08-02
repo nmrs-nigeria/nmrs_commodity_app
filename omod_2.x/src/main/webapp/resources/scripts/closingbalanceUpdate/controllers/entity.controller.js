@@ -29,6 +29,8 @@
         var entity_name_message_key = "openhmis.inventory.admin.stockTake.pharmacy";
         var REST_ENTITY_NAME = "inventoryClosingBalanceUpdateStockTake";
 
+        var pharmacystoreuuid = "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0";
+
         // @Override
         self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
             self.bindBaseParameters(INVENTORY_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key, PHARMACY_INVENTORY_TASK_DASHBOARD_PAGE_URL);
@@ -55,7 +57,6 @@
                 $scope.showStockDetailsTable = false;
                 $scope.stockTakeDetails = [];
 
-                $scope.loading = false;
 
                 $scope.stockroomDialog = function (stockroomChange, stockTakeCurrentPage) {
                     if ($scope.stockTakeDetails.length != 0) {
@@ -103,7 +104,8 @@
 
                 $scope.loadStockDetails = function (stockTakeCurrentPage) {
                     if ($scope.entity.stockroom != null) {
-                        var stockroom_uuid = $scope.entity.stockroom.uuid;
+                      //  var stockroom_uuid = $scope.entity.stockroom.uuid;
+                        var stockroom_uuid = pharmacystoreuuid;
                         self.loadStockDetails(stockroom_uuid, stockTakeCurrentPage);
 
                         $scope.stockTakeLimit = CookiesService.get(stockroom_uuid + 'stockTakeLimit') || 5;
@@ -141,7 +143,9 @@
             }
 
         self.stockroomChangeDialog = self.stockroomChangeDialog || function (id) {
-            PharmacyStockTakeFunctions.stockroomChangeDialog(id, $scope);
+           // PharmacyStockTakeFunctions.stockroomChangeDialog(id, $scope);
+            PharmacyStockTakeFunctions.stockroomChangeDialog(pharmacystoreuuid, $scope);
+
         }
 
         self.getNewStock = self.getNewStock || function (newStock) {
