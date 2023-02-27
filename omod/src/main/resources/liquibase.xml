@@ -7234,5 +7234,44 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         </sql>  
     </changeSet>
     
+     <changeSet id="openhmis.inventory-v6.0" author="Toyeeb"> 
+      	<comment>
+            Adding external facilities.
+        </comment>     
+        <sql>
+            <![CDATA[   
+            SET FOREIGN_KEY_CHECKS=0;
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('General Amadi Rimi Speciality Hospital', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'NTeQgW93Shk', 'Katsina', 'Batagarawa');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Babbar Ruga Hospital', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'Oj3ApqoMBRA', 'Katsina', 'Batagarawa');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Charanchi Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'gHIPOF30a9F', 'Katsina', 'Charanchi');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kaita Comprehensive Health Center ', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'UeR5QcsCmvb', 'Katsina', 'Kaita');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Turai Yar Adua Maternal and Child Health', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'ZMJqjpkNnR6', 'Katsina', 'Katsina');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kofar Kaura Maternal and Child Health', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'dExUAXKkMVe', 'Katsina', 'Katsina');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kurfi General Hospital', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'xExv2tFvkeV', 'Katsina', 'Kurfi');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Safana Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'eyvLB7sGLCi', 'Katsina', 'Safana');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Bindawa Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'ikwzTS1qZPO', 'Katsina', 'Bindawa');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Dutsi Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'LnfdY78F2zL', 'Katsina', 'Dutsi');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kayawa Primary Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'wKH0DQEUFpI', 'Katsina', 'Rimi');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kusada Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'A6eUl9KA4XD', 'Katsina', 'Kusada');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Mashi Comprehensive Health Center ', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'piHoxArdkJx', 'Katsina', 'Mashi');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Comprehensive Health Center Maiadua', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'kvCBgdfgm0B', 'Katsina', 'Mai Adua');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Sandamu Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'teAYgWqhGit', 'Katsina', 'Sandamu');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Zango Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'qib4fj60YVt', 'Katsina', 'Zango');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Matazu Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'gBbkJ5wBQqq', 'Katsina', 'Matazu');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Kafur Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'LGQjlfgEZeY', 'Katsina', 'Kafur');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Danja Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'aGsUsTkttSl', 'Katsina', 'Danja');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Bakori Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'sQIWOYH7aGF', 'Katsina', 'Bakori');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Sabuwa Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'GvAcMgdITxC', 'Katsina', 'Sabuwa');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Faskari Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'QdywMJPubBx', 'Katsina', 'Faskari');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Dandume Comprehensive Health Center', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'cvb2P7zVKyD', 'Katsina', 'Dandume');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Funtua Safe Heaven OSS', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'Xva29rVyQjS', 'Katsina', 'Funtua');
+			REPLACE INTO inv_institution (name, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid, state, lga) VALUES ('Katsina Safe Heaven OSS', '', 1, '2020-10-04 00:00:00.000', NULL, NULL, 0, NULL, NULL, NULL, 'KVdLBmuVcrZ', 'Katsina', 'Katsina');
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>           	
+        </sql>  
+    </changeSet>
+    
+    
+    
                           
 </databaseChangeLog>
