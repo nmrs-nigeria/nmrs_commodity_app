@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -22,15 +23,7 @@ import org.openmrs.module.openhmis.commons.api.entity.impl.BaseMetadataDataServi
 import org.openmrs.module.openhmis.commons.api.entity.security.IMetadataAuthorizationPrivileges;
 import org.openmrs.module.openhmis.commons.api.f.Action1;
 import org.openmrs.module.openhmis.inventory.api.IPharmacyConsumptionDataService;
-import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperationItem;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.search.PharmacyConsumptionSearch;
 import org.openmrs.module.openhmis.inventory.api.util.HibernateCriteriaConstants;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
@@ -855,6 +848,56 @@ public class PharmacyConsumptionDataServiceImpl extends BaseMetadataDataServiceI
 	@Override
 	public String getGetPrivilege() {
 		return PrivilegeConstants.VIEW_CONSUMPTIONS;
+	}
+
+	///Added by Tobechi
+	@Override
+	public PharmacyConsumption save(PharmacyConsumption object) {
+		//subtract quantity from updateable quantity on inv_stockonhand_pharmacy_dispensary table and update
+		updateStockOnHandAtDepartment(object);
+		return super.save(object); //To change body of generated methods, choose Tools | Templates.
+	}
+
+	@Override
+	public void updateStockOnHandAtDepartment(PharmacyConsumption consumption) {
+		ViewInvStockonhandPharmacyDispensary vispd = getUpdateableQuantity(consumption);
+		int updateableQuantity = 0;
+		if (consumption.getWastage() == null) {
+			updateableQuantity = vispd.getUpdatableQuantity() - consumption.getQuantity();
+		} else {
+			updateableQuantity = vispd.getUpdatableQuantity() - (consumption.getQuantity() + consumption.getWastage());
+		}
+		String hql = "UPDATE ViewInvStockonhandPharmacyDispensary as v set "
+		        + "updatableQuantity = " + updateableQuantity + " "
+		        + "where id = " + vispd.getId();
+
+		Query query = getRepository().createQuery(hql);
+		int sql = query.executeUpdate();
+		System.out.println("Updated Executed: " + sql);
+	}
+
+	@Override
+	public ViewInvStockonhandPharmacyDispensary getUpdateableQuantity(PharmacyConsumption consumption) {
+		// Create the query
+		String hql = "select detail.updatableQuantity as sumQty, detail.id "
+		        + "from ViewInvStockonhandPharmacyDispensary as detail "
+		        + "where detail.department.id = " + consumption.getDepartment().getId() + " and "
+		        + "detail.itemBatch = '" + consumption.getBatchNumber() + "' and "
+		        + "detail.item.id = " + consumption.getItem().getId();
+
+		Query query = getRepository().createQuery(hql);
+		//List<ViewInvStockonhandPharmacyDispensary> vspd = new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+		ViewInvStockonhandPharmacyDispensary vspd = new ViewInvStockonhandPharmacyDispensary();
+
+		List list = query.list();
+
+		for (Object obj : list) {
+			//ViewInvStockonhandPharmacyDispensary> vspd = new ArrayList<ViewInvStockonhandPharmacyDispensary>(list.size());
+			Object[] row = (Object[])obj;
+			vspd.setUpdatableQuantity((int)row[0]);
+			vspd.setId((int)row[1]);
+		}
+		return vspd;
 	}
 
 }
