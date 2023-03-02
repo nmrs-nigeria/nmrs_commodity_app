@@ -19,79 +19,59 @@
 <div id="entities-body">
     <br/>
 
-    <div id="manage-entities-header">
-        <span class="h1-substitue-left" style="float:left;">
-            ${ui.message('openhmis.inventory.admin.consumptionSummarys')}
-        </span>
 
-    </div>
     <br/><br/><br/>
 
     <div>
         <div id="entities">
-             <form style="" class="search">
-               <fieldset class="search">
-                <table class="search" >
-                     <tr>
-                       <td>
-                        ${ ui.message('openhmis.inventory.summary.startDate') }:
-                        <ul class="table-layout">
-                            <li>
-                                <span class="date">
-                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                      formFieldName: "startDate",
-                      id: "startDate",
-                      label: "",
-                      useTime: false
-                                    
-])}
-                                </span>
-                            </li>
 
+            <div class="report">
 
-                        </ul>
-                    </td>
-                     </tr>
-                  
-                     <tr>
-                      <td>
-                        ${ ui.message('openhmis.inventory.summary.endDate') }:
-                        <ul class="table-layout">
-                            <li>
-                                <span class="date">
-                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-                      formFieldName: "endDate",
-                      id: "endDate",
-                      label: "",
-                      useTime: false
-                                    
-])}
-                                </span>
-                            </li>
+                <form style="" class="search">
+                <fieldset>
+                    <legend>
+                        <i class="icon-list-alt"></i>
+                        <span>View Consumption Summary</span>
+                    </legend>
+                    <label>Select date range</label>
+                    <ul class="table-layout">
+                        <li><label>Start Date</label></li>
+                        <li>
+                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "startDate",
+                                    id: "startDate",
+                                    label: "",
+                                    useTime: false
 
+                            ])}
+                        </li>
+                    </ul>
 
-                        </ul>
-                    </td>
-                     </tr>
-                       
-    <tr>
-                      <td>
-                        ${ ui.message('openhmis.inventory.department.name') }:
-                        <ul>
-                            <li>
-                                <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
+                    <ul class="table-layout">
+                        <li><label>End Date</label></li>
+                        <li>
+                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "endDate",
+                                    id: "endDate",
+                                    label: "",
+                                    useTime: false
+
+                            ])}
+                        </li>
+                    </ul>
+
+                    <ul class="table-layout">
+                        <li><label>Department</label></li>
+                    <li>
+                        <select ng-model="department" ng-change="searchConsumptionSummarys(currentPage)" style="height:33px;"
                                 ng-options='department.name for department in departments track by department.uuid'>
-                            </select>
-                            </li>
+                        </select>
+                    </li>
+                    </ul>
+                </fieldset>
+                </form>
+            </div>
 
-                        </ul>
-                    </td>
-                     </tr>
-                  
-                </table>
-            </fieldset>   
-             </form>
-           
 
             <br/><br/>
             <table style="margin-bottom:5px;margin-bottom:5px;" class="manage-entities-table manage-stockOperations-table">
