@@ -455,7 +455,7 @@ public class ConsumptionDataServiceImpl extends BaseMetadataDataServiceImpl<Cons
 
 	@Override
 	protected Order[] getDefaultSort() {
-		return new Order[] { Order.asc("consumptionDate") };
+		return new Order[] { Order.desc("consumptionDate") };
 		// return super.getDefaultSort(); 
 	}
 
