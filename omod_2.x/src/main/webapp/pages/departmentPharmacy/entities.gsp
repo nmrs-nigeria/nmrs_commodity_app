@@ -1,5 +1,5 @@
 <%
-    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.departments") ])
+    ui.decorateWith("appui", "standardEmrPage", [ title: ui.message("openhmis.inventory.admin.departments.pharmacy") ])
 
     /* load stylesheets */
     ui.includeCss("openhmis.commons", "bootstrap.css")
@@ -17,14 +17,14 @@
     ui.includeFragment("openhmis.commons", "loadReusableModules")
 
     /* load department modules */
-    ui.includeJavascript("openhmis.inventory", "department/models/entity.model.js")
-    ui.includeJavascript("openhmis.inventory", "department/controllers/entity.controller.js")
-    ui.includeJavascript("openhmis.inventory", "department/services/entity.restful.services.js")
-    ui.includeJavascript("openhmis.inventory", "department/controllers/manage-entity.controller.js")
+    ui.includeJavascript("openhmis.inventory", "departmentPharmacy/models/entity.model.js")
+    ui.includeJavascript("openhmis.inventory", "departmentPharmacy/controllers/entity.controller.js")
+    ui.includeJavascript("openhmis.inventory", "departmentPharmacy/services/entity.restful.services.js")
+    ui.includeJavascript("openhmis.inventory", "departmentPharmacy/controllers/manage-entity.controller.js")
     ui.includeJavascript("openhmis.inventory", "constants.js")
 %>
 
-<script data-main="department/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
+<script data-main="departmentPharmacy/configs/entity.main" src="/${ ui.contextPath() }/moduleResources/uicommons/scripts/require/require.js"></script>
 
 <div id="entitiesApp">
     <div ui-view></div>

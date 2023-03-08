@@ -9,7 +9,7 @@
 			label: "${ ui.message("openhmis.inventory.manage.module")}",
 			link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/manageModule.page'
 		},
-		{label: "${ ui.message("openhmis.inventory.admin.departments")}",}
+		{label: "${ ui.message("openhmis.inventory.admin.departments.pharmacy")}",}
 	];
 
 	jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
@@ -21,7 +21,7 @@
 
 	<div id="manage-entities-header">
 		<span class="h1-substitue-left" style="float:left;">
-			${ui.message('openhmis.inventory.admin.departments')}
+			${ui.message('openhmis.inventory.admin.departments.pharmacy')}
 		</span>
 <!--		<span style="float:right;">
 			<a class="button confirm" ui-sref="new">

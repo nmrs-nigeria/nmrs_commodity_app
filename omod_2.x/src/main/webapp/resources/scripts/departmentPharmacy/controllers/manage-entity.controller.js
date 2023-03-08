@@ -21,7 +21,7 @@
     ManageEntityController.$inject = ['$injector', '$scope', '$filter', 'EntityRestFactory', 'CssStylesFactory',
         'PaginationService', 'DepartmentModel', 'CookiesService','DepartmentRestfulService'];
 
-    var ENTITY_NAME = "department?departmentType=lab";
+    var ENTITY_NAME = "department?departmentType=pharmacy";
 
     function ManageEntityController($injector, $scope, $filter, EntityRestFactory, CssStylesFactory, PaginationService,
                                          DepartmentModel, CookiesService,DepartmentRestfulService) {
