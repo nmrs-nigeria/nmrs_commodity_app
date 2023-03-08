@@ -10,14 +10,7 @@ import java.util.List;
 import org.openmrs.annotation.Authorized;
 import org.openmrs.module.openhmis.commons.api.PagingInfo;
 import org.openmrs.module.openhmis.commons.api.entity.IMetadataDataService;
-import org.openmrs.module.openhmis.inventory.api.model.CrffOperationsSummary;
-import org.openmrs.module.openhmis.inventory.api.model.CrrfDetails;
-import org.openmrs.module.openhmis.inventory.api.model.Department;
-import org.openmrs.module.openhmis.inventory.api.model.Item;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumption;
-import org.openmrs.module.openhmis.inventory.api.model.PharmacyConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.SearchConsumptionSummary;
-import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
+import org.openmrs.module.openhmis.inventory.api.model.*;
 import org.openmrs.module.openhmis.inventory.api.search.PharmacyConsumptionSearch;
 import org.openmrs.module.openhmis.inventory.api.util.PrivilegeConstants;
 import org.springframework.transaction.annotation.Transactional;
@@ -84,5 +77,14 @@ public interface IPharmacyConsumptionDataService extends IMetadataDataService<Ph
 	List<CrffOperationsSummary> retrieveConsumptionSummaryForStockroom(List<StockOperation> adjustmentStockOperations,
 	        List<StockOperation> transferStockOperations, List<StockOperation> disposedStockOperations,
 	        PagingInfo pagingInfo, List<Item> distinctItems);
+
+	//added by tobechi
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	void updateStockOnHandAtDepartment(PharmacyConsumption consumption);
+
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	ViewInvStockonhandPharmacyDispensary getUpdateableQuantity(PharmacyConsumption consumption);
 
 }

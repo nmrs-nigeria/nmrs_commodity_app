@@ -42,7 +42,7 @@ public class DepartmentSearchHandler implements SearchHandler {
 	        Arrays.asList("*"),
 	        Arrays.asList(
 	                new SearchQuery.Builder("Find a department by its name")
-	                        .withRequiredParameters("q")
+	                        .withRequiredParameters("q").withOptionalParameters("departmentType")
 	                        .build()
 	                )
 	        );

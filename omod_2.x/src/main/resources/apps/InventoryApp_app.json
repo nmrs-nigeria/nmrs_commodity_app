@@ -61,6 +61,15 @@
                 "requiredPrivilege": "Task: Manage Inventory Metadata"
             },
             {
+                "id": "openhmis.inventory.manageDepartmentsLink",
+                "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
+                "type": "link",
+                "label": "openhmis.inventory.admin.departments.pharmacy",
+                "url": "openhmis.inventory/departmentPharmacy/entities.page",
+                "icon": "icon-briefcase",
+                "requiredPrivilege": "Task: Manage Inventory Metadata"
+            },
+            {
                 "id": "openhmis.inventory.manageInstitutionsLink",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.manage.module",
                 "type": "link",

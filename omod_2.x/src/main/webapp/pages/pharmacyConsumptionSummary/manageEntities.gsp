@@ -27,77 +27,50 @@
 <div id="entities-body">
     <br/>
 
-    <div id="manage-entities-header">
-        <span class="h1-substitue-left" style="float:left;">
-            ${ui.message('openhmis.inventory.admin.consumptionSummarys')}
-        </span>
-
-    </div>
     <br/><br/><br/>
 
     <div>
         <div id="entities">
+
             <form style="" class="search">
-                <fieldset class="search">
-                    <table class="search" >
-                        <tr>
-                            <td>
-                                ${ ui.message('openhmis.inventory.summary.startDate') }:
-                                <ul class="table-layout">
-                                    <li>
-                                        <span class="date">
-                                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-formFieldName: "startDate",
-id: "startDate",
-label: "",
-useTime: false
-                                    
-])}
-                                        </span>
-                                    </li>
+                <fieldset>
+                    <legend>
+                        <i class="icon-list-alt"></i>
+                        <span>View Consumption Summary</span>
+                    </legend>
+                    <label>Select date range</label>
+                    <ul class="table-layout">
+                        <li><label>Start Date</label></li>
+                        <li>
+                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "startDate",
+                                    id: "startDate",
+                                    label: "",
+                                    useTime: false
 
+                            ])}
+                        </li>
+                    </ul>
 
-                                </ul>
-                            </td>
-                        </tr>
+                    <ul class="table-layout">
+                        <li><label>End Date</label></li>
+                        <li>
+                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                    formFieldName: "endDate",
+                                    id: "endDate",
+                                    label: "",
+                                    useTime: false
 
-                        <tr>
-                            <td>
-                                ${ ui.message('openhmis.inventory.summary.endDate') }:
-                                <ul class="table-layout">
-                                    <li>
-                                        <span class="date">
-                                            ${ ui.includeFragment("uicommons", "field/datetimepicker", [
-formFieldName: "endDate",
-id: "endDate",
-label: "",
-useTime: false
-                                    
-])}
-                                        </span>
-                                    </li>
+                            ])}
+                        </li>
+                    </ul>
 
-
-                                </ul>
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>
-
-                            </td>
-                            <td>
-                                <ul class="table-layout">
-                                    <li></li>
-                                    <li><a class="btn btn-grey" ng-click="searchConsumptionSummarys(currentPage)">Search</a></li>
-                                </ul>
-
-                            </td>
-                        </tr>
-
-                    </table>
-                </fieldset>   
+                    <ul class="table-layout">
+                        <li><a class="btn btn-grey" ng-click="searchConsumptionSummarys(currentPage)">Search</a></li>
+                    </ul>
+                </fieldset>
             </form>
+
 
 
             <br/><br/>
