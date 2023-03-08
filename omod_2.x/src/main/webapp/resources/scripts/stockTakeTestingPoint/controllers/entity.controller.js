@@ -261,11 +261,10 @@
 				
 				if ($scope.stockTakeDetails.length != 0) {
 					$scope.entity = {
-						'itemStockSummaryList': stockObject,
-						"operationNumber": "",
-						"stockroom": $scope.entity.stockroom.uuid,
-						"department": $scope.entity.department.uuid
-					};
+                        "itemStockSummaryList": stockObject,
+                        "operationNumber": "",
+                        "stockroom": "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0"
+                    }; 
 					$scope.loading = true;
 				} else {
 					emr.errorAlert("openhmis.inventory.stocktake.adjustment.empty.error");

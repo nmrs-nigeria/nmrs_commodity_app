@@ -26,9 +26,8 @@
 	                             StockTakeRestfulService, PaginationService, EntityFunctions, StockTakeFunctions,
 	                             CookiesService) {
 		var self = this;
-		var entity_name_message_key = "openhmis.inventory.admin.stockTake";
-		var REST_ENTITY_NAME = "inventoryStockTake";
-		
+		var entity_name_message_key = "openhmis.inventory.admin.stockTake.pharmacy";
+		var REST_ENTITY_NAME = "inventoryStockTake";		
 		// @Override
 		self.setRequiredInitParameters = self.setRequiredInitParameters || function () {
 				self.bindBaseParameters(INVENTORY_MODULE_NAME, REST_ENTITY_NAME, entity_name_message_key, INVENTORY_TASK_DASHBOARD_PAGE_URL);
@@ -243,6 +242,7 @@
 		// @Override
 		self.validateBeforeSaveOrUpdate = self.validateBeforeSaveOrUpdate || function () {
 				var stockObject = $scope.stockTakeDetails;
+				console.log(stockObject);
 				for (var i = 0; i < stockObject.length; i++) {
 					delete stockObject[i]['$$hashKey'];
 					delete stockObject[i]['id'];
@@ -263,9 +263,11 @@
 					$scope.entity = {
 						'itemStockSummaryList': stockObject,
 						"operationNumber": "",
-						"stockroom": $scope.entity.stockroom.uuid,
-						"department": $scope.entity.department.uuid
+						"stockroom": "5452ec3e-2fe1-46de-8a6e-28c6442e4cc0"
 					};
+					var test = $scope.entity;
+					console.log(test);
+                       
 					$scope.loading = true;
 				} else {
 					emr.errorAlert("openhmis.inventory.stocktake.adjustment.empty.error");

@@ -25,6 +25,7 @@ import org.openmrs.module.openhmis.commons.api.entity.IObjectDataService;
 import org.openmrs.module.openhmis.inventory.api.IItemStockDetailDataService;
 import org.openmrs.module.openhmis.inventory.api.IStockOperationService;
 import org.openmrs.module.openhmis.inventory.api.WellKnownOperationTypes;
+import org.openmrs.module.openhmis.inventory.api.model.ItemStockDetail;
 import org.openmrs.module.openhmis.inventory.api.model.ItemStockSummary;
 import org.openmrs.module.openhmis.inventory.api.model.ReservedTransaction;
 import org.openmrs.module.openhmis.inventory.api.model.StockOperation;
@@ -86,25 +87,42 @@ public class InventoryStockTakeResource extends BaseRestObjectResource<Inventory
 		boolean update = false;
 		List<ViewInvStockonhandPharmacyDispensary> viewInvStockonhandPharmacyDispensary =
 		        new ArrayList<ViewInvStockonhandPharmacyDispensary>();
+		List<ItemStockDetail> itemStockDetailList =
+		        new ArrayList<ItemStockDetail>();
 		if (operation.getItems() != null && operation.getItems().size() > 0) {
-
+			System.out.println("Am 1");
 			for (StockOperationItem optitem : operation.getItems()) {
 
 				if (optitem.getPharmStockOnHandId() != null) {
+					System.out.println("Am Pharm 1");
 					ViewInvStockonhandPharmacyDispensary stockonhandPharmacyDispensary =
 					        new ViewInvStockonhandPharmacyDispensary();
 					stockonhandPharmacyDispensary.setUpdatableQuantity(optitem.getUpdatableQuantity());
 					stockonhandPharmacyDispensary.setId(optitem.getPharmStockOnHandId());
 					viewInvStockonhandPharmacyDispensary.add(stockonhandPharmacyDispensary);
 				} else {
+					System.out.println("Am Lab 1");
 					update = true;
 					break;
 				}
 			}
 		}
 		if (update) {
-			operationService.submitOperation(operation);
+			//update inventory stock detail quantity
+			System.out.println("Am lab 2");
+			for (ItemStockSummary itemStockSummary : delegate.getItemStockSummaryList()) {
+				System.out.println("Am Pharm 1");
+				ItemStockDetail itemStockDetail =
+				        new ItemStockDetail();
+				itemStockDetail.setQuantity(itemStockSummary.getActualQuantity());
+				itemStockDetail.setItem(itemStockSummary.getItem());
+				itemStockDetail.setItemBatch(itemStockSummary.getItemBatch());
+				itemStockDetailList.add(itemStockDetail);
+			}
+			itemStockDetailDataService.updateStockOnHandAtLabStockroom(itemStockDetailList);
+			//operationService.submitOperation(operation);
 		} else {
+			System.out.println("Am Pharm 2");
 			itemStockDetailDataService.updatePharmacyAtDispensary(viewInvStockonhandPharmacyDispensary);
 		}
 

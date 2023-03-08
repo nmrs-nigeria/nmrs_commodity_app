@@ -75,6 +75,7 @@
 				var requestParams = PaginationService.paginateParams(currentPage, limit, false);
 				requestParams['rest_entity_name'] = 'inventoryStockTakeSummary';
 				requestParams['stockroom_uuid'] = stockroomUuid;
+				console.log(stockroomUuid);
 				EntityRestFactory.loadEntities(requestParams,
 					onLoadStockDetailsSuccessful,
 					errorCallback

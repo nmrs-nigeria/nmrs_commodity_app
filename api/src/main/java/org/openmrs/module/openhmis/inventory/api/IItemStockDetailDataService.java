@@ -79,6 +79,10 @@ public interface IItemStockDetailDataService extends IObjectDataService<ItemStoc
 
 	@Transactional
 	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
+	void updateStockOnHandAtLabStockroom(List<ItemStockDetail> itemStockDetailList);
+
+	@Transactional
+	@Authorized({ PrivilegeConstants.MANAGE_OPERATIONS })
 	void addNewDistributionDataPharmacyAtDispensary(StockOperation operation);
 
 	@Transactional(readOnly = false)

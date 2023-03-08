@@ -938,6 +938,18 @@ public class ItemStockDetailDataServiceImpl
 	}
 
 	@Override
+	public void updateStockOnHandAtLabStockroom(List<ItemStockDetail> itemStockDetailList) {
+
+		for (ItemStockDetail obj : itemStockDetailList) {
+			String hql =
+			        "UPDATE ItemStockDetail SET quantity=" + obj.getQuantity() + " WHERE itemBatch='" + obj.getItemBatch()
+			                + "' and item=" + obj.getItem().getId();
+			Query query = getRepository().createQuery(hql);
+			int sql = query.executeUpdate();
+		}
+	}
+
+	@Override
 	public void addNewDistributionDataPharmacyAtDispensary(StockOperation operation) {
 
 		//check that operation is not null
