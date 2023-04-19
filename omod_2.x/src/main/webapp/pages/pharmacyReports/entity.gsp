@@ -67,7 +67,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryConsumption()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryConsumption()" style="background-color: #333; margin-left: 5px">Generate Report</a></li>
         </ul>
     </fieldset>
     
@@ -114,7 +114,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryModalitiesConsumption()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryModalitiesConsumption()" style="background-color: #333; margin-left: 5px">Generate Report</a></li>
         </ul>
     </fieldset>
     
@@ -151,7 +151,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_StockroomConsumption()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_StockroomConsumption()" style="background-color: #333; margin-left: 5px">Generate Report</a></li>
         </ul>
     </fieldset>
 
@@ -188,7 +188,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryStockOnHand()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_DispensaryStockOnHand()" style="background-color: #333; margin-left: 5px">Generate Report</a></li>
         </ul>
     </fieldset>
 
@@ -225,7 +225,7 @@
 
         <ul class="table-layout">
             <li></li>
-            <li><a class="btn btn-grey" ng-click="generateReport_StockroomStockOnHand()">Generate Report</a></li>
+            <li><a class="btn btn-grey" ng-click="generateReport_StockroomStockOnHand()" style="background-color: #333; margin-left: 5px">Generate Report</a></li>
         </ul>
     </fieldset>
     
