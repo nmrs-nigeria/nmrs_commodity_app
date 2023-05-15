@@ -44,7 +44,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
-            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
+            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_DISPENSED_HEADER,
                 Utils.DCR_DRUG_CATEGORY_HEADER};
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
@@ -79,7 +79,7 @@ public class PharmacyReportsServiceImpl implements IPharmacyReportsService {
         try {
             BufferedWriter writer = Files.newBufferedWriter(Paths.get(reportFolder, reportId + ".csv"));
 
-            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_RECEIVED_HEADER,
+            String[] HEADERS = {Utils.DCR_ITEM_HEADER, Utils.DCR_TOTAL_QUANTITY_DISPENSED_HEADER,
                 Utils.DCR_DRUG_CATEGORY_HEADER, Utils.DCR_DELIVERY_TYPE};
 
             CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT

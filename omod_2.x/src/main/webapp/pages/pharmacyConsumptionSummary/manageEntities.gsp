@@ -66,7 +66,7 @@
                     </ul>
 
                     <ul class="table-layout">
-                        <li><a class="btn btn-grey" ng-click="searchConsumptionSummarys(currentPage)">Search</a></li>
+                        <li><a class="btn btn-grey" ng-click="searchConsumptionSummarys(currentPage)" style="background-color: #333; font-size: 16px">Search</a></li>
                     </ul>
                 </fieldset>
             </form>

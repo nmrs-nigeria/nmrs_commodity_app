@@ -106,6 +106,7 @@
         self.onLoadConsumptionSummarysSuccessful = self.onLoadConsumptionSummarysSuccessful || function (data) {
             $scope.fetchedEntities = data.results;
             console.log($scope.fetchedEntities.serviceDeliveryModel)
+             console.log($scope.fetchedEntities)
             $scope.totalNumOfResults = data.length;
         }
 

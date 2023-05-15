@@ -142,15 +142,6 @@
                 "requiredPrivilege": "Task: Access Create Operation"                
             },
             {
-                "id": "openhmis.inventory.inventoryReports",
-                "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
-                "type": "link",
-                "label": "openhmis.inventory.admin.reports",
-                "url": "openhmis.inventory/reports/entities.page",
-                "icon": "icon-file-alt",
-                "requiredPrivilege": "Task: Access Inventory Reports"
-            },
-            {
                 "id": "openhmis.inventory.inventoryItemExpiration",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
                 "type": "link",
