@@ -338,10 +338,11 @@ public class ItemStockDetailDataServiceImpl
 		}
 
 		// Create the query and optionally add paging	
-		String hql = "select i, detail.expiration, detail.updatableQuantity as sumQty, detail.id, detail.itemBatch "
-		        + "from ViewInvStockonhandPharmacyDispensary as detail inner join detail.item as i "
-		        + "where detail.department.id = " + department.getId() + " "
-		        + "order by i.name asc, detail.expiration asc";
+		String hql =
+		        "select i, detail.expiration, detail.updatableQuantity as sumQty, detail.id, detail.itemBatch,detail.conceptId,detail.strengthConceptId "
+		                + "from ViewInvStockonhandPharmacyDispensary as detail inner join detail.item as i "
+		                + "where detail.department.id = " + department.getId() + " "
+		                + "order by i.name asc, detail.expiration asc";
 
 		Query query = getRepository().createQuery(hql);
 		query = this.createPagingQuery(pagingInfo, query);
@@ -362,11 +363,15 @@ public class ItemStockDetailDataServiceImpl
 				Integer quantity = (int)row[1];
 				Integer pharmId = (int)row[2];
 				String batch = (String)row[THREE];
+				Integer conceptId = (int)row[4];
+				Integer strengthConceptId = (int)row[5];
 				// skip record if the sum of item stock quantities == 0
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 					summary.setPharmStockOnHandId(pharmId);
 					summary.setItemBatch(batch);
+					summary.setConceptId(conceptId);
+					summary.setStrengthConceptId(strengthConceptId);
 				} else {
 					continue;
 				}
@@ -375,10 +380,14 @@ public class ItemStockDetailDataServiceImpl
 				Integer quantity = (int)row[2];
 				Integer pharmId = (int)row[THREE];
 				String batch = (String)row[FOUR];
+				Integer conceptId = (int)row[5];
+				Integer strengthConceptId = (int)row[6];
 				if (quantity != 0) {
 					summary.setQuantity(quantity);
 					summary.setPharmStockOnHandId(pharmId);
 					summary.setItemBatch(batch);
+					summary.setConceptId(conceptId);
+					summary.setStrengthConceptId(strengthConceptId);
 				} else {
 					continue;
 				}

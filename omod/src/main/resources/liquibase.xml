@@ -7270,8 +7270,16 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         	]]>           	
         </sql>  
     </changeSet>
-    
-    
+
+    <changeSet id="openhmis.inventory-v6.1" author="Tobechi Nnakwe" >
+        <sql>
+            <![CDATA[
+            INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Community ART Refill Group','Community ART Refill Group',1,'2023-06-06 12:00:00',NULL,NULL,0,NULL,NULL,NULL,'484dceeb-41a1-43e3-bdd3-d6c3b9ea0aff','pharmacy');
+            INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Adolescent Community ART','Adolescent Community ART',1,'2023-06-06 12:00:00',NULL,NULL,0,NULL,NULL,NULL,'d2c866f9-458e-4a97-9d30-5bd4231a7a6c','pharmacy');
+            INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('One Stop Shop','One Stop Shop',1,'2023-06-06 12:00:00',NULL,NULL,0,NULL,NULL,NULL,'7589b863-ca10-4b27-808e-b04fd05e2ac4','pharmacy');
+            ]]>
+        </sql>
+    </changeSet>
     
                           
 </databaseChangeLog>

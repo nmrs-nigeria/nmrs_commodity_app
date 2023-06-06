@@ -32,6 +32,8 @@ public class ItemStockSummary extends ClosingBalanceUpdateDispensaryObjects impl
 	private String reasonForChange;
 	private Integer pharmStockOnHandId;
 	private Integer updatableQuantity;
+	private Integer conceptId;
+	private Integer strengthConceptId;
 
 	// These are aggregate models and thus have no id or uuid.
 	@Override
@@ -118,4 +120,19 @@ public class ItemStockSummary extends ClosingBalanceUpdateDispensaryObjects impl
 		this.updatableQuantity = updatableQuantity;
 	}
 
+	public Integer getConceptId() {
+		return conceptId;
+	}
+
+	public void setConceptId(Integer conceptId) {
+		this.conceptId = conceptId;
+	}
+
+	public Integer getStrengthConceptId() {
+		return strengthConceptId;
+	}
+
+	public void setStrengthConceptId(Integer strengthConceptId) {
+		this.strengthConceptId = strengthConceptId;
+	}
 }
