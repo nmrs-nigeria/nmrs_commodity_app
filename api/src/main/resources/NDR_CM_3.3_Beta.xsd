@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- PURPOSE: Commodity Schema for the exchange of commodity data between NMRS commodity module and NDR, should in case any clarification contact midiasirue@mgic.umaryland.edu -->
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Container">
+   <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MessageHeader" type="MessageHeaderType"
+					minOccurs="1" maxOccurs="1" />
+        <xs:choice>
+          <xs:element name="InventoryReport" type="InventoryReportType"
+						minOccurs="1" maxOccurs="1" />
+        </xs:choice>
+      </xs:sequence>
+    </xs:complexType>
+   </xs:element>
+          <xs:complexType name="MessageHeaderType">
+            <xs:sequence>
+              <xs:element type="xs:string" name="MessageStatusCode"/>
+              <xs:element type="xs:string" name="MessageCreationDateTime"/>
+              <xs:element type="xs:string" name="MessageUniqueID"/>
+			  <xs:element type="xs:string" name="XmlType"/>
+              <xs:element type="xs:float" name="MessageVersion"/>
+              <xs:element type="xs:string" name="ExportStartDate"/>
+              <xs:element type="xs:string" name="ExportEndDate"/>
+                  <xs:element name="MessageSendingOrganisation" type="MessageSendingOrganisationType"
+				minOccurs="1" maxOccurs="1" />
+				 <xs:element name="Validation" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+		  
+		   <xs:complexType name="MessageSendingOrganisationType">
+   <xs:sequence>
+                    <xs:element type="xs:string" name="FacilityName"/>
+                    <xs:element type="xs:string" name="FacilityID"/>
+                    <xs:element type="xs:string" name="FacilityTypeCode"/>
+                  </xs:sequence>
+  </xs:complexType>
+		  
+		  
+			 <xs:complexType name="InventoryReportType">
+    <xs:sequence>
+      <xs:element name="TaskOperation" type="TaskOperationType"
+				minOccurs="1" maxOccurs="1" />
+<xs:element name="ConsumptionReport" type="ConsumptionReportType"
+				minOccurs="1" maxOccurs="1" />   				
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PharmacyInventoryReportType">
+    <xs:sequence>
+      <xs:element name="TaskOperation" type="TaskOperationType"
+				minOccurs="1" maxOccurs="1" />
+<xs:element name="ConsumptionReport" type="PharmacyConsumptionReportType"
+				minOccurs="1" maxOccurs="1" />   				
+    </xs:sequence>
+  </xs:complexType>
+  
+		 <xs:complexType name="TaskOperationType">
+    <xs:sequence>
+      <xs:element name="ReturnOperation" type="ReturnOperationType"
+				minOccurs="1" maxOccurs="1" />
+<xs:element name="AdjustmentOperation" type="AdjustmentOperationType"
+				minOccurs="1" maxOccurs="1" />
+<xs:element name="DisposedOperation" type="DisposedOperationType"
+				minOccurs="1" maxOccurs="1" />  
+<xs:element name="DistributionOperation" type="DistributionOperationType"
+				minOccurs="1" maxOccurs="1" />  
+<xs:element name="ReceiptOperation" type="ReceiptOperationType"
+				minOccurs="1" maxOccurs="1" />  
+<xs:element name="TransferOperation" type="TransferOperationType"
+				minOccurs="1" maxOccurs="1" />    				
+    </xs:sequence>
+  </xs:complexType>
+   <xs:complexType name="AdjustmentOperationType">
+    <xs:sequence>
+      <xs:element name="Adjustment" type="AdjustmentType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+     <xs:complexType name="DisposedOperationType">
+    <xs:sequence>
+      <xs:element name="Disposed" type="DisposedType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+   <xs:complexType name="DistributionOperationType">
+    <xs:sequence>
+      <xs:element name="Distribution" type="DistributionType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+     <xs:complexType name="ReceiptOperationType">
+    <xs:sequence>
+      <xs:element name="Receipt" type="ReceiptType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+      <xs:complexType name="TransferOperationType">
+    <xs:sequence>
+      <xs:element name="Transfer" type="TransferType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+      <xs:complexType name="ReturnOperationType">
+    <xs:sequence>
+      <xs:element name="Return" type="ReturnType"
+				maxOccurs="unbounded" minOccurs="0" />   				
+    </xs:sequence>
+  </xs:complexType>
+   <xs:complexType name="OperationItemType">
+    <xs:sequence>
+      <xs:element name="Item" type="ItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+    <xs:complexType name="ItemType">
+    <xs:sequence>
+    <xs:element type="ItemCodeType" name="ItemCode"/> 
+	
+                                            <xs:element type="xs:short" name="Quantity"/>
+                                            <xs:element type="xs:string" name="ExpirationDate"/>
+                                            <xs:element type="xs:string" name="Batch"/>
+				</xs:sequence>
+  </xs:complexType>
+   <xs:complexType name="AdjustmentType">
+    <xs:sequence>
+	<xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
+                                <xs:element name="AdjustmentTypeCode">
+								<xs:simpleType>
+          <xs:restriction base="CodeType">
+            <xs:enumeration value="P" />           
+          </xs:restriction>
+        </xs:simpleType>
+								</xs:element>
+								<xs:element  name="SourceStockroomCode">
+								<xs:simpleType>
+          <xs:restriction base="CodeType">
+            <xs:enumeration value="M" />           
+          </xs:restriction>
+        </xs:simpleType> 
+								</xs:element>
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+   <xs:complexType name="DisposedType">
+   <xs:sequence>
+   <xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
+                                <xs:element name="DisposedTypeCode">
+								<xs:simpleType>
+		  <xs:restriction base="CodeType">
+		    <xs:enumeration value="E" />
+			<xs:enumeration value="D" />
+			<xs:enumeration value="O" />
+		  </xs:restriction>
+		</xs:simpleType>		
+		                        </xs:element>
+                                <xs:element name="SourceStockroomCode">
+								<xs:simpleType>
+		  <xs:restriction base="CodeType">
+		    <xs:enumeration value="M" />
+		  </xs:restriction>
+		</xs:simpleType>						
+		                        </xs:element>
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+    <xs:complexType name="DistributionType">
+   <xs:sequence>
+   <xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
+                                <xs:element  name="SourceStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	   </xs:restriction>
+	  </xs:simpleType>
+	                            </xs:element>
+                                <xs:element  name="DistributeTypeCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="D" />
+	   </xs:restriction>
+	  </xs:simpleType>
+	                            </xs:element>
+                                <xs:element type="DepartmentType" name="DepartmentCode"/> 
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+    <xs:complexType name="ReceiptType">
+   <xs:sequence>
+      <xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
+                                <xs:element name="DestinationStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+        <xs:enumeration value="M" />
+      </xs:restriction>
+      </xs:simpleType>	
+	                            </xs:element>
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+      <xs:complexType name="TransferType">
+   <xs:sequence>
+     <xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>	  
+            <xs:element name="SourceStockroomCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+            <xs:element  name="TransferCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+		<xs:enumeration value="I" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element type="xs:string" name="InstitutionType"/>	  
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+       <xs:complexType name="ReturnType">
+   <xs:sequence>
+    <xs:element type="xs:string" name="OperationID"/>
+                                <xs:element type="xs:string" name="OperationDate"/>
+                                <xs:element  name="ReturnTypeCode">
+								<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="D" />
+		<xs:enumeration value="I" />
+		<xs:enumeration value="P" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element name="DestinationStockroomCode">
+											<xs:simpleType>
+	  <xs:restriction base="CodeType">
+	    <xs:enumeration value="M" />
+	  </xs:restriction>
+      </xs:simpleType>	
+                                </xs:element>
+                                <xs:element type="DepartmentType" name="DepartmentCode"/>   
+      <xs:element name="OperationItem" type="OperationItemType"
+				maxOccurs="unbounded" minOccurs="0" />
+				</xs:sequence>
+  </xs:complexType>
+                <xs:complexType name="ConsumptionReportType">
+                  <xs:sequence>
+                    <xs:element name="NewConsumption" type="NewConsumptionType" maxOccurs="unbounded" minOccurs="1"
+                    />
+                    <xs:element name="ConsumptionSummary" type="ConsumptionSummaryType" maxOccurs="unbounded" minOccurs="1"
+                    />
+                  </xs:sequence>
+                </xs:complexType>
+                
+                <xs:complexType name="PharmacyConsumptionReportType">
+                  <xs:sequence>
+                    <xs:element name="NewConsumption" type="PharmacyNewConsumptionType" maxOccurs="1" minOccurs="1"
+                    />
+                    <xs:element name="ConsumptionSummary" type="PharmacyConsumptionSummaryType" maxOccurs="unbounded" minOccurs="1"
+                    />
+                  </xs:sequence>
+                </xs:complexType>
+				      <xs:complexType name="NewConsumptionType">
+     <xs:sequence>
+                          <xs:element type="xs:string" name="ConsumptionDate"/>
+                          <xs:element type="DepartmentType" name="TestingPointCode"/>      
+                          <xs:element type="ItemCodeType" name="ItemCode"/>
+                          <xs:element type="xs:string" name="ItemBatch"/>
+                          <xs:element type="xs:integer" name="TotalUsed"/>
+                          <xs:element type="xs:integer" name="TotalWastage-Loses"/>
+                          <xs:element  name="TestPurposeCode">
+						  <xs:simpleType>
+	  <xs:restriction base="CodeType">
+		<xs:enumeration value="I" />
+		<xs:enumeration value="C" />	
+	  </xs:restriction>
+      </xs:simpleType>
+	                      </xs:element>
+                        </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PharmacyNewConsumptionType">
+     <xs:sequence>
+           <xs:element type="xs:string" name="ConsumptionDate"/>
+           <xs:element type="xs:string" name="PatientID"/>      
+           <xs:element type="xs:string" name="TreatmentType"/>
+           <xs:element type="xs:string" name="VisitType"/>
+           <xs:element type="xs:string" name="PickUpReason"/>
+           <xs:element name="Drugs" type="DrugItemType" maxOccurs="1" minOccurs="1"/>
+
+         </xs:sequence>
+  </xs:complexType>
+    <xs:complexType name="DrugItemType" >
+     <xs:sequence>
+           <xs:element name="Drug" type="DrugType" maxOccurs="unbounded" minOccurs="1"/>
+                      
+         </xs:sequence>
+  </xs:complexType>
+  
+   <xs:complexType name="DrugType">
+		     	<xs:sequence>
+		           <xs:element type="xs:string" name="ItemName"  />
+		           <xs:element type="xs:integer" name="QuantityPrescribed"/>      
+		           <xs:element type="xs:integer" name="QuantityDispensed"/>
+		           <xs:element type="xs:integer" name="Duration"/>
+		           <xs:element type="xs:string" name="DrugStrength"/>
+		           <xs:element type="xs:string" name="DrugCategory"/>
+		         </xs:sequence>
+  			</xs:complexType>
+  
+   <xs:complexType name="ConsumptionSummaryType">
+     <xs:sequence>
+                            <xs:element type="DepartmentType" name="DepartmentCode"/>
+                          <xs:element type="ItemCodeType" name="ItemCode"/>
+                          <xs:element type="xs:integer" name="TotalQuantityReceived"/>
+                          <xs:element type="xs:integer" name="TotalQuantityConsumed"/>
+                          <xs:element type="xs:integer" name="StockBalance"/>  
+                        </xs:sequence>
+  </xs:complexType>
+  
+  <xs:complexType name="PharmacyConsumptionSummaryType">
+     <xs:sequence>
+                            <xs:element type="xs:string" name="Drug"/>
+                          <xs:element type="xs:integer" name="TotalQuantityReceived"/>
+                          <xs:element type="xs:string" name="DrugCategory"/>
+                          </xs:sequence>
+  </xs:complexType>
+
+
+   <xs:simpleType name="CodeType">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="0" />
+      <xs:maxLength value="50" />
+    </xs:restriction>
+  </xs:simpleType>
+
+<xs:simpleType name="ItemCodeType">
+   <xs:restriction base="xs:positiveInteger">
+	<xs:minInclusive value="1" />
+        <xs:maxInclusive value="7" />
+    </xs:restriction>
+  </xs:simpleType>
+
+<xs:simpleType name="DepartmentType">
+   <xs:restriction base="xs:positiveInteger">
+	<xs:minInclusive value="1" />
+        <xs:maxInclusive value="17" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
