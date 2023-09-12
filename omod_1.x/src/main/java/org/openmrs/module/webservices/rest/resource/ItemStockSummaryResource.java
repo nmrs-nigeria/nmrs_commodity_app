@@ -66,6 +66,8 @@ public class ItemStockSummaryResource extends DelegatingCrudResource<ItemStockSu
 		description.addProperty("itemBatch", Representation.DEFAULT);
 		description.addProperty("reasonForChange", Representation.DEFAULT);
 		description.addProperty("pharmStockOnHandId", Representation.DEFAULT);
+		description.addProperty("conceptId", Representation.DEFAULT);
+		description.addProperty("strengthConceptId", Representation.DEFAULT);
 		return description;
 	}
 
