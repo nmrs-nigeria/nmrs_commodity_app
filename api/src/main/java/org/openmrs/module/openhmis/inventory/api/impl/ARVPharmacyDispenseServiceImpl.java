@@ -545,8 +545,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
             summary.setUuid(UUID.randomUUID().toString());
             
             summary.setItemConceptId(a.getValue());
-            
-           // summary.setStrengthConceptId();
+        
             
             return summary;
             
@@ -856,7 +855,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		if (arvItem.getDrugCategory() != null && arvItem.getItemName() != null) {
 			summary = new NewPharmacyConsumptionSummary();
 			summary.setGroupUuid(arvItem.getArvPharmacyDispenseUuid());
-			summary.setItem(arvItem.getItemName());
+			summary.setItem(arvItem.getItemName() + " (" + arvItem.getDrugStrength() + ")");
 			summary.setTotalQuantityReceived(arvItem.getQuantityDispensed());
 			summary.setDrugCategory(arvItem.getDrugCategory());
 			summary.setUuid(UUID.randomUUID().toString());
@@ -867,6 +866,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 			System.out.println("Concept ID summary map : " + arvItem.getItemConceptId());
 			System.out.println("Strength Concept ID summary map : " + arvItem.getStrengthConceptId());
+			System.out.println("Drug Strength summary map : " + arvItem.getDrugStrength());
 		}
 
 		return summary;
