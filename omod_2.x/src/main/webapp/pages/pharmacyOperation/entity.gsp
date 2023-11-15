@@ -157,6 +157,17 @@
                     </select>
                 </li>
             </ul>
+
+            <!--Added by Tobechi PHIS3 2023-11-07-->
+            <ul class="table-layout" ng-show="(operationType.name === 'Disposed') && (disposedType === 'others') ">
+                <li class="not-required">
+                    <span>Comment </span>
+                </li>
+                <li>
+                    <input type="text" ng-model="disposedOtherSpecify" class="form-control" />
+
+                </li>
+            </ul>
             <ul class="table-layout" ng-show="operationType.hasDestination">
                 <li class="required">
                     <span>${ui.message('openhmis.inventory.operations.destinationStockroom')}</span>
@@ -189,6 +200,59 @@
                 </select>
             </li>
             </ul>
+
+            <!--Added by Tobechi PHIS3 2023-11-07-->
+            <ul class="table-layout" ng-show="(operationType.name === 'Return') && (returnOperationType === 'Patient') ">
+                <li class="not-required">
+                    <span>Reason for return </span>
+                </li>
+                <li>
+                    <input type="text" ng-model="patientReasonForReturn" class="form-control" style="width: 300px;" />
+
+                </li>
+            </ul>
+
+            <!-- Added by Tobechi PHIS3 13-11-2023  -->
+            <ul class="table-layout"
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+
+                <li> <span>State</span></li>
+
+                <li>
+                    <select ng-model="state" class="form-control"
+                            ng-options="state for state in states"
+                            ng-change="onChangeStateSuccessful(state)">
+                    </select>
+                </li>
+            </ul>
+            <ul class="table-layout"
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+
+                <li>
+                    <span>LGA</span>
+                </li>
+                <li>
+                    <select ng-model="lga" class="form-control"
+                            ng-options="lga for lga in lgas"
+                            ng-change="onChangeLgaSuccessful(lga)">
+                    </select>
+                </li>
+
+            </ul>
+            <ul class="table-layout"
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+
+                <li class="required">
+                    <span>${ui.message('openhmis.inventory.institution.name')}</span>
+                </li>
+                <li>
+                    <select ng-model="institutionStockroom" required class="form-control"
+                            ng-options='institution.name for institution in institutions track by institution.uuid'>
+                    </select>
+                </li>
+            </ul>
+
+
 
             ${ui.includeFragment("openhmis.commons", "fieldTypesFragment")}
 

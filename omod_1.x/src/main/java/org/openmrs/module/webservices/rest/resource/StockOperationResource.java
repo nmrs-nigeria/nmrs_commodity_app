@@ -116,6 +116,8 @@ public class StockOperationResource
 			description.addProperty("commoditySource");
 			description.addProperty("commodityType");
 			description.addProperty("dataSystem");
+			description.addProperty("disposedOtherSpecify"); //Added by Tobechi
+			description.addProperty("patientReasonForReturn"); //Added by Tobechi
 		}
 
 		return description;

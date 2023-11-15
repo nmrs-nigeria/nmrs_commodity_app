@@ -59,6 +59,8 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 	private String commoditySource;
 	private String commodityType;
 	private String dataSystem;
+	private String disposedOtherSpecify; //Added by Tobechi
+	private String patientReasonForReturn; // Added by Tobechi
 
 	@Override
 	public Integer getId() {
@@ -419,4 +421,19 @@ public class StockOperation extends BaseInstanceCustomizableMetadata<IStockOpera
 		this.dataSystem = dataSystem;
 	}
 
+	public String getDisposedOtherSpecify() {
+		return disposedOtherSpecify;
+	}
+
+	public void setDisposedOtherSpecify(String disposedOtherSpecify) {
+		this.disposedOtherSpecify = disposedOtherSpecify;
+	}
+
+	public String getPatientReasonForReturn() {
+		return patientReasonForReturn;
+	}
+
+	public void setPatientReasonForReturn(String patientReasonForReturn) {
+		this.patientReasonForReturn = patientReasonForReturn;
+	}
 }

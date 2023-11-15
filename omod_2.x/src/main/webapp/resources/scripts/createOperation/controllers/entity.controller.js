@@ -164,6 +164,11 @@
                 $scope.entity.disposedType = $scope.disposedType;
             }
 
+            //Added by Tobechi 2023-22-07
+            $scope.entity.disposedOtherSpecify = $scope.disposedOtherSpecify;
+            $scope.entity.patientReasonForReturn = $scope.patientReasonForReturn;
+
+
             $scope.entity.status = "NEW";
             $scope.entity.instanceType = $scope.operationType.uuid;
 

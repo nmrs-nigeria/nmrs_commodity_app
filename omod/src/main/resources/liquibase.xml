@@ -7280,6 +7280,74 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
             ]]>
         </sql>
     </changeSet>
+
+    <changeSet id="openhmis.inventory-v6.2" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			ALTER TABLE `inv_stock_operation` ADD `disposed_OtherSpecify` VARCHAR(255) DEFAULT NULL AFTER `disposed_type`;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+    <changeSet id="openhmis.inventory-v6.3" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			ALTER TABLE `inv_stock_operation` ADD `patient_reasonForReturn` VARCHAR(255) DEFAULT NULL AFTER `disposed_OtherSpecify`;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+    <changeSet id="openhmis.inventory-v6.4" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_item` SET `name` = 'Dolutegravir (10mg)', description = 'Dolutegravir (10ml/g)', strength = '10mg' WHERE item_id = 99 and `name` = 'Dolutegravir (10ml/g)' and strength ='10ml/g';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="openhmis.inventory-v6.5" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 10;
+			UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 11;
+			UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 12;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 13;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 14;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 15;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 16;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 17;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 18;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 19;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 20;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 21;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 22;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 23;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 24;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 25;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 26;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 27;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 28;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 29;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 30;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 31;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 40;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 41;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 43;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 44;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 45;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 46;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 49;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 98;
+            UPDATE `inv_item` SET `unit_of_measure` = 'tabs' WHERE item_id = 99;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
     
                           
 </databaseChangeLog>

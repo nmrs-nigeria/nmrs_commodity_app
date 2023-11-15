@@ -160,31 +160,37 @@ public class NDRExtractionController {
 				reportObject.getMessageHeader().setValidation(validationStr);
 			}
 
-			if (reportObject != null) {
+			if (reportObject.getLabInventory() != null && reportObject.getPharmacyInventory() != null) {
 
-				System.out.println("starting xml creating process");
-				LOG.info("Testing log4j");
-				String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
-				datimCode = datimCode.replace("/", "_");
+				if (reportObject != null) {
 
-				String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
-				System.out.println("File name is " + fileName);
+					System.out.println("starting xml creating process");
+					LOG.info("Testing log4j");
+					String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
+					datimCode = datimCode.replace("/", "_");
 
-				String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
+					String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
+					System.out.println("File name is " + fileName);
 
-				File aXMLFile = new File(xmlFile);
-				Boolean b;
+					String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
 
-				b = aXMLFile.createNewFile();
-				System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
-				writeFile(reportObject, aXMLFile, jaxbMarshaller);
+					File aXMLFile = new File(xmlFile);
+					Boolean b;
 
-				String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
+					b = aXMLFile.createNewFile();
+					System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
+					writeFile(reportObject, aXMLFile, jaxbMarshaller);
 
-				String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
+					String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
 
-				result.put("results", zipresponse);
+					String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
 
+					result.put("results", zipresponse);
+
+				}
+
+			} else {
+				result.put("error", "No Data Found");
 			}
 
 		} catch (Exception ex) {

@@ -37,7 +37,7 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
     jQuery('#breadcrumbs').html(emr.generateBreadcrumbHtml(breadcrumbs));
 </script>
 
-<h1>COMBINED REPORT AND REQUISITION FORM (CRRF) - Antiretroviral and OIs</h1>
+<h1>COMBINED REPORT AND REQUISITION FORM (CRRF) - Antiretroviral and OI Drugs </h1>
 
 <div id="crrf-list-table"></div>
 <div id="crrfbody-list-table" style="overflow: scroll"></div>
@@ -146,7 +146,8 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
         contents += "</thead><tbody>";
         
         contents += "<tr><td colspan='13' style='font-weight: bold'>Adult Regimen</td></tr>";
-        adult = dataURL.crrfAdultRegimenCategory;     
+        adult = dataURL.crrfAdultRegimenCategory;
+        var adultPhyBalanaceTotal = 0;
         for (i = 0; i < adult.length; i++) {
           	var adultElement = adult[i];
           	var packsizeadult = "packsizeadult" + i;
@@ -168,10 +169,14 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
          	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + adultElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + adultElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + adultElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + adultElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + adultElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + adultElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
+
+            adultPhyBalanaceTotal += parseInt(adultElement.physicalBalance);
+
         }
          
         contents += "<tr><td colspan='12' style='font-weight: bold'>Paediatric Regimen</td></tr>";
-        paediatric = dataURL.crrfPediatricRegimenCategory;     
+        paediatric = dataURL.crrfPediatricRegimenCategory;
+        var peadiatriPhyBalanaceTotal = 0;
         for (j = 0; j < paediatric.length; j++) {
           	var paediatricElement = paediatric[j];
           	
@@ -194,6 +199,8 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
          	contents += "<td id='" + qtyNegativeAdjustmentId + "'>" + paediatricElement.negativeAdjustments +  "</td><td id='" + qtyReceivedLossesId + "'>" + paediatricElement.lossesdDamagesExpiries +  "</td><td id='" + qtyPhysicalCountId + "'>" + paediatricElement.physicalCount +  "</td><td id='" + qtyCalculatedCountId + "'>" + paediatricElement.physicalBalance +  "</td>";
          	contents += "<td id='" + qtyMaximumStockId + "'>" + paediatricElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + paediatricElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
+
+            peadiatriPhyBalanaceTotal += parseInt(paediatricElement.physicalBalance);
         }
          
         contents += "<tr><td colspan='12' style='font-weight: bold'>Opportunistic Infections Drugs</td></tr>";
@@ -321,6 +328,14 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
 
         jq("#crrfbody-list-table").append(contents);
 
+
+        if(adultPhyBalanaceTotal == 0 && peadiatriPhyBalanaceTotal == 0){
+            alert("Please enter Physical count for the reporting period!, Before generating CRRF report");
+            window.location.href='/openhmis.inventory/inventory/pharmacyInventoryDashboard.page';
+        }
+
+
+
     }
 
     function refreshDatatable(){
@@ -354,9 +369,14 @@ ui.includeJavascript("openhmis.inventory", "crrfReports/configs/extJs/jquery.csv
      jqy(function() {
          jqy("#exportToExcel").click(function(e){
                  console.log('Hi tables');
+             var d = new Date();
+             var day = d.getDate();
+             var mon = d.getMonth()+1;
+             var yr = d.getFullYear();
+             var fulldate = yr+""+mon+""+day;
                  jqy("#fileexport1").table2excel({
                      name: "Excel Document Name",
-                     filename: "Antiretroviral-and-OIs",
+                     filename: "Antiretroviral-and-OI-Drugs-"+fulldate,
                      fileext: ".xls",
                      exclude_img: true,
                      exclude_links: true,
