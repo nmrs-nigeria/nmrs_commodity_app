@@ -91,6 +91,7 @@
 			<tr>
 				<th>${ui.message('openhmis.inventory.item.name')}</th>
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
+				<th>Batch</th>
 				<th>${ui.message('openhmis.inventory.item.quantity')}</th>
 				<th>${ui.message('openhmis.inventory.item.actual.quantity')}</th>
 			    <th>${ui.message('openhmis.inventory.item.reasonforchange')}</th>
@@ -102,6 +103,7 @@
 			    total-items="totalNumOfResults" current-page="stockTakeCurrentPage">
 				<td>{{entity.item.name}}</td>
 				<td>{{entity.expiration | date: "yyyy-MM-dd"}}</td>
+				<td>{{entity.itemBatch}}</td>
 				<td>{{entity.quantity}}</td>
 				<td><input name="actualQuantity" min="0"
 				           id="{{'actualQuantity-'+entity.item.uuid+'_'+entity.expiration}}{{entity.expiration | date: 'yyyy-MM-dd'}}"

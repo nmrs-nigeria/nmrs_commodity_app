@@ -65,12 +65,19 @@ public class ItemExpirationSummaryServiceImpl
 		}
 
 		// Create the query and optionally add paging
-		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty "
-		        + "from ItemStockDetail as detail inner join detail.item as i "
+		//		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty "
+		//		        + "from ItemStockDetail as detail inner join detail.item as i "
+		//		        + "where detail.stockroom.id = " + stockroom.getId() + " "
+		//		        + "group by i, detail.expiration "
+		//		        + "having sum(detail.quantity) <> 0"
+		//		        + "order by i.name asc, detail.expiration asc";
+		// Create the query and optionally add paging
+		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty, dept "
+		        + "from ItemStockDetail as detail inner join detail.item as i inner join detail.department as dept "
 		        + "where detail.stockroom.id = " + stockroom.getId() + " "
 		        + "group by i, detail.expiration "
 		        + "having sum(detail.quantity) <> 0"
-		        + "order by i.name asc, detail.expiration asc";
+		        + "order by detail.expiration asc";
 		Query query = getRepository().createQuery(hql);
 		query = this.createPagingQuery(pagingInfo, query);
 
@@ -103,7 +110,7 @@ public class ItemExpirationSummaryServiceImpl
 					continue;
 				}
 			}
-
+			summary.setDepartment((Department)row[3]);
 			results.add(summary);
 		}
 
@@ -138,10 +145,11 @@ public class ItemExpirationSummaryServiceImpl
 		}
 
 		// Create the query and optionally add paging	
-		String hql = "select i, detail.expiration, detail.quantity as sumQty "
-		        + "from ViewItemExpirationByDept as detail inner join detail.item as i "
-		        + "where detail.department.id = " + department.getId() + " "
-		        + "order by i.name asc, detail.expiration asc";
+		String hql =
+		        "select i, detail.expiration, detail.quantity as sumQty,dept "
+		                + "from ViewItemExpirationByDept as detail inner join detail.item as i inner join detail.department as dept "
+		                + "where detail.department.id = " + department.getId() + " "
+		                + "order by i.name asc, detail.expiration asc";
 
 		Query query = getRepository().createQuery(hql);
 		query = this.createPagingQuery(pagingInfo, query);
@@ -176,6 +184,8 @@ public class ItemExpirationSummaryServiceImpl
 				}
 			}
 
+			summary.setDepartment((Department)row[3]);
+			//System.out.print("Tobechi Dept type...# " + summary.getDepartment().getName());
 			results.add(summary);
 		}
 

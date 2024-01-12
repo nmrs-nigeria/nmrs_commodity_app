@@ -211,17 +211,19 @@
 		self.onLoadStockDetailsSuccessful = self.onLoadStockDetailsSuccessful || function (data) {
 				$scope.fetchedEntities = data.results;
 				console.log("onLoadStockDetailsSuccessful: " + data.results);		
-				console.log("onLoadStockDetailsSuccessful: " + data.results[0]);		
-				for (var i = 0; i < $scope.fetchedEntities.length; i++) {
+				console.log("onLoadStockDetailsSuccessful: " + data.results[0]);
+
+            for (var i = 0; i < $scope.fetchedEntities.length; i++) {
+                    console.log("---My Department " + $scope.fetchedEntities[i].department);
 					$scope.fetchedEntities[i].id = $scope.fetchedEntities[i].item.uuid + "_" + $scope.fetchedEntities[i].expiration;
 					var index = EntityFunctions.findIndexByKeyValue($scope.itemExpiryDetails,$scope.fetchedEntities[i].id);
 					if (index > -1) {
 						$scope.fetchedEntities[i].actualQuantity = $scope.itemExpiryDetails[index].actualQuantity;
 					}
 				}
-				
+
 				$scope.totalNumOfResults = data.length;
-				
+
 				if (data.results.length != 0) {
 					$scope.showStockDetails = true;
 					$scope.showNoStockroomSelected = false;

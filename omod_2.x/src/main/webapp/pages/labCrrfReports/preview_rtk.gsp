@@ -145,8 +145,8 @@ ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.
         contents += "<th>Maximum Stock Quantity</th><th>Quantity to Order</th><th>Remarks</th></tr>";
         
         contents += "<tr><td colspan='13' style='font-weight: bold'>HIV RTK & DBS</td></tr>";         
-        rtk = dataURL.crrfRTKRegimenCategory; 
-       
+        rtk = dataURL.crrfRTKRegimenCategory;
+        var physicalCountTotal = 0;
         for (i = 0; i < rtk.length; i++) {
           	var rtkElement = rtk[i];
           	var ru = rtkElement.basicUnit.split(" ");
@@ -173,6 +173,7 @@ ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.
          	contents += "<td id='" + qtyMaximumStockId + "'>" + rtkElement.maximumStockQuantity +  "</td><td id='" + qtyQuantityOrderId + "'>" + rtkElement.quantityToOrder +  "</td><td></td>";         	            
          	contents += "</tr>";
 
+            physicalCountTotal += rtkElement.physicalCount;
         }
          
         contents += "<tr style='background-color: white'><th colspan='13'>BIMONTHLY SUMMARY OF HIV RAPID TEST BY PURPOSE</th></tr>"; 
@@ -209,6 +210,10 @@ ui.includeJavascript("openhmis.inventory", "labCrrfReports/configs/extJs/jquery.
         contents += "<button id='exportToExcel'>Export to Excel</button>";
 
         jq("#crrfbody-list-table").append(contents);
+        if(physicalCountTotal == 0){
+            alert("Please enter Physical count for the reporting period!, Before generating CRRF report");
+            window.location.href='/openhmis.inventory/inventory/inventoryTasksDashboard.page';
+        }
     }
 	
     function refreshDatatable(){

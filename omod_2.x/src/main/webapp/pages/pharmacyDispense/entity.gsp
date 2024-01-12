@@ -78,8 +78,9 @@ showPatientSearchBox: "selectedPatient === ''"
             var formUuid = "4a238dc4-a76b-4c0f-a100-229d98fd5758";
             var returnUrl = "%2openmrs%2Fcoreapps%2Fclinicianfacing%2Fpatient.page%3FpatientId%3D2af91cc0-6c62-4ee1-adb4-ff3e6e75b9be%26";
         
-            var urlToForm = '${ui.pageLink("htmlformentryui","htmlform/enterHtmlFormWithStandardUi",[patientId: "patientIdElement", visitId: "visitIdElement", formUuid: "formUuidElement", returnUrl: "returnUrlElement"])}'.replace("patientIdElement", patientId).replace("visitIdElement", visitId).replace("formUuidElement", formUuid).replace("returnUrlElement", returnUrl);
-            location.href = 'urlToForm'.replace("urlToForm", urlToForm);   
+            var urlToForm = '${ui.pageLink("coreapps","clinicianfacing/patient",[patientId: "patientIdElement"])}'.replace("patientIdElement", patientId);
+
+            location.href = 'urlToForm'.replace("urlToForm", urlToForm);
         }
     }
 </script>

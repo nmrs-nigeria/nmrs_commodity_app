@@ -66,7 +66,7 @@
 			<div class="col-xs-9">
 				<div class="col-xs-2">
 					<strong>
-						${ui.message('openhmis.inventory.consumption.testingPoint')}:
+						Department:
 					</strong>
 				</div>
 
@@ -115,7 +115,7 @@
 				<th>${ui.message('openhmis.inventory.item.name')}</th>
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
 				<th>${ui.message('openhmis.inventory.item.quantity')} left</th>
-				
+				<th>Department</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -125,7 +125,7 @@
 				<td>{{entity.item.name}}</td>
 				<td>{{entity.expiration | date: "yyyy-MM-dd"}}</td>
 				<td>{{entity.quantity}}</td>
-				
+				<td>{{entity.department.name}}</td>
 			</tr>
 			</tbody>
 		</table>

@@ -270,7 +270,7 @@
         function checkDatePickerExpirationSection(lineItem, $scope) {
             if (lineItem !== undefined && lineItem.itemStockHasExpiration) {
                 if ($scope.operationType.name === 'Receipt' || $scope.operationType.name === 'Return' ||
-                        $scope.operationType.name === 'Adjustment' ||
+                        $scope.operationType.name === 'Transfer-In' ||
                         $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
                         $scope.operationType.name === 'Recibo' || $scope.operationType.name === 'Retorno') {
                     lineItem.setExpirationHasDatePicker(true);
@@ -281,7 +281,7 @@
         function checkBatchItemExistSection(lineItem, $scope) {
             if (lineItem !== undefined && lineItem.itemStockHasBatch) {
                 if ($scope.operationType.name === 'Receipt' || $scope.operationType.name === 'Return' ||
-                    $scope.operationType.name === 'Adjustment' ||
+                    $scope.operationType.name === 'Transfer-In' ||
                         $scope.operationType.name === 'Initial' || $scope.operationType.name === 'Inicial' ||
                         $scope.operationType.name === 'Recibo' || $scope.operationType.name === 'Retorno') {
                     lineItem.setBatchItemExist(true);

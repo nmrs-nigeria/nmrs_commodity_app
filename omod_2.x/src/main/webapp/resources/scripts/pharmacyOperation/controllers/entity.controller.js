@@ -87,6 +87,7 @@
                             $filter('EmrFormat')(emr.message("openhmis.commons.general.postSearchMessage"), ['patient']);
                     $scope.searchStockOperationItems = self.searchStockOperationItems;
                     $scope.selectStockOperationItem = self.selectStockOperationItem;
+                    $scope.expiredDateFilterFunction = self.expiredDateFilterFunction; //Added by Tobechi
                     $scope.searchItemStock = self.searchItemStock;
                     $scope.lineItems = [];
                     $scope.addLineItem = self.addLineItem;
@@ -189,8 +190,9 @@
 
             // validate institution
             if ($scope.institutionStockroom !== undefined &&
-                    (($scope.operationType.name === 'Distribution' && $scope.distributionType === 'Institution') ||
-                            ($scope.operationType.name === 'Transfer' && $scope.transferType === 'Institution') ||
+                    (($scope.operationType.name === 'Transfer-In' && $scope.adjustmentKind === 'positive') ||
+                        ($scope.operationType.name === 'Distribution' && $scope.distributionType === 'Institution') ||
+                            ($scope.operationType.name === 'Transfer-Out' && $scope.transferType === 'Institution') ||
                             $scope.operationType.name === 'Return' && $scope.returnOperationType === 'Institution')) {
                 if ($scope.institutionStockroom.name !== notDefined.name) {
                     $scope.entity.institution = $scope.institutionStockroom.uuid;
@@ -256,7 +258,7 @@
         self.changeItemQuantity = self.changeItemQuantity || function (lineItem) {
             var quantity = lineItem.itemStockQuantity;
             var newQuantity;
-            if ($scope.operationType.name === 'Adjustment' || $scope.operationType.name === 'Receipt') {
+            if ($scope.operationType.name === 'Transfer-In' || $scope.operationType.name === 'Receipt') {
                 newQuantity = lineItem.existingQuantity + quantity;
             } else {
                 newQuantity = lineItem.existingQuantity - quantity;
@@ -653,9 +655,41 @@
         }
 
 
+        //Added by Tobechi PHIS3 23-11-2023
+        self.expiredDateFilterFunction = self.expiredDateFilterFunction || function(itemStockExpirationDate) {
+            console.log("expiredDateFilterFunction PHIS3");
+
+            // Define your filtering logic here
+            // For example, exclude non-expired drugs
+            var operationDate = $scope.operationDate;
+            if(itemStockExpirationDate.toString() !== 'Auto') {
+                var exp = itemStockExpirationDate;
+                var expiratn = new Date(self.formatDateTwo(exp));
+                var operatDate = new Date(self.formatDateTwo(operationDate));
+
+                console.log("itemStockExpirationDate "+itemStockExpirationDate);
+                console.log("operationDate "+$scope.operationDate);
+                return expiratn < operatDate;
+            }else {
+
+                return true;
+            }
 
 
+        }
 
+        //Added by Tobechi PHIS3 23-11-2023
+        self.formatDateTwo = self.formatDateTwo || function(date) {
+            var dates = date.split("-");
+            var day = dates[0];
+            var month = dates[1];
+            var year = dates[2];
+            var splitYear = year.split(" ");
+            if(splitYear.length > 1){
+                year = splitYear[0];
+            }
+            return [year, month, day].join('-');
+        }
 
 
         // @Override

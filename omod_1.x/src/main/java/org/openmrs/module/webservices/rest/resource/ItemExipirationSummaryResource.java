@@ -62,6 +62,7 @@ public class ItemExipirationSummaryResource extends DelegatingCrudResource<ItemE
 		description.addProperty("item", Representation.DEFAULT);
 		description.addProperty("expiration", Representation.DEFAULT);
 		description.addProperty("quantity", Representation.DEFAULT);
+		description.addProperty("department", Representation.DEFAULT);
 		//	description.addProperty("actualQuantity", Representation.DEFAULT);
 		description.addProperty("itemBatch", Representation.DEFAULT);
 

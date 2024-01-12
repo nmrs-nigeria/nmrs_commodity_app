@@ -7348,6 +7348,38 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         	]]>
         </sql>
     </changeSet>
-    
-                          
+
+    <changeSet id="openhmis.inventory-v6.6" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_stockroom` SET `name` = 'Lab Bulk Store' WHERE `stockroom_id` = 1 and `stockroom_type` = 'lab';
+			UPDATE `inv_stockroom` SET `name` = 'Pharmacy Bulk Store' WHERE `stockroom_id` = 2 and `stockroom_type` = 'pharmacy';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="openhmis.inventory-v6.7" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_stock_operation_type` SET `name` = 'Transfer-In' WHERE `stock_operation_type_id` = 1 and `operation_type` = 'adjustment';
+			UPDATE `inv_stock_operation_type` SET `name` = 'Transfer-Out' WHERE `stock_operation_type_id` = 6 and `operation_type` = 'transfer';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+    <changeSet id="openhmis.inventory-v6.8" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_stock_operation_type` SET `name` = 'Issue' WHERE `stock_operation_type_id` = 3 and `operation_type` = 'distribution';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+
+
+
 </databaseChangeLog>

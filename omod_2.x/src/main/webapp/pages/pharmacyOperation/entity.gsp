@@ -107,7 +107,7 @@
                     </select>
                 </li>
             </ul>
-            <ul class="table-layout" ng-show="(operationType.name === 'Distribution' || operationType.name === 'Distribucion') && distributionType !== 'Patient'">
+            <ul class="table-layout" ng-show="(operationType.name === 'Issue' || operationType.name === 'Distribucion') && distributionType !== 'Patient'">
                 <li class="not-required">
                     <span>${ui.message('openhmis.inventory.operations.issueTo')}</span>
                 </li>
@@ -137,13 +137,13 @@
                     </select>
                 </li>
             </ul>
-            <ul class="table-layout" ng-show="operationType.name === 'Adjustment'">
+            <ul class="table-layout" ng-show="operationType.name === 'Transfer-In'">
                 <li class="not-required">
                     <span>${ui.message('openhmis.inventory.operations.adjustmentKind')}</span>
                 </li>
                 <li>
                     <select ng-model="adjustmentKind" class="form-control"
-                    ng-options="adjustmentKind for adjustmentKind in adjustmentKinds">
+                    ng-options="adjustmentKind for adjustmentKind in adjustmentKinds" >
                     </select>
                 </li>
             </ul>
@@ -178,19 +178,19 @@
                     </select>
                 </li>
             </ul>
-            <ul class="table-layout"
-            ng-show="((operationType.name === 'Distribution' && distributionType === 'Institution') || (operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Retorno' && returnOperationType === 'Institution') || (operationType.name === 'Distribucion' && distributionType === 'Institution'))">
+            <!--<ul class="table-layout"
+            ng-show="((operationType.name === 'Issue' && distributionType === 'Institution') || (operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Retorno' && returnOperationType === 'Institution') || (operationType.name === 'Distribucion' && distributionType === 'Institution'))">
             <li class="required">
-                <span>${ui.message('openhmis.inventory.institution.name')}</span>
+                %{--<span>${ui.message('openhmis.inventory.institution.name')}</span>--}%
             </li>
             <li>
                 <select ng-model="institutionStockroom" required class="form-control"
                 ng-options='institution.name for institution in institutions track by institution.uuid'>
                 </select>
             </li>
-            </ul>
+            </ul>-->
             <ul class="table-layout"
-            ng-show="((operationType.name === 'Distribution' && distributionType === 'Department') || (operationType.name === 'Return' && returnOperationType === 'Department') || (operationType.name === 'Retorno' && returnOperationType === 'Department') || (operationType.name === 'Distribucion' && distributionType === 'Department'))">
+            ng-show="((operationType.name === 'Issue' && distributionType === 'Department') || (operationType.name === 'Return' && returnOperationType === 'Department') || (operationType.name === 'Retorno' && returnOperationType === 'Department') || (operationType.name === 'Distribucion' && distributionType === 'Department'))">
             <li class="required">
                 <span>${ui.message('openhmis.inventory.department.name')}</span>
             </li>
@@ -214,7 +214,7 @@
 
             <!-- Added by Tobechi PHIS3 13-11-2023  -->
             <ul class="table-layout"
-                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
 
                 <li> <span>State</span></li>
 
@@ -226,7 +226,7 @@
                 </li>
             </ul>
             <ul class="table-layout"
-                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
 
                 <li>
                     <span>LGA</span>
@@ -240,7 +240,7 @@
 
             </ul>
             <ul class="table-layout"
-                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution'))">
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
 
                 <li class="required">
                     <span>${ui.message('openhmis.inventory.institution.name')}</span>
@@ -256,7 +256,7 @@
 
             ${ui.includeFragment("openhmis.commons", "fieldTypesFragment")}
 
-            <ul class="table-layout" ng-show="(operationType.name === 'Distribution' || operationType.name === 'Distribucion') && distributionType === 'Patient'">
+            <ul class="table-layout" ng-show="(operationType.name === 'Issue' || operationType.name === 'Distribucion') && distributionType === 'Patient'">
                 <li class="not-required">
                     <span>${ui.message('openhmis.inventory.operations.issueTo')}</span>
                 </li>
@@ -267,7 +267,7 @@
                 </li>
             </ul>
 
-            <ul class="table-layout" ng-show="(operationType.name === 'Transfer')">
+            <ul class="table-layout" ng-show="(operationType.name === 'Transfer-Out')">
                 <li class="not-required">
                     <span>Transfer To</span>
                 </li>
@@ -279,7 +279,7 @@
             </ul>
 
             <ul class="table-layout"
-            ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+            ng-show="((operationType.name === 'Transfer-Out' && transferType === 'Institution'))">
 
             <li> <span>State</span></li>
 
@@ -292,7 +292,7 @@
             </ul>
 
             <ul class="table-layout"
-            ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+            ng-show="((operationType.name === 'Transfer-Out' && transferType === 'Institution'))">
 
             <li>
                 <span>LGA</span>
@@ -307,7 +307,7 @@
             </ul>
 
             <ul class="table-layout"
-            ng-show="((operationType.name === 'Transfer' && transferType === 'Institution'))">
+            ng-show="((operationType.name === 'Transfer-Out' && transferType === 'Institution'))">
 
             <li class="required">
                 <span>${ui.message('openhmis.inventory.institution.name')}</span>
@@ -320,8 +320,8 @@
             </ul>
 
             ${ui.includeFragment("openhmis.commons", "patientSearchFragment", [
-showPatientDetails: "operationType.hasRecipient && selectedPatient !== '' && ((operationType.name === 'Distribution' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))",
-showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && ((operationType.name === 'Distribution' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))"
+showPatientDetails: "operationType.hasRecipient && selectedPatient !== '' && ((operationType.name === 'Issue' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))",
+showPatientSearchBox: "operationType.hasRecipient && selectedPatient === '' && ((operationType.name === 'Issue' && distributionType === 'Patient') || (operationType.name === 'Return' && returnOperationType === 'Patient') || (operationType.name === 'Retorno' && returnOperationType === 'Patient') || (operationType.name === 'Distribucion' && distributionType === 'Patient'))"
 ])}
             <fieldset class="nested"
             ng-show="(!operationType.hasRecipient && (operationType.hasSource || operationType.hasDestination) ||
@@ -385,12 +385,13 @@ placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
                             ng-show="(!lineItem.expirationHasDatePicker && lineItem.expirationDates.length > 0) || lineItem.expirationHasDatePicker">
                         <b>${ui.message("openhmis.inventory.stockroom.expiration")}:</b>
                 </td>
-                <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
+                <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}" ng-show="((operationType.name === 'Disposed') && (disposedType === 'expired'))">
+
                     <select ng-model="lineItem.itemStockExpirationDate"
                     ng-change="changeExpirationByExp(lineItem)"
                     ng-show="!lineItem.expirationHasDatePicker && lineItem.expirationDates.length > 0"
                     class="right-justify form-control"
-                    ng-options="itemStockExpirationDate for itemStockExpirationDate in lineItem.expirationDates">
+                    ng-options="itemStockExpirationDate for itemStockExpirationDate in lineItem.expirationDates  | filter:expiredDateFilterFunction">
                     </select>
 
                     <span ng-show="lineItem.expirationHasDatePicker">
@@ -403,6 +404,25 @@ useTime: false,
                     <br />
                 </td>
 
+
+                            <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}" ng-show="((operationType.name === 'Transfer-Out' || operationType.name === 'Transfer-In' || operationType.name === 'Receipt' || operationType.name === 'Issue' || operationType.name === 'Return') || (operationType.name === 'Disposed' && disposedType !== 'expired'))">
+
+                                <select ng-model="lineItem.itemStockExpirationDate"
+                                        ng-change="changeExpirationByExp(lineItem)"
+                                        ng-show="!lineItem.expirationHasDatePicker && lineItem.expirationDates.length > 0"
+                                        class="right-justify form-control"
+                                        ng-options="itemStockExpirationDate for itemStockExpirationDate in lineItem.expirationDates">
+                                </select>
+
+                                <span ng-show="lineItem.expirationHasDatePicker">
+                                    ${ ui.includeFragment("uicommons", "field/datetimepicker", [
+                                            formFieldName: "lineItemExpDate",
+                                            label: "",
+                                            useTime: false,
+                                    ])}
+                                </span>
+                                <br />
+                            </td>
 
             </tr>
             <tr ng-show="operationType.hasSource">
