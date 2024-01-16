@@ -38,11 +38,16 @@
 				$scope.showStockDetailsTable = false;
 				$scope.itemExpiryDetails = [];
 				$scope.loading = false;
+
 				
 				$scope.stockroomDialog = function (stockroomChange, itemExpiryCurrentPage) {
 					console.log("Stockroom Has been selected");
 					console.log("stockroomChange: " +  stockroomChange);
 					console.log("itemExpiryCurrentPage: " +  itemExpiryCurrentPage);
+                    $scope.showBatch1 = true;
+                    $scope.showBatch2 = true;
+                    $scope.showDept1= false;
+                    $scope.showDept2= false;
 					if ($scope.itemExpiryDetails.length != 0) {
 						$scope.itemExpiryDetails = [];
 						console.log("Item Expiry Details is not equal 0: Calling stockroomChangeDialog function");
@@ -57,6 +62,10 @@
 					console.log("Department Has been selected");
 					console.log("departmentChange: " +  departmentChange);
 					console.log("itemExpiryCurrentPage: " +  itemExpiryCurrentPage);
+                    $scope.showDept1= true;
+                    $scope.showDept2= true;
+                    $scope.showBatch1 = false;
+                    $scope.showBatch2 = false;
 					if ($scope.itemExpiryDetails.length != 0) {
 						$scope.itemExpiryDetails = [];
 						console.log("Item Expiry Details is not equal 0: Calling stockroomChangeDialog function");

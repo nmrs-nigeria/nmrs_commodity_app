@@ -72,8 +72,8 @@ public class ItemExpirationSummaryServiceImpl
 		//		        + "having sum(detail.quantity) <> 0"
 		//		        + "order by i.name asc, detail.expiration asc";
 		// Create the query and optionally add paging
-		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty, dept "
-		        + "from ItemStockDetail as detail inner join detail.item as i inner join detail.department as dept "
+		String hql = "select i, detail.expiration, sum(detail.quantity) as sumQty, detail.itemBatch "
+		        + "from ItemStockDetail as detail inner join detail.item as i "
 		        + "where detail.stockroom.id = " + stockroom.getId() + " "
 		        + "group by i, detail.expiration "
 		        + "having sum(detail.quantity) <> 0"
@@ -110,7 +110,7 @@ public class ItemExpirationSummaryServiceImpl
 					continue;
 				}
 			}
-			summary.setDepartment((Department)row[3]);
+			summary.setItemBatch((String)row[3]);
 			results.add(summary);
 		}
 

@@ -115,7 +115,8 @@
 				<th>${ui.message('openhmis.inventory.item.name')}</th>
 				<th>${ui.message('openhmis.inventory.stockroom.expiration')}</th>
 				<th>${ui.message('openhmis.inventory.item.quantity')} left</th>
-				<th>Department</th>
+				<th id="showDept1" ng-show="showDept1 == true">Department</th>
+                <th id="showBatch1" ng-show="showBatch1 == true">Batch Number</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -125,7 +126,8 @@
 				<td>{{entity.item.name}}</td>
 				<td>{{entity.expiration | date: "yyyy-MM-dd"}}</td>
 				<td>{{entity.quantity}}</td>
-				<td>{{entity.department.name}}</td>
+				<td id="showDept2" ng-show="showDept2 == true">{{entity.department.name}}</td>
+                <td id="showBatch2" ng-show="showBatch2 == true">{{entity.itemBatch}}</td>
 			</tr>
 			</tbody>
 		</table>
