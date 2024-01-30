@@ -104,7 +104,7 @@
             //   var stockroom = $scope.expiringStock_stockroom;
             var startDate = $scope.startDate;
             var endDate = $scope.endDate;
-            var itemType = "Lab";
+            var itemType = "Pharmacy";
             var parametersAreValid = checkParameters({
                 "startDate": startDate,
                 "endDate": endDate

@@ -6,12 +6,12 @@
             link: '${ui.pageLink("openhmis.inventory", "inventoryLanding")}'
         },
         {
-            label: "${ ui.message("openhmis.inventory.admin.task.dashboard")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/inventoryTasksDashboard.page'
+            label: "${ ui.message("openhmis.inventory.manage.pharmacy.dashboard")}",
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/inventory/pharmacyInventoryDashboard.page'
         },
         {
             label: "${ ui.message("openhmis.inventory.admin.ndrextraction")}",
-            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/ndrExtraction/entities.page#/'
+            link: '/' + OPENMRS_CONTEXT_PATH + '/openhmis.inventory/pharmacyndrExtraction/entities.page#/'
         }
     ];
 
@@ -62,7 +62,6 @@
                 ])}
             </li>
         </ul>
-
 
         <ul class="table-layout">
             <li></li>

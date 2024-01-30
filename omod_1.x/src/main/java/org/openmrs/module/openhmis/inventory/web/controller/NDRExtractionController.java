@@ -116,6 +116,7 @@ public class NDRExtractionController {
 	@RequestMapping(method = RequestMethod.GET)
 	public SimpleObject get(@RequestParam(value = "startDate", required = true) String startDateString,
 	        @RequestParam(value = "endDate", required = true) String endDateString,
+	        @RequestParam(value = "itemType", required = true) String itemType,
 	        HttpServletRequest request, HttpServletResponse response) {
 
 		this.itemDataService = Context.getService(IItemDataService.class);
@@ -154,43 +155,90 @@ public class NDRExtractionController {
 
 			String formattedDate = new SimpleDateFormat("ddMMyy").format(new Date());
 
-			Container reportObject = extractData();
-			String validationStr = extractValidation();
-			if (validationStr != null) {
-				reportObject.getMessageHeader().setValidation(validationStr);
-			}
+			if (itemType.equalsIgnoreCase("Lab")) {
 
-			if (reportObject.getLabInventory() != null && reportObject.getPharmacyInventory() != null) {
-
-				if (reportObject != null) {
-
-					System.out.println("starting xml creating process");
-					LOG.info("Testing log4j");
-					String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
-					datimCode = datimCode.replace("/", "_");
-
-					String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
-					System.out.println("File name is " + fileName);
-
-					String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
-
-					File aXMLFile = new File(xmlFile);
-					Boolean b;
-
-					b = aXMLFile.createNewFile();
-					System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
-					writeFile(reportObject, aXMLFile, jaxbMarshaller);
-
-					String zipFileName = facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + ".zip";
-
-					String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
-
-					result.put("results", zipresponse);
-
+				Container reportObject = extractDataLab();
+				String validationStr = extractValidation();
+				if (validationStr != null) {
+					reportObject.getMessageHeader().setValidation(validationStr);
 				}
 
-			} else {
-				result.put("error", "No Data Found");
+				if (reportObject.getLabInventory() != null) {
+
+					if (reportObject != null) {
+
+						System.out.println("starting xml creating process");
+						LOG.info("Testing log4j");
+						String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
+						datimCode = datimCode.replace("/", "_");
+
+						String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
+						System.out.println("File name is " + fileName);
+
+						String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
+
+						File aXMLFile = new File(xmlFile);
+						Boolean b;
+
+						b = aXMLFile.createNewFile();
+						System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
+						writeFile(reportObject, aXMLFile, jaxbMarshaller);
+
+						String zipFileName =
+						        facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + "_Lab" + ".zip";
+
+						String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
+
+						result.put("results", zipresponse);
+
+					}
+
+				} else {
+					result.put("error", "No Data Found");
+				}
+			}
+
+			if (itemType.equalsIgnoreCase("Pharmacy")) {
+
+				Container reportObject = extractDataPharmacy();
+				String validationStr = extractValidation();
+				if (validationStr != null) {
+					reportObject.getMessageHeader().setValidation(validationStr);
+				}
+
+				if (reportObject.getPharmacyInventory() != null) {
+
+					if (reportObject != null) {
+
+						System.out.println("starting xml creating process");
+						LOG.info("Testing log4j");
+						String reportFolder = RestUtils.ensureReportFolderExist(request, reportType);
+						datimCode = datimCode.replace("/", "_");
+
+						String fileName = IPShortName + "_" + "Commodity" + "_" + datimCode + "_" + formattedDate;
+						System.out.println("File name is " + fileName);
+
+						String xmlFile = Paths.get(reportFolder, fileName + ".xml").toString();
+
+						File aXMLFile = new File(xmlFile);
+						Boolean b;
+
+						b = aXMLFile.createNewFile();
+						System.out.println("creating xml file : " + xmlFile + "was successful : " + b);
+						writeFile(reportObject, aXMLFile, jaxbMarshaller);
+
+						String zipFileName =
+						        facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + "_Pharmacy" + ".zip";
+
+						String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
+
+						result.put("results", zipresponse);
+
+					}
+
+				} else {
+					result.put("error", "No Data Found");
+				}
 			}
 
 		} catch (Exception ex) {
@@ -208,7 +256,7 @@ public class NDRExtractionController {
 
 	}
 
-	private Container extractData() throws Exception {
+	private Container extractDataLab() throws Exception {
 
 		//	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
 		//	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
@@ -233,7 +281,6 @@ public class NDRExtractionController {
 
 		// InventoryReportType inventoryReportType = new InventoryReportType();
 		LabInventoryType labInventoryType = new LabInventoryType();
-		PharmacyInventoryType pharmacyInventoryType = new PharmacyInventoryType();
 
 		//  for Lab inventory
 		TaskOperationType taskOperationType = null;
@@ -270,6 +317,35 @@ public class NDRExtractionController {
 		        || !newConsumptionTypeList.isEmpty()) {
 			ndrReportTemplate.setLabInventory(labInventoryType);
 		}
+
+		return ndrReportTemplate;
+	}
+
+	private Container extractDataPharmacy() throws Exception {
+
+		//	XMLGregorianCalendar convertStartDate = RestUtils.getXmlDate(startDate);
+		//	XMLGregorianCalendar convertEndDate = RestUtils.getXmlDate(endDate);
+		Container ndrReportTemplate = new Container();
+		MessageHeaderType messageHeaderType = new MessageHeaderType();
+		messageHeaderType.setExportEndDate(dateTimeFormat.format(endDate));
+		messageHeaderType.setExportStartDate(dateTimeFormat.format(startDate));
+		messageHeaderType.setMessageCreationDateTime(dateTimeFormat.format(new Date()));
+		messageHeaderType.setMessageStatusCode("INITIAL");
+		messageHeaderType.setMessageUniqueID(UUID.randomUUID().toString());
+		messageHeaderType.setMessageVersion(1.0f);
+		messageHeaderType.setXmlType("commodity");
+
+		MessageSendingOrganisationType messageSendingOrganisationType = new MessageSendingOrganisationType();
+		messageSendingOrganisationType.setFacilityID(RestUtils.getFacilityDATIMId());
+		messageSendingOrganisationType.setFacilityName(RestUtils.getFacilityName());
+		messageSendingOrganisationType.setFacilityTypeCode(RestUtils.getFacilityType());
+
+		messageHeaderType.setMessageSendingOrganisation(messageSendingOrganisationType);
+
+		ndrReportTemplate.setMessageHeader(messageHeaderType);
+
+		// InventoryReportType inventoryReportType = new InventoryReportType();
+		PharmacyInventoryType pharmacyInventoryType = new PharmacyInventoryType();
 
 		//pharmacy inventory
 		TaskOperationType ptaskOperationType = null;

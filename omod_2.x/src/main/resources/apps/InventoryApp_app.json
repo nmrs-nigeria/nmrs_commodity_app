@@ -172,7 +172,7 @@
                 "id": "openhmis.inventory.inventoryNDRExtraction",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.tasks.dashboard",
                 "type": "link",
-                "label": "openhmis.inventory.admin.ndrextraction",
+                "label": "Lab NDR Extraction",
                 "url": "openhmis.inventory/ndrExtraction/entities.page",
                 "icon": "icon-share-alt",
                 "requiredPrivilege": "Task: Access Inventory Reports"
@@ -271,8 +271,8 @@
                 "id": "openhmis.inventory.inventoryNDRExtraction.pharm",
                 "extensionPointId": "org.openmrs.module.openhmis.inventory.pharmacy.task.dashboard",
                 "type": "link",
-                "label": "openhmis.inventory.admin.ndrextraction",
-                "url": "openhmis.inventory/ndrExtraction/entities.page",
+                "label": "Pharmacy NDR Extraction",
+                "url": "openhmis.inventory/pharmacyndrExtraction/entities.page",
                 "icon": "icon-share-alt",
                 "requiredPrivilege": "Task: Access Inventory Reports"
             }

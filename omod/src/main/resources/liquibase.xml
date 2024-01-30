@@ -7380,6 +7380,20 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         </sql>
     </changeSet>
 
+    <changeSet id="openhmis.inventory-v6.9" author="Tobechi Nnakwe" >
+        <sql>
+            <![CDATA[
+            INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Fast Track','Fast Track',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'62d0d525-7e4f-4a29-b27a-e4304b685d67','pharmacy');
+            INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Facility ART group HCW led','Facility ART group HCW led',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'85c26f56-dac6-4c4a-9b58-7d80b5e56f27','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Facility ART group Support group','Facility ART group Support group',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'0fa18856-556e-4a68-9574-060bb7d1570f','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Decentralization (Hub and Spoke)','Decentralization (Hub and Spoke)',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'bb188c28-b5db-4177-9923-5cd65595e8b6','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('After hours','After hours',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'842740db-0b1e-43cf-b92b-f5ab8dfacb8b','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Weekend and Public holidays','Weekend and Public holidays',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'94e42803-04b1-47cb-899b-412334c77117','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Child/Teen/Adolescents club (Peer Managed)','Child/Teen/Adolescents club (Peer Managed)',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'e7d04484-061f-4d82-a32b-1422a05b9e19','pharmacy');
+			INSERT INTO inv_department (name,description,creator,date_created,changed_by,date_changed,retired,retired_by,date_retired,retire_reason,UUID,department_type) VALUES('Mother infant pair/Mentor mother led','Mother infant pair/Mentor mother led',1,'2024-01-22 13:40:00',NULL,NULL,0,NULL,NULL,NULL,'c511483f-ecaa-4f6c-ae8a-efcc2c26f77c','pharmacy');
+            ]]>
+        </sql>
+    </changeSet>
 
 
 </databaseChangeLog>

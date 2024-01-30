@@ -189,7 +189,7 @@
             // validate institution
             if ($scope.institutionStockroom !== undefined &&
                     (($scope.operationType.name === 'Transfer-In' && $scope.adjustmentKind === 'positive') ||
-                        ($scope.operationType.name === 'Distribution' && $scope.distributionType === 'Institution') ||
+                        ($scope.operationType.name === 'Issue' && $scope.distributionType === 'Institution') ||
                             ($scope.operationType.name === 'Transfer-Out' && $scope.transferType === 'Institution') ||
                             $scope.operationType.name === 'Return' && $scope.returnOperationType === 'Institution')) {
                 if ($scope.institutionStockroom.name !== notDefined.name) {
@@ -202,7 +202,7 @@
 
             // validate department
             if ($scope.department !== undefined &&
-                    (($scope.operationType.name === 'Distribution' && $scope.distributionType === 'Department') ||
+                    (($scope.operationType.name === 'Issue' && $scope.distributionType === 'Department') ||
                             $scope.operationType.name === 'Return' && $scope.returnOperationType === 'Department')) {
                 if ($scope.department.name !== notDefined.name) {
                     $scope.entity.department = $scope.department.uuid;
