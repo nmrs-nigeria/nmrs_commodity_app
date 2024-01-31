@@ -228,7 +228,8 @@ public class NDRExtractionController {
 						writeFile(reportObject, aXMLFile, jaxbMarshaller);
 
 						String zipFileName =
-						        facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + "_Pharmacy" + ".zip";
+						        facilityName + "_ " + IPShortName + "_" + datimCode + "_" + formattedDate + "_Pharmacy"
+						                + ".zip";
 
 						String zipresponse = RestUtils.zipFolder(request, reportFolder, zipFileName, reportType);
 
@@ -376,6 +377,9 @@ public class NDRExtractionController {
 
 		} catch (Exception ex) {
 			LOG.debug(ex.getMessage());
+			System.out.println(ex.getMessage());
+			//ex.printStackTrace();
+
 		}
 
 		if (!RestUtils.isNull(ptaskOperationType) || !pconsumptionSummaryTypes.isEmpty()
@@ -486,11 +490,11 @@ public class NDRExtractionController {
 
 	}
 
-	private List<PharmacyConsumptionSummaryType> extractPharmacyConsumptionSummaryReport() {
+	private List<PharmacyConsumptionSummaryType> extractPharmacyConsumptionSummaryReport() throws Exception {
 
-        List<NewPharmacyConsumptionSummary> drugDispenseSummary = 
+        List<NewPharmacyConsumptionSummary> drugDispenseSummary =
                 aRVPharmacyDispenseService.getDrugDispenseSummary(startDate, endDate, null);
-        
+
       return  drugDispenseSummary.stream()
                 .map(this::mapToPharmacyConsumptionSummaryType)
                 .collect(Collectors.toList());
@@ -543,6 +547,8 @@ public class NDRExtractionController {
 //        }
 //
 //        return finalConsumptionSummaryTypes;
+
+
 
     }
 
@@ -641,7 +647,7 @@ public class NDRExtractionController {
 
     }
 
-	private List<PharmacyNewConsumptionType> extractPharmacyConsumptionReport() {
+	private List<PharmacyNewConsumptionType> extractPharmacyConsumptionReport() throws Exception{
 
         List<ARVPharmacyDispense> arVs = aRVPharmacyDispenseService.getARVs(startDate, endDate, null);
       return  arVs.stream()

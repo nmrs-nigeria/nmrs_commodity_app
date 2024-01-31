@@ -410,6 +410,8 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
         List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
         List<Obs> obsPerVisit = null;
 
+        try{
+
         for (Encounter enc : encounters) {
             Obs obs = null;
 
@@ -465,6 +467,9 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
             pagingInfo.setLoadRecordCount(false);
         }
 
+		}catch (Exception e){
+			System.out.println(e.getMessage());
+		}
         return arvsuConsumptionSummarys;
     }
 
@@ -584,30 +589,36 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		Obs obs = null;
 		int valueCoded = 0, durationInDays = 0;
 
-		if (!obsListForAVisit.isEmpty() && Utils.contains(obsListForAVisit, Utils.CURRENT_REGIMEN_LINE_CONCEPT)) {
-			//	pepfarID = pepfarIdentifier.getIdentifier();
+		try {
 
-			visitID = Utils.getVisitId(pepfarID, visitDate);
+			if (!obsListForAVisit.isEmpty() && Utils.contains(obsListForAVisit, Utils.CURRENT_REGIMEN_LINE_CONCEPT)) {
+				//	pepfarID = pepfarIdentifier.getIdentifier();
 
-			obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsListForAVisit); //PrescribedRegimenLineCode
-			if (obs != null && obs.getValueCoded() != null) {
-				valueCoded = obs.getValueCoded().getConceptId();
+				visitID = Utils.getVisitId(pepfarID, visitDate);
 
-				//  ndrCode = getRegimenMapValue(valueCoded);
-				//  regimenType.setPrescribedRegimenLineCode(ndrCode);
-				//   regimenType.setPrescribedRegimenTypeCode(Utils.ART_CODE);
-				obs = Utils.extractObs(valueCoded, obsListForAVisit); // PrescribedRegimen
+				obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsListForAVisit); //PrescribedRegimenLineCode
+				if (obs != null && obs.getValueCoded() != null) {
+					valueCoded = obs.getValueCoded().getConceptId();
 
-				if (obs != null) {
-					//    valueCoded = obs.getValueCoded().getConceptId();
-					//   ndrCode = getRegimenMapValue(valueCoded);  
-					//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
-					aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
+					//  ndrCode = getRegimenMapValue(valueCoded);
+					//  regimenType.setPrescribedRegimenLineCode(ndrCode);
+					//   regimenType.setPrescribedRegimenTypeCode(Utils.ART_CODE);
+					obs = Utils.extractObs(valueCoded, obsListForAVisit); // PrescribedRegimen
+
+					if (obs != null) {
+						//    valueCoded = obs.getValueCoded().getConceptId();
+						//   ndrCode = getRegimenMapValue(valueCoded);  
+						//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
+						aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
+
+					}
 
 				}
 
 			}
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 		return aRVDispensedItems;
 	}
@@ -623,113 +634,119 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		String serviceDeliveryModel = null;
 		String deliveryType = null;
 
-		obs = Utils.extractObs(Utils.SERVICE_DELIVERY_MODEL, obsList);
-		if (obs != null && obs.getValueCoded() != null) {
-			serviceDeliveryModel = obs.getValueCoded().getName().getName();
-			System.out.println("service delivery " + obs.getValueCoded().getName().getName());
+		try {
 
-			if (obs.getValueCoded().getConceptId() == Utils.FACILITY_DISPENSING) {
-				obs = Utils.extractObs(Utils.FACILITY_DISPENSING, obsList);
-				if (obs != null && obs.getValueCoded() != null) {
-					deliveryType = obs.getValueCoded().getName().getName();
-					System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
+			obs = Utils.extractObs(Utils.SERVICE_DELIVERY_MODEL, obsList);
+			if (obs != null && obs.getValueCoded() != null) {
+				serviceDeliveryModel = obs.getValueCoded().getName().getName();
+				System.out.println("service delivery " + obs.getValueCoded().getName().getName());
+
+				if (obs.getValueCoded().getConceptId() == Utils.FACILITY_DISPENSING) {
+					obs = Utils.extractObs(Utils.FACILITY_DISPENSING, obsList);
+					if (obs != null && obs.getValueCoded() != null) {
+						deliveryType = obs.getValueCoded().getName().getName();
+						System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
+					}
+
+				} else if (obs.getValueCoded().getConceptId() == Utils.DECENTRALIZED_DRUG_DELIVERY) {
+					obs = Utils.extractObs(Utils.DECENTRALIZED_DRUG_DELIVERY, obsList);
+					if (obs != null && obs.getValueCoded() != null) {
+						deliveryType = obs.getValueCoded().getName().getName();
+						System.out.println("ddd " + obs.getValueCoded().getName().getName());
+					}
+
 				}
+			}
 
-			} else if (obs.getValueCoded().getConceptId() == Utils.DECENTRALIZED_DRUG_DELIVERY) {
-				obs = Utils.extractObs(Utils.DECENTRALIZED_DRUG_DELIVERY, obsList);
-				if (obs != null && obs.getValueCoded() != null) {
-					deliveryType = obs.getValueCoded().getName().getName();
-					System.out.println("ddd " + obs.getValueCoded().getName().getName());
+			obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
+			if (obs != null && obs.getValueCoded() != null) {
+				if (null == obs.getValueCoded().getConceptId()) {
+					//rare scenario
+					drugCategory = Utils.ADULT_ART_TEXT;
+				} else {
+					switch (obs.getValueCoded().getConceptId()) {
+						case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
+							drugCategory = Utils.ADULT_ART_TEXT;
+							break;
+						case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
+							drugCategory = Utils.PEDIATRIC_ART_TEXT;
+							break;
+						default:
+							//rare scenario
+							drugCategory = Utils.ADULT_ART_TEXT;
+							break;
+					}
+				}
+			}
+
+			Set<Obs> obsGroup = Utils.extractObsList(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
+			if (!obsGroup.isEmpty()) {
+
+				//            obsGroup.stream()                 
+				//                .map((a) -> {
+				//                    return a.getGroupMembers();
+				//                }).forEachOrdered((groupMembers) -> {
+				//            targetObsList.addAll(groupMembers);
+				//        });
+				for (Obs b : obsGroup) {
+					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+
+					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+
+					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+					if (obs != null) {
+						durationDays = (int)obs.getValueNumeric().doubleValue();
+						aRVDispensedItem.setDuration(durationDays);
+
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+						System.out.println("Concept ID ARV Retrieve : " + obs.getValueCoded().getConceptId());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+					if (obs != null) {
+						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+						//set concept strength
+						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setSingleDose((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG_FREQUENCY, obsList);
+					if (obs != null) {
+						aRVDispensedItem.setFrequency(obs.getValueCoded().getName().getName());
+					}
+
+					aRVDispensedItem.setDrugCategory(drugCategory);
+					aRVDispensedItem.setDeliveryType(deliveryType);
+					aRVDispensedItem.setServiceDeliveryModel(serviceDeliveryModel);
+
+					aRVDispensedItems.add(aRVDispensedItem);
+
 				}
 
 			}
-		}
 
-		obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
-		if (obs != null && obs.getValueCoded() != null) {
-			if (null == obs.getValueCoded().getConceptId()) {
-				//rare scenario
-				drugCategory = Utils.ADULT_ART_TEXT;
-			} else {
-				switch (obs.getValueCoded().getConceptId()) {
-					case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
-						drugCategory = Utils.ADULT_ART_TEXT;
-						break;
-					case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
-						drugCategory = Utils.PEDIATRIC_ART_TEXT;
-						break;
-					default:
-						//rare scenario
-						drugCategory = Utils.ADULT_ART_TEXT;
-						break;
-				}
-			}
-		}
-
-		Set<Obs> obsGroup = Utils.extractObsList(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
-		if (!obsGroup.isEmpty()) {
-
-			//            obsGroup.stream()                 
-			//                .map((a) -> {
-			//                    return a.getGroupMembers();
-			//                }).forEachOrdered((groupMembers) -> {
-			//            targetObsList.addAll(groupMembers);
-			//        });
-			for (Obs b : obsGroup) {
-				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
-
-				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
-
-				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-				if (obs != null) {
-					durationDays = (int)obs.getValueNumeric().doubleValue();
-					aRVDispensedItem.setDuration(durationDays);
-
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-					System.out.println("Concept ID ARV Retrieve : " + obs.getValueCoded().getConceptId());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-				if (obs != null) {
-					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-					//set concept strength
-					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setSingleDose((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG_FREQUENCY, obsList);
-				if (obs != null) {
-					aRVDispensedItem.setFrequency(obs.getValueCoded().getName().getName());
-				}
-
-				aRVDispensedItem.setDrugCategory(drugCategory);
-				aRVDispensedItem.setDeliveryType(deliveryType);
-				aRVDispensedItem.setServiceDeliveryModel(serviceDeliveryModel);
-
-				aRVDispensedItems.add(aRVDispensedItem);
-
-			}
-
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		return aRVDispensedItems;
@@ -744,50 +761,56 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 		Set<Obs> obsGroup = Utils.extractObsList(Utils.OI_DRUGS_GROUPING_CONCEPT_SET, obsList);
 
-		if (!obsGroup.isEmpty()) {
+		try {
 
-			for (Obs b : obsGroup) {
+			if (!obsGroup.isEmpty()) {
 
-				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+				for (Obs b : obsGroup) {
 
-				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-				if (obs != null) {
-					durationDays = (int)obs.getValueNumeric().doubleValue();
-					aRVDispensedItem.setDuration(durationDays);
+					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
+					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+					if (obs != null) {
+						durationDays = (int)obs.getValueNumeric().doubleValue();
+						aRVDispensedItem.setDuration(durationDays);
+
+					}
+
+					obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+						System.out.println("Concept ID OI Retrieve : " + obs.getValueCoded().getConceptId());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+					if (obs != null) {
+						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+						//set concept strength
+						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+					}
+
+					aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
+					aRVDispensedItems.add(aRVDispensedItem);
 				}
 
-				obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-					System.out.println("Concept ID OI Retrieve : " + obs.getValueCoded().getConceptId());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-				if (obs != null) {
-					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-					//set concept strength
-					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-				}
-
-				aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
-				aRVDispensedItems.add(aRVDispensedItem);
 			}
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		return aRVDispensedItems;
@@ -801,50 +824,57 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
 
 		Set<Obs> obsGroup = Utils.extractObsList(Utils.TB_DRUGS_GROUPING_CONCEPT_SET, obsList);
-		if (obsGroup != null) {
 
-			for (Obs b : obsGroup) {
+		try {
 
-				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+			if (obsGroup != null) {
 
-				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+				for (Obs b : obsGroup) {
 
-				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-				if (obs != null) {
-					durationDays = (int)obs.getValueNumeric().doubleValue();
-					aRVDispensedItem.setDuration(durationDays);
+					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
+					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+
+					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+					if (obs != null) {
+						durationDays = (int)obs.getValueNumeric().doubleValue();
+						aRVDispensedItem.setDuration(durationDays);
+
+					}
+
+					obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+						System.out.println("Concept ID TB DRUG Retrieve : " + obs.getValueCoded().getConceptId());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+					if (obs != null) {
+						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+					}
+
+					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+					if (obs != null) {
+						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+						//set concept strength
+						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+					}
+
+					aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
+					aRVDispensedItems.add(aRVDispensedItem);
 				}
 
-				obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-					System.out.println("Concept ID TB DRUG Retrieve : " + obs.getValueCoded().getConceptId());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-				if (obs != null) {
-					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-				}
-
-				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-				if (obs != null) {
-					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-					//set concept strength
-					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-				}
-
-				aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
-				aRVDispensedItems.add(aRVDispensedItem);
 			}
 
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		return aRVDispensedItems;
