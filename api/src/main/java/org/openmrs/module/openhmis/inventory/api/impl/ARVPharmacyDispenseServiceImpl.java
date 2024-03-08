@@ -230,349 +230,343 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 	}
 
 	@Override
-    public List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate, PagingInfo pagingInfo) {
-		
+	public List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate, PagingInfo pagingInfo) {
+
 		System.out.println("Start Date: " + startDate);
 		System.out.println("End Date: " + endDate);
-		
-        String queryString = "select a from " + Encounter.class.getName() + " "
-                + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
-                + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
 
-        Query query = getRepository().createQuery(queryString);
-        //   Query query = getRepository().createQuery(queryString);
-        query.setDate("startDate", startDate);
-        query.setDate("endDate", endDate);
-        List<Encounter> encounters = (List<Encounter>) query.list();
-        System.out.println("found arv encounters");
-        System.out.println(encounters.size());
+		String queryString = "select a from " + Encounter.class.getName() + " "
+				+ "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
+				+ "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
 
-        //   query = this.createPagingQuery(pagingInfo, query);
-        List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
-        List<Obs> obsPerVisit = null;
+		Query query = getRepository().createQuery(queryString);
+		//   Query query = getRepository().createQuery(queryString);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		List<Encounter> encounters = (List<Encounter>) query.list();
+		System.out.println("found arv encounters");
+		System.out.println(encounters.size());
 
-        for (Encounter enc : encounters) {
-            Obs obs = null;
+		//   query = this.createPagingQuery(pagingInfo, query);
+		List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
+		List<Obs> obsPerVisit = null;
 
-            String uuid = UUID.randomUUID().toString();
-            try {
-                obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
-                Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+		for (Encounter enc : encounters) {
+			Obs obs = null;
 
-                Set<ARVDispensedItem> aRVDispensedItems = null;
+			String uuid = UUID.randomUUID().toString();
+			try {
+				obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+				Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
 
-                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
-                        visitDate, obsPerVisit, uuid);
-                System.out.println("arv count " + aRVDispensedItems.size());
+				Set<ARVDispensedItem> aRVDispensedItems = null;
 
-                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+						visitDate, obsPerVisit, uuid);
+				System.out.println("arv count " + aRVDispensedItems.size());
 
-                if (!collect.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect);
-                }
+				List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
-                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				if (!collect.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect);
+				}
 
-                if (!collect1.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect1);
-                }
+				aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
-                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				if (!collect1.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect1);
+				}
 
-                if (!collect2.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect2);
-                }
+				aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-            } catch (DatatypeConfigurationException ex) {
-                Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
+				if (!collect2.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect2);
+				}
 
-        }
+			} catch (DatatypeConfigurationException ex) {
+				Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
 
-        arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+		}
 
-        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
-            Integer count = arvsuConsumptionSummarys.size();
+		arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
 
-            pagingInfo.setTotalRecordCount(count.longValue());
-            pagingInfo.setLoadRecordCount(false);
-        }
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			Integer count = arvsuConsumptionSummarys.size();
 
-        return arvsuConsumptionSummarys;
-    }
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
 
-	public List<NewPharmacyConsumptionSummary> 
-	 getDrugDispenseSummaryBeginingBalance(Date startDate, Date endDate, PagingInfo pagingInfo) {
-			
-			System.out.println("Start Date: " + startDate);
-			System.out.println("End Date: " + endDate);
-			
-	        String queryString = "select a from " + Encounter.class.getName() + " "
-	                + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
-	                + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) "
-	                + "and a.encounterType = 13 and a.voided = 0 ";
+		return arvsuConsumptionSummarys;
+	}
 
-	        Query query = getRepository().createQuery(queryString);
-	        //   Query query = getRepository().createQuery(queryString);
-	        query.setDate("startDate", startDate);
-	        query.setDate("endDate", endDate);
-	        List<Encounter> encounters = (List<Encounter>) query.list();
-	        System.out.println("found arv encounters");
-	        System.out.println(encounters.size());
+	public List<NewPharmacyConsumptionSummary>
+	getDrugDispenseSummaryBeginingBalance(Date startDate, Date endDate, PagingInfo pagingInfo) {
 
-	        //   query = this.createPagingQuery(pagingInfo, query);
-	        List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
-	        List<Obs> obsPerVisit = null;
+		System.out.println("Start Date: " + startDate);
+		System.out.println("End Date: " + endDate);
 
-	        for (Encounter enc : encounters) {
-	            Obs obs = null;
+		String queryString = "select a from " + Encounter.class.getName() + " "
+				+ "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
+				+ "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) "
+				+ "and a.encounterType = 13 and a.voided = 0 ";
 
-	            String uuid = UUID.randomUUID().toString();
-	            try {
-	                obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
-	                Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+		Query query = getRepository().createQuery(queryString);
+		//   Query query = getRepository().createQuery(queryString);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		List<Encounter> encounters = (List<Encounter>) query.list();
+		System.out.println("found arv encounters");
+		System.out.println(encounters.size());
 
-	                Set<ARVDispensedItem> aRVDispensedItems = null;
+		//   query = this.createPagingQuery(pagingInfo, query);
+		List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
+		List<Obs> obsPerVisit = null;
 
-	                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
-	                        visitDate, obsPerVisit, uuid);
-	                System.out.println("arv count " + aRVDispensedItems.size());
+		for (Encounter enc : encounters) {
+			Obs obs = null;
 
-	                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+			String uuid = UUID.randomUUID().toString();
+			try {
+				obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+				Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
 
-	                if (!collect.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect);
-	                }
+				Set<ARVDispensedItem> aRVDispensedItems = null;
 
-	                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
-	                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+				aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+						visitDate, obsPerVisit, uuid);
+				System.out.println("arv count " + aRVDispensedItems.size());
 
-	                if (!collect1.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect1);
-	                }
+				List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
-	                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+				if (!collect.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect);
+				}
 
-	                if (!collect2.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect2);
-	                }
+				aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	            } catch (DatatypeConfigurationException ex) {
-	                Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-	            }
+				if (!collect1.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect1);
+				}
 
-	        }
+				aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	        arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+				if (!collect2.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect2);
+				}
 
-	        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
-	            Integer count = arvsuConsumptionSummarys.size();
+			} catch (DatatypeConfigurationException ex) {
+				Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
 
-	            pagingInfo.setTotalRecordCount(count.longValue());
-	            pagingInfo.setLoadRecordCount(false);
-	        }
+		}
 
-	        return arvsuConsumptionSummarys;
+		arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			Integer count = arvsuConsumptionSummarys.size();
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
+
+		return arvsuConsumptionSummarys;
 	}
 
 	@Override
-    public List<NewPharmacyConsumptionSummary>
-           getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate,
-                    PagingInfo pagingInfo, String treatmentCategory) {
-        String queryString = "select  a from " + Encounter.class.getName() + " "
-                + "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
-                + "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
+	public List<NewPharmacyConsumptionSummary>
+	getAdultDrugDispenseSummaryByModalities(Date startDate, Date endDate,
+											PagingInfo pagingInfo, String treatmentCategory) {
+		String queryString = "select  a from " + Encounter.class.getName() + " "
+				+ "a where (a.dateCreated >= :startDate or a.dateChanged >=:startDate)"
+				+ "and (a.dateCreated <= :endDate or a.dateChanged <= :endDate) and a.encounterType = 13 and a.voided = 0 ";
 
-        Query query = getRepository().createQuery(queryString);
-        //   Query query = getRepository().createQuery(queryString);
-        query.setDate("startDate", startDate);
-        query.setDate("endDate", endDate);
-        List<Encounter> encounters = (List<Encounter>) query.list();
-        System.out.println("found arv encounters");
-        System.out.println(encounters.size());
+		Query query = getRepository().createQuery(queryString);
+		//   Query query = getRepository().createQuery(queryString);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		List<Encounter> encounters = (List<Encounter>) query.list();
+		System.out.println("found arv encounters");
+		System.out.println(encounters.size());
 
-        //   query = this.createPagingQuery(pagingInfo, query);
-        List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
-        List<Obs> obsPerVisit = null;
+		//   query = this.createPagingQuery(pagingInfo, query);
+		List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
+		List<Obs> obsPerVisit = null;
 
-        try{
+		for (Encounter enc : encounters) {
+			Obs obs = null;
 
-        for (Encounter enc : encounters) {
-            Obs obs = null;
+			String uuid = UUID.randomUUID().toString();
+			try {
+				obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+				Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
 
-            String uuid = UUID.randomUUID().toString();
-            try {
-                obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
-                Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+				Set<ARVDispensedItem> aRVDispensedItems = null;
 
-                Set<ARVDispensedItem> aRVDispensedItems = null;
+				aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+						visitDate, obsPerVisit, uuid);
+				System.out.println("arv count " + aRVDispensedItems.size());
 
-                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
-                        visitDate, obsPerVisit, uuid);
-                System.out.println("arv count " + aRVDispensedItems.size());
+				List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				if (!collect.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect);
+				}
 
-                if (!collect.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect);
-                }
+				aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
-                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				if (!collect1.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect1);
+				}
 
-                if (!collect1.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect1);
-                }
+				aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
-                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
-                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-                        .collect(Collectors.toList());
+				if (!collect2.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect2);
+				}
 
-                if (!collect2.isEmpty()) {
-                    arvsuConsumptionSummarys.addAll(collect2);
-                }
+			} catch (DatatypeConfigurationException ex) {
+				Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
 
-            } catch (DatatypeConfigurationException ex) {
-                Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-        }
-
-        arvsuConsumptionSummarys = sumAndGroupConsumptionByModalities(arvsuConsumptionSummarys, treatmentCategory);
-
-        if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
-            Integer count = arvsuConsumptionSummarys.size();
-
-            pagingInfo.setTotalRecordCount(count.longValue());
-            pagingInfo.setLoadRecordCount(false);
-        }
-
-		}catch (Exception e){
-			System.out.println(e.getMessage());
 		}
-        return arvsuConsumptionSummarys;
-    }
+
+		arvsuConsumptionSummarys = sumAndGroupConsumptionByModalities(arvsuConsumptionSummarys, treatmentCategory);
+
+		if (pagingInfo != null && pagingInfo.shouldLoadRecordCount()) {
+			Integer count = arvsuConsumptionSummarys.size();
+
+			pagingInfo.setTotalRecordCount(count.longValue());
+			pagingInfo.setLoadRecordCount(false);
+		}
+
+		return arvsuConsumptionSummarys;
+	}
 
 	private List<NewPharmacyConsumptionSummary>
-           sumAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
+	sumAndGroupConsumption(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys) {
 
-        List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
-        List<NewPharmacyConsumptionSummary> newSummarys = new ArrayList<>();
-        
-        arvsuConsumptionSummarys.stream().filter(Objects::nonNull)
-                .collect(Collectors.groupingBy(NewPharmacyConsumptionSummary::getDrugCategory,
-                        Collectors.groupingBy(NewPharmacyConsumptionSummary::getItem,
-                                Collectors.summingInt(NewPharmacyConsumptionSummary::getTotalQuantityReceived 
-                                		))
-                )).entrySet()
-                .stream()
-                .map((a) -> {
-                    return mapPharmacyConsumptionSummarys(a);
-                }).forEachOrdered((consumptions) -> {
-            summarys.addAll(consumptions);
-        });
-        
-        int conceptIdd = 0;
-        int strengthConceptIdd = 0;
-        for(NewPharmacyConsumptionSummary s : summarys) {	       	
-	       	 for(NewPharmacyConsumptionSummary nc : arvsuConsumptionSummarys) {
-	       		 if(s.getItem().equalsIgnoreCase(nc.getItem())) {
-	       			 conceptIdd = nc.getItemConceptId();
-	       			 strengthConceptIdd = nc.getStrengthConceptId();
-	       			 break;
-	       		 }
-	       	 }
-	       	 s.setItemConceptId(conceptIdd);	 
-	       	 s.setStrengthConceptId(strengthConceptIdd);
-	       	 newSummarys.add(s);
-        }
-    
-        return newSummarys;
+		List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
+		List<NewPharmacyConsumptionSummary> newSummarys = new ArrayList<>();
 
-    }
+		arvsuConsumptionSummarys.stream().filter(Objects::nonNull)
+				.collect(Collectors.groupingBy(NewPharmacyConsumptionSummary::getDrugCategory,
+						Collectors.groupingBy(NewPharmacyConsumptionSummary::getItem,
+								Collectors.summingInt(NewPharmacyConsumptionSummary::getTotalQuantityReceived
+								))
+				)).entrySet()
+				.stream()
+				.map((a) -> {
+					return mapPharmacyConsumptionSummarys(a);
+				}).forEachOrdered((consumptions) -> {
+			summarys.addAll(consumptions);
+		});
+
+		int conceptIdd = 0;
+		int strengthConceptIdd = 0;
+		for(NewPharmacyConsumptionSummary s : summarys) {
+			for(NewPharmacyConsumptionSummary nc : arvsuConsumptionSummarys) {
+				if(s.getItem().equalsIgnoreCase(nc.getItem())) {
+					conceptIdd = nc.getItemConceptId();
+					strengthConceptIdd = nc.getStrengthConceptId();
+					break;
+				}
+			}
+			s.setItemConceptId(conceptIdd);
+			s.setStrengthConceptId(strengthConceptIdd);
+			newSummarys.add(s);
+		}
+
+		return newSummarys;
+
+	}
 
 	private List<NewPharmacyConsumptionSummary>
-           sumAndGroupConsumptionByModalities(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys,
-                    String treatmentCategory) {
+	sumAndGroupConsumptionByModalities(List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys,
+									   String treatmentCategory) {
 
-        List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
+		List<NewPharmacyConsumptionSummary> summarys = new ArrayList<>();
 
-        arvsuConsumptionSummarys.stream()
-                .filter(Objects::nonNull)
-                .filter(a -> Objects.nonNull(a.getDeliveryType()) && a.getDrugCategory().equals(treatmentCategory))
-                .collect(Collectors.groupingBy(NewPharmacyConsumptionSummary::getDeliveryType,
-                        Collectors.groupingBy(NewPharmacyConsumptionSummary::getItem,
-                                Collectors.summingInt(NewPharmacyConsumptionSummary::getTotalQuantityReceived))
-                )).entrySet()
-                .stream()
-                .map((a) -> {
-                    return mapModalitiesPharmacyConsumptionSummarys(a);
-                }).forEachOrdered((consumptions) -> {
-            summarys.addAll(consumptions);
-        });
-        return summarys;
+		arvsuConsumptionSummarys.stream()
+				.filter(Objects::nonNull)
+				.filter(a -> Objects.nonNull(a.getDeliveryType()) && a.getDrugCategory().equals(treatmentCategory))
+				.collect(Collectors.groupingBy(NewPharmacyConsumptionSummary::getDeliveryType,
+						Collectors.groupingBy(NewPharmacyConsumptionSummary::getItem,
+								Collectors.summingInt(NewPharmacyConsumptionSummary::getTotalQuantityReceived))
+				)).entrySet()
+				.stream()
+				.map((a) -> {
+					return mapModalitiesPharmacyConsumptionSummarys(a);
+				}).forEachOrdered((consumptions) -> {
+			summarys.addAll(consumptions);
+		});
+		return summarys;
 
-    }
-
-	private static List<NewPharmacyConsumptionSummary>
-           mapPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
-
-        return entry.getValue().entrySet().stream().map((a) -> {
-        	
-            NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
-            
-            summary.setDrugCategory(entry.getKey());
-            
-            summary.setItem(a.getKey());
-            
-            summary.setTotalQuantityReceived(a.getValue());
-            
-            summary.setUuid(UUID.randomUUID().toString());
-            
-            summary.setItemConceptId(a.getValue());
-            
-           // summary.setStrengthConceptId();
-            
-            return summary;
-            
-        }).collect(Collectors.toList());
-
-    }
+	}
 
 	private static List<NewPharmacyConsumptionSummary>
-           mapModalitiesPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
+	mapPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
 
-        return entry.getValue().entrySet().stream().map((a) -> {
-            NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
-            summary.setDeliveryType(entry.getKey());
-            summary.setItem(a.getKey());
-            summary.setTotalQuantityReceived(a.getValue());
-            summary.setUuid(UUID.randomUUID().toString());
-            summary.setDrugCategory(Utils.ADULT_ART_TEXT);
-            return summary;
-        }).collect(Collectors.toList());
+		return entry.getValue().entrySet().stream().map((a) -> {
 
-    }
+			NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
+
+			summary.setDrugCategory(entry.getKey());
+
+			summary.setItem(a.getKey());
+
+			summary.setTotalQuantityReceived(a.getValue());
+
+			summary.setUuid(UUID.randomUUID().toString());
+
+			summary.setItemConceptId(a.getValue());
+
+
+			return summary;
+
+		}).collect(Collectors.toList());
+
+	}
+
+	private static List<NewPharmacyConsumptionSummary>
+	mapModalitiesPharmacyConsumptionSummarys(Map.Entry<String, Map<String, Integer>> entry) {
+
+		return entry.getValue().entrySet().stream().map((a) -> {
+			NewPharmacyConsumptionSummary summary = new NewPharmacyConsumptionSummary();
+			summary.setDeliveryType(entry.getKey());
+			summary.setItem(a.getKey());
+			summary.setTotalQuantityReceived(a.getValue());
+			summary.setUuid(UUID.randomUUID().toString());
+			summary.setDrugCategory(Utils.ADULT_ART_TEXT);
+			return summary;
+		}).collect(Collectors.toList());
+
+	}
 
 	public Set<ARVDispensedItem> createARVDispenseItems(Patient patient, Date visitDate, List<Obs> obsListForAVisit,
 	        String uuid)
@@ -589,36 +583,30 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		Obs obs = null;
 		int valueCoded = 0, durationInDays = 0;
 
-		try {
+		if (!obsListForAVisit.isEmpty() && Utils.contains(obsListForAVisit, Utils.CURRENT_REGIMEN_LINE_CONCEPT)) {
+			//	pepfarID = pepfarIdentifier.getIdentifier();
 
-			if (!obsListForAVisit.isEmpty() && Utils.contains(obsListForAVisit, Utils.CURRENT_REGIMEN_LINE_CONCEPT)) {
-				//	pepfarID = pepfarIdentifier.getIdentifier();
+			visitID = Utils.getVisitId(pepfarID, visitDate);
 
-				visitID = Utils.getVisitId(pepfarID, visitDate);
+			obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsListForAVisit); //PrescribedRegimenLineCode
+			if (obs != null && obs.getValueCoded() != null) {
+				valueCoded = obs.getValueCoded().getConceptId();
 
-				obs = Utils.extractObs(Utils.CURRENT_REGIMEN_LINE_CONCEPT, obsListForAVisit); //PrescribedRegimenLineCode
-				if (obs != null && obs.getValueCoded() != null) {
-					valueCoded = obs.getValueCoded().getConceptId();
+				//  ndrCode = getRegimenMapValue(valueCoded);
+				//  regimenType.setPrescribedRegimenLineCode(ndrCode);
+				//   regimenType.setPrescribedRegimenTypeCode(Utils.ART_CODE);
+				obs = Utils.extractObs(valueCoded, obsListForAVisit); // PrescribedRegimen
 
-					//  ndrCode = getRegimenMapValue(valueCoded);
-					//  regimenType.setPrescribedRegimenLineCode(ndrCode);
-					//   regimenType.setPrescribedRegimenTypeCode(Utils.ART_CODE);
-					obs = Utils.extractObs(valueCoded, obsListForAVisit); // PrescribedRegimen
-
-					if (obs != null) {
-						//    valueCoded = obs.getValueCoded().getConceptId();
-						//   ndrCode = getRegimenMapValue(valueCoded);  
-						//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
-						aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
-
-					}
+				if (obs != null) {
+					//    valueCoded = obs.getValueCoded().getConceptId();
+					//   ndrCode = getRegimenMapValue(valueCoded);
+					//     codedSimpleType.setCodeDescTxt(obs.getValueCoded().getName().getName());
+					aRVDispensedItems = retrieveARVMedicationItems(visitDate, obsListForAVisit, uuid);
 
 				}
 
 			}
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 		return aRVDispensedItems;
 	}
@@ -634,119 +622,113 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		String serviceDeliveryModel = null;
 		String deliveryType = null;
 
-		try {
+		obs = Utils.extractObs(Utils.SERVICE_DELIVERY_MODEL, obsList);
+		if (obs != null && obs.getValueCoded() != null) {
+			serviceDeliveryModel = obs.getValueCoded().getName().getName();
+			System.out.println("service delivery " + obs.getValueCoded().getName().getName());
 
-			obs = Utils.extractObs(Utils.SERVICE_DELIVERY_MODEL, obsList);
-			if (obs != null && obs.getValueCoded() != null) {
-				serviceDeliveryModel = obs.getValueCoded().getName().getName();
-				System.out.println("service delivery " + obs.getValueCoded().getName().getName());
-
-				if (obs.getValueCoded().getConceptId() == Utils.FACILITY_DISPENSING) {
-					obs = Utils.extractObs(Utils.FACILITY_DISPENSING, obsList);
-					if (obs != null && obs.getValueCoded() != null) {
-						deliveryType = obs.getValueCoded().getName().getName();
-						System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
-					}
-
-				} else if (obs.getValueCoded().getConceptId() == Utils.DECENTRALIZED_DRUG_DELIVERY) {
-					obs = Utils.extractObs(Utils.DECENTRALIZED_DRUG_DELIVERY, obsList);
-					if (obs != null && obs.getValueCoded() != null) {
-						deliveryType = obs.getValueCoded().getName().getName();
-						System.out.println("ddd " + obs.getValueCoded().getName().getName());
-					}
-
+			if (obs.getValueCoded().getConceptId() == Utils.FACILITY_DISPENSING) {
+				obs = Utils.extractObs(Utils.FACILITY_DISPENSING, obsList);
+				if (obs != null && obs.getValueCoded() != null) {
+					deliveryType = obs.getValueCoded().getName().getName();
+					System.out.println("facility dispensing " + obs.getValueCoded().getName().getName());
 				}
-			}
 
-			obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
-			if (obs != null && obs.getValueCoded() != null) {
-				if (null == obs.getValueCoded().getConceptId()) {
-					//rare scenario
-					drugCategory = Utils.ADULT_ART_TEXT;
-				} else {
-					switch (obs.getValueCoded().getConceptId()) {
-						case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
-							drugCategory = Utils.ADULT_ART_TEXT;
-							break;
-						case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
-							drugCategory = Utils.PEDIATRIC_ART_TEXT;
-							break;
-						default:
-							//rare scenario
-							drugCategory = Utils.ADULT_ART_TEXT;
-							break;
-					}
-				}
-			}
-
-			Set<Obs> obsGroup = Utils.extractObsList(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
-			if (!obsGroup.isEmpty()) {
-
-				//            obsGroup.stream()                 
-				//                .map((a) -> {
-				//                    return a.getGroupMembers();
-				//                }).forEachOrdered((groupMembers) -> {
-				//            targetObsList.addAll(groupMembers);
-				//        });
-				for (Obs b : obsGroup) {
-					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
-
-					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
-
-					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-					if (obs != null) {
-						durationDays = (int)obs.getValueNumeric().doubleValue();
-						aRVDispensedItem.setDuration(durationDays);
-
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-						System.out.println("Concept ID ARV Retrieve : " + obs.getValueCoded().getConceptId());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-					if (obs != null) {
-						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-						//set concept strength
-						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setSingleDose((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG_FREQUENCY, obsList);
-					if (obs != null) {
-						aRVDispensedItem.setFrequency(obs.getValueCoded().getName().getName());
-					}
-
-					aRVDispensedItem.setDrugCategory(drugCategory);
-					aRVDispensedItem.setDeliveryType(deliveryType);
-					aRVDispensedItem.setServiceDeliveryModel(serviceDeliveryModel);
-
-					aRVDispensedItems.add(aRVDispensedItem);
-
+			} else if (obs.getValueCoded().getConceptId() == Utils.DECENTRALIZED_DRUG_DELIVERY) {
+				obs = Utils.extractObs(Utils.DECENTRALIZED_DRUG_DELIVERY, obsList);
+				if (obs != null && obs.getValueCoded() != null) {
+					deliveryType = obs.getValueCoded().getName().getName();
+					System.out.println("ddd " + obs.getValueCoded().getName().getName());
 				}
 
 			}
+		}
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		obs = Utils.extractObs(Utils.TREATMENT_CATEGORY_CONCEPT, obsList);
+		if (obs != null && obs.getValueCoded() != null) {
+			if (null == obs.getValueCoded().getConceptId()) {
+				//rare scenario
+				drugCategory = Utils.ADULT_ART_TEXT;
+			} else {
+				switch (obs.getValueCoded().getConceptId()) {
+					case Utils.ADULT_TREATMENT_CATEGORY_CONCEPT:
+						drugCategory = Utils.ADULT_ART_TEXT;
+						break;
+					case Utils.PEDIATRIC_TREATMENT_CATEGORY_CONCEPT:
+						drugCategory = Utils.PEDIATRIC_ART_TEXT;
+						break;
+					default:
+						//rare scenario
+						drugCategory = Utils.ADULT_ART_TEXT;
+						break;
+				}
+			}
+		}
+
+		Set<Obs> obsGroup = Utils.extractObsList(Utils.ARV_DRUGS_GROUPING_CONCEPT_SET, obsList);
+		if (!obsGroup.isEmpty()) {
+
+			//            obsGroup.stream()
+			//                .map((a) -> {
+			//                    return a.getGroupMembers();
+			//                }).forEachOrdered((groupMembers) -> {
+			//            targetObsList.addAll(groupMembers);
+			//        });
+			for (Obs b : obsGroup) {
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
+
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+					System.out.println("Concept ID ARV Retrieve : " + obs.getValueCoded().getConceptId());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_SINGLE_DOSE, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setSingleDose((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_FREQUENCY, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setFrequency(obs.getValueCoded().getName().getName());
+				}
+
+				aRVDispensedItem.setDrugCategory(drugCategory);
+				aRVDispensedItem.setDeliveryType(deliveryType);
+				aRVDispensedItem.setServiceDeliveryModel(serviceDeliveryModel);
+
+				aRVDispensedItems.add(aRVDispensedItem);
+
+			}
+
 		}
 
 		return aRVDispensedItems;
@@ -761,56 +743,56 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 		Set<Obs> obsGroup = Utils.extractObsList(Utils.OI_DRUGS_GROUPING_CONCEPT_SET, obsList);
 
-		try {
+		if (!obsGroup.isEmpty()) {
 
-			if (!obsGroup.isEmpty()) {
+			for (Obs b : obsGroup) {
 
-				for (Obs b : obsGroup) {
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+				aRVDispensedItem.setDuration(0);
+				aRVDispensedItem.setItemName("OI Medication");
+				aRVDispensedItem.setItemConceptId(165257);
+				aRVDispensedItem.setQuantityPrescribed(0);
+				aRVDispensedItem.setQuantityDispensed(0);
 
-					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
-					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-					if (obs != null) {
-						durationDays = (int)obs.getValueNumeric().doubleValue();
-						aRVDispensedItem.setDuration(durationDays);
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
 
-					}
-
-					obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-						System.out.println("Concept ID OI Retrieve : " + obs.getValueCoded().getConceptId());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-					if (obs != null) {
-						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-						//set concept strength
-						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-					}
-
-					aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
-					aRVDispensedItems.add(aRVDispensedItem);
 				}
 
+				obs = Utils.extractObs(Utils.OI_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+					System.out.println("Concept ID OI Retrieve : " + obs.getValueCoded().getConceptId());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+				}
+
+				aRVDispensedItem.setDrugCategory("OI Prophylaxis/Treatment");
+				aRVDispensedItems.add(aRVDispensedItem);
 			}
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 
 		return aRVDispensedItems;
@@ -824,57 +806,50 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		Set<ARVDispensedItem> aRVDispensedItems = new HashSet<>();
 
 		Set<Obs> obsGroup = Utils.extractObsList(Utils.TB_DRUGS_GROUPING_CONCEPT_SET, obsList);
+		if (obsGroup != null) {
 
-		try {
+			for (Obs b : obsGroup) {
 
-			if (obsGroup != null) {
+				ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
+				aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
 
-				for (Obs b : obsGroup) {
+				List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
 
-					ARVDispensedItem aRVDispensedItem = new ARVDispensedItem();
-					aRVDispensedItem.setArvPharmacyDispenseUuid(uuid);
+				obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
+				if (obs != null) {
+					durationDays = (int)obs.getValueNumeric().doubleValue();
+					aRVDispensedItem.setDuration(durationDays);
 
-					List<Obs> filteredObs = b.getGroupMembers().stream().collect(Collectors.toList());
-
-					obs = Utils.extractObs(Utils.MEDICATION_DURATION_CONCEPT, filteredObs);
-					if (obs != null) {
-						durationDays = (int)obs.getValueNumeric().doubleValue();
-						aRVDispensedItem.setDuration(durationDays);
-
-					}
-
-					obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
-						aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
-						System.out.println("Concept ID TB DRUG Retrieve : " + obs.getValueCoded().getConceptId());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
-					if (obs != null) {
-						aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
-					}
-
-					obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
-					if (obs != null) {
-						aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
-						//set concept strength
-						aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
-					}
-
-					aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
-					aRVDispensedItems.add(aRVDispensedItem);
 				}
 
+				obs = Utils.extractObs(Utils.TB_DRUG, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setItemName(obs.getValueCoded().getName().getName());
+					aRVDispensedItem.setItemConceptId(obs.getValueCoded().getConceptId());
+					System.out.println("Concept ID TB DRUG Retrieve : " + obs.getValueCoded().getConceptId());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_PRESCRIBED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityPrescribed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_QTY_DISPENSED, filteredObs);
+				if (obs != null) {
+					aRVDispensedItem.setQuantityDispensed((int)obs.getValueNumeric().doubleValue());
+				}
+
+				obs = Utils.extractObs(Utils.ARV_DRUG_STRENGHT, obsList);
+				if (obs != null) {
+					aRVDispensedItem.setDrugStrength(obs.getValueCoded().getName().getName());
+					//set concept strength
+					aRVDispensedItem.setStrengthConceptId(obs.getValueCoded().getConceptId());
+				}
+
+				aRVDispensedItem.setDrugCategory("Anti-TB Drugs");
+				aRVDispensedItems.add(aRVDispensedItem);
 			}
 
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
 		}
 
 		return aRVDispensedItems;
@@ -886,7 +861,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 		if (arvItem.getDrugCategory() != null && arvItem.getItemName() != null) {
 			summary = new NewPharmacyConsumptionSummary();
 			summary.setGroupUuid(arvItem.getArvPharmacyDispenseUuid());
-			summary.setItem(arvItem.getItemName());
+			summary.setItem(arvItem.getItemName() + " (" + arvItem.getDrugStrength() + ")");
 			summary.setTotalQuantityReceived(arvItem.getQuantityDispensed());
 			summary.setDrugCategory(arvItem.getDrugCategory());
 			summary.setUuid(UUID.randomUUID().toString());
@@ -897,6 +872,7 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 			System.out.println("Concept ID summary map : " + arvItem.getItemConceptId());
 			System.out.println("Strength Concept ID summary map : " + arvItem.getStrengthConceptId());
+			System.out.println("Drug Strength summary map : " + arvItem.getDrugStrength());
 		}
 
 		return summary;
@@ -904,78 +880,78 @@ public class ARVPharmacyDispenseServiceImpl extends BaseMetadataDataServiceImpl<
 
 	@Override
 	public List<NewPharmacyConsumptionSummary> getDrugDispenseSummary(Date startDate, Date endDate) {
-			
-			System.out.println("Start Date: " + startDate);
-			System.out.println("End Date: " + endDate);
-			
-	        String queryString = "select a from " + Encounter.class.getName() + " "
-	                + "a where (a.dateCreated >= :startDate or a.dateChanged >= :startDate)"
-	                + " and (a.dateCreated <= :endDate or a.dateChanged <= :endDate)"
-	                + " and a.encounterType = 13 and a.voided = 0 ";
 
-	        Query query = getRepository().createQuery(queryString);
-	        //   Query query = getRepository().createQuery(queryString);
-	        query.setDate("startDate", startDate);
-	        query.setDate("endDate", endDate);
-	        List<Encounter> encounters = (List<Encounter>) query.list();
-	        System.out.println("found arv encounters");
-	        System.out.println(encounters.size());
+		System.out.println("Start Date: " + startDate);
+		System.out.println("End Date: " + endDate);
 
-	        //   query = this.createPagingQuery(pagingInfo, query);
-	        List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
-	        List<Obs> obsPerVisit = null;
+		String queryString = "select a from " + Encounter.class.getName() + " "
+				+ "a where (a.dateCreated >= :startDate or a.dateChanged >= :startDate)"
+				+ " and (a.dateCreated <= :endDate or a.dateChanged <= :endDate)"
+				+ " and a.encounterType = 13 and a.voided = 0 ";
 
-	        for (Encounter enc : encounters) {
-	            Obs obs = null;
+		Query query = getRepository().createQuery(queryString);
+		//   Query query = getRepository().createQuery(queryString);
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		List<Encounter> encounters = (List<Encounter>) query.list();
+		System.out.println("found arv encounters");
+		System.out.println(encounters.size());
 
-	            String uuid = UUID.randomUUID().toString();
-	            try {
-	                obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
-	                Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
+		//   query = this.createPagingQuery(pagingInfo, query);
+		List<NewPharmacyConsumptionSummary> arvsuConsumptionSummarys = new ArrayList<>();
+		List<Obs> obsPerVisit = null;
 
-	                Set<ARVDispensedItem> aRVDispensedItems = null;
+		for (Encounter enc : encounters) {
+			Obs obs = null;
 
-	                aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
-	                        visitDate, obsPerVisit, uuid);
-	                System.out.println("arv count " + aRVDispensedItems.size());
+			String uuid = UUID.randomUUID().toString();
+			try {
+				obsPerVisit = new ArrayList<Obs>(enc.getAllObs());
+				Date visitDate = DateUtils.truncate(enc.getEncounterDatetime(), Calendar.DATE);
 
-	                List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+				Set<ARVDispensedItem> aRVDispensedItems = null;
 
-	                if (!collect.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect);
-	                }
+				aRVDispensedItems = createARVDispenseItems(enc.getPatient(),
+						visitDate, obsPerVisit, uuid);
+				System.out.println("arv count " + aRVDispensedItems.size());
 
-	                aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
-	                List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+				List<NewPharmacyConsumptionSummary> collect = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	                if (!collect1.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect1);
-	                }
+				if (!collect.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect);
+				}
 
-	                aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
-	                List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
-	                        .map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
-	                        .collect(Collectors.toList());
+				aRVDispensedItems = retrieveOIMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect1 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	                if (!collect2.isEmpty()) {
-	                    arvsuConsumptionSummarys.addAll(collect2);
-	                }
+				if (!collect1.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect1);
+				}
 
-	            } catch (DatatypeConfigurationException ex) {
-	                Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-	            }
+				aRVDispensedItems = retrieveTBMedicationItems(obsPerVisit, uuid);
+				List<NewPharmacyConsumptionSummary> collect2 = aRVDispensedItems.stream()
+						.map(ARVPharmacyDispenseServiceImpl::mapARVDispensedItem)
+						.collect(Collectors.toList());
 
-	        }
+				if (!collect2.isEmpty()) {
+					arvsuConsumptionSummarys.addAll(collect2);
+				}
 
-	        arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+			} catch (DatatypeConfigurationException ex) {
+				Logger.getLogger(ARVPharmacyDispenseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
 
-	      
-	        return arvsuConsumptionSummarys;
-	    }
+		}
+
+		arvsuConsumptionSummarys = sumAndGroupConsumption(arvsuConsumptionSummarys);
+
+
+		return arvsuConsumptionSummarys;
+	}
 
 	@Override
 	protected void validate(ARVPharmacyDispense object) {

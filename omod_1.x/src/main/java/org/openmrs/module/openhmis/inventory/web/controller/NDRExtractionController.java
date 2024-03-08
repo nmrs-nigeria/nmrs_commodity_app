@@ -698,16 +698,17 @@ public class NDRExtractionController {
 
             aRVPharmacyDispense.getItems()
                     .stream().forEach(a -> {
+			if(a.getQuantityDispensed() > 0 && a.getQuantityPrescribed() > 0) {
+				DrugType drugType = new DrugType();
+				drugType.setDrugCategory(a.getDrugCategory());
+				drugType.setDrugStrength(a.getDrugStrength());
+				drugType.setDuration(BigInteger.valueOf(a.getDuration()));
+				drugType.setItemName(a.getItemName());
+				drugType.setQuantityDispensed(BigInteger.valueOf(a.getQuantityDispensed()));
+				drugType.setQuantityPrescribed(BigInteger.valueOf(a.getQuantityPrescribed()));
 
-                        DrugType drugType = new DrugType();
-                        drugType.setDrugCategory(a.getDrugCategory());
-                        drugType.setDrugStrength(a.getDrugStrength());
-                        drugType.setDuration(BigInteger.valueOf(a.getDuration()));
-                        drugType.setItemName(a.getItemName());
-                        drugType.setQuantityDispensed(BigInteger.valueOf(a.getQuantityDispensed()));
-                        drugType.setQuantityPrescribed(BigInteger.valueOf(a.getQuantityPrescribed()));
-
-                        drugItemType.getDrug().add(drugType);
+				drugItemType.getDrug().add(drugType);
+			}
                     });
 
         } catch (Exception ex) {

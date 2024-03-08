@@ -395,8 +395,9 @@
         function validateExpirationAndOperationDate($scope) {
             var lineItems = $scope.lineItems;
             var operationDate = $scope.operationDate;
+            var operationType = $scope.operationType;
             var failed = false;
-            if (lineItems !== undefined && operationDate !== undefined) {
+            if (lineItems !== undefined && operationDate !== undefined && operationType.name !== 'Disposed') {
                 for (var i = 0; i < lineItems.length; i++) {
                     var lineItem = lineItems[i];
                     if (lineItem.selected) {                    

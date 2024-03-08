@@ -1023,6 +1023,7 @@ public class CrrfReportsResource extends BaseRestMetadataResource<Crrf> {
 					.isPresent())) {
 				distinctElements.add(it);
 			}
+
 		}
 
 		System.out.println("OI Item Size: " + distinctOIItemBase.size());

@@ -7395,5 +7395,108 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
         </sql>
     </changeSet>
 
+    <changeSet id="openhmis.inventory-v6.10" author="Tobechi Nnakwe">
+
+        <insert tableName="inv_item">
+            <column name="name">Fluconazole 50mg</column>
+            <column name="description">Fluconazole 50mg capsule </column>
+            <column name="has_expiration">1</column>
+            <column name="concept_id">76488</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">caps</column>
+            <column name="pack_size">0</column>
+            <column name="strength">50mg</column>
+            <column name="strength_concept_id">165617</column>
+            <column name="regimen_line">OI</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">68f8755a-e63d-4269-87c4-6d3819ed1263</column>
+        </insert>
+
+        <insert tableName="inv_item">
+            <column name="name">Fluconazole 100mg</column>
+            <column name="description">Fluconazole 100mg tablets </column>
+            <column name="has_expiration">1</column>
+            <column name="concept_id">76488</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">tabs</column>
+            <column name="pack_size">0</column>
+            <column name="strength">100mg</column>
+            <column name="strength_concept_id">165076</column>
+            <column name="regimen_line">OI</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">e7589857-1d96-472d-96bb-d357098e1478</column>
+        </insert>
+
+        <insert tableName="inv_item">
+            <column name="name">Fluconazole 200mg</column>
+            <column name="description">Fluconazole 200mg tablets </column>
+            <column name="has_expiration">1</column>
+            <column name="concept_id">76488</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">tabs</column>
+            <column name="pack_size">0</column>
+            <column name="strength">200mg</column>
+            <column name="strength_concept_id">165635</column>
+            <column name="regimen_line">OI</column>
+            <column name="item_type">pharmacy</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">8f4b84b8-eabb-4dcb-b40d-65961a5722bf</column>
+        </insert>
+
+        <insert tableName="inv_item">
+            <column name="name">VISITECT CD4 Advanced Disease test kit</column>
+            <column name="description">VISITECT CD4 Advanced Disease test kit </column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">25</column>
+            <column name="item_type">lab</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">d562aa72-4666-41b3-b510-7489e1f22619</column>
+        </insert>
+        <insert tableName="inv_item">
+            <column name="name">Urine TB LF-LAM Ag test kits</column>
+            <column name="description">Urine TB LF-LAM Ag test kits </column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">25</column>
+            <column name="item_type">lab</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">cfc31330-80f1-47ef-bcd2-bffdb254d29f</column>
+        </insert>
+        <insert tableName="inv_item">
+            <column name="name">Cryptococcal Antigen Lateral Flow Assay (CrAg- LFA) 50</column>
+            <column name="description">Cryptococcal Antigen Lateral Flow Assay (CrAg- LFA)</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">50</column>
+            <column name="item_type">lab</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">404cc1ca-362b-49aa-9bc9-50321dd5f015</column>
+        </insert>
+        <insert tableName="inv_item">
+            <column name="name">Cryptococcal Antigen Lateral Flow Assay (CrAg- LFA) 25</column>
+            <column name="description">Cryptococcal Antigen Lateral Flow Assay (CrAg- LFA)</column>
+            <column name="has_expiration">1</column>
+            <column name="has_physical_inventory">1</column>
+            <column name="unit_of_measure">test</column>
+            <column name="pack_size">25</column>
+            <column name="item_type">lab</column>
+            <column name="creator">1</column>
+            <column name="date_created">2024-02-08</column>
+            <column name="uuid">84fde422-69c2-42cf-ad85-419a67a92998</column>
+        </insert>
+
+    </changeSet>
 
 </databaseChangeLog>
