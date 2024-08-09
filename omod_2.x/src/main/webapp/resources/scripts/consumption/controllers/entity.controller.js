@@ -124,6 +124,13 @@
                 $scope.entity.consumptionDate = formatDate(tempDate);
             }
 
+            //Added by Tobe 30/04/2024
+            if ($scope.entity.testPurpose === undefined || $scope.entity.testPurpose === '') {
+                $scope.submitted = true;
+                emr.errorAlert(emr.message("Field cannot be empty!"));
+
+            }
+
             console.log("done with consumption date");
 
             console.log("printing value of submit");

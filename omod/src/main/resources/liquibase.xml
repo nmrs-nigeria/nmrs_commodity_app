@@ -7499,4 +7499,36 @@ UPDATE inv_item SET strength_concept_id =165707  WHERE strength='10ml/g'			and u
 
     </changeSet>
 
+    <changeSet id="openhmis.inventory-v6.11" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_department` SET `description` = 'Community' WHERE `department_id` = 3 and `name` = 'Com';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+    <changeSet id="openhmis.inventory-v6.12" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			UPDATE `inv_item` SET `name` = 'Dolutegravir(90)(10mg)' WHERE `item_id` = 99 and `name` = 'Dolutegravir (10mg)';
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+
+    <changeSet id="openhmis.inventory-v6.13" author="Tobechi Nnakwe">
+        <sql>
+            <![CDATA[
+            SET FOREIGN_KEY_CHECKS=0;
+			DELETE FROM inv_institution WHERE institution_id=1647;
+			DELETE FROM inv_institution WHERE institution_id=2547;
+			DELETE FROM inv_institution WHERE institution_id=1840;
+        	SET FOREIGN_KEY_CHECKS=1;
+        	]]>
+        </sql>
+    </changeSet>
+
+
 </databaseChangeLog>

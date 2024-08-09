@@ -27,7 +27,7 @@
 
         // @Override
         extended.getModelFields = function() {
-            var fields = ["cancelReason", "dateCreated", "instanceType", "operationDate", "operationNumber", "OperationOrder", "status"];
+            var fields = ["cancelReason", "dateCreated", "instanceType", "operationDate", "operationNumber", "OperationOrder", "status","commodityType"];
             return fields.concat(defaultFields);
         };
 

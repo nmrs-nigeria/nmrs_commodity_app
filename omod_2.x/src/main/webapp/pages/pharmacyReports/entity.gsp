@@ -122,7 +122,7 @@
     <fieldset>
         <legend>
             <i class="icon-list-alt"></i>
-            <span>Stockroom Consumption Report</span>
+            <span>Stockroom Report</span>
         </legend>
         <small>select date range</small>
          <ul class="table-layout">

@@ -204,7 +204,7 @@
             if ($scope.department !== undefined &&
                     (($scope.operationType.name === 'Issue' && $scope.distributionType === 'Department') ||
                             $scope.operationType.name === 'Return' && $scope.returnOperationType === 'Department')) {
-                if ($scope.department.name !== notDefined.name) {
+                if ($scope.department.description !== notDefined.name) {
                     $scope.entity.department = $scope.department.uuid;
                 } else {
                     emr.errorAlert("openhmis.inventory.operations.required.department");

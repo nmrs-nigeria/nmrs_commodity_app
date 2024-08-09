@@ -159,7 +159,7 @@
             </ul>
 
             <!--Added by Tobechi PHIS3 2023-11-07-->
-            <ul class="table-layout" ng-show="(operationType.name === 'Disposed') && (disposedType === 'others') ">
+            <ul class="table-layout" ng-show="(operationType.name === 'Disposed') && (disposedType === 'others' || disposedType === 'damaged') ">
                 <li class="not-required">
                     <span>Comment </span>
                 </li>
@@ -213,6 +213,12 @@
             </ul>
 
             <!-- Added by Tobechi PHIS3 13-11-2023  -->
+            <ul class="table-layout"
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
+
+                <li> <span>Transferred out from:</span></li>
+
+            </ul>
             <ul class="table-layout"
                 ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
 
@@ -373,7 +379,7 @@ ngEnterEvent: "addLineItem()",
 placeholder: [ui.message('openhmis.inventory.item.enterItemSearch')],
 ])}</td>
                             <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
-                                <b>${ui.message("openhmis.inventory.item.quantity")}:</b>
+                                <b>${ui.message("openhmis.inventory.item.quantitytabs")}:</b>
                             </td>
                             <td ng-class="{'negative-quantity' : (lineItem.newQuantity < 0 && operationType.hasSource)}">
                                 <input id="quantity-{{\$index}}" type="number" ng-model="lineItem.itemStockQuantity"

@@ -159,7 +159,7 @@
             </ul>
 
             <!--Added by Tobechi PHIS3 2023-11-07-->
-            <ul class="table-layout" ng-show="(operationType.name === 'Disposed') && (disposedType === 'others') ">
+            <ul class="table-layout" ng-show="(operationType.name === 'Disposed') && (disposedType === 'others' || disposedType === 'damaged') ">
                 <li class="not-required">
                     <span>Comment </span>
                 </li>
@@ -196,7 +196,7 @@
                 </li>
                 <li>
                     <select ng-model="department" required class="form-control"
-                            ng-options='department.name for department in departments track by department.uuid'>
+                            ng-options='department.description for department in departments track by department.uuid'>
                     </select>
                 </li>
             </ul>
@@ -213,6 +213,13 @@
             </ul>
 
             <!-- Added by Tobechi PHIS3 13-11-2023  -->
+
+            <ul class="table-layout"
+                ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
+
+                <li> <span>Transferred out from:</span></li>
+
+            </ul>
             <ul class="table-layout"
                 ng-show="((operationType.name === 'Return' && returnOperationType === 'Institution') || (operationType.name === 'Transfer-In'))">
 

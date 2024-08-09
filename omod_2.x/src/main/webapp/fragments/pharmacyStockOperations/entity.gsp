@@ -45,6 +45,14 @@
     </ul>
     <ul class="table-layout">
         <li>
+            <span>Commodity Type</span>
+        </li>
+        <li>
+            <span>{{stockOperation.commodityType}}</span>
+        </li>
+    </ul>
+    <ul class="table-layout">
+        <li>
             <span>{{messageLabels['openhmis.inventory.operations.operationCreators']}}</span>
         </li>
         <li>
@@ -146,8 +154,10 @@
             <tr>
                 <th>{{messageLabels['openhmis.inventory.item.name']}}</th>
                 <th>{{messageLabels['openhmis.inventory.item.quantity']}}</th>
+                <th>Batch Number</th>
                 <th>{{messageLabels['openhmis.commons.general.batchOperation']}}</th>
                 <th>{{messageLabels['openhmis.commons.general.expiration']}}</th>
+
             </tr>
             </thead>
             <tbody>
@@ -156,8 +166,10 @@
                 total-items="stockOperationItemTotalNumberOfResults" current-page="stockOperationItemCurrentPage">
                 <td>{{item.item.name}}</td>
                 <td>{{item.quantity}}</td>
+                <td>{{item.itemBatch}}</td>
                 <td>{{item.batchOperation.operationNumber || "(" + messageLabels['openhmis.commons.general.auto'] + ")"}}</td>
                 <td>{{(item.expiration | date: 'dd-MM-yyyy') || "(" + messageLabels['openhmis.commons.general.auto'] + ")"}}</td>
+
             </tr>
             </tbody>
         </table>

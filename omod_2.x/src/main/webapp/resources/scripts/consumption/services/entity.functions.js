@@ -29,7 +29,8 @@
             addMessageLabels: addMessageLabels,
             formatDate: formatDate,
             formatTime: formatTime,
-            onChangeDatePicker: onChangeDatePicker
+            onChangeDatePicker: onChangeDatePicker,
+            validatefields: validatefields
         };
 
         return service;
@@ -113,6 +114,21 @@
                 successfulCallback(input);
             });
         }
+
+
+        //Validate the consumption fields
+        // function validatefields($scope) {
+        //     console.log("testPurpose1 " + $scope.entity.testPurpose);
+        //    // console.log("testPurpose2 " + $scope.testPurpose);
+        //     if ($scope.entity.testPurpose === undefined ||
+        //         $scope.entity.testPurpose === '') {
+        //        // $scope.submitted = true;
+        //         // var errorMsg = "Please select test purpose!";
+        //         // emr.errorAlert(errorMsg);
+        //         return false;
+        //     }
+        //     return true;
+        // }
 
     }
 })();

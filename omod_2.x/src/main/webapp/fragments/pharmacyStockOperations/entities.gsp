@@ -101,6 +101,7 @@
                     <th>${ui.message('openhmis.inventory.operations.operationType')}</th>
                     <th>${ui.message('openhmis.inventory.operations.operationNumber')}</th>
                     <th>${ui.message('openhmis.commons.general.status')}</th>
+                    <th>Commodity Type</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -111,6 +112,7 @@
                     <td ng-style="strikeThrough(entity.retired)">{{entity.instanceType.name}}</td>
                     <td ng-style="strikeThrough(entity.retired)">{{entity.operationNumber}}</td>
                     <td ng-style="strikeThrough(entity.retired)">{{entity.status}}</td>
+                    <td ng-style="strikeThrough(entity.retired)">{{entity.commodityType}}</td>
                 </tr>
                 </tbody>
             </table>

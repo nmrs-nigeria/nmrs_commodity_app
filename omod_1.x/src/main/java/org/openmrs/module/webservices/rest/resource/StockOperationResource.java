@@ -100,6 +100,7 @@ public class StockOperationResource
 		description.addProperty("operationDate", Representation.DEFAULT);
 		description.addProperty("operationOrder", Representation.DEFAULT);
 		description.addProperty("cancelReason", Representation.DEFAULT);
+		description.addProperty("commodityType", Representation.DEFAULT);
 
 		if (!(rep instanceof RefRepresentation)) {
 			description.addProperty("source", Representation.REF);
@@ -118,6 +119,7 @@ public class StockOperationResource
 			description.addProperty("dataSystem");
 			description.addProperty("disposedOtherSpecify"); //Added by Tobechi
 			description.addProperty("patientReasonForReturn"); //Added by Tobechi
+
 		}
 
 		return description;
